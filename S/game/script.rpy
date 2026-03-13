@@ -71,7 +71,8 @@ screen items_screen():
     #     yalign 0.5
     #     text "进度: [len(clicked_items)]/3" size 24 color "#FFD700"
 
-  # 物品1 - 杂志
+
+# 物品1 - 杂志
     imagebutton:
         xpos 1200
         ypos 200
@@ -87,8 +88,8 @@ screen items_screen():
                 If(
                     len(clicked_items) >= 2,  # 当前是第3个物品（点击前已有2个）
                     true=[
-                        Hide("item_description"),
-                        Return()
+                        SetVariable("third_item_clicked", True),
+                        Hide("items_screen")
                     ],
                     false=NullAction()
                 )
@@ -115,8 +116,8 @@ screen items_screen():
                 If(
                     len(clicked_items) >= 2,  # 当前是第3个物品（点击前已有2个）
                     true=[
-                        Hide("item_description"), 
-                        Return()
+                        SetVariable("third_item_clicked", True),
+                        Hide("items_screen")
                     ],
                     false=NullAction()
                 )
@@ -142,8 +143,8 @@ screen items_screen():
                 If(
                     len(clicked_items) >= 2,  # 当前是第3个物品（点击前已有2个）
                     true=[
-                        Hide("item_description"),
-                        Return()
+                        SetVariable("third_item_clicked", True),
+                        Hide("items_screen")
                     ],
                     false=NullAction()
                 )
@@ -152,6 +153,53 @@ screen items_screen():
             idle "item3_smartphone.png"
             hover "item3_smartphone_hover.png"
             action Show("item_description", description=item_descriptions["smartphone"], name=item_names["smartphone"])
+
+# 第三个物品点击标记
+default third_item_clicked = False
+
+# 物品描述屏幕，添加自动跳转逻辑
+screen item_description(description, name): 
+    modal True
+    zorder 100
+    
+    # 半透明背景
+    add "#000000CC"
+    
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xpadding 50
+        ypadding 50
+        
+        vbox:
+                       
+            text name:
+                size 28 color "#ffffff" xalign 0
+            null height 30
+            
+            add Solid("#FFFFFF"):
+                xsize 800
+                ysize 1
+                xalign 0.5
+                alpha 0.3  # 30%不透明度
+            null height 30
+
+            text description:
+                size 24
+                color "#FFFFFF"
+                xalign 0.5
+            null height 50
+            
+            textbutton "关闭":
+                xalign 0.5
+                action [
+                    Hide("item_description"),
+                    If(
+                        third_item_clicked,
+                        true=Jump("after_third_item"),
+                        false=NullAction()
+                    )
+                ]
 
 
 
@@ -195,7 +243,8 @@ label chapter0:
     "{i}妈妈每周日打电话问你什么时候别挑了。但这一次……感觉不一样。{/i}"
     "{i}你进入了等待室，下一个就到你了。{/i}"
     jump waiting_room
-    
+
+# 等待室标签 - 修复缺失
 label waiting_room:
     
     scene garage #替换为办公室图片
@@ -212,10 +261,6 @@ label explore_room:
     default item1_magazine_clicked = False
     default item2_computer_clicked = False
     default item3_smartphone_clicked = False
-    #default bear_clicked = False
-    #default item4_seen = False
-    #default item5_seen = False
-    #$ clicked_count = 0
 
     # 使用列表记录点击的不同物品
     $ clicked_items = []  # 存储被点击过的物品
@@ -224,7 +269,6 @@ label explore_room:
     
     # 等待跳转
     $ renpy.pause(delay=None, hard=False, predict=False, modal=False)
-    s"面试好像要开始了？"
     return
 
 label explore_complete:
@@ -236,21 +280,13 @@ label explore_complete:
     'HR'"佘小姐？陈总请您进去。"
     jump chapter0_2
 
-#----------------------------------------
+# 点击第三个物品后跳转到这里
+label after_third_item:
+    $ third_item_clicked = False  # 重置标记
+    s "面试好像要开始了？"
+    jump explore_complete
 
-#screen items_screen_0.2():
-    # # 物品1 - 书架
-    # imagebutton:
-    #     xpos 1200
-    #     ypos 200
-    #     idle "item0.21_book.png"
-    #     #hover "item0.21_book_hover.png"
-    #     if not item0.21_book_clicked:  #not clicked时才可点击
-    #         Show("item_description", description="法律书籍、商业策略，还有……女性诗人的诗集"), 
-
-
-
-#数值初始值
+# 数值初始值
 default money = 800
 default social = 0
 default mental = 0
@@ -407,168 +443,3 @@ label chapter0_3:
 
     scene black
     #show 邮件页面
-     
-        
-
-
-
-
-  # 第一章：蜜月期（第1-4周）
-# 任务1.1：第一天，第一印象
-
-# 角色定义（延续已有定义）
-define s = Character("小曼")  # 已定义，延续使用
-define unknown_woman = Character("陌生女人", color="#808080")
-define narrator = Character(None, what_italic=True)
-
-# 变量定义（延续已有default变量）
-# money已在前面定义为default money = 800
-default coffee_bought = False
-default elevator_floor = 0
-default gate_used = False
-default appearance_checked = False
-
-# 场景定义（占位符图片）
-image bg lobby = "bg_lobby.png"  # 公司大堂
-image bg elevator = "bg_elevator.png"  # 电梯内部
-image bg hr_floor = "bg_hr_floor.png"  # 3楼HR
-image bg marketing_floor = "bg_marketing_floor.png"  # 8楼市场部
-image bg your_floor = "bg_your_floor.png"  # 12楼你的部门（设计部）
-image bg executive_floor = "bg_executive_floor.png"  # 23楼高管层
-image bg coffee_stand = "bg_coffee_stand.png"  # 咖啡亭
-
-# 角色立绘（占位符）
-image woman normal = "woman_normal.png"
-
-# ========== 第一章入口 ==========
-
-label chapter1:
-    scene bg lobby with fade
-    
-    # 开场
-    "大楼里弥漫着空气清新剂和野心。你早到了13分钟。每个人都这样。"
-    
-    jump lobby_explore
-
-# ========== 大堂探索 ==========
-
-label lobby_explore:
-    scene bg lobby
-    
-    # 检查是否三个内容都已探索
-    if gate_used and coffee_bought and appearance_checked:
-        "该去上班了。"
-        jump elevator_choice
-    
-    menu:
-        "大堂可探索："
-        
-        "闸机 - 刷工牌" if not gate_used:
-            jump gate_interaction
-            
-        "咖啡亭 - 买咖啡" if not coffee_bought:
-            jump coffee_stand
-            
-        "电梯门倒影 - 整理仪容" if not appearance_checked:
-            jump mirror_check
-
-# ========== 闸机互动 ==========
-
-label gate_interaction:
-    scene bg lobby
-    
-    "哔！"
-    
-    "欢迎，小曼——第一次在这里听到自己的名字"
-    
-    $ gate_used = True
-    
-    jump lobby_explore
-
-# ========== 咖啡亭 ==========
-
-label coffee_stand:
-    scene bg coffee_stand
-    
-    "咖啡师很帅，他也发现了你这位新来的美女"
-    
-    $ money -= 30
-    
-    "-30元。当前余额：[money]元"
-    
-    $ coffee_bought = True
-    
-    jump lobby_explore
-
-# ========== 整理仪容 ==========
-
-label mirror_check:
-    scene bg lobby
-    
-    "你穿着新买的职业裙，很合身"
-    
-    $ appearance_checked = True
-    
-    jump lobby_explore
-
-# ========== 电梯选择 ==========
-
-label elevator_choice:
-    scene bg elevator
-    
-    menu:
-        "选择楼层："
-        
-        "3楼：HR":
-            $ elevator_floor = 3
-            scene bg hr_floor with dissolve
-            "HR部门..."
-            jump elevator_encounter
-            
-        "8楼：市场部":
-            $ elevator_floor = 8
-            scene bg marketing_floor with dissolve
-            "市场部..."
-            jump elevator_encounter
-            
-        "12楼：你的部门":
-            $ elevator_floor = 12
-            scene bg your_floor with dissolve
-            "设计部..."
-            jump elevator_encounter
-            
-        "23楼：高管层":
-            $ elevator_floor = 23
-            scene bg executive_floor with dissolve
-            "高管层..."
-            jump elevator_encounter
-
-# ========== 电梯随机遭遇 ==========
-
-label elevator_encounter:
-    scene bg elevator with fade
-    
-    "电梯门打开。一位40多岁的女人，套装干练，眼神疲惫。"
-    
-    show woman normal at center
-    
-    unknown_woman "新来的？"
-    
-    s "第一天。"
-    
-    unknown_woman "啊。"
-    
-    "她盯着你看的时间有点长。"
-    
-    unknown_woman "设计部？"
-    
-    s "怎么知道？"
-    
-    unknown_woman "就那种眼神。不知道你会在这待多久呢？"
-    
-    hide woman normal with moveoutleft
-    
-    "她在8楼下电梯。你始终不知道她的名字。"
-    
-    # 剧情继续到下一部分...
-    return      
