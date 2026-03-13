@@ -469,14 +469,16 @@ label chapter1:
 label lobby_explore:
     scene bg lobby
     
+    # 检查是否三个内容都已探索
+    if gate_used and coffee_bought and appearance_checked:
+        "该去上班了。"
+        jump elevator_choice
+    
     menu:
         "大堂可探索："
         
         "闸机 - 刷工牌" if not gate_used:
             jump gate_interaction
-            
-        "电梯按钮 - 选楼层":
-            jump elevator_choice
             
         "咖啡亭 - 买咖啡" if not coffee_bought:
             jump coffee_stand
@@ -504,9 +506,9 @@ label coffee_stand:
     
     "咖啡师很帅，他也发现了你这位新来的美女"
     
-    $ money -= 4.5
+    $ money -= 30
     
-    "-4.5元。当前余额：[money]元"
+    "-30元。当前余额：[money]元"
     
     $ coffee_bought = True
     
