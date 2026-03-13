@@ -423,38 +423,43 @@ label chapter0_3:
     #show 邮件页面
      
         
-        
+
+
+
+
   # 第一章：蜜月期（第1-4周）
 # 任务1.1：第一天，第一印象
 
-# 角色定义
-define s = Character("小曼", color="#FFB6C1")  # 主角，粉色
-define unknown_woman = Character("陌生女人", color="#808080")  # 灰色
-define narrator = Character(None, kind=nvl)  # 旁白/系统提示
+# 角色定义（延续已有定义）
+define s = Character("小曼")  # 已定义，延续使用
+define unknown_woman = Character("陌生女人", color="#808080")
+define narrator = Character(None, what_italic=True)
 
-# 变量定义
-default money = 0  # 初始金钱
+# 变量定义（延续已有default变量）
+# money已在前面定义为default money = 800
 default coffee_bought = False
 default elevator_floor = 0
+default gate_used = False
+default appearance_checked = False
 
-# 场景定义（占位符，后续替换为实际图片）
+# 场景定义（占位符图片）
 image bg lobby = "bg_lobby.png"  # 公司大堂
 image bg elevator = "bg_elevator.png"  # 电梯内部
 image bg hr_floor = "bg_hr_floor.png"  # 3楼HR
 image bg marketing_floor = "bg_marketing_floor.png"  # 8楼市场部
-image bg your_floor = "bg_your_floor.png"  # 12楼你的部门
+image bg your_floor = "bg_your_floor.png"  # 12楼你的部门（设计部）
 image bg executive_floor = "bg_executive_floor.png"  # 23楼高管层
 image bg coffee_stand = "bg_coffee_stand.png"  # 咖啡亭
 
 # 角色立绘（占位符）
 image woman normal = "woman_normal.png"
 
-# ========== 开场 ==========
+# ========== 第一章入口 ==========
 
-lable start:
+label chapter1:
     scene bg lobby with fade
     
-    # 开场旁白
+    # 开场
     "大楼里弥漫着空气清新剂和野心。你早到了13分钟。每个人都这样。"
     
     jump lobby_explore
@@ -467,16 +472,16 @@ label lobby_explore:
     menu:
         "大堂可探索："
         
-        "闸机 - 刷工牌":
+        "闸机 - 刷工牌" if not gate_used:
             jump gate_interaction
             
         "电梯按钮 - 选楼层":
             jump elevator_choice
             
-        "咖啡亭 - 买咖啡":
+        "咖啡亭 - 买咖啡" if not coffee_bought:
             jump coffee_stand
             
-        "电梯门倒影 - 整理仪容":
+        "电梯门倒影 - 整理仪容" if not appearance_checked:
             jump mirror_check
 
 # ========== 闸机互动 ==========
@@ -486,9 +491,9 @@ label gate_interaction:
     
     "哔！"
     
-    unknown_woman "欢迎，小曼"
+    "欢迎，小曼——第一次在这里听到自己的名字"
     
-    "——第一次在这里听到自己的名字"
+    $ gate_used = True
     
     jump lobby_explore
 
@@ -497,16 +502,13 @@ label gate_interaction:
 label coffee_stand:
     scene bg coffee_stand
     
-    if coffee_bought:
-        "你已经买过咖啡了。"
-        jump lobby_explore
-    
     "咖啡师很帅，他也发现了你这位新来的美女"
     
     $ money -= 4.5
-    $ coffee_bought = True
     
-    "-4.5元。"
+    "-4.5元。当前余额：[money]元"
+    
+    $ coffee_bought = True
     
     jump lobby_explore
 
@@ -516,6 +518,8 @@ label mirror_check:
     scene bg lobby
     
     "你穿着新买的职业裙，很合身"
+    
+    $ appearance_checked = True
     
     jump lobby_explore
 
@@ -542,7 +546,7 @@ label elevator_choice:
         "12楼：你的部门":
             $ elevator_floor = 12
             scene bg your_floor with dissolve
-            "你的部门..."
+            "设计部..."
             jump elevator_encounter
             
         "23楼：高管层":
@@ -578,5 +582,5 @@ label elevator_encounter:
     
     "她在8楼下电梯。你始终不知道她的名字。"
     
-    # 剧情继续...
-    return  
+    # 剧情继续到下一部分...
+    return      
