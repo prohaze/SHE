@@ -71,7 +71,7 @@ screen items_screen():
     #     yalign 0.5
     #     text "进度: [len(clicked_items)]/3" size 24 color "#FFD700"
 
-    # 物品1 - 杂志
+  # 物品1 - 杂志
     imagebutton:
         xpos 1200
         ypos 200
@@ -79,22 +79,13 @@ screen items_screen():
         hover "item1_magazine_hover.png"
         if not item1_magazine_clicked:  #not clicked时才可点击
             action [
-                #SetVariable("item1_magazine_clicked", True),
-                #SetVariable("clicked_count", 
-                #(1 if item1_magazine_clicked else 0) + 
-                #(1 if item2_computer_clicked else 0) + 
-                #(1 if item3_smartphone_clicked else 0)
-                #),
+                SetVariable("item1_magazine_clicked", True),
                 SetVariable("clicked_items", 
                     clicked_items if "magazine" in clicked_items else clicked_items + ["magazine"]
                 ),                
-                Show("item_description", description=item_descriptions["magazine"], name=item_names["magazine"]),  #从字典获取描述
-                # If("magazine" not in clicked_items, # 如果"magazine"不在列表中，添加
-                # true=SetVariable("clicked_items", clicked_items + ["magazine"])
-                # ),
-                
+                Show("item_description", description=item_descriptions["magazine"], name=item_names["magazine"]),
                 If(
-                    len(clicked_items) >= 3,  # 使用列表长度避免复杂的布尔计算--> clicked_count == 3,
+                    len(clicked_items) >= 2,  # 当前是第3个物品（点击前已有2个）
                     true=[
                         Hide("item_description"),
                         Return()
@@ -116,16 +107,13 @@ screen items_screen():
         hover "item2_computer_hover.png"
         if not item2_computer_clicked:  
             action [
+                SetVariable("item2_computer_clicked", True),
                 SetVariable("clicked_items", 
                     clicked_items if "computer" in clicked_items else clicked_items + ["computer"]
                 ),
                 Show("item_description", description=item_descriptions["computer"], name=item_names["computer"]),
-                # If("computer" not in clicked_items,
-                # true=SetVariable("clicked_items", clicked_items + ["computer"])
-                # ),
-                
                 If(
-                    len(clicked_items) >= 3, #clicked_count == 3,
+                    len(clicked_items) >= 2,  # 当前是第3个物品（点击前已有2个）
                     true=[
                         Hide("item_description"), 
                         Return()
@@ -146,15 +134,13 @@ screen items_screen():
         hover "item3_smartphone_hover.png"
         if not item3_smartphone_clicked: 
             action [
+                SetVariable("item3_smartphone_clicked", True),
                 SetVariable("clicked_items", 
                     clicked_items if "smartphone" in clicked_items else clicked_items + ["smartphone"]
                 ),
                 Show("item_description", description=item_descriptions["smartphone"], name=item_names["smartphone"]),                
-                # If("smartphone" not in clicked_items,
-                # true=SetVariable("clicked_items", clicked_items + ["smartphone"])
-                # ),
                 If(
-                    len(clicked_items) >= 3,#clicked_count == 3,
+                    len(clicked_items) >= 2,  # 当前是第3个物品（点击前已有2个）
                     true=[
                         Hide("item_description"),
                         Return()
@@ -209,7 +195,7 @@ label chapter0:
     "{i}妈妈每周日打电话问你什么时候别挑了。但这一次……感觉不一样。{/i}"
     "{i}你进入了等待室，下一个就到你了。{/i}"
     jump waiting_room
-
+    
 label waiting_room:
     
     scene garage #替换为办公室图片
