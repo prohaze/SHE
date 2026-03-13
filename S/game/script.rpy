@@ -71,8 +71,7 @@ screen items_screen():
     #     yalign 0.5
     #     text "进度: [len(clicked_items)]/3" size 24 color "#FFD700"
 
-
-# 物品1 - 杂志
+    # 物品1 - 杂志
     imagebutton:
         xpos 1200
         ypos 200
@@ -201,8 +200,6 @@ screen item_description(description, name):
                     )
                 ]
 
-
-
 #-----------------------------------------------
 
 define s = Character("小曼") #避免每次都打很多字
@@ -243,8 +240,7 @@ label chapter0:
     "{i}妈妈每周日打电话问你什么时候别挑了。但这一次……感觉不一样。{/i}"
     "{i}你进入了等待室，下一个就到你了。{/i}"
     jump waiting_room
-
-# 等待室标签 - 修复缺失
+    
 label waiting_room:
     
     scene garage #替换为办公室图片
@@ -286,7 +282,6 @@ label after_third_item:
     s "面试好像要开始了？"
     jump explore_complete
 
-# 数值初始值
 default money = 800
 default social = 0
 default mental = 0
@@ -443,3 +438,193 @@ label chapter0_3:
 
     scene black
     #show 邮件页面
+
+
+
+
+# 第一章：蜜月期（第1-4周）
+# 任务1.1：第一天，第一印象
+
+# 角色定义（延续已有定义）
+define s = Character("小曼")  # 已定义，延续使用
+define unknown_woman = Character("陌生女人", color="#808080")
+define narrator = Character(None, what_italic=True)
+
+# 变量定义（延续已有default变量）
+# money已在前面定义为default money = 800
+default coffee_bought = False
+#default elevator_floor = 0
+default gate_used = False
+default appearance_checked = False
+default third_floor = False
+default eight_floor = False
+default twenty_third_floor = False
+
+# 场景定义（占位符图片）
+image bg lobby = "bg_lobby.png"  # 公司大堂
+image bg elevator = "bg_elevator.png"  # 电梯内部
+image bg coffee_stand = "bg_coffee_stand.png"  # 咖啡亭
+image bg third_floor = "bg_hr_floor.png"  # 3楼HR
+image bg eight_floor = "bg_marketing_floor.png"  # 8楼市场部
+image bg your_floor = "bg_your_floor.png"  # 12楼你的部门（设计部）
+image bg twenty_third_floor = "bg_executive_floor.png"  # 23楼高管层
+
+# 角色立绘（占位符）
+image woman normal = "woman_normal.png"
+
+# ========== 第一章入口 ==========
+
+label chapter1:
+    scene bg lobby with fade
+    
+    # 开场
+    "大楼里弥漫着空气清新剂和野心。你早到了13分钟。每个人都这样。"
+    
+    jump lobby_explore
+
+# ========== 大堂探索 ==========
+screen lobby_menu(gate_used, coffee_bought, appearance_checked):
+    style_prefix "choice"
+    
+    # 临时位置设置
+    vbox:
+        xalign 0.5
+        yalign 0.35
+        
+        text "大堂可探索："
+        
+        if not gate_used:
+            textbutton "闸机 - 刷工牌" action Jump("gate_interaction")
+        if not coffee_bought:
+            textbutton "咖啡亭 - 买咖啡" action Jump("coffee_stand")
+        if not appearance_checked:
+            textbutton "电梯门倒影 - 整理仪容" action Jump("mirror_check")
+
+label lobby_explore:
+    scene bg lobby
+    
+    if gate_used and coffee_bought and appearance_checked:
+        s"还有点时间，去熟悉熟悉办公楼层吧。"
+        jump elevator_choice
+    
+    # 调用自定义位置的菜单
+    call screen lobby_menu(gate_used, coffee_bought, appearance_checked)
+# ========== 闸机互动 ==========
+
+label gate_interaction:
+    scene bg lobby
+    
+    "“哔！”"
+    
+    "“欢迎，小曼！”{i}——这是你第一次在这里听到自己的名字{/i}"
+    
+    $ gate_used = True
+    
+    jump lobby_explore
+
+# ========== 咖啡亭 ==========
+
+label coffee_stand:
+    scene bg coffee_stand
+    
+    "{i}咖啡师很帅，他也发现了你这位新来的美女{/i}"
+    
+    $ money -= 30
+    
+    "-30元。【当前余额：[money]元】"
+    
+    $ coffee_bought = True
+    
+    jump lobby_explore
+
+# ========== 整理仪容 ==========
+
+label mirror_check:
+    scene bg lobby
+    
+    "{i}你穿着新买的职业裙，很合身{/i}"
+    
+    $ appearance_checked = True
+    
+    jump lobby_explore
+
+# ========== 电梯选择 ==========
+screen elevator_menu(third_floor, eight_floor, twenty_third_floor):
+    style_prefix "choice"
+    
+    # 临时位置设置
+    vbox:
+        xalign 0.5
+        yalign 0.35
+        
+        text "探索办公楼层："
+        
+        if not third_floor:
+            textbutton "3楼" action Jump("third_floor")
+        if not eight_floor:
+            textbutton "8楼" action Jump("eight_floor")
+        if not twenty_third_floor:
+            textbutton "23楼" action Jump("twenty_third_floor")
+
+label elevator_choice:
+    scene bg elevator
+    
+    if third_floor and eight_floor and twenty_third_floor:
+        jump chapter1_2
+    call screen elevator_menu(third_floor, eight_floor, twenty_third_floor)
+
+
+        
+label third_floor:
+    scene bg third_floor with dissolve
+    "{i}HR部门...{/i}"
+    $ third_floor = True
+    jump elevator_choice
+            
+label eight_floor:
+    scene bg eight_floor with dissolve
+    "{i}市场部...{/i}"
+    $ eight_floor = True
+    jump elevator_encounter
+            
+label twenty_third_floor:
+    scene bg twenty_third_floor with dissolve
+    "{i}高管层...{/i}"
+    $ twenty_third_floor = True
+    jump elevator_choice
+
+# ========== 电梯随机遭遇 ==========
+
+label elevator_encounter:
+    scene bg elevator with fade
+    
+    "{i}电梯门打开。一位40多岁的女人，套装干练，眼神疲惫。{/i}"
+    
+    show woman normal at center
+    
+    unknown_woman "新来的？"
+    
+    s "第一天。"
+    
+    unknown_woman "啊。"
+    
+    "{i}她盯着你看的时间有点长。{i}"
+    
+    unknown_woman "设计部？"
+    
+    s "诶，你怎么知道？"
+    
+    unknown_woman "就那种眼神。不知道你会在这待多久呢？"
+    
+    hide woman normal with moveoutleft
+    
+    "{i}她在8楼下电梯。你始终不知道她的名字。{/i}"
+    
+    # 剧情继续到下一部分...
+    jump elevator_choice
+
+label chapter1_2:
+    s"啊，时间到了，得赶紧去工位。"
+    scene bg your floor with fade
+    "{i}来到12楼，门牌标着“设计部”。{/i}"
+    "{i}一排排办公桌。米色和灰色的隔间。有人在用微波炉热爆米花，快糊了。{/i}"
