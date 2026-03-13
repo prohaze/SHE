@@ -451,7 +451,7 @@ image woman normal = "woman_normal.png"
 
 # ========== 开场 ==========
 
-label start:
+lable start:
     scene bg lobby with fade
     
     # 开场旁白
