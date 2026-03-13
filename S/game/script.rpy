@@ -424,4 +424,159 @@ label chapter0_3:
      
         
         
+  # 第一章：蜜月期（第1-4周）
+# 任务1.1：第一天，第一印象
+
+# 角色定义
+define s = Character("小曼", color="#FFB6C1")  # 主角，粉色
+define unknown_woman = Character("陌生女人", color="#808080")  # 灰色
+define narrator = Character(None, kind=nvl)  # 旁白/系统提示
+
+# 变量定义
+default money = 0  # 初始金钱
+default coffee_bought = False
+default elevator_floor = 0
+
+# 场景定义（占位符，后续替换为实际图片）
+image bg lobby = "bg_lobby.png"  # 公司大堂
+image bg elevator = "bg_elevator.png"  # 电梯内部
+image bg hr_floor = "bg_hr_floor.png"  # 3楼HR
+image bg marketing_floor = "bg_marketing_floor.png"  # 8楼市场部
+image bg your_floor = "bg_your_floor.png"  # 12楼你的部门
+image bg executive_floor = "bg_executive_floor.png"  # 23楼高管层
+image bg coffee_stand = "bg_coffee_stand.png"  # 咖啡亭
+
+# 角色立绘（占位符）
+image woman normal = "woman_normal.png"
+
+# ========== 开场 ==========
+
+label start:
+    scene bg lobby with fade
     
+    # 开场旁白
+    "大楼里弥漫着空气清新剂和野心。你早到了13分钟。每个人都这样。"
+    
+    jump lobby_explore
+
+# ========== 大堂探索 ==========
+
+label lobby_explore:
+    scene bg lobby
+    
+    menu:
+        "大堂可探索："
+        
+        "闸机 - 刷工牌":
+            jump gate_interaction
+            
+        "电梯按钮 - 选楼层":
+            jump elevator_choice
+            
+        "咖啡亭 - 买咖啡":
+            jump coffee_stand
+            
+        "电梯门倒影 - 整理仪容":
+            jump mirror_check
+
+# ========== 闸机互动 ==========
+
+label gate_interaction:
+    scene bg lobby
+    
+    "哔！"
+    
+    unknown_woman "欢迎，小曼"
+    
+    "——第一次在这里听到自己的名字"
+    
+    jump lobby_explore
+
+# ========== 咖啡亭 ==========
+
+label coffee_stand:
+    scene bg coffee_stand
+    
+    if coffee_bought:
+        "你已经买过咖啡了。"
+        jump lobby_explore
+    
+    "咖啡师很帅，他也发现了你这位新来的美女"
+    
+    $ money -= 4.5
+    $ coffee_bought = True
+    
+    "-4.5元。"
+    
+    jump lobby_explore
+
+# ========== 整理仪容 ==========
+
+label mirror_check:
+    scene bg lobby
+    
+    "你穿着新买的职业裙，很合身"
+    
+    jump lobby_explore
+
+# ========== 电梯选择 ==========
+
+label elevator_choice:
+    scene bg elevator
+    
+    menu:
+        "选择楼层："
+        
+        "3楼：HR":
+            $ elevator_floor = 3
+            scene bg hr_floor with dissolve
+            "HR部门..."
+            jump elevator_encounter
+            
+        "8楼：市场部":
+            $ elevator_floor = 8
+            scene bg marketing_floor with dissolve
+            "市场部..."
+            jump elevator_encounter
+            
+        "12楼：你的部门":
+            $ elevator_floor = 12
+            scene bg your_floor with dissolve
+            "你的部门..."
+            jump elevator_encounter
+            
+        "23楼：高管层":
+            $ elevator_floor = 23
+            scene bg executive_floor with dissolve
+            "高管层..."
+            jump elevator_encounter
+
+# ========== 电梯随机遭遇 ==========
+
+label elevator_encounter:
+    scene bg elevator with fade
+    
+    "电梯门打开。一位40多岁的女人，套装干练，眼神疲惫。"
+    
+    show woman normal at center
+    
+    unknown_woman "新来的？"
+    
+    s "第一天。"
+    
+    unknown_woman "啊。"
+    
+    "她盯着你看的时间有点长。"
+    
+    unknown_woman "设计部？"
+    
+    s "怎么知道？"
+    
+    unknown_woman "就那种眼神。不知道你会在这待多久呢？"
+    
+    hide woman normal with moveoutleft
+    
+    "她在8楼下电梯。你始终不知道她的名字。"
+    
+    # 剧情继续...
+    return  
