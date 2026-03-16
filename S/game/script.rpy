@@ -628,3 +628,625 @@ label chapter1_2:
     scene bg your floor with fade
     "{i}来到12楼，门牌标着“设计部”。{/i}"
     "{i}一排排办公桌。米色和灰色的隔间。有人在用微波炉热爆米花，快糊了。{/i}"
+
+# 延续已有定义的角色
+define s = Character("小曼")
+define n = Character(None, what_italic=True)
+
+# 第一章新角色定义
+define xiaojin = Character("小金", color="#FFD700")
+define linjie = Character("林姐", color="#808080")
+define chen = Character("陈永仁", color="#4169E1")
+define unknown = Character("???", color="#808080")
+
+# 延续已有变量，新增关系度变量
+default xiaojin_rel = 0
+default linjie_interest = 0
+
+# 任务相关标记
+default task_assigned = False
+
+# 场景图片定义（占位符）
+image bg office_floor = "bg_office_floor.png"
+image bg pantry = "bg_pantry.png"
+image bg meeting_room = "bg_meeting_room.png"
+image bg desk_area = "bg_desk_area.png"
+
+# 角色立绘（占位符）
+image xiaojin normal = "xiaojin_normal.png"
+image xiaojin whisper = "xiaojin_whisper.png"
+image linjie normal = "linjie_normal.png"
+image linjie stop = "linjie_stop.png"
+
+# ========== 第一章：自我介绍 ==========
+
+label chapter1_self_intro:
+    scene bg office_floor with fade
+    
+    "{i}你来到工位，正在收拾东西。{/i}"
+    
+    show xiaojin normal at right with moveinright
+    
+    xiaojin "嘿！新来的美女！终于有个不是我爸年纪的人了。喝咖啡吗？我告诉你哪个机器好。"
+    
+    menu:
+        "好啊，谢谢！":
+            $ xiaojin_rel += 1
+            jump xiaojin_friendly
+            
+        "等会儿吧，我想先收拾一下。":
+            jump xiaojin_neutral
+            
+        "我自己带了。":
+            jump xiaojin_cold
+
+# 选项A：友好路线
+label xiaojin_friendly:
+    hide xiaojin normal
+    scene bg pantry with dissolve
+    
+    show xiaojin whisper at center
+    
+    xiaojin "悄悄话——别得罪陈总。他挺随和的，但别惹他。还有HR那女的？也别得罪。"
+    
+    xiaojin "算了，谁都别得罪。我来8个月了，还在琢磨。"
+    
+    hide xiaojin whisper with moveoutleft
+    
+    jump linjie_encounter
+
+# 选项B：礼貌路线
+label xiaojin_neutral:
+    hide xiaojin normal with moveoutright
+    
+    xiaojin "行，那你先忙，有事找我。"
+    
+    jump linjie_encounter
+
+# 选项C：疏远路线
+label xiaojin_cold:
+    hide xiaojin normal
+    
+    xiaojin "哦……挺独立的啊。"
+    
+    hide xiaojin normal with moveoutright
+    
+    jump linjie_encounter
+
+# ========== 林姐登场 ==========
+
+label linjie_encounter:
+    scene bg desk_area with fade
+    
+    "{i}你继续整理工位。{/i}"
+    
+    show linjie normal at left with moveinleft
+    
+    linjie "欢迎。文件在共享链接里。10点开会，别迟到。"
+    
+    "{i}她从你桌边走过，没停步，头也不回。{/i}"
+    
+    menu:
+        "好的，谢谢！":
+            jump linjie_response_a
+            
+        "默默点头":
+            jump linjie_response_b
+            
+        "期待开会。":
+            jump linjie_response_c
+
+# 选项A：积极
+label linjie_response_a:
+    s "好的，谢谢！"
+    
+    "{i}林姐脚步微顿，但没回头，继续走了。{/i}"
+    
+    hide linjie normal with moveoutleft
+    
+    jump task_1_3
+
+# 选项B：冷淡
+label linjie_response_b:
+    "{i}你默默点头。{/i}"
+    
+    "{i}林姐似乎没注意到，径直走远了。{/i}"
+    
+    hide linjie normal with moveoutleft
+    
+    jump task_1_3
+
+# 选项C：职业（触发隐藏记录）
+label linjie_response_c:
+    s "期待开会。"
+    
+    show linjie stop at left
+    
+    "{i}她停住。微微转身。{/i}"
+    
+    linjie "是吗。"
+    
+    "{i}走了。{/i}"
+    
+    $ linjie_interest = 1
+    
+    hide linjie stop with moveoutleft
+    
+    # 隐藏记录提示（仅开发者可见，玩家看不到）
+    # [林姐兴趣度：低但不为零]
+    
+    jump task_1_3
+
+# ========== 任务1.3：第一个任务 ==========
+
+label task_1_3:
+    scene bg meeting_room with fade
+    
+    "{i}上午10点，C会议室。{/i}"
+    "{i}日光灯嗡嗡响。8个人围坐。你比最年轻的至少小10岁。{/i}"
+    
+    show chen normal at center with dissolve
+    
+    chen "各位早。快速更新——我们拿下了那个新IP项目。对方是大厂，这可是咱们翻身的机会。"
+    
+    "{i}他环顾四周，目光落在你身上。{/i}"
+    
+    chen "新人有机会。小曼，你来负责竞品游戏的拆解分析。"
+    
+    menu:
+        "太好了！":
+            $ mental = mental + 2 if 'mental' in globals() else 2
+            jump task_response_a
+            
+        "我尽力。":
+            jump task_response_b
+            
+        "具体要拆解哪些部分？":
+            jump task_response_c
+
+# 选项A：积极
+label task_response_a:
+    s "太好了！"
+    
+    chen "有干劲是好事。林姐会带你入门。"
+    
+    jump after_task_assignment
+
+# 选项B：谦虚
+label task_response_b:
+    s "我尽力。"
+    
+    chen "嗯，有问题找林姐。她经验很丰富。"
+    
+    jump after_task_assignment
+
+# 选项C：谨慎（特殊剧情）
+label task_response_c:
+    s "具体要拆解哪些部分？"
+    
+    "{i}桌边有人轻笑。不是恶意，但……只有你不知道。{/i}"
+    
+    chen "好问题。林姐会带你。就是市面上那几款头部二次元游戏，美术风格、养成线、付费点设计……那些有趣的东西。"
+    
+    chen "别担心，我选你是有理由的。我看过你毕设，那个角色设计很有灵气。"
+    
+    jump after_task_assignment
+
+# 任务分配后
+label after_task_assignment:
+    hide chen normal with dissolve
+    
+    "{i}会议结束，你收拾东西准备离开。{/i}"
+    
+    show linjie normal at right with moveinright
+    
+    linjie "他总把不可能的任务扔给新人。那几个竞品项目？每个都是几百人的大团队做了三年。你要一个人拆完？别累死自己。"
+    
+    menu:
+        "谢谢提醒，我会注意的。":
+            jump linjie_after_a
+            
+        "我能搞定。在学校我拆过很多游戏。":
+            jump linjie_after_b
+            
+        "为什么是不可能？不是有分析框架吗？":
+            jump linjie_after_c
+
+# 会后选项A：感激
+label linjie_after_a:
+    s "谢谢提醒，我会注意的。"
+    
+    linjie "嗯。"
+    
+    hide linjie normal with moveoutright
+    
+    $ task_assigned = True
+    
+    jump chapter1_end
+
+# 会后选项B：自信（林姐认可）
+label linjie_after_b:
+    s "我能搞定。在学校我拆过很多游戏。"
+    
+    show linjie normal at right
+    
+    "{i}林姐看了你一眼。{/i}"
+    
+    linjie "行，有骨气。需要帮忙找我。"
+    
+    hide linjie normal with moveoutright
+    
+    $ task_assigned = True
+    $ linjie_interest += 1
+    
+    jump chapter1_end
+
+# 会后选项C：好奇
+label linjie_after_c:
+    s "为什么是不可能？不是有分析框架吗？"
+    
+    linjie "……框架是框架，执行是执行。你以后会明白的。"
+    
+    hide linjie normal with moveoutright
+    
+    $ task_assigned = True
+    
+    jump chapter1_end
+
+# 1.3结束标记
+label chapter1_end:
+    scene bg desk_area with fade
+    
+    "{i}你回到工位，看着电脑屏幕上打开的共享文件夹。{/i}"
+    "{i}第一个任务，开始了。{/i}"
+    
+    # 此处可跳转到下一章节
+    # jump chapter1.4
+    
+
+   # ========== 任务1.4：第一次加班 ==========
+# 触发：入职第5天，晚上10:47
+
+default fatigue = 0
+default family_pressure = 0
+default mother_anger = 0
+default car_ride = False
+default xiaohongshu_contact = False
+
+label task_1_4:
+    scene bg night_office with fade
+    
+    "{i}入职第5天，晚上10:47{/i}"
+    "{i}晚上的办公室不一样。更安静。自动售货机的嗡嗡声更响。{/i}"
+    "{i}你以为只有你一个人……{/i}"
+    
+    call mini_game_analysis
+    
+    $ fatigue = 50
+    
+    if fatigue > 60:
+        n "好想睡觉……"
+    if fatigue > 40:
+        n "这个抽卡概率曲线怎么算都不对……"
+    if fatigue > 30:
+        n "明天还要早会……"
+    
+    n "但做不完的话，陈总会不会觉得我不行？"
+    
+    "{i}键盘声停了。你听到脚步声。抬头。{/i}"
+    
+    show chen normal at center with dissolve
+    
+    chen "还在？我刚才在楼上审方案，看到你们这层灯还亮着。"
+    
+    "{i}他把一杯咖啡放你桌上。{/i}"
+    
+    chen "给。楼下便利店的美式，不知道你喝不喝得惯。"
+    
+    menu:
+        "谢谢陈总。":
+            jump overtime_response_a
+            
+        "不用这么客气。":
+            jump overtime_response_b
+            
+        "我快做完了。":
+            jump overtime_response_c
+
+label overtime_response_a:
+    s "谢谢陈总。"
+    chen "别客气。"
+    jump chen_conversation
+
+label overtime_response_b:
+    s "不用这么客气。"
+    "{i}陈永仁笑了笑，没说话。{/i}"
+    jump chen_conversation
+
+label overtime_response_c:
+    s "我快做完了。"
+    chen "效率挺高啊。"
+    jump chen_conversation
+
+label chen_conversation:
+    "{i}陈永仁坐在桌角。{/i}"
+    chen "你知道吗，我看过你简历。你的履历顶尖。你可以去任何地方。为什么选这儿？"
+    
+    menu:
+        "别处都不要我。":
+            jump chen_honest
+            
+        "最适合我的技能。":
+            jump chen_safe
+            
+        "我想升得快。":
+            jump chen_ambition
+
+label chen_honest:
+    s "别处都不要我。"
+    $ mental = mental + 2 if 'mental' in globals() else 2
+    show chen normal at center
+    "{i}陈永仁表情柔和下来。{/i}"
+    chen "我懂。我就是从这个位置开始的。真的，就是这张桌子。20年前。现在你看。"
+    "{i}他模糊地往上指了指。{/i}"
+    chen "努力工作。留到最后。这就是赢的方法。"
+    "{i}他站起来。{/i}"
+    chen "别太晚。回家注意安全。"
+    "{i}顿了一下。{/i}"
+    chen "其实我也要走了。送你一程？"
+    jump car_choice
+
+label chen_safe:
+    s "最适合我的技能。"
+    chen "嗯，确实。你的拆解能力很强。"
+    "{i}他站起来。{/i}"
+    chen "别太晚，明天还有早会。其实我也要走了，送你一程？"
+    jump car_choice
+
+label chen_ambition:
+    s "我想升得快。"
+    "{i}陈永仁笑了。{/i}"
+    chen "有野心。我喜欢。"
+    "{i}他站起来。{/i}"
+    chen "别太晚。其实我也要走了，送你一程？"
+    jump car_choice
+
+label car_choice:
+    menu:
+        "好，谢谢。":
+            $ car_ride = True
+            jump car_scene
+            
+        "不用，我坐地铁。":
+            jump reject_car
+
+label car_scene:
+    s "好，谢谢。"
+    chen "走吧，车在楼下。"
+    scene black with fade
+    "{i}车内很干净，有淡淡的皮革味。{/i}"
+    "{i}陈永仁放了一首老歌。你们都没说话。{/i}"
+    "{i}他在你公寓楼下停车。{/i}"
+    chen "明天见。好好休息。"
+    jump task_1_4_end
+
+label reject_car:
+    s "不用，我坐地铁。"
+    chen "随你。明天见。"
+    hide chen normal with moveoutright
+    "{i}走了。{/i}"
+    "{i}你看着他离开。胸口有什么东西松开了。不知道为什么。{/i}"
+    jump task_1_4_end
+
+label task_1_4_end:
+    scene bg night_office with fade
+    "{i}任务完成。{/i}"
+    "{i}解锁：深夜办公室探索{/i}"
+    "{i}项目进度加5{/i}"
+    jump task_1_5
+
+label mini_game_analysis:
+    "{i}你需要完成三款游戏的竞品拆解。{/i}"
+    
+    menu:
+        "游戏A的核心付费点是？"
+        "月卡订阅":
+            $ temp_score = 1
+        "抽卡保底":
+            $ temp_score = 1
+        "皮肤直售":
+            $ temp_score = 0
+    
+    menu:
+        "游戏B的主要留存机制是？"
+        "每日签到":
+            $ temp_score += 1
+        "社交公会":
+            $ temp_score += 1
+        "剧情解锁":
+            $ temp_score += 0
+    
+    menu:
+        "游戏C的美术风格属于？"
+        "写实3D":
+            $ temp_score += 0
+        "二次元赛璐璐":
+            $ temp_score += 1
+        "像素复古":
+            $ temp_score += 0
+    
+    if temp_score >= 2:
+        "{i}拆解完成。数据已保存。{/i}"
+    else:
+        "{i}部分数据存疑，但先这样吧。{/i}"
+        $ fatigue += 20
+    
+    return
+
+# ========== 任务1.5：家庭税 ==========
+
+label task_1_5:
+    scene bg home with fade
+    "{i}第2周，周日下午。{/i}"
+    
+    "妈妈发来消息：第一个月的工资。什么时候发？"
+    
+    menu:
+        "两周后。":
+            jump salary_truth
+            
+        "快了。":
+            jump salary_vague
+            
+        "问这干嘛？":
+            jump salary_defensive
+
+label salary_truth:
+    s "两周后。"
+    "妈妈：好。弟弟要换校服。还有学校旅行。500块。你能出吧？你现在可是有大工作的人了。"
+    jump family_money_choice
+
+label salary_vague:
+    s "快了。"
+    "妈妈：到底是多快？弟弟要换校服，还有学校旅行。500块，你能出吧？"
+    jump family_money_choice
+
+label salary_defensive:
+    s "问这干嘛？"
+    "妈妈：怎么，翅膀硬了？弟弟要换校服，还有学校旅行。500块，家里现在紧，你帮衬一下怎么了？"
+    $ family_pressure += 1
+    jump family_money_choice
+
+label family_money_choice:
+    menu:
+        "好。":
+            jump give_money
+            
+        "那是我一半房租。":
+            jump argue_start
+            
+        "……":
+            jump stay_silent
+
+label give_money:
+    s "好。"
+    $ money -= 500
+    $ family_pressure += 1
+    "妈妈：乖。就知道你懂事。弟弟会谢谢你的。"
+    "{i}-500元。当前余额：[money]元{/i}"
+    jump task_1_5_end
+
+label stay_silent:
+    s "……"
+    "妈妈：你不说话是什么意思？算了，等你发工资再说吧。"
+    "{i}内疚感涌上来。{/i}"
+    $ mental = mental - 1 if 'mental' in globals() else -1
+    jump task_1_5_end
+
+label argue_start:
+    s "那是我一半房租。"
+    "妈妈：你以为我们白养你的？这么多年？弟弟是你亲弟弟。家人帮家人。你想让他成为唯一一个穿不起鞋的孩子？"
+    call argue_minigame
+    jump task_1_5_end
+
+label argue_minigame:
+    "{i}争吵开始了……{/i}"
+    $ mother_anger = 30
+    
+    menu:
+        "（选择回应）"
+        "我也有自己的生活":
+            $ mother_anger += 20
+        "弟弟的鞋凭什么我负责":
+            $ mother_anger += 30
+        "我会给，但请别这样说话":
+            $ mother_anger += 10
+    
+    if mother_anger >= 50:
+        "{i}妈妈怒气冲冲地挂了电话。{/i}"
+        "{i}几天后，她发来消息，像什么都没发生。但你记得。{/i}"
+    else:
+        "{i}你勉强稳住了局面，保住了钱，但心里空落落的。{/i}"
+    
+    return
+
+label task_1_5_end:
+    "{i}手机随后震动。{/i}"
+    "小红书陌生人：姐妹，看到你发家里要钱的事了。同款遭遇。你不是一个人。"
+    $ xiaohongshu_contact = True
+    "{i}新联系人：小红书姐妹{/i}"
+    jump task_1_6
+
+# ========== 任务1.6：不经意的触碰 ==========
+
+label task_1_6:
+    scene bg pantry with fade
+    "{i}第3周，工作日。{/i}"
+    "{i}你伸手拿杯子时，有人从你上方伸过手来。{/i}"
+    
+    show chen normal at center with dissolve
+    
+    chen "抱歉，我也拿……哦，你在泡咖啡？我也是。"
+    "{i}他站得很近。比必要近。{/i}"
+    "{i}他拿糖的时候手臂擦过你。{/i}"
+    
+    menu:
+        "观察他的表情":
+            "{i}他在笑。正常的笑。{/i}"
+            jump touch_reaction
+            
+        "观察他的手":
+            "{i}他的手放在台面上，离你的手只有几寸。{/i}"
+            jump touch_reaction
+            
+        "注意自己的感受":
+            jump touch_reaction
+
+label touch_reaction:
+    menu:
+        "没什么，就是挤。":
+            jump touch_ignore
+            
+        "他为什么站这么近？":
+            jump touch_alert
+            
+        "稍微挪开一点":
+            jump touch_move
+
+label touch_ignore:
+    s "没什么，就是挤。"
+    "{i}你继续泡咖啡。{/i}"
+    chen "你做得很好，顺便说一句。拆解分析很棒。我就知道我没看错你。"
+    jump task_1_6_end
+
+label touch_alert:
+    s "……"
+    "{i}你在心里问自己：他为什么站这么近？{/i}"
+    chen "你做得很好，顺便说一句。拆解分析很棒。我就知道我没看错你。"
+    jump task_1_6_end
+
+label touch_move:
+    "{i}你稍微往旁边挪了一步。{/i}"
+    "{i}陈永仁没明显反应。但你一动，他眼神扫了你一下。就那么一下。{/i}"
+    chen "你做得很好，顺便说一句。拆解分析很棒。我就知道我没看错你。"
+    jump task_1_6_end
+
+label task_1_6_end:
+    hide chen normal with moveoutright
+    "{i}他走了。你一个人对着茶杯发呆。{/i}"
+    
+    "林姐发来消息：看到你在茶水间和陈永仁了。小心点。"
+    
+    menu:
+        "小心什么？":
+            s "小心什么？"
+            "林姐：没什么。自己注意分寸。"
+            
+        "没什么事。":
+            s "没什么事。"
+            "林姐：……随你。"
+            
+        "删除消息":
+            "{i}你删掉了这条消息。{/i}"
+    
+    "{i}第一章结束。{/i}" 
