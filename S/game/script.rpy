@@ -637,10 +637,10 @@ define n = Character(None, what_italic=True)
 define xiaojin = Character("小金", color="#FFD700")
 define linjie = Character("林姐", color="#808080")
 define chen = Character("陈永仁", color="#4169E1")
-define unknown = Character("???", color="#808080")
+define unknown = Character("???")
 
 # 延续已有变量，新增关系度变量
-default xiaojin_rel = 0
+default xiaojin_interest = 0
 default linjie_interest = 0
 
 # 任务相关标记
@@ -659,6 +659,11 @@ image linjie normal = "linjie_normal.png"
 image linjie stop = "linjie_stop.png"
 
 # ========== 第一章：自我介绍 ==========
+image chapter0_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
+show chapter0_title "Chapter 1 入职"
+with fade
+pause 2
+hide chapter0_title
 
 label chapter1_self_intro:
     scene bg office_floor with fade
@@ -671,7 +676,7 @@ label chapter1_self_intro:
     
     menu:
         "好啊，谢谢！":
-            $ xiaojin_rel += 1
+            $ xiaojin_interest += 1
             jump xiaojin_friendly
             
         "等会儿吧，我想先收拾一下。":
@@ -766,7 +771,7 @@ label linjie_response_c:
     
     linjie "是吗。"
     
-    "{i}走了。{/i}"
+    "{i}她走了。{/i}"
     
     $ linjie_interest = 1
     
@@ -789,16 +794,16 @@ label task_1_3:
     
     chen "各位早。快速更新——我们拿下了那个新IP项目。对方是大厂，这可是咱们翻身的机会。"
     
-    "{i}他环顾四周，目光落在你身上。{/i}"
+    "{i}陈永仁环顾四周，目光落在你身上。{/i}"
     
-    chen "新人有机会。小曼，你来负责竞品游戏的拆解分析。"
+    chen "给新人一些机会。小曼，你来负责竞品游戏的拆解分析。"
     
     menu:
         "太好了！":
             $ mental = mental + 2 if 'mental' in globals() else 2
             jump task_response_a
             
-        "我尽力。":
+        "我会尽力的。":
             jump task_response_b
             
         "具体要拆解哪些部分？":
@@ -814,7 +819,7 @@ label task_response_a:
 
 # 选项B：谦虚
 label task_response_b:
-    s "我尽力。"
+    s "我会尽力的。"
     
     chen "嗯，有问题找林姐。她经验很丰富。"
     
@@ -828,7 +833,7 @@ label task_response_c:
     
     chen "好问题。林姐会带你。就是市面上那几款头部二次元游戏，美术风格、养成线、付费点设计……那些有趣的东西。"
     
-    chen "别担心，我选你是有理由的。我看过你毕设，那个角色设计很有灵气。"
+    chen "别担心，我选你是有理由的。我看过你毕设，那些角色设计很有灵气。"
     
     jump after_task_assignment
 
@@ -836,7 +841,7 @@ label task_response_c:
 label after_task_assignment:
     hide chen normal with dissolve
     
-    "{i}会议结束，你收拾东西准备离开。{/i}"
+    "{i}会议结束，你正收拾东西准备离开。{/i}"
     
     show linjie normal at right with moveinright
     
@@ -898,13 +903,13 @@ label chapter1_end:
     scene bg desk_area with fade
     
     "{i}你回到工位，看着电脑屏幕上打开的共享文件夹。{/i}"
-    "{i}第一个任务，开始了。{/i}"
+    "{i}你证明自己的第一个任务，开始了。{/i}"
     
     # 此处可跳转到下一章节
     # jump chapter1.4
     
 
-   # ========== 任务1.4：第一次加班 ==========
+# ========== 任务1.4：第一次加班 ==========
 # 触发：入职第5天，晚上10:47
 
 default fatigue = 0
@@ -918,7 +923,6 @@ label task_1_4:
     
     "{i}入职第5天，晚上10:47{/i}"
     "{i}晚上的办公室不一样。更安静。自动售货机的嗡嗡声更响。{/i}"
-    "{i}你以为只有你一个人……{/i}"
     
     call mini_game_analysis
     
@@ -933,7 +937,7 @@ label task_1_4:
     
     n "但做不完的话，陈总会不会觉得我不行？"
     
-    "{i}键盘声停了。你听到脚步声。抬头。{/i}"
+    "{i}你趴在桌上想着，耳边传来一阵脚步声。细听时，脚步声停了。{/i}"
     
     show chen normal at center with dissolve
     
@@ -970,16 +974,16 @@ label overtime_response_c:
 
 label chen_conversation:
     "{i}陈永仁坐在桌角。{/i}"
-    chen "你知道吗，我看过你简历。你的履历顶尖。你可以去任何地方。为什么选这儿？"
+    chen "我看过你简历，你的履历顶尖，你可以去任何地方，为什么选这儿？"
     
     menu:
         "别处都不要我。":
             jump chen_honest
             
-        "最适合我的技能。":
+        "最适合我的技能":
             jump chen_safe
             
-        "我想升得快。":
+        "我想升得快一些。":
             jump chen_ambition
 
 label chen_honest:
@@ -987,28 +991,29 @@ label chen_honest:
     $ mental = mental + 2 if 'mental' in globals() else 2
     show chen normal at center
     "{i}陈永仁表情柔和下来。{/i}"
-    chen "我懂。我就是从这个位置开始的。真的，就是这张桌子。20年前。现在你看。"
+    chen "我懂。我就是从这个位置开始的——就是这张桌子，20年前。现在你看……"
     "{i}他模糊地往上指了指。{/i}"
-    chen "努力工作。留到最后。这就是赢的方法。"
+    chen "努力工作，留到最后，这就是赢的方法。"
     "{i}他站起来。{/i}"
-    chen "别太晚。回家注意安全。"
+    chen "别太晚，回家注意安全。"
     "{i}顿了一下。{/i}"
-    chen "其实我也要走了。送你一程？"
+    chen "其实我也要走了……送你一程？"
     jump car_choice
 
 label chen_safe:
-    s "最适合我的技能。"
+    s "这里的岗位和我的专业技能最匹配。"
     chen "嗯，确实。你的拆解能力很强。"
     "{i}他站起来。{/i}"
-    chen "别太晚，明天还有早会。其实我也要走了，送你一程？"
+    chen "别太晚，明天还有早会。"
+    chen "……其实我也要走了，送你一程？"
     jump car_choice
 
 label chen_ambition:
-    s "我想升得快。"
+    s "我想升得快一些。"
     "{i}陈永仁笑了。{/i}"
     chen "有野心。我喜欢。"
     "{i}他站起来。{/i}"
-    chen "别太晚。其实我也要走了，送你一程？"
+    chen "别加班太晚。其实我也要走了……送你一程？"
     jump car_choice
 
 label car_choice:
@@ -1027,7 +1032,7 @@ label car_scene:
     "{i}车内很干净，有淡淡的皮革味。{/i}"
     "{i}陈永仁放了一首老歌。你们都没说话。{/i}"
     "{i}他在你公寓楼下停车。{/i}"
-    chen "明天见。好好休息。"
+    chen "明天见，好好休息。"
     jump task_1_4_end
 
 label reject_car:
@@ -1035,18 +1040,19 @@ label reject_car:
     chen "随你。明天见。"
     hide chen normal with moveoutright
     "{i}走了。{/i}"
-    "{i}你看着他离开。胸口有什么东西松开了。不知道为什么。{/i}"
+    "{i}你看着他离开，胸口有什么东西松开了，不知道为什么。{/i}"
     jump task_1_4_end
 
 label task_1_4_end:
     scene bg night_office with fade
     "{i}任务完成。{/i}"
     "{i}解锁：深夜办公室探索{/i}"
-    "{i}项目进度加5{/i}"
+    #"{i}项目进度加5{/i}"
     jump task_1_5
 
 label mini_game_analysis:
     "{i}你需要完成三款游戏的竞品拆解。{/i}"
+    #设置游戏ABC的图片 --> 提示玩家拆解方向
     
     menu:
         "游戏A的核心付费点是？"
@@ -1084,12 +1090,13 @@ label mini_game_analysis:
     return
 
 # ========== 任务1.5：家庭税 ==========
-
+define mom = Character("妈妈")
 label task_1_5:
     scene bg home with fade
     "{i}第2周，周日下午。{/i}"
     
-    "妈妈发来消息：第一个月的工资。什么时候发？"
+    #增加手机画面，这部分screen可能要重做
+    mom "第一个月的工资。什么时候发？"
     
     menu:
         "两周后。":
@@ -1103,17 +1110,17 @@ label task_1_5:
 
 label salary_truth:
     s "两周后。"
-    "妈妈：好。弟弟要换校服。还有学校旅行。500块。你能出吧？你现在可是有大工作的人了。"
+    mom "好。你弟弟要换新校服，还有学校旅行要交钱，600块钱。这钱就你出吧？你现在可是有大工作的人了。"
     jump family_money_choice
 
 label salary_vague:
     s "快了。"
-    "妈妈：到底是多快？弟弟要换校服，还有学校旅行。500块，你能出吧？"
+    mom "到底是多快？你弟弟要换新校服，还有学校旅行要交钱，600块钱。你能出吧？"
     jump family_money_choice
 
 label salary_defensive:
     s "问这干嘛？"
-    "妈妈：怎么，翅膀硬了？弟弟要换校服，还有学校旅行。500块，家里现在紧，你帮衬一下怎么了？"
+    mom "怎么，翅膀硬了？你弟弟要换新校服，还有学校旅行要交钱，600块钱。家里手头紧，你帮衬一下怎么了？"
     $ family_pressure += 1
     jump family_money_choice
 
@@ -1122,30 +1129,30 @@ label family_money_choice:
         "好。":
             jump give_money
             
-        "那是我一半房租。":
+        "那是我一半房租。": #不，这里得改，香港一个月1200的房租也太便宜了
             jump argue_start
             
-        "……":
+        "沉默":
             jump stay_silent
 
 label give_money:
     s "好。"
-    $ money -= 500
+    $ money -= 600
     $ family_pressure += 1
-    "妈妈：乖。就知道你懂事。弟弟会谢谢你的。"
-    "{i}-500元。当前余额：[money]元{/i}"
+    mom "乖。就知道你懂事。弟弟会谢谢你的。"
+    "{i}-600元。当前余额：[money]元{/i}"
     jump task_1_5_end
 
 label stay_silent:
     s "……"
-    "妈妈：你不说话是什么意思？算了，等你发工资再说吧。"
-    "{i}内疚感涌上来。{/i}"
+    mom "你不说话是什么意思？算了，等你发工资再说吧。"
+    "{i}心头涌现一阵内疚。{/i}"
     $ mental = mental - 1 if 'mental' in globals() else -1
     jump task_1_5_end
 
 label argue_start:
-    s "那是我一半房租。"
-    "妈妈：你以为我们白养你的？这么多年？弟弟是你亲弟弟。家人帮家人。你想让他成为唯一一个穿不起鞋的孩子？"
+    s "那是我一半房租。" #同步修改
+    mom "我们这么多年白养你的？他是你亲生弟弟，家人帮家人。你想让他成为唯一一个穿不起鞋的孩子？"
     call argue_minigame
     jump task_1_5_end
 
@@ -1154,7 +1161,6 @@ label argue_minigame:
     $ mother_anger = 30
     
     menu:
-        "（选择回应）"
         "我也有自己的生活":
             $ mother_anger += 20
         "弟弟的鞋凭什么我负责":
@@ -1186,13 +1192,13 @@ label task_1_6:
     
     show chen normal at center with dissolve
     
-    chen "抱歉，我也拿……哦，你在泡咖啡？我也是。"
+    chen "抱歉，我也拿……哦，你也在泡咖啡？"
     "{i}他站得很近。比必要近。{/i}"
     "{i}他拿糖的时候手臂擦过你。{/i}"
     
     menu:
         "观察他的表情":
-            "{i}他在笑。正常的笑。{/i}"
+            "{i}他在笑。{/i}"
             jump touch_reaction
             
         "观察他的手":
@@ -1204,7 +1210,7 @@ label task_1_6:
 
 label touch_reaction:
     menu:
-        "没什么，就是挤。":
+        "没什么，就是有点挤。":
             jump touch_ignore
             
         "他为什么站这么近？":
@@ -1214,28 +1220,29 @@ label touch_reaction:
             jump touch_move
 
 label touch_ignore:
-    s "没什么，就是挤。"
+    s "没什么，就是有点挤。"
     "{i}你继续泡咖啡。{/i}"
-    chen "你做得很好，顺便说一句。拆解分析很棒。我就知道我没看错你。"
+    chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
     jump task_1_6_end
 
 label touch_alert:
     s "……"
     "{i}你在心里问自己：他为什么站这么近？{/i}"
-    chen "你做得很好，顺便说一句。拆解分析很棒。我就知道我没看错你。"
+    chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
     jump task_1_6_end
 
 label touch_move:
     "{i}你稍微往旁边挪了一步。{/i}"
-    "{i}陈永仁没明显反应。但你一动，他眼神扫了你一下。就那么一下。{/i}"
-    chen "你做得很好，顺便说一句。拆解分析很棒。我就知道我没看错你。"
+    "{i}陈永仁没明显反应。但你一动，他眼神扫了你一下。{/i}"
+    chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
     jump task_1_6_end
 
 label task_1_6_end:
     hide chen normal with moveoutright
-    "{i}他走了。你一个人对着茶杯发呆。{/i}"
+    "{i}他走了，你一个人对着茶杯发呆。{/i}"
     
-    "林姐发来消息：看到你在茶水间和陈永仁了。小心点。"
+    "{i}手机上林姐发来一条消息{/i}"
+    linjie "看到你和陈永仁在茶水间了，小心点。"
     
     menu:
         "小心什么？":
@@ -1249,4 +1256,4 @@ label task_1_6_end:
         "删除消息":
             "{i}你删掉了这条消息。{/i}"
     
-    "{i}第一章结束。{/i}" 
+    
