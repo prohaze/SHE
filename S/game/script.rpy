@@ -236,15 +236,14 @@ label chapter0:
     scene 31
     with fade
     pause 1
-    "{i}你投了147份简历, 12封是拒信。{/i}"
-    "{i}妈妈每周日打电话问你什么时候别挑了。但这一次……感觉不一样。{/i}"
+    "{i}这个招聘季投了147份简历, 12封是拒信，其他杳无音讯。{/i}"
+    "{i}妈妈每周日打电话问你什么时候能找到工作，别再挑了。但这一次……感觉不一样。{/i}"
     "{i}你进入了等待室，下一个就到你了。{/i}"
     jump waiting_room
     
 label waiting_room:
     
     scene garage #替换为办公室图片
-
     menu:
         "探索房间":
             call explore_room #call完之后走jump
@@ -282,7 +281,7 @@ label after_third_item:
     s "面试好像要开始了？"
     jump explore_complete
 
-default money = 800
+default money = 2000
 default social = 0
 default mental = 0
 default awakening = 0
@@ -504,7 +503,7 @@ label lobby_explore:
     scene bg lobby
     
     if gate_used and coffee_bought and appearance_checked:
-        s"还有点时间，去熟悉熟悉办公楼层吧。"
+        s "还有点时间，去熟悉熟悉办公楼层吧。"
         jump elevator_choice
     
     # 调用自定义位置的菜单
@@ -729,7 +728,7 @@ label linjie_encounter:
     
     linjie "欢迎。文件在共享链接里。10点开会，别迟到。"
     
-    "{i}她从你桌边走过，没停步，头也不回。{/i}"
+    "{i}她从你桌边走过，没停步。{/i}"
     
     menu:
         "好的，谢谢！":
@@ -745,7 +744,7 @@ label linjie_encounter:
 label linjie_response_a:
     s "好的，谢谢！"
     
-    "{i}林姐脚步微顿，但没回头，继续走了。{/i}"
+    "{i}她脚步微顿，但没回头，继续走了。{/i}"
     
     hide linjie normal with moveoutleft
     
@@ -755,7 +754,7 @@ label linjie_response_a:
 label linjie_response_b:
     "{i}你默默点头。{/i}"
     
-    "{i}林姐似乎没注意到，径直走远了。{/i}"
+    "{i}她似乎没注意到，径直走远了。{/i}"
     
     hide linjie normal with moveoutleft
     
@@ -1110,17 +1109,17 @@ label task_1_5:
 
 label salary_truth:
     s "两周后。"
-    mom "好。你弟弟要换新校服，还有学校旅行要交钱，600块钱。这钱就你出吧？你现在可是有大工作的人了。"
+    mom "好。你弟弟要换新校服，还有学校旅行要交钱，1200块钱。这钱就你出吧？你现在可是有大工作的人了。"
     jump family_money_choice
 
 label salary_vague:
     s "快了。"
-    mom "到底是多快？你弟弟要换新校服，还有学校旅行要交钱，600块钱。你能出吧？"
+    mom "到底是多快？你弟弟要换新校服，还有学校旅行要交钱，1200块钱。你能出吧？"
     jump family_money_choice
 
 label salary_defensive:
     s "问这干嘛？"
-    mom "怎么，翅膀硬了？你弟弟要换新校服，还有学校旅行要交钱，600块钱。家里手头紧，你帮衬一下怎么了？"
+    mom "怎么，翅膀硬了？你弟弟要换新校服，还有学校旅行要交钱，1200块钱。家里手头紧，你帮衬一下怎么了？"
     $ family_pressure += 1
     jump family_money_choice
 
@@ -1129,7 +1128,7 @@ label family_money_choice:
         "好。":
             jump give_money
             
-        "那是我一半房租。": #不，这里得改，香港一个月1200的房租也太便宜了
+        "那是我一半伙食费。": #不，这里得改，香港一个月1200的房租也太便宜了
             jump argue_start
             
         "沉默":
@@ -1140,7 +1139,7 @@ label give_money:
     $ money -= 600
     $ family_pressure += 1
     mom "乖。就知道你懂事。弟弟会谢谢你的。"
-    "{i}-600元。当前余额：[money]元{/i}"
+    "{i}-1200元。当前余额：[money]元{/i}"
     jump task_1_5_end
 
 label stay_silent:
@@ -1151,7 +1150,7 @@ label stay_silent:
     jump task_1_5_end
 
 label argue_start:
-    s "那是我一半房租。" #同步修改
+    s "那是我一半吃饭钱。" #同步修改
     mom "我们这么多年白养你的？他是你亲生弟弟，家人帮家人。你想让他成为唯一一个穿不起鞋的孩子？"
     call argue_minigame
     jump task_1_5_end
@@ -1161,11 +1160,11 @@ label argue_minigame:
     $ mother_anger = 30
     
     menu:
-        "我也有自己的生活":
+        "我也有我自己的生活……":
             $ mother_anger += 20
-        "弟弟的鞋凭什么我负责":
+        "他的鞋凭什么我负责？我买鞋他穿，我没饭吃他管不管？":
             $ mother_anger += 30
-        "我会给，但请别这样说话":
+        "我会给，别再这么说了。":
             $ mother_anger += 10
     
     if mother_anger >= 50:
@@ -1178,9 +1177,9 @@ label argue_minigame:
 
 label task_1_5_end:
     "{i}手机随后震动。{/i}"
-    "小红书陌生人：姐妹，看到你发家里要钱的事了。同款遭遇。你不是一个人。"
+    '小紫书-你的粉丝'"姐妹，看到你发家里要钱的事了。同款遭遇，你不是一个人。"
     $ xiaohongshu_contact = True
-    "{i}新联系人：小红书姐妹{/i}"
+    "{i}新联系人：小紫书姐妹{/i}"
     jump task_1_6
 
 # ========== 任务1.6：不经意的触碰 ==========
@@ -1247,13 +1246,494 @@ label task_1_6_end:
     menu:
         "小心什么？":
             s "小心什么？"
-            "林姐：没什么。自己注意分寸。"
+            linjie "没什么。自己注意分寸。"
+            scene black
+            jump chapter_2
             
         "没什么事。":
             s "没什么事。"
-            "林姐：……随你。"
+            linjie "……随你。"
+            scene black
+            jump chapter_2
             
         "删除消息":
             "{i}你删掉了这条消息。{/i}"
+            scene black
+            jump chapter_2
+
+
+# 定义变量
+default salary_checked = False
+default salary_evidence = False
+default fitness_video_watched = False
+default investigation_unlocked = False
+default escape = 0
+default investigation_skill = 0
+
+# 工资条界面
+screen payslip_screen():
+    modal True
     
+    # 背景遮罩
+    add Solid("#000000cc")
     
+    # 工资条主体
+    frame:
+        xalign 0.5
+        yalign 0.3
+        xsize 500
+        ysize 800
+        background "#4d4d4d"
+        padding (30, 30)
+        
+        vbox:
+            spacing 12
+
+            # 标题
+            text"工资条" size 28
+            
+            null height 20
+            
+            # 基本信息
+            hbox:
+                text"姓名："
+                text"佘小曼"
+            hbox:
+                text"部门："
+                text"设计部"
+            hbox:
+                text"日期："
+                text"2028年3月"
+            
+            null height 20
+            
+            # 工资明细（可点击展开）
+            vbox:
+                spacing 10
+                
+                # 基本工资
+                hbox:
+                    xfill True
+                    text"基本工资"
+                    text"16,500" xalign 1.0
+                
+                # 绩效工资（悬停效果）
+                button:
+                    xfill True
+                    action NullAction()
+                    background None
+                    
+                    hbox:
+                        xfill True
+                        text"绩效调整"xalign -0.07
+                        text"0" xalign 1.05
+                    
+                    # 悬停提示
+                    tooltip "无说明"
+                    
+                    hovered Show("payslip_tooltip", msg="无说明")
+                    unhovered Hide("payslip_tooltip")
+                
+                # 其他项目
+                hbox:
+                    xfill True
+                    text"交通补贴"
+                    text"500" xalign 1.0
+                
+                hbox:
+                    xfill True
+                    text"餐补"
+                    text"500" xalign 1.0
+            
+            null height 10
+            
+            # 分隔线
+            add Solid("#cccccc") xsize 440 ysize 1
+            
+            null height 10
+            
+            # 实发工资（可点击心算对比）
+            button:
+                xfill True
+                action [SetVariable("salary_checked", True), Show("salary_calc")]
+                background None
+                
+                hbox:
+                    xfill True
+                    text"实发工资" xalign -0.07
+                    text"17,500" xalign 1.05
+                
+                if not salary_checked:
+                    text"（开始心算对比）" size 12 xalign 1.03 yalign 0.3
+            
+
+            null height 30
+            
+            # 关闭按钮
+            textbutton "关闭":
+                xalign 0.5
+                action [Hide("payslip_screen"), Jump("call_lin_sister")]
+                background "#3498db"
+                padding (30, 10)
+                text_color "#ffffff"
+
+
+# 悬停提示界面
+screen payslip_tooltip(msg):
+    frame:
+        pos (1000, 450)
+        background "#2c3e50"
+        padding (10, 5)
+        
+        text msg color "#ffffff" size 20
+
+# 心算弹窗（可选的详细说明）
+screen salary_calc():
+    modal True
+    # 物品描述屏幕，添加自动跳转逻辑
+
+    add "#000000CC"
+    
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xpadding 50
+        ypadding 50
+
+        vbox:
+            xsize 600
+            ysize 200
+
+            text"正常应该是：" size 24
+            null height 30
+            text"16,500 + 2,000 + 500 + 500 = 19,500" size 24 xalign 0.5
+            text"↑" size 25 xalign 0.395
+            null height 20
+            # 分隔线
+            add Solid("#cccccc") xsize 600 ysize 1 xalign 0.5
+            null height 30
+            text"我的绩效调整被扣发了，没有附带任何原因说明。" size 24 xalign 0.5
+            null height 50
+            textbutton "×":
+                xalign 0.5
+                yalign 0.55
+                xpadding 5
+                ypadding 3
+                action Hide("salary_calc")
+                text_color "#ffffff"
+                background "#3498db"
+
+
+label chapter_2:
+    image chapter2_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
+    show chapter2_title "Chapter 2 裂缝"
+    with fade
+    pause 2
+    hide chapter2_title
+    
+# 工资条剧情
+label payslip_event:
+    scene garage #后期改
+    pause 0.5
+
+    s "看看这个月努力的成果吧！" 
+    window hide
+    
+    show screen payslip_screen
+    # 等待玩家交互
+    $ ui.interact()
+    
+    if not salary_checked:
+        s "数目怎么不太对劲？"
+        show screen payslip_screen
+        $ ui.interact()
+    
+    jump call_lin_sister
+
+# 打电话给林姐
+label call_lin_sister:
+    scene bg bedroom_night
+    with dissolve
+    
+    s "怎么会这样……我得找人问明白。"
+
+    "{i}【电话联系人 林姐】 拨号中……{/i}"
+    "{i}*……嘟嘟……*{/i}"
+    
+    s "林姐，不好意思打扰你了——我发现自己的工资条好像不太对？"
+
+    linjie "…………………………"
+    
+    linjie "你查过男新人的起薪吗？"
+    
+    s "……什么？"
+    
+    linjie "小金当初进公司时和你同岗位，问他当时拿多少。"
+
+    "{i}电话挂断了。{/i}"
+    "{i}你握着手机，心跳得有点快。{/i}"
+
+    menu:
+        "直接问小金":
+            jump ask_xiaojin_directly
+        
+        "不问":
+            jump dont_ask_xiaojin
+        
+        "自己进行调查":
+            jump investigate_other_ways
+
+# 选项A：直接问小金
+label ask_xiaojin_directly:
+    scene bg office_day
+    with fade
+    
+    "{i}第二天午休，你找到了小金。{/i}"
+    
+    s "小金，能问你个事吗？你当时刚入职的时候起薪是多少？"
+    
+    show xiaojin awkward
+    
+    xiaojin "呃……这个……"
+    xiaojin "22.5k……公司不让互相问工资来着，你别跟别人说啊。"
+    xiaojin "出什么事了，突然说起这个？"
+    
+    s "我19.5k。"
+    
+    show xiaojin shocked
+    xiaojin "Oh shit……"
+    hide xiaojin
+    
+    # 任务更新界面
+    show screen task_update("新证据解锁", "工资差异记录")
+    with dissolve
+    
+    "你获得了新证据：工资差异记录"
+    
+    hide screen task_update
+    with dissolve
+    
+    $ salary_evidence = True
+    $ investigation_unlocked = True
+    
+    "{i}任务更新：【秘密调查】{/i}"
+    
+    jump fitness_video_event
+
+# 选项B：不问
+label dont_ask_xiaojin:
+    scene bg bedroom_night
+    with dissolve
+    
+    "{i}等心跳没那么快时，你放下了手机。{/i}"
+    
+    s "不问，就不会尴尬。不问，就不会惹麻烦。"
+    "{i}你起身去洗漱，仿佛什么都没发生。{/i}"
+    
+    "你选择了维持表面的风平浪静，但谁知道这串数字激起的涟漪下有没有更深的漩涡呢。"
+    $ escape += 1 #回避值+1，联动车内剧情忍耐选项，后续成就【鸵鸟】
+
+    # 隐藏线索标记
+    # "（未获得关键证据）"
+    
+    jump fitness_video_event
+
+# 选项C：其他方式调查
+label investigate_other_ways:
+    scene bg bedroom_night
+    with dissolve
+    
+    s "还是先自己查查看吧。"
+    
+    "【正在浏览】{i}公司招聘网站：公司同岗位的薪资范围{/i}"
+    "【正在浏览】{i}内部文档：薪酬制度细则{/i}"
+    "【正在浏览】{i}匿名论坛：公司薪资讨论版块{/i}"
+    
+    $ investigation_unlocked = True
+    $ investigation_skill += 1
+    
+    "{i}在调查中你发现很多资料来自和你有相似经历的前辈。{/i}"
+    "{i}坏消息，走到这条路上的不止你一个人。{/i}"
+    "{i}好消息是，走在这条路上的不止你一个人。{/i}"
+    "{i}任务更新：【秘密调查】{/i}"
+
+    jump fitness_video_event
+
+# 健身视频事件
+label fitness_video_event:
+    scene bg bedroom_night
+    with fade
+    
+    "{i}第6周 周六 晚上11:47{/i}"
+    "{i}你躺在床上刷手机，但眼皮已经开始打架。{/i}"
+    
+    #微信消息提示音音效，接手机界面
+    show phone #锁屏时间
+    s "23:47，竟然已经这么晚了。"
+
+    # show screen phone_notification("陈永仁", "[视频附件]刚健完身。你可以试试这个，用来解压很好！")
+    # with dissolve
+    
+    "{i}陈永仁穿着紧身健身服，肌肉线条分明，对着镜头微笑。{/i}" #可以敷衍地给个图
+    
+    menu:
+        "看视频":
+            jump watch_fitness_video
+        
+        "忽略视频":
+            jump ignore_video
+        
+        "点赞视频":
+            jump reply_thumb_up
+
+# 手机通知界面
+screen phone_notification(sender, msg):
+    frame:
+        xalign 0.5
+        ypos 100
+        xsize 350
+        background "#ffffff"
+        padding (15, 15)
+        
+        vbox:
+            spacing 8
+            
+            hbox:
+                text sender bold True
+                text " 微信" size 12
+                
+            text msg size 14
+            
+            null height 5
+            
+            hbox:
+                xalign 1.0
+                text "现在" color "#999999" size 12
+
+# 选项A：看视频
+label watch_fitness_video:
+    scene bg bedroom_night
+    with dissolve
+    
+    "你点开了视频。"
+    
+    # 模拟视频播放界面
+    # show screen video_player("chen_fitness")
+    # with dissolve
+
+    "30秒。陈永仁在健身房，器械的金属光泽映着他的汗水。"
+    
+    "他做着标准的动作，肌肉随着呼吸起伏。"
+    
+    "最后一秒，他突然直视镜头。"
+    
+    chen "你能跟上吗，小曼？"
+    
+    "他眨了眨眼。"
+    
+    "视频结束，黑屏。你的脸也黑了。"
+    
+    # hide screen video_player
+    # with dissolve
+    
+    # $ fitness_video_watched = True
+    
+    s "呃…………（有某种不适感在胃里蔓延）"
+    
+    jump after_video
+
+# 视频播放器界面
+screen video_player(video_id):
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xsize 640
+        ysize 360
+        background "#000000"
+        
+        # 模拟视频内容
+        vbox:
+            xalign 0.5
+            yalign 0.5
+            
+            if video_id == "chen_fitness":
+                text "📹 健身视频播放中..." color "#ffffff" size 20
+                null height 20
+                text "00:15 / 00:30" color "#ffffff" size 14
+                null height 10
+                add Solid("#333333") xsize 400 ysize 5
+                
+                # 进度条
+                hbox:
+                    add Solid("#07c160") xsize 200 ysize 5
+                    add Solid("#555555") xsize 200 ysize 5
+        
+        # 播放控制
+        hbox:
+            xalign 0.5
+            ypos 320
+            spacing 20
+            
+            text "⏮" color "#ffffff" size 24
+            text "⏸" color "#ffffff" size 24
+            text "⏭" color "#ffffff" size 24
+
+# 选项B：忽略
+label ignore_video:
+    scene bg bedroom_night
+    with dissolve
+    
+    "你锁屏，把手机倒扣在床头柜上。"
+    
+    "11:47。这个时间，这个内容。"
+    
+    "你的直觉告诉你，有些东西不需要打开。"
+    
+    "手机又震了一下，但你没有看。"
+    
+    #选择安全，但错过了观察对方行为模式的机会
+    
+    jump program_dinner
+
+# 选项C：回赞
+label reply_thumb_up:
+    scene bg bedroom_night
+    with dissolve
+    
+    "你回复了一个👍。"
+    
+    "既不冷淡，也不热情。安全的社交距离。"
+    
+    chen "这么晚还没睡？"
+      
+    "消息秒回。你看着那个正在输入的提示，决定不再回复。"
+    
+    #保持了表面和平，但对方可能认为这是个信号）
+    
+    jump program_dinner
+
+# 视频事件后续
+label after_video:
+    scene bg_office_floor
+    with fade
+
+    "{i}第二天办公室，午餐时。{/i}"
+    s "哎，你昨晚看到陈总朋友圈的健身视频没？真有点东西。"
+    xiaojin "我好像没看到耶？可能没刷到吧。"
+    s "……哦，这样啊。"
+
+    # if salary_evidence and fitness_video_watched:
+    #     "一天之内，两件事。"
+    #     "少发的工资，深夜的视频。"
+    #     "某种模式正在浮现，但你还不确定那是什么。"
+    # elif salary_evidence:
+    #     "工资的差额，林姐的暗示。"
+    #     "真相像冰山，你只看到了一角。"
+    # elif fitness_video_watched:
+    #     "那个眨眼。那句'你能跟上吗'。"
+    #     "你感到被冒犯，却说不清为什么。"
+    
+    jump program_dinner
+    
+label program_dinner:
+    scene bg meeting_room
