@@ -745,6 +745,8 @@ label linjie_response_a:
     s "好的，谢谢！"
     
     "{i}她脚步微顿，但没回头，继续走了。{/i}"
+
+    $ linjie_interest += 1
     
     hide linjie normal with moveoutleft
     
@@ -772,7 +774,7 @@ label linjie_response_c:
     
     "{i}她走了。{/i}"
     
-    $ linjie_interest = 1
+    $ linjie_interest += 1
     
     hide linjie stop with moveoutleft
     
@@ -1693,7 +1695,7 @@ label ignore_video:
     
     #选择安全，但错过了观察对方行为模式的机会
     
-    jump program_dinner
+    jump celebration_drink
 
 # 选项C：回赞
 label reply_thumb_up:
@@ -1710,7 +1712,7 @@ label reply_thumb_up:
     
     #保持了表面和平，但对方可能认为这是个信号）
     
-    jump program_dinner
+    jump celebration_drink
 
 # 视频事件后续
 label after_video:
@@ -1721,19 +1723,482 @@ label after_video:
     s "哎，你昨晚看到陈总朋友圈的健身视频没？真有点东西。"
     xiaojin "我好像没看到耶？可能没刷到吧。"
     s "……哦，这样啊。"
+    
+    jump celebration_drink
 
-    # if salary_evidence and fitness_video_watched:
-    #     "一天之内，两件事。"
-    #     "少发的工资，深夜的视频。"
-    #     "某种模式正在浮现，但你还不确定那是什么。"
-    # elif salary_evidence:
-    #     "工资的差额，林姐的暗示。"
-    #     "真相像冰山，你只看到了一角。"
-    # elif fitness_video_watched:
-    #     "那个眨眼。那句'你能跟上吗'。"
-    #     "你感到被冒犯，却说不清为什么。"
+
+# 定义变量
+default drink_choice = None  # "beer", "wine", "cocktail", "soft"
+default xiaojin_topic = None  # "sport", "work", "love"
+default hidden_truth_unlocked = False
+default talk_to_xiaojin = False
+default sit_with_lin = False
+default observe_chen = False
+default bar_restroom = False
+default bar_menu_choice = False
+
+# 任务2.3：庆功酒
+label celebration_drink:
+    scene bg bar_night
+    with fade
     
-    jump program_dinner
+    "第7周，His Game项目成功上线。"
+    "数据表现超过预期，部门办庆功酒，酒水畅饮，陈永仁买单。所有人都来了。"
     
-label program_dinner:
-    scene bg meeting_room
+    # 初始化酒吧场景
+    jump bar_interaction
+
+# 酒吧交互界面
+screen bar_scene():
+    add "bg bar_night"
+    
+    frame:
+        xalign 0.5
+        ypos 20
+        background "#00000080"
+        padding (20, 10)
+        text "Nine Bar" size 30 bold True xalign 0.1
+
+    # 1. 酒单（左侧）
+    button:
+        xpos 100
+        ypos 200
+        xsize 120
+        ysize 150
+        background "#8b4513"
+        hover_background "#a0522d"
+        action Jump("bar_menu_choice")
+        
+        vbox:
+            xalign 0.5
+            yalign 0.5
+            text "🍷" size 40 xalign 0.5
+            text "酒单" size 16 xalign 0.5
+    
+    # 2. 小金（大声聊天区域）
+    button:
+        xpos 300
+        ypos 250
+        xsize 140
+        ysize 120
+        background "#2e8b57"
+        hover_background "#3cb371"
+        action Jump("talk_to_xiaojin")
+        
+        vbox:
+            xalign 0.5
+            yalign 0.5
+            text "💬" size 35 xalign 0.5
+            text "小金" size 16 xalign 0.5
+            text "(大声聊天)" size 12 xalign 0.5
+    
+    # 3. 林姐（角落卡座）
+    button:
+        xpos 550
+        ypos 180
+        xsize 130
+        ysize 130
+        background "#4a4a4a"
+        hover_background "#696969"
+        action Jump("sit_with_lin")
+        
+        vbox:
+            xalign 0.5
+            yalign 0.5
+            text "🪑" size 35 xalign 0.5
+            text "林姐" size 16 xalign 0.5
+            text "(角落卡座)" size 12 xalign 0.5
+    
+    # 4. 陈永仁（中心位置）
+    button:
+        xpos 400
+        ypos 350
+        xsize 140
+        ysize 140
+        background "#8b0000"
+        hover_background "#a52a2a"
+        action Jump("observe_chen")
+        
+        vbox:
+            xalign 0.5
+            yalign 0.5
+            text "👔" size 40 xalign 0.5
+            text "陈永仁" size 16 xalign 0.5
+            text "(中心位置)" size 12 xalign 0.5
+    
+    # 5. 洗手间（逃离）
+    button:
+        xpos 650
+        ypos 100
+        xsize 100
+        ysize 100
+        background "#4682b4"
+        hover_background "#5f9ea0"
+        action Jump("bar_restroom")
+        
+        vbox:
+            xalign 0.5
+            yalign 0.5
+            text "🚻" size 30 xalign 0.5
+            text "洗手间" size 14 xalign 0.5
+
+# 酒吧交互主循环
+label bar_interaction:
+    show screen bar_scene
+    "酒吧里人声鼎沸。你想做什么？"
+    $ ui.interact()
+
+# 检查函数 - 统一检查所有条件
+label check_all_bar_conditions:
+    if talk_to_xiaojin and sit_with_lin and observe_chen and bar_restroom and bar_menu_choice:
+        jump bar_ending
+    else:
+        jump bar_interaction
+
+# 酒单选择
+label bar_menu_choice:
+    hide screen bar_scene
+    
+    menu:
+        "你拿起酒单，选择："
+        
+        "啤酒（轻松）":
+            $ drink_choice = "beer"
+            "你点了一杯精酿啤酒，泡沫细腻。"
+            
+        "红酒（正式）":
+            $ drink_choice = "wine"
+            "红酒在杯中摇晃，颜色深沉。"
+            
+        "鸡尾酒（冒险）":
+            $ drink_choice = "cocktail"
+            "五颜六色的液体，不知道里面有什么。"
+            
+        "软饮（清醒）":
+            $ drink_choice = "soft"
+            "可乐加冰，气泡刺激着喉咙。你保持清醒。"
+    
+    $ bar_menu_choice = True
+    jump check_all_bar_conditions
+
+# 和小金聊天 - 修复：简化结构，确保变量设置正确
+label talk_to_xiaojin:
+    hide screen bar_scene
+    scene bg bar_table
+    
+    "小金正在大声说着什么，周围几个人在笑。"
+    
+    menu:
+        "加入话题："
+        
+        "运动":
+            $ xiaojin_topic = "sport"
+            xiaojin "你来啦？对了，前几天你问我陈总朋友圈是……"
+            s "哦，偶然看到，就打算试试健身。你有没有什么健身经验分享的？"
+            xiaojin "有啊！我跟你说，蛋白粉就要选……"
+            "{i}他把自己的健身心得倾囊相授，真是个好人。{/i}"
+            
+        "吐槽工作":
+            $ xiaojin_topic = "work"
+            s "这个项目真是累死了……"
+            xiaojin "对吧！有时候觉得AI取代不了我们，因为根本读不懂甲方七零八落的诉求。"
+            "{i}你们一起吐槽了半小时甲方，英雌惜英雄。{/i}"
+            
+        "恋爱话题":
+            $ xiaojin_topic = "love"
+            xiaojin "你知道最近隔壁部门小x的男朋友和她冷战不？"
+            s "嗯？新瓜，细说。"
+            xiaojin "小x和男朋友恋爱挺久了，最近她男朋友求婚，但是小x想这几年多专注在事业，往后推推。"
+            xiaojin "她男朋友觉得求婚被拒，正沮丧，等着小x哄中……"
+            s "那他可得等等了，小x手上的项目后天才交呢。小x姐，女王。"
+            xiaojin "小x姐，女王！"
+
+    # 关键修复：在menu结束后统一设置变量
+    $ talk_to_xiaojin = True
+    $ xiaojin_interest += 1
+    jump check_all_bar_conditions
+
+# 和林姐坐一起（关键剧情）- 关键修复：使用call screen而不是show screen
+screen clue_moderec:
+    modal True
+    
+    frame:
+        xalign 0.5
+        yalign 0.35
+        xpadding 50
+        ypadding 50
+ 
+        vbox:
+            xalign 0.5
+            yalign 0.5
+            text "线索「模式识别」" size 24
+            null height 20
+            add Solid("#cccccc") xsize 440 ysize 1
+            null height 20
+            text "你开始明白，这不是偶然。" size 24 xalign 0.5
+            null height 20
+            
+            text "拾取":
+                size 20 
+                xalign 0.4
+                ypos 40
+            textbutton "💡":
+                xsize 50
+                ysize 50
+                xalign 0.53
+                background "#06005e"
+                hover_background "#d2ac00"
+                # 关键：使用Return()结束call screen
+                action [Hide("clue_moderec"), Return()]
+
+label sit_with_lin:
+    hide screen bar_scene
+    
+    scene bg bar_corner
+    with dissolve
+    
+    "{i}角落的卡座，林姐一个人坐在那里，光影在她脸上切割出明与暗。{/i}"
+    
+    linjie "你做得太好了。好得过头了。"
+    s "什么意思？"
+    linjie "作为新人，陈永仁很中意你——非常中意。"
+    "{i}她晃了晃酒杯，冰块碰撞发出清脆的声响。{/i}"
+    linjie "他也这样注意过我，后来就不了。"
+    s "……发生了什么？"
+    "{i}酒有些辣，林姐长饮一口酒，好一会儿才开口。{/i}"
+    linjie "我老了，对他来说，现在我只是有用。"
+    "{i}她没有回答你的问题，像是醉了。{/i}"
+    linjie "去别的地方转转吧，别和我一样。"
+
+    scene black
+    with dissolve
+    pause 1.0
+
+    linjie "哎——"
+    linjie "别认为“在他眼里我很特别”。”"
+    linjie "你本来就特别。"
+    linjie "不是因为他。"
+    
+    $ linjie_interest += 3
+    $ sit_with_lin = True
+    $ hidden_truth_unlocked = True
+    
+    # 关键修复：使用call screen而不是show screen + ui.interact()
+    call screen clue_moderec
+    
+    jump check_all_bar_conditions
+
+# 观察陈永仁
+label observe_chen:
+    hide screen bar_scene
+    
+    show chen_looking_others
+    "{i}你站在人群边缘，看着陈永仁。{/i}"
+    "{i}他对男同事：拍肩、大笑、讲黄色笑话。{/i}"
+    "{i}他对女同事：靠近、倾听、眼神专注。{/i}"
+    "{i}他对上级：谦卑、递烟、不时倒酒。{/i}"
+    hide chen_looking_others
+
+    show chen_smile
+    "{i}他时不时看向你，微笑。{/i}"
+    hide chen_smile with dissolve
+
+    "{i}他总能根据不同对象，切换最佳模式。{/i}"
+    
+    $ observe_chen = True
+    $ investigation_skill += 1
+    jump check_all_bar_conditions
+
+# 洗手间逃离
+label bar_restroom:
+    hide screen bar_scene
+    
+    scene bg restroom_mirror
+    with fade
+    
+    "{i}躲进洗手间锁上门，外面的说话声、碰杯声离你远去了。{/i}"
+    "{i}你看着镜子里的自己，脸颊微红。{/i}"
+    "{i}*嗡* 你的手机屏幕亮了。{/i}"
+    "【微信】{i}妈：「你什么时候回家？」{/i}"
+    "【微信】{i}闺蜜：「那个项目怎么样了？」{/i}"
+    "{i}你深吸一口气，现在你暂时逃离了那个世界。{/i}"
+    "{i}但你知道，总得回去，过明天。{/i}"
+
+    $ bar_restroom = True
+    jump check_all_bar_conditions
+
+# 酒吧结束，进入任务2.4
+init python:
+    def notice_take_ride(msg1, msg2, duration=1):
+        renpy.show_screen("notify_1", message=msg1, duration=duration)
+        renpy.pause(duration + 0.3)
+        
+        renpy.show_screen("notify_2", message=msg2, duration=duration)
+        renpy.pause(duration + 0.3)  # 等待最后一个消失
+#注意1
+screen notify_1(message, duration=1):
+    
+    frame:
+        at transform:
+            alpha 0.0
+            easein 0 alpha 1.0
+            pause duration
+            easeout 1 alpha 0.0
+
+        background Frame("gui/textbox.png", 40, 40)
+        padding (20, 12)
+        xalign 0.5
+        yalign 0.4
+        
+        hbox:
+            xalign 0.5
+            spacing 8
+            text message size 28
+#注意2
+screen notify_2(message, duration=1):
+    
+    frame:
+        at transform:
+            alpha 0.0
+            easein 0.5 alpha 1.0
+            pause duration
+            easeout 0.5 alpha 0.0
+        
+        background Frame("gui/textbox.png", 40, 40)
+        padding (20, 12)
+        xalign 0.5
+        yalign 0.45
+
+        hbox:
+            spacing 8
+            text message size 28
+
+
+label bar_ending:
+    hide screen bar_scene
+    
+    scene balck #bg street_night
+    with fade
+    
+    "{i}夜深了，大家陆续离开。{i}"
+    "{i}凉风吹在脸上，路灯是朦胧的，微醺的感觉。{i}"
+    
+    s "看看地铁时间……"
+    s "啊……末班车还有15分钟到，要过去地铁站时间有点紧啊……"
+    
+    #音效+图片表示：一辆车滑停在身边，车窗降下
+    
+    show chen car_smile
+    
+    chen "上车吧，我们顺路。"
+    
+    if investigation_skill > 1:
+        $ notice_take_ride("他怎么知道顺不顺路？", "他问过我住在哪里吗？")
+    else:
+        pass
+    
+    menu:
+        "你握着手机，心跳在加速。" #音效
+        
+        "上车":
+            jump get_in_car
+        
+        "我坐地铁。":
+            jump refuse_car_safe
+        
+        "你怎么知道我住哪？":
+            jump question_chen
+
+# 选项A：上车
+label get_in_car:
+    hide chen
+    
+    "{i}拉开车门，坐进副驾驶，你感觉到皮革座椅的冰凉，闻到车内淡淡的古龙水味。{/i}"
+    
+    chen "系好安全带。"
+
+    jump chapter3
+
+# 选项B：安全拒绝
+label refuse_car_safe:
+    s "不用了，我坐地铁，挺方便的。"
+    
+    #"陈永仁的笑容没变，手指敲了敲方向盘。"
+    
+    chen "末班车快没了，你确定？"
+    
+    s "我赶得上，谢谢陈总。"
+    
+    "{i}你后退一步，点头致谢。{/i}"
+    
+    #音效+图片，车开走
+    "{i}黑夜里尾灯消失，光线渐暗，但你感到十分心安。{/i}"
+    
+    jump safe_ending
+
+# 选项C：质问（压力抉择）
+label question_chen:
+    s "您怎么知道我住在哪？"
+    
+    show chen_smile
+    chen "HR档案里记着大家的联络地址，我记得自己手底下所有团队成员的信息。"
+    chen "这是关心的方式，就像现在问你要不要搭便车一样。"
+    chen "怎么样，走吗？"
+   
+    menu:
+        
+        "上车":
+            "{i}你意识到继续对峙没有意义。{/i}"
+            s "……那麻烦您了。"
+            #音效：关车门
+            jump get_in_car
+        
+        "仍然拒绝":
+            s "我还是坐地铁吧，谢谢您关心。"
+            "{i}背后的沉默像浓重的夜色，但你走得坚定无比。{/i}"
+            jump safe_ending
+
+# 尴尬拒绝后续
+label safe_ending:
+    scene bg subway_night
+    with fade
+    
+    "{i}你冲进地铁站。{/i}"
+    
+    "{i}末班车还有3分钟。你赶上了。{/i}"
+    
+    "{i}车厢里空荡荡的，你坐在角落，手还在抖。{/i}"
+    
+    "{i}*嗡* 你的手机在震动：{/i}"
+    chen "注意安全。"
+    s "……"
+    
+    jump chapter_2_end
+
+# chapter 2结束，安全支线
+label chapter_2_end:
+    scene bg bedroom_night
+    with fade
+    
+    "{i}你终于回到家，锁上门。{i}"
+    
+    if hidden_truth_unlocked:
+        "{i}林姐的话在耳边回响：{/i}"
+        "{i}「别让他让你觉得自己特别。」{/i}"
+        "{i}这一周结束了，His Game成功了。{/i}"
+        "{i}但某种游戏，才刚刚开始。{/i}"
+        "{i}游戏的一方是陈永仁，但你隐隐感觉自己不是另一方唯一的执棋人。"
+    jump chapter4
+
+
+# chapter 2接chapter 3，上车后续，危险路径
+label chapter3:
+    scene bg car_interior_night
+    with dissolve
+    
+    "{i}车子驶向你不认识的路。{/i}"
+    
+    chen "你今晚很漂亮。"
+    
+label chapter4:
+    "balabababa"
