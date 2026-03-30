@@ -2192,13 +2192,583 @@ label chapter_2_end:
 
 
 # chapter 2接chapter 3，上车后续，危险路径
-label chapter3:
-    scene bg car_interior_night
-    with dissolve
-    
-    "{i}车子驶向你不认识的路。{/i}"
-    
-    chen "你今晚很漂亮。"
     
 label chapter4:
     "balabababa"
+#==========================================
+init -1 python:
+    import random
+
+    # QTE状态管理
+    class QTEState:
+        def __init__(self):
+            self.push_count = 0
+            self.escape_clicked = 0
+            self.choices_made = []
+            self.boundary_warning = False
+
+    qte_state = QTEState()
+
+# ========== 图像和变换定义 ==========
+init -1:
+    # 基础按钮
+    image qte_button_normal = Frame(Solid("#4A5568"), 10, 10)
+    image qte_button_hover = Frame(Solid("#718096"), 10, 10)
+    image qte_button_hard = Frame(Solid("#2D3748"), 10, 10)
+    image qte_button_blink = Frame(Solid("#E53E3E"), 10, 10)
+
+    # 屏幕抖动变换
+    transform screen_shake:
+        subpixel True
+        parallel:
+            xoffset 0
+            linear 0.05 xoffset 5
+            linear 0.05 xoffset -5
+            linear 0.05 xoffset 3
+            linear 0.05 xoffset -3
+            linear 0.05 xoffset 0
+            repeat
+        parallel:
+            yoffset 0
+            linear 0.07 yoffset 3
+            linear 0.07 yoffset -3
+            linear 0.07 yoffset 5
+            linear 0.07 yoffset -5
+            linear 0.07 yoffset 0
+            repeat
+
+    transform subtle_shake:
+        subpixel True
+        xoffset 0
+        linear 0.1 xoffset 2
+        linear 0.1 xoffset -2
+        linear 0.1 xoffset 0
+        repeat
+
+    transform slide_button:
+        subpixel True
+        xpos 0.3
+        linear 3.0 xpos 0.7
+        linear 3.0 xpos 0.3
+        repeat
+
+    transform blink_effect:
+        alpha 1.0
+        linear 0.3 alpha 0.0
+        linear 0.3 alpha 1.0
+        repeat
+
+    transform appear_disappear:
+        alpha 0.0
+        pause 1.0
+        linear 0.2 alpha 1.0
+        pause 0.5
+        linear 0.2 alpha 0.0
+        pause 0.5
+        linear 0.2 alpha 1.0
+
+    transform heartbeat:
+        zoom 1.0
+        linear 0.3 zoom 1.05
+        linear 0.3 zoom 1.0
+        repeat
+
+# ========== 屏幕定义 ==========
+
+# 第一个QTE：车内边界警报
+screen car_qte_1():
+    modal True
+
+    add Solid("#1a202c") at screen_shake
+
+    vbox:
+        align (0.5, 0.2)
+        spacing 10
+
+        text "【边界警报】" at blink_effect:
+            size 40
+            color "#FC8181"
+            xalign 0.5
+
+        text "系统警告：身体反应机制激活" at subtle_shake:
+            size 20
+            color "#A0AEC0"
+            xalign 0.5
+
+    # 对话文字 - 使用vbox多行而不是
+
+    vbox:
+        align (0.5, 0.35)
+        spacing 5
+        xsize 700
+
+        text "陈永仁的手从头发移到脸颊：":
+            size 22
+            color "#E2E8F0"
+            xalign 0.5
+
+        text "你真美。有人告诉过你，你工作的时候有多迷人吗？":
+            size 22
+            color "#E2E8F0"
+            xalign 0.5
+
+        text "那么专注，那么……鲜活。":
+            size 22
+            color "#E2E8F0"
+            xalign 0.5
+
+    # 选项区域
+    hbox:
+        align (0.5, 0.65)
+        spacing 30
+
+        # A. 躲开 - 滑动按钮
+        button at slide_button:
+            background "qte_button_hard"
+            hover_background "qte_button_hover"
+            xsize 160
+            ysize 50
+            action [SetVariable("qte_result", "a"), Return(True)]
+
+            text "躲开" at subtle_shake:
+                align (0.5, 0.5)
+                color "#FFFFFF"
+                size 16
+
+        # B. 不说话 - 固定
+        button:
+            background "qte_button_normal"
+            hover_background "qte_button_hover"
+            xsize 160
+            ysize 50
+            action [SetVariable("qte_result", "b"), Return(True)]
+
+            text "不说话":
+                align (0.5, 0.5)
+                color "#FFFFFF"
+                size 16
+
+        # C. 说"不要" - 闪烁出现
+        button at appear_disappear:
+            background "qte_button_blink"
+            hover_background "qte_button_hover"
+            xsize 160
+            ysize 50
+            action [SetVariable("qte_result", "c"), Return(True)]
+
+            text "说不要":
+                align (0.5, 0.5)
+                color "#FFFFFF"
+                size 16
+
+    # 倒计时
+    timer 10.0 action [SetVariable("qte_result", "timeout"), Return(False)]
+
+    text "10":
+        align (0.5, 0.85)
+        size 60
+        color "#FC8181"
+        at blink_effect
+
+# 推开他的QTE
+screen push_away_qte():
+    modal True
+
+    add Solid("#000000")
+
+    vbox:
+        align (0.5, 0.3)
+        spacing 20
+
+        text "他在吻你" at heartbeat:
+            size 36
+            color "#E53E3E"
+            xalign 0.5
+
+        text "快速点击鼠标推开他！":
+            size 18
+            color "#A0AEC0"
+            xalign 0.5
+
+        text "（每次点击都比上一次更难）":
+            size 18
+            color "#A0AEC0"
+            xalign 0.5
+
+        text "点击次数: [qte_state.push_count] / 5":
+            size 24
+            color "#FC8181"
+            xalign 0.5
+
+    # 全屏点击区域
+    button:
+        xfill True
+        yfill True
+        background Solid("#00000000")
+        action [SetVariable("qte_state.push_count", qte_state.push_count + 1), 
+                If(qte_state.push_count >= 4, true=[Return(True)], false=NullAction())]
+
+    # 动态难度计时器
+    timer (3.0 - qte_state.push_count * 0.4) action [Return(False)]
+
+# 10秒抉择窗口
+screen final_choice():
+    modal True
+
+    add Solid("#1a202c")
+
+    vbox:
+        align (0.5, 0.2)
+        spacing 15
+
+        text "心跳如鼓" at heartbeat:
+            size 32
+            color "#FC8181"
+            xalign 0.5
+
+        text "他在等":
+            size 24
+            color "#E2E8F0"
+            xalign 0.5
+
+        text "不抱的话，明天会很尴尬":
+            size 18
+            color "#A0AEC0"
+            xalign 0.5
+
+        text "抱了的话，这事就过去了":
+            size 18
+            color "#A0AEC0"
+            xalign 0.5
+
+    text "[countdown]":
+        align (0.5, 0.45)
+        size 80
+        color "#E53E3E"
+        at heartbeat
+
+    vbox:
+        align (0.5, 0.7)
+        spacing 20
+
+        # 拥抱选项
+        button:
+            background "qte_button_normal"
+            hover_background "qte_button_hover"
+            xsize 220
+            ysize 60
+            action [SetVariable("final_choice", "hug"), Return(True)]
+
+            text "拥抱他（场景结束，回家）":
+                align (0.5, 0.5)
+                color "#FFFFFF"
+                size 16
+
+        # 逃跑选项（第5秒出现）
+        if countdown <= 5:
+            button at (blink_effect if countdown > 2 else NullTransform()):
+                background "qte_button_blink"
+                hover_background "qte_button_hover"
+                xsize 200
+                ysize 60
+                action [SetVariable("final_choice", "escape"), Return(True)]
+
+                text "推开车门逃跑":
+                    align (0.5, 0.5)
+                    color "#FFFFFF"
+                    size 16
+
+    default countdown = 10
+    timer 1.0 repeat True action If(countdown > 0, SetScreenVariable("countdown", countdown - 1), [SetVariable("final_choice", "timeout"), Return(False)])
+
+# 房间扫描界面
+screen room_scan():
+    modal True
+
+    add Solid("#2D3748")
+
+    text "房间扫描：点击物品触发思绪":
+        align (0.5, 0.1)
+        size 28
+        color "#E2E8F0"
+
+    # 镜子
+    button:
+        align (0.2, 0.3)
+        xsize 120
+        ysize 180
+        background Frame(Solid("#718096"), 5, 5)
+        hover_background Frame(Solid("#A0AEC0"), 5, 5)
+        action [SetVariable("clicked_item", "mirror"), Return(True)]
+
+        text "镜子":
+            align (0.5, 0.5)
+            size 20
+            color "#FFFFFF"
+
+    # 床与小熊
+    button:
+        align (0.5, 0.3)
+        xsize 180
+        ysize 120
+        background Frame(Solid("#4A5568"), 5, 5)
+        hover_background Frame(Solid("#718096"), 5, 5)
+        action [SetVariable("clicked_item", "bed"), Return(True)]
+
+        text "床与小熊":
+            align (0.5, 0.5)
+            size 20
+            color "#FFFFFF"
+
+    # 手机
+    button:
+        align (0.8, 0.3)
+        xsize 80
+        ysize 140
+        background Frame(Solid("#2D3748"), 5, 5)
+        hover_background Frame(Solid("#4A5568"), 5, 5)
+        action [SetVariable("clicked_item", "phone"), Return(True)]
+
+        text "手机":
+            align (0.5, 0.5)
+            size 20
+            color "#FFFFFF"
+
+    # 淋浴
+    button:
+        align (0.35, 0.7)
+        xsize 100
+        ysize 100
+        background Frame(Solid("#4299E1"), 5, 5)
+        hover_background Frame(Solid("#63B3ED"), 5, 5)
+        action [SetVariable("clicked_item", "shower"), Return(True)]
+
+        text "淋浴":
+            align (0.5, 0.5)
+            size 20
+            color "#FFFFFF"
+
+    # 日记
+    button:
+        align (0.65, 0.7)
+        xsize 100
+        ysize 130
+        background Frame(Solid("#D69E2E"), 5, 5)
+        hover_background Frame(Solid("#ECC94B"), 5, 5)
+        action [SetVariable("clicked_item", "diary"), Return(True)]
+
+        text "日记":
+            align (0.5, 0.5)
+            size 20
+            color "#FFFFFF"
+
+    textbutton "离开房间":
+        align (0.5, 0.95)
+        action Return(False)
+
+# ========== 游戏主流程 ==========
+
+label chapter3:
+    $ qte_state = QTEState()
+
+    scene bg car
+    with fade
+
+    "车内。夜色。空调开得很低。"
+
+    jump car_xsr
+
+label car_xsr:
+    $ qte_result = ""
+    call screen car_qte_1()
+
+    if qte_result == "timeout":
+        $ qte_result = "b"
+
+    if qte_result == "a":
+        "你偏过头，躲开了他的手。"
+        "陈永仁笑了笑，收回了手："
+        extend "好吧，是我冒昧了。"
+        jump car_ending_avoided
+
+    elif qte_result == "b":
+        "你沉默着，没有回应。"
+        "陈永仁的手停留在你脸上，温度灼人。"
+        jump car_continuation
+
+    else:
+        $ qte_state.choices_made.append("拒绝")
+        s "请别这样。"
+
+        "陈永仁停顿。手还在脸上："
+        extend "别哪样？我就是欣赏你。欣赏一个人有错吗？"
+
+        "他凑近："
+        extend "我结婚了。你有男朋友。这没什么。就是……欣赏。"
+
+        jump kiss_sequence
+
+label car_continuation:
+    "陈永仁的手指在你脸颊上停留了一秒，然后收回。"
+    "你知道吗，有时候沉默比说话更有力量。"
+
+    jump kiss_sequence
+
+label kiss_sequence:
+    "他吻你。"
+
+    window hide
+
+    $ qte_state.push_count = 0
+    $ push_success = False
+
+    while qte_state.push_count < 5:
+        call screen push_away_qte()
+
+        if _return:
+            $ push_success = True
+            jump pushed_away
+        else:
+            $ qte_state.push_count += 1
+            if qte_state.push_count >= 3:
+                "你感到无力..."
+                window hide
+
+    if not push_success:
+        jump kiss_ending_long
+
+label pushed_away:
+    window show
+
+    "你推开了他。"
+    "陈永仁愣了一下，随即笑了："
+    extend "抱歉，是我太冲动了。"
+
+    "他张开双臂："
+    extend "来，抱一下。朋友嘛？"
+
+    jump final_decision
+
+label kiss_ending_long:
+    window show
+
+    "吻持续了很久。"
+    "当你终于能呼吸时，他已经收回了身体，仿佛什么都没发生。"
+
+    "他张开双臂："
+    extend "来，抱一下。朋友嘛？"
+
+    jump final_decision
+
+label final_decision:
+    $ final_choice = ""
+    call screen final_choice()
+
+    if final_choice == "hug" or final_choice == "timeout":
+        jump ending_hug
+    else:
+        jump ending_escape
+
+label ending_hug:
+    "你拥抱了他。"
+    "他的体温透过衬衫传来，心跳平稳，仿佛刚才的混乱只是错觉。"
+
+    "这就对了，"
+    extend "我们就是朋友。"
+
+    "他送你到楼下。你看着他的车尾灯消失在街角。"
+
+    jump room_scene
+
+label ending_escape:
+    "你推开车门，踉跄下车，跑向电梯。"
+
+    "身后传来他的声音："
+    extend "小曼！等等！听我解释！"
+
+    "你没回头。"
+
+    "电梯门关上的瞬间，你看见他还站在车边，双臂垂落。"
+
+    jump room_scene
+
+label car_ending_avoided:
+    "气氛有些尴尬，但他很快恢复了常态。"
+    "我送你回去吧。"
+    extend "今天确实晚了。"
+
+    "一路上，你们聊着工作，仿佛刚才的触碰从未发生。"
+
+    jump room_scene
+
+label room_scene:
+    scene bg room
+    with fade
+
+    "你的房间。"
+    "门在身后关上，世界突然安静得可怕。"
+
+    $ clicked_item = ""
+
+    while True:
+        call screen room_scan()
+
+        if not _return:
+            jump game_ending
+
+        if clicked_item == "mirror":
+            "你看向镜子。"
+            "看起来一样。感觉不一样。"
+            "那个女人的脸还是你的，但眼神...像是陌生人的。"
+
+        elif clicked_item == "bed":
+            "床头的泰迪熊歪着头看你。"
+            "你想躺下。可能再也起不来。"
+            "被子还保持着今早你掀开时的形状。"
+
+        elif clicked_item == "phone":
+            "8条未读消息。"
+            "3条来自陈永仁。"
+            "到家了吗？"
+            "刚才的事，别多想。"
+            "明天见。"
+
+        elif clicked_item == "shower":
+            "你需要洗。"
+            "需要让水流冲走什么。"
+            "但你知道，有些东西冲不掉。"
+
+        elif clicked_item == "diary":
+            "你翻开日记。"
+            "空白页。"
+            "一个字都写不出来。"
+            "或者，有太多字，不知道从哪里开始。"
+
+label game_ending:
+    if "拒绝" in qte_state.choices_made:
+        "你坐在床边，手机亮了又暗。"
+        "我拒绝了。"
+        extend "我推开了他。"
+        "但为什么，心跳还是这么快？"
+
+    elif final_choice == "escape":
+        "你逃跑了。"
+        "但逃跑之后呢？"
+        "明天还要上班。还要见他。还要假装什么都没发生。"
+
+    else:
+        "你拥抱了他。"
+        "朋友，他这么说的。"
+        "但你不知道，朋友之间，会不会有这样的心跳。"
+
+    "窗外，天快亮了。"
+
+    $ ending_text = ""
+    if len(qte_state.choices_made) > 0:
+        $ ending_text = "关键选择：" + " → ".join(qte_state.choices_made)
+
+    "[ending_text]"
+
+    "《She: 镜中倒影》第一章 - 完"
+
+    return
