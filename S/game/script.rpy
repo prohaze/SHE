@@ -9,19 +9,24 @@ init python:
     item_descriptions = {
         "magazine": "《女性领导者》特刊，有人撕掉了一半页面。",
         "computer": "【Excel表格开着】你应聘岗位的薪资范围：男性起薪22K，女性18K。",
-        "smartphone": "妈妈的信息：工作拿到了吗？弟弟要买新鞋。"
+        "smartphone": "妈妈的信息：工作拿到了吗？弟弟要买新鞋。",
+        "window": "你看着这座城市，135封拒信散落其中。"
     }
     item_names = {
         "magazine": "杂志",
         "computer": "前台电脑",
-        "smartphone": "手机"
+        "smartphone": "手机",
+        "window": "玻璃窗"
+    }
+    item_image = {
+        "window": "chapter0_items/window_scenery.png" 
     }
 
 # 物品描述屏幕，对应imagebutton中的show函数调用的screen_item_descriptions
 #！！！重要！原报错写法：用default定义默认的局部变量，无法传递参数
 #即：没有在screen中书写明确的参数声明（screen：我需要参数），show调取时screen只有局部变量传递不了存在字典里的参数信息
 #修改后：screen（内部具有明确参数声明description），info来自show指定的调用来源item_description
-screen item_description(description, name): 
+screen item_description(description, name, image): 
     #default description = ""
     modal True
     zorder 100
@@ -59,6 +64,7 @@ screen item_description(description, name):
                 action Hide("item_description")
 
 screen items_screen():
+    modal True
     # 添加进度显示
     text "已发现物品[len(clicked_items)]/3":
         xalign 0.95
@@ -70,24 +76,30 @@ screen items_screen():
     #     xalign 0.5
     #     yalign 0.5
     #     text "进度: [len(clicked_items)]/3" size 24 color "#FFD700"
-
+    
     # 物品1 - 杂志
     imagebutton:
-        xpos 1200
-        ypos 200
-        idle "item1_magazine.png"
-        hover "item1_magazine_hover.png"
+        at transform:
+            zoom 0.35
+        xpos 1580
+        ypos 830
+        idle "chapter0_items/test_01_book_color.png" #彩色
+        hover "chapter0_items/test_01_book_colorhover.png" #彩色
+        # idle "test_01_book_bw.png" #黑白
+        # hover "test_01_book_bwhover.png" #黑白
+        # idle "item1_magazine.png" #原像素风
+        # hover "item1_magazine_hover.png" #原像素风
         if not item1_magazine_clicked:  #not clicked时才可点击
             action [
                 SetVariable("item1_magazine_clicked", True),
                 SetVariable("clicked_items", 
                     clicked_items if "magazine" in clicked_items else clicked_items + ["magazine"]
                 ),                
-                Show("item_description", description=item_descriptions["magazine"], name=item_names["magazine"]),
+                Show("item_description", description=item_descriptions["magazine"], name=item_names["magazine"], image=None),
                 If(
-                    len(clicked_items) >= 2,  # 当前是第3个物品（点击前已有2个）
+                    len(clicked_items) >= 3,  # 当前是第4个物品（点击前已有3个）
                     true=[
-                        SetVariable("third_item_clicked", True),
+                        SetVariable("five_item_clicked", True),
                         Hide("items_screen")
                     ],
                     false=NullAction()
@@ -95,36 +107,48 @@ screen items_screen():
             ]
         else:
             # 已点击状态
-            idle "item1_magazine.png" 
-            hover "item1_magazine_hover.png"
-            action Show("item_description", description=item_descriptions["magazine"], name=item_names["magazine"])
+            # idle "item1_magazine.png" #原像素风
+            # hover "item1_magazine_hover.png" #原像素风
+            idle "chapter0_items/test_01_book_bw.png"
+            hover "chapter0_items/test_01_book_bwhover.png"
+            action Show("item_description", description=item_descriptions["magazine"], name=item_names["magazine"], image=None)
     
     # 物品2 - 前台电脑
     imagebutton:
-        xpos 400
-        ypos 200
-        idle "item2_computer.png"
-        hover "item2_computer_hover.png"
+        at transform:
+            zoom 0.45
+        xpos 460
+        ypos 470
+        # idle "chapter0_items/test_02_computer_bw.png" #黑白
+        # hover "chapter0_items/test_02_computer_bwhover.png" #黑白
+        idle "chapter0_items/test_02_computer_color.png" #彩色
+        hover "chapter0_items/test_02_computer_colorhover.png" #彩色
+        # idle "item2_computer.png" #原像素风
+        # hover "item2_computer_hover.png" #原像素风
         if not item2_computer_clicked:  
             action [
                 SetVariable("item2_computer_clicked", True),
                 SetVariable("clicked_items", 
                     clicked_items if "computer" in clicked_items else clicked_items + ["computer"]
                 ),
-                Show("item_description", description=item_descriptions["computer"], name=item_names["computer"]),
+                Show("item_description", description=item_descriptions["computer"], name=item_names["computer"], image=None),
                 If(
-                    len(clicked_items) >= 2,  # 当前是第3个物品（点击前已有2个）
+                    len(clicked_items) >= 3,  # 当前是第4个物品（点击前已有3个）
                     true=[
-                        SetVariable("third_item_clicked", True),
+                        SetVariable("five_item_clicked", True),
                         Hide("items_screen")
                     ],
                     false=NullAction()
                 )
             ]
         else:
-            idle "item2_computer.png"
-            hover "item2_computer_hover.png"
-            action Show("item_description", description=item_descriptions["computer"], name=item_names["computer"])
+            # idle "chapter0_items/test_02_computer_bw.png" #黑白
+            # hover "chapter0_items/test_02_computer_bwhover.png" #黑白
+            idle "chapter0_items/test_02_computer_color.png" #彩色
+            hover "chapter0_items/test_02_computer_colorhover.png" #彩色        
+            # idle "item2_computer.png" #原像素风
+            # hover "item2_computer_hover.png" #原像素风
+            action Show("item_description", description=item_descriptions["computer"], name=item_names["computer"], image=None)
     
     # 物品3 - 手机
     imagebutton:
@@ -138,11 +162,11 @@ screen items_screen():
                 SetVariable("clicked_items", 
                     clicked_items if "smartphone" in clicked_items else clicked_items + ["smartphone"]
                 ),
-                Show("item_description", description=item_descriptions["smartphone"], name=item_names["smartphone"]),                
+                Show("item_description", description=item_descriptions["smartphone"], name=item_names["smartphone"], image=None),                
                 If(
-                    len(clicked_items) >= 2,  # 当前是第3个物品（点击前已有2个）
+                    len(clicked_items) >= 3,
                     true=[
-                        SetVariable("third_item_clicked", True),
+                        SetVariable("five_item_clicked", True),
                         Hide("items_screen")
                     ],
                     false=NullAction()
@@ -151,15 +175,43 @@ screen items_screen():
         else:
             idle "item3_smartphone.png"
             hover "item3_smartphone_hover.png"
-            action Show("item_description", description=item_descriptions["smartphone"], name=item_names["smartphone"])
+            action Show("item_description", description=item_descriptions["smartphone"], name=item_names["smartphone"], image=None)
 
+    # 物品4 - 玻璃窗
+    imagebutton:
+        at transform:
+            zoom 0.9
+        xpos 1229
+        ypos 59
+        idle "chapter0_items/test_03_window_bw.png"
+        hover "chapter0_items/test_03_window_bwhover.png"
+        if not item4_window_clicked: 
+            action [
+                SetVariable("item4_window_clicked", True),
+                SetVariable("clicked_items", 
+                    clicked_items if "window" in clicked_items else clicked_items + ["window"]
+                ),
+                Show("item_description", description=item_descriptions["window"], name=item_names["window"], image=item_image["window"]),                
+                If(
+                    len(clicked_items) >= 3,  # 当前是第4个物品（点击前已有3个）
+                    true=[
+                        SetVariable("five_item_clicked", True),
+                        Hide("items_screen")
+                    ],
+                    false=NullAction()
+                )
+            ]
+        else:
+            idle "chapter0_items/test_03_window_bw.png"
+            hover "chapter0_items/test_03_window_bwhover.png"
+            action Show("item_description", description=item_descriptions["window"], name=item_names["window"], image=item_image["window"])
 # 第三个物品点击标记
-default third_item_clicked = False
+default five_item_clicked = False
 
 # 物品描述屏幕，添加自动跳转逻辑
-screen item_description(description, name): 
+screen item_description(description, name, image): 
     modal True
-    zorder 100
+    zorder 120
     
     # 半透明背景
     add "#000000CC"
@@ -173,7 +225,7 @@ screen item_description(description, name):
         vbox:
                        
             text name:
-                size 28 color "#ffffff" xalign 0
+                size 30 color "#ffffff" xalign 0
             null height 30
             
             add Solid("#FFFFFF"):
@@ -181,20 +233,28 @@ screen item_description(description, name):
                 ysize 1
                 xalign 0.5
                 alpha 0.3  # 30%不透明度
-            null height 30
+            null height 30 
 
+            add image:
+                at transform:
+                    zoom 0.3
+                xalign 0.5
+            null height 40 
+            
             text description:
-                size 24
+                size 25
                 color "#FFFFFF"
                 xalign 0.5
             null height 50
-            
+
             textbutton "关闭":
+                at transform:
+                    zoom 0.9
                 xalign 0.5
                 action [
                     Hide("item_description"),
                     If(
-                        third_item_clicked,
+                        five_item_clicked,
                         true=Jump("after_third_item"),
                         false=NullAction()
                     )
@@ -224,8 +284,7 @@ label start:
             return
 
 label chapter0:
-    show garage #替换黑幕布
-
+    show black #替换黑幕布
     image chapter0_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
     show chapter0_title "序章：入职"
     with fade
@@ -233,17 +292,26 @@ label chapter0:
     hide chapter0_title
     #with fade 不要这行之后丝滑切换了，迷
     
-    scene 31
+    scene office_hall
     with fade
     pause 1
+    show she_01_normal_nocard:
+        zoom 0.93
+        xzoom -1.0
+        xpos 50
+        ypos 100
     "{i}这个招聘季投了147份简历, 12封是拒信，其他杳无音讯。{/i}"
     "{i}妈妈每周日打电话问你什么时候能找到工作，别再挑了。但这一次……感觉不一样。{/i}"
+    scene black with fade
     "{i}你进入了等待室，下一个就到你了。{/i}"
     jump waiting_room
     
 label waiting_room:
     
-    scene garage #替换为办公室图片
+    scene dengdaishi with fade:
+        zoom 1.9
+        xalign 0.5
+        yalign 0.7
     menu:
         "探索房间":
             call explore_room #call完之后走jump
@@ -256,6 +324,7 @@ label explore_room:
     default item1_magazine_clicked = False
     default item2_computer_clicked = False
     default item3_smartphone_clicked = False
+    default item4_window_clicked = False
 
     # 使用列表记录点击的不同物品
     $ clicked_items = []  # 存储被点击过的物品
@@ -266,20 +335,18 @@ label explore_room:
     $ renpy.pause(delay=None, hard=False, predict=False, modal=False)
     return
 
+# 点击第三个物品后跳转到这里
 label explore_complete:
     hide screen items_screen
     hide screen item_description
-    scene 31 # scene可以把textbox遮掉
-    with fade
-    pause 1.0
     'HR'"佘小姐？陈总请您进去。"
     jump chapter0_2
 
-# 点击第三个物品后跳转到这里
 label after_third_item:
-    $ third_item_clicked = False  # 重置标记
+    $ five_item_clicked = False  # 重置标记
     s "面试好像要开始了？"
     jump explore_complete
+
 
 default money = 2000
 default social = 0
@@ -383,8 +450,26 @@ screen low_notify(message, duration=1):
 define c = Character("陈永仁")
 
 label chapter0_2:
+    scene chen_office:
+        zoom 2.7
+        xalign 0.5
+        yalign 0.4
+    show chen_03_narroweyes:
+        zoom 1.1
+        xzoom -1.0
+        xpos 1230
+        ypos 50
+    show she_01_normal_nocard:
+        zoom 0.9
+        xzoom -1.0
+        xpos 50
+        ypos 110
     "{i}他站起来迎接你，温暖的笑容，完美的姿态。他是那种让你立刻感受到自己被看见的人。{/i}"
     "{i}你坐下了，被他办公桌上的东西吸引了注意。{/i}"
+    scene chen_office with fade:
+        zoom 2.7
+        xalign 0.5
+        yalign 0.4
     menu:
         "书架":
             "上面摆放着一些法律书籍、商业策略，还有女性诗人的诗集。"
@@ -397,6 +482,11 @@ label chapter0_2:
     jump after_menu
 
 label after_menu:
+    show chen_03_narroweyes:
+        zoom 1.1
+        xzoom -1.0
+        xpos 650
+        ypos 50
     c"小曼，告诉我，你为什么想来这里工作？"
     menu:
         "我需要钱。":
@@ -407,6 +497,11 @@ label after_menu:
         "我想证明我能比任何人做得更好。":
             s"我想证明我能比任何人做得更好。"
             $ add_mental(1, "面试C")
+    show chen_01_normal:
+        zoom 1.1
+        xzoom -1.0
+        xpos 650
+        ypos 50
     c"明白了。你知道吗，我们有过更有经验的候选人。但我在你简历里看到了……渴望。"
     $ show_sequential_thoughts(
         "他在观察你的手。",
@@ -414,16 +509,26 @@ label after_menu:
         "他在看你的简历。"
     )
     pause 3
+    hide chen_01_normal
     c"有什么问题想问我吗？"
     menu:
         "这里的女性晋升通道怎么样？":
             s"这里的女性晋升通道怎么样？"
-            "{i}陈永仁笑了。{/i}"
+            show chen_02_smile:
+                zoom 1.1
+                xzoom -1.0
+                xpos 650
+                ypos 50 
             c"好问题。我们这里很进步。中层管理一半是女性……嗯，三分之一吧……有个Linda，她很优秀。"
+            hide chen_02_smile
             jump chapter0_3
         "有居家办公的弹性吗？":
             s"有居家办公的弹性吗？"
-            "{i}陈笑容依旧，但眼神变得认真起来{/i}"
+            show chen_01_normal: #后面改人模狗样表情
+                zoom 1.1
+                xzoom -1.0
+                xpos 650
+                ypos 50
             c"好问题。我们公司其实很重视工作生活的平衡。居家办公原则上支持。"
             c"但……说实话，在游戏这行——尤其是设计师，前期最好多在场。当然，这不是强制，只是建议。"
             jump chapter0_3
@@ -431,11 +536,37 @@ label after_menu:
             jump chapter0_3
 
 label chapter0_3:
+    show chen_03_narroweyes:
+        zoom 1.1
+        xzoom -1.0
+        xpos 650
+        ypos 50
     c"还有别的问题吗？"
+    hide chen_03_narroweyes
+    show chen_03_narroweyes:
+        zoom 1.1
+        xzoom -1.0
+        xpos 650
+        ypos 50
+    show chen_03_narroweyes with move:
+        zoom 1.1
+        xzoom -1.0
+        xpos 1230
+        ypos 50
+    show she_01_normal_nocard:
+        zoom 0.9
+        xzoom -1.0
+        xpos 50
+        ypos 110
+    show she_03_tinysmile_nocard:
+        zoom 0.9
+        xzoom -1.0
+        xpos 50
+        ypos 110
     s"没有了，谢谢您。"
-    c"那么面试就到这吧，和你的交流很愉快。"
 
-    scene black
+    c"那么面试就到这吧，和你的交流很愉快。"    
+    scene black with fade
     #show 邮件页面
 
 
@@ -445,7 +576,6 @@ label chapter0_3:
 # 任务1.1：第一天，第一印象
 
 # 角色定义（延续已有定义）
-define s = Character("小曼")  # 已定义，延续使用
 define unknown_woman = Character("陌生女人", color="#808080")
 define narrator = Character(None, what_italic=True)
 
@@ -2193,8 +2323,462 @@ label chapter_2_end:
 
 # chapter 2接chapter 3，上车后续，危险路径
     
+# 定义变量
+default chapter4_started = False
+default last_night_evidence = False  # 昨晚是否有证据
+default xiaojin_concern_response = None  # "overtime", "sleep", "silent"
+default digital_evidence_count = 0  # 数字证据收集数量
+default physical_evidence_found = []  # 发现的实体证据列表
+default office_searched = False
+
+# 任务4.1：办公室12楼
 label chapter4:
-    "balabababa"
+    $ chapter4_started = True
+    
+    scene bg office_12f
+    with fade
+    
+    "你走进去。一切看起来一样。"
+    "每个人表现一样。"
+    "你却觉得自己戴着标签。"
+    
+    # 陈永仁走廊相遇
+    show chen_normal at right
+    with dissolve
+    
+    chen "早啊小曼！昨天那个PPT做得真棒。非常专业。"
+    
+    "昨天微妙的恶意已经从他眼中消失。"
+    "没有一丝迹象表明昨晚发生过什么。"
+    
+    hide chen_normal with dissolve
+    
+    # 小金关心
+    show xiaojin_concerned at left
+    with dissolve
+    
+    xiaojin "嘿，你脸色不好。昨晚熬夜了？"
+    
+    menu:
+        "加班":
+            s "嗯，加班。"
+            xiaojin "嗐，我也一样。这地方会害死我们。"
+            
+        "没睡好":
+            s "昨晚没睡好。"
+            xiaojin "那你中午好好补个觉，休息下。"
+            
+        "沉默":
+            s "…………" 
+            #show image你盯着他，嘴唇抿成一条线。
+            xiaojin "……呃，看来是熬懵了？我不打扰了，你好好休息。"
+    
+    hide xiaojin_concerned with dissolve
+    
+    s "在证据集齐前，我得装作一切如常。"
+    
+    jump chapter4_evidence_prep
+
+# 任务4.2准备：选择工具
+label chapter4_evidence_prep:
+    scene bg bedroom_night
+    with fade
+    
+    "今晚，你要行动。"
+    "从卧室带什么工具？"
+    
+    # 工具选择界面
+    call screen evidence_tools_select
+    
+    "你准备好了。"
+    jump digital_evidence_phase
+
+# 工具选择界面
+screen evidence_tools_select():
+    modal True
+    
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xpadding 50
+        ypadding 40
+        background "#2c3e50"
+        
+        vbox:
+            spacing 20
+            xalign 0.5
+            
+            text "选择携带工具" size 28 color "#ffffff" xalign 0.5
+            
+            grid 2 2:
+                spacing 15
+                
+                # 工具1：备用手机
+                button:
+                    xsize 200
+                    ysize 150
+                    background "#34495e"
+                    hover_background "#4a6fa5"
+                    action [SetVariable("tool_phone", True), Return()]
+                    
+                    vbox:
+                        xalign 0.5
+                        yalign 0.5
+                        text "📱" size 40
+                        text "备用手机" size 16 color "#ffffff"
+                        text "(截屏专用)" size 12 color "#95a5a6"
+                
+                # 工具2：录音笔
+                button:
+                    xsize 200
+                    ysize 150
+                    background "#34495e"
+                    hover_background "#4a6fa5"
+                    action [SetVariable("tool_recorder", True), Return()]
+                    
+                    vbox:
+                        xalign 0.5
+                        yalign 0.5
+                        text "🎙️" size 40
+                        text "录音笔" size 16 color "#ffffff"
+                        text "(持续录音)" size 12 color "#95a5a6"
+                
+                # 工具3：微型摄像头
+                button:
+                    xsize 200
+                    ysize 150
+                    background "#34495e"
+                    hover_background "#4a6fa5"
+                    action [SetVariable("tool_camera", True), Return()]
+                    
+                    vbox:
+                        xalign 0.5
+                        yalign 0.5
+                        text "📹" size 40
+                        text "微型摄像头" size 16 color "#ffffff"
+                        text "(隐蔽拍摄)" size 12 color "#95a5a6"
+                
+                # 工具4：什么都不带
+                button:
+                    xsize 200
+                    ysize 150
+                    background "#7f8c8d"
+                    hover_background "#95a5a6"
+                    action Return()
+                    
+                    vbox:
+                        xalign 0.5
+                        yalign 0.5
+                        text "🚫" size 40
+                        text "轻装上阵" size 16 color "#ffffff"
+                        text "(风险+)" size 12 color "#bdc3c7"
+
+# 第一阶段：数字证据 - 截屏快手小游戏
+label digital_evidence_phase:
+    scene bg bedroom_night
+    with fade
+    
+    "第一阶段：数字证据。"
+    "翻看所有陈永仁的消息。"
+    "警告：他可能会撤回。"
+    
+    "小游戏：截屏快手"
+    "每条消息5秒内截屏，否则消失。"
+    
+    # 7条消息，每条5秒限时
+    $ digital_evidence_count = 0
+    
+    call screen screenshot_game(msg="在吗", timeout=5.0)
+    call screen screenshot_game(msg="昨晚的事别多想", timeout=5.0)
+    call screen screenshot_game(msg="你很特别", timeout=5.0)
+    call screen screenshot_game(msg="我知道你家在哪", timeout=5.0)
+    call screen screenshot_game(msg="别告诉林姐", timeout=5.0)
+    call screen screenshot_game(msg="下周单独吃饭", timeout=5.0)
+    call screen screenshot_game(msg="你逃不掉的", timeout=5.0)
+    
+    "截屏完成。获得 [digital_evidence_count]/7 条证据。"
+    
+    if digital_evidence_count >= 5:
+        "足够作为数字证据。"
+        $ last_night_evidence = True
+    else:
+        "证据不足……有些消息被撤回了。"
+    
+    jump physical_evidence_phase
+
+# 截屏小游戏界面
+screen screenshot_game(msg, timeout=5.0):
+    modal True
+    
+    default start_time = renpy.get_game_time()
+    default captured = False
+    
+    # 实时检查时间
+    timer 0.05 repeat True action If(
+        (renpy.get_game_time() - start_time) >= timeout,
+        true=[Hide("screenshot_game"), Return()],
+        false=NullAction()
+    )
+    
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xsize 400
+        ysize 300
+        background "#ffffff"
+        
+        vbox:
+            xalign 0.5
+            yalign 0.5
+            spacing 20
+            
+            # 微信消息样式
+            frame:
+                background "#95ec69"
+                xpadding 15
+                ypadding 10
+                xalign 0.5
+                
+                text msg size 18 color "#000000"
+            
+            null height 30
+            
+            # 倒计时显示
+            $ remaining = max(0, timeout - (renpy.get_game_time() - start_time))
+            text "[remaining:.1f]秒" size 24 color "#e74c3c" xalign 0.5
+            
+            null height 20
+            
+            # 截屏按钮
+            if not captured:
+                textbutton "📸 截屏":
+                    xalign 0.5
+                    xsize 150
+                    ysize 50
+                    background "#3498db"
+                    hover_background "#2980b9"
+                    text_color "#ffffff"
+                    action [SetScreenVariable("captured", True), 
+                            SetVariable("digital_evidence_count", digital_evidence_count + 1),
+                            Show("screenshot_flash")]
+            else:
+                text "✓ 已截屏" color "#27ae60" size 20 xalign 0.5
+
+# 截屏闪光效果
+screen screenshot_flash():
+    add Solid("#ffffff")
+    timer 0.1 action Hide("screenshot_flash")
+
+# 第二阶段：实体证据
+label physical_evidence_phase:
+    scene bg office_night
+    with fade
+    
+    "第二阶段：实体证据。"
+    "陈永仁的办公室。需要他不在时进去。"
+    
+    # 检查林姐关系
+    if linjie_relationship >= 3:
+        "林姐愿意帮忙。"
+        jump lure_chen_away
+    else:
+        "林姐关系不足。无法调虎离山。"
+        menu:
+            "怎么办？"
+            "直接闯（高风险）":
+                jump direct_break_in
+            "放弃实体证据":
+                jump chapter4_end
+
+# 调虎离山
+label lure_chen_away:
+    scene bg office_corridor
+    with fade
+    
+    "林姐拨通电话。"
+    
+    linjie "陈总，紧急会议，3楼会议室，马上。"
+    
+    "陈永仁从办公室出来，快步走向电梯。"
+    
+    show chen_walking at right
+    chen "来了。"
+    hide chen_walking
+    
+    "5分钟。计时开始。"
+    
+    # 5分钟倒计时搜查
+    call screen office_search_timer(duration=300.0)  # 5分钟 = 300秒
+
+label office_search_results:
+    scene bg chen_office
+    with fade
+    
+    "搜查结束。你发现了："
+    
+    # 根据点击发现显示结果
+    if "archives" in physical_evidence_found:
+        "【旧员工档案】最下抽屉"
+        "几个女性员工，都在两年内离职。原因不明。"
+    
+    if "gift" in physical_evidence_found:
+        "【礼盒】书柜顶层"
+        "昂贵香水——未拆封。收件人：无。"
+    
+    if "notebook" in physical_evidence_found:
+        "【笔记本】文件堆下"
+        "名字、日期、备注：「李哭了。处理好了。」"
+    
+    if "photo" in physical_evidence_found:
+        "【照片】书里夹着"
+        "陈永仁和年轻女性——不是他妻子。"
+    
+    $ office_searched = True
+    jump chapter4_end
+
+# 办公室搜查界面（限时）
+screen office_search_timer(duration):
+    modal True
+    
+    default start_time = renpy.get_game_time()
+    default time_left = duration
+    
+    # 倒计时
+    timer 0.1 repeat True action [
+        SetScreenVariable("time_left", max(0, duration - (renpy.get_game_time() - start_time))),
+        If(time_left <= 0, true=[Hide("office_search_timer"), Jump("office_search_results")], false=NullAction())
+    ]
+    
+    # 背景
+    add "bg chen_office"
+    
+    # 时间显示
+    frame:
+        xalign 0.5
+        ypos 20
+        background "#e74c3c"
+        padding (20, 10)
+        
+        $ minutes = int(time_left // 60)
+        $ seconds = int(time_left % 60)
+        text "剩余时间：[minutes]:[seconds:02d]" size 24 color "#ffffff" xalign 0.5
+    
+    # 可搜查区域
+    # 1. 最下抽屉
+    if "archives" not in physical_evidence_found:
+        button:
+            xpos 200
+            ypos 400
+            xsize 120
+            ysize 80
+            background "#8b4513"
+            hover_background "#a0522d"
+            action [AddToSet("physical_evidence_found", "archives"), Show("evidence_found_popup", msg="发现旧员工档案")]
+            
+            text "🗄️ 抽屉" size 20 xalign 0.5 yalign 0.5
+    
+    # 2. 书柜顶层
+    if "gift" not in physical_evidence_found:
+        button:
+            xpos 500
+            ypos 150
+            xsize 100
+            ysize 100
+            background "#d4af37"
+            hover_background "#f4d03f"
+            action [AddToSet("physical_evidence_found", "gift"), Show("evidence_found_popup", msg="发现礼盒")]
+            
+            text "🎁" size 40 xalign 0.5 yalign 0.5
+    
+    # 3. 文件堆
+    if "notebook" not in physical_evidence_found:
+        button:
+            xpos 400
+            ypos 350
+            xsize 150
+            ysize 100
+            background "#95a5a6"
+            hover_background "#bdc3c7"
+            action [AddToSet("physical_evidence_found", "notebook"), Show("evidence_found_popup", msg="发现笔记本")]
+            
+            text "📄 文件堆" size 18 xalign 0.5 yalign 0.5
+    
+    # 4. 书架上的书
+    if "photo" not in physical_evidence_found:
+        button:
+            xpos 600
+            ypos 200
+            xsize 80
+            ysize 120
+            background "#3498db"
+            hover_background "#5dade2"
+            action [AddToSet("physical_evidence_found", "photo"), Show("evidence_found_popup", msg="发现照片")]
+            
+            text "📖" size 35 xalign 0.5 yalign 0.5
+
+# 发现证据弹窗
+screen evidence_found_popup(msg):
+    modal False
+    
+    frame:
+        xalign 0.5
+        yalign 0.3
+        background "#27ae60"
+        padding (30, 20)
+        
+        text msg size 20 color "#ffffff" xalign 0.5
+    
+    timer 1.5 action Hide("evidence_found_popup")
+
+# 直接闯入（高风险）
+label direct_break_in:
+    "你选择直接闯入。"
+    "门锁着。"
+    
+    menu:
+        "强行撬锁（可能被发现）":
+            $ risk_roll = renpy.random.randint(1, 10)
+            if risk_roll <= 3:
+                "锁开了。但监控拍到了你。"
+                $ investigation_skill -= 2
+                call screen office_search_timer(duration=60.0)  # 只有1分钟
+            else:
+                "撬锁失败！保安正在赶来。"
+                jump chapter4_fail
+        
+        "放弃":
+            jump chapter4_end
+
+label chapter4_fail:
+    "你被发现了。"
+    "陈永仁看着你，笑容意味深长。"
+    chen "小曼，你在找什么？"
+    jump bad_ending_investigation
+
+label chapter4_end:
+    scene bg home_night
+    with fade
+    
+    "第11周结束。"
+    
+    if digital_evidence_count >= 5 or len(physical_evidence_found) >= 2:
+        "你掌握了足够的证据。"
+        "下一步：决定如何使用。"
+        jump chapter5_decision
+    else:
+        "证据仍然不足……"
+        "你需要更多时间，或者更多勇气。"
+        jump chapter4_continue
+
+# 定义 AddToSet 函数（Ren'Py没有内置）
+init python:
+    def add_to_set(set_name, item):
+        if item not in globals()[set_name]:
+            globals()[set_name].append(item)
+    
+    # 注册为屏幕动作可用
+    # renpy.add_to_store("AddToSet", add_to_set)
+
 #==========================================
 init -1 python:
     import random
