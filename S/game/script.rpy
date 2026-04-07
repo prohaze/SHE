@@ -2768,8 +2768,7 @@ label chapter4_end:
     else:
         "证据仍然不足……"
         "你需要更多时间，或者更多勇气。"
-        jump chapter4_continue
-
+        jump chapter5
 # 定义 AddToSet 函数（Ren'Py没有内置）
 init python:
     def add_to_set(set_name, item):
@@ -2996,6 +2995,8 @@ screen push_away_qte():
     timer (3.0 - qte_state.push_count * 0.4) action [Return(False)]
 
 # 10秒抉择窗口
+default countdown = 10
+
 screen final_choice():
     modal True
 
@@ -3048,21 +3049,33 @@ screen final_choice():
                 color "#FFFFFF"
                 size 16
 
-        # 逃跑选项（第5秒出现）
+               # 逃跑选项（第5秒出现）
         if countdown <= 5:
-            button at (blink_effect if countdown > 2 else NullTransform()):
-                background "qte_button_blink"
-                hover_background "qte_button_hover"
-                xsize 200
-                ysize 60
-                action [SetVariable("final_choice", "escape"), Return(True)]
+            if countdown > 2:
+                button at blink_effect:
+                    background "qte_button_blink"
+                    hover_background "qte_button_hover"
+                    xsize 200
+                    ysize 60
+                    action [SetVariable("final_choice", "escape"), Return(True)]
 
-                text "推开车门逃跑":
-                    align (0.5, 0.5)
-                    color "#FFFFFF"
-                    size 16
+                    text "推开车门逃跑":
+                        align (0.5, 0.5)
+                        color "#FFFFFF"
+                        size 16
+            else:
+                button:
+                    background "qte_button_blink"
+                    hover_background "qte_button_hover"
+                    xsize 200
+                    ysize 60
+                    action [SetVariable("final_choice", "escape"), Return(True)]
 
-    default countdown = 10
+                    text "推开车门逃跑":
+                        align (0.5, 0.5)
+                        color "#FFFFFF"
+                        size 16
+
     timer 1.0 repeat True action If(countdown > 0, SetScreenVariable("countdown", countdown - 1), [SetVariable("final_choice", "timeout"), Return(False)])
 
 # 房间扫描界面
@@ -3355,4 +3368,759 @@ label game_ending:
 
     "《She: 镜中倒影》第一章 - 完"
 
+    return
+
+
+# ==========================================
+# 第五章：抉择（第15周）
+# ==========================================
+
+# 定义变量
+default chapter5_started = False
+default evidence_complete = False
+default advice_heard = False
+
+# 路线选择标记
+default route_legal = False
+default route_hr = False
+default route_public = False
+default route_leave = False
+
+# 路线条件变量
+default lawyer_contacted = False
+default courage = 0
+default xiaohongshu_fans = 0
+
+# 路线A变量
+default police_credibility = 100
+default police_report_2 = False
+
+# 路线B变量
+default hr_talk_done = False
+default department_reorganized = False
+
+# 路线C变量
+default post_views = 0
+default post_comments = 0
+default media_contacted = 0
+default lawyer_letter_received = False
+default public_pressure = 0
+
+# 路线D变量
+default resignation_written = False
+default last_day_done = False
+
+# 第五章入口
+label chapter5:
+    $ chapter5_started = True
+    
+    scene bg bedroom_night
+    with fade
+    
+    "第15周。周三。凌晨1:17。"
+    "你把所有东西摊开在床上。"
+    "消息。笔记。报警回执。律师名片。小红书评论。日记。工资条。所有。"
+    
+    "四条路清晰浮现。"
+    
+    jump route_selection
+
+# 路线选择界面
+screen route_choice_screen():
+    modal True
+    
+    add Solid("#000000CC")
+    
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xpadding 60
+        ypadding 50
+        background "#2c3e50"
+        
+        vbox:
+            spacing 25
+            xalign 0.5
+            
+            text "第五章：抉择" size 36 color "#ffffff" xalign 0.5
+            text "四条路" size 28 color "#bdc3c7" xalign 0.5
+            
+            null height 20
+            
+            # 路线A
+            button:
+                xsize 500
+                ysize 80
+                background ("#27ae60" if (evidence_complete and lawyer_contacted) else "#7f8c8d")
+                hover_background "#2ecc71"
+                action [SetVariable("route_legal", True), Return("legal")]
+                
+                hbox:
+                    xfill True
+                    spacing 15
+                    xalign 0.5
+                    yalign 0.5
+                    
+                    text "⚖️" size 30
+                    vbox:
+                        text "路线A：法律途径" size 20 color "#ffffff"
+                        text "条件：证据 + 律师联系" size 14 color "#bdc3c7"
+            
+            # 路线B
+            button:
+                xsize 500
+                ysize 80
+                background ("#3498db" if (evidence_complete and courage > 50) else "#7f8c8d")
+                hover_background "#5dade2"
+                action [SetVariable("route_hr", True), Return("hr")]
+                
+                hbox:
+                    xfill True
+                    spacing 15
+                    xalign 0.5
+                    yalign 0.5
+                    
+                    text "🏢" size 30
+                    vbox:
+                        text "路线B：HR内部举报" size 20 color "#ffffff"
+                        text "条件：证据 + 勇气 > 50" size 14 color "#bdc3c7"
+            
+            # 路线C
+            button:
+                xsize 500
+                ysize 80
+                background ("#e74c3c" if (evidence_complete and xiaohongshu_fans > 800) else "#7f8c8d")
+                hover_background "#ec7063"
+                action [SetVariable("route_public", True), Return("public")]
+                
+                hbox:
+                    xfill True
+                    spacing 15
+                    xalign 0.5
+                    yalign 0.5
+                    
+                    text "📱" size 30
+                    vbox:
+                        text "路线C：公众曝光" size 20 color "#ffffff"
+                        text "条件：证据 + 小红书粉丝 > 800" size 14 color "#bdc3c7"
+            
+            # 路线D
+            button:
+                xsize 500
+                ysize 80
+                background ("#f39c12" if (mental < 20) else "#7f8c8d")
+                hover_background "#f5b041"
+                action [SetVariable("route_leave", True), Return("leave")]
+                
+                hbox:
+                    xfill True
+                    spacing 15
+                    xalign 0.5
+                    yalign 0.5
+                    
+                    text "🚪" size 30
+                    vbox:
+                        text "路线D：离开" size 20 color "#ffffff"
+                        text "条件：心理健康 < 20" size 14 color "#bdc3c7"
+
+label route_selection:
+    call screen route_choice_screen
+    
+    if _return == "legal":
+        jump route_a_legal
+    elif _return == "hr":
+        jump route_b_hr
+    elif _return == "public":
+        jump route_c_public
+    elif _return == "leave":
+        jump route_d_leave
+    else:
+        jump route_selection
+
+# ==========================================
+# 路线A：法律途径
+# ==========================================
+
+label route_a_legal:
+    scene bg bedroom_night
+    with fade
+    
+    "你选择了法律途径。"
+    "你相信系统。你相信正义需要程序。"
+    
+    jump task_5_a_1
+
+label task_5_a_1:
+    scene bg police_station
+    with fade
+    
+    "中区警署。下午2:30。"
+    
+    show police_officer young at center with dissolve
+    
+    "警官很年轻。他努力显得友善。"
+    
+    "警官" "佘小姐，请坐。你想补充报案？"
+    
+    s "是的。我有新的证据。"
+    
+    hide police_officer young
+    jump police_statement_game
+
+screen police_statement_game():
+    modal True
+    
+    default statement_history = []
+    default current_question = 0
+    default consistency_score = 100
+    
+    add Solid("#34495e")
+    
+    frame:
+        xalign 0.5
+        yalign 0.2
+        background "#2c3e50"
+        padding (30, 20)
+        
+        text "陈述一致性: [consistency_score]%" size 24 color "#ffffff" xalign 0.5
+        
+        if consistency_score < 60:
+            text "可信度不足" size 18 color "#e74c3c" xalign 0.5
+    
+    if current_question == 0:
+        frame:
+            xalign 0.5
+            yalign 0.5
+            xpadding 40
+            ypadding 30
+            background "#ffffff"
+            
+            vbox:
+                spacing 20
+                text "Q1: 第一次不当接触发生在什么时候？" size 20 color "#2c3e50"
+                
+                textbutton "庆功酒后，他送我回家":
+                    action [SetScreenVariable("statement_history", statement_history + ["car"]), 
+                            SetScreenVariable("current_question", 1)]
+                
+                textbutton "办公室茶水间":
+                    action [SetScreenVariable("statement_history", statement_history + ["pantry"]), 
+                            SetScreenVariable("current_question", 1)]
+                
+                textbutton "我不记得了":
+                    action [SetScreenVariable("consistency_score", consistency_score - 20),
+                            SetScreenVariable("statement_history", statement_history + ["unknown"]), 
+                            SetScreenVariable("current_question", 1)]
+    
+    elif current_question == 1:
+        frame:
+            xalign 0.5
+            yalign 0.5
+            xpadding 40
+            ypadding 30
+            background "#ffffff"
+            
+            vbox:
+                spacing 20
+                text "Q2: 详细描述当晚他送你回家的经过？" size 20 color "#2c3e50"
+                
+                if "car" in statement_history:
+                    textbutton "他在车里试图吻我，我推开了他":
+                        action [SetScreenVariable("current_question", 2)]
+                    
+                    textbutton "什么都没发生，他只是送我回家":
+                        action [SetScreenVariable("consistency_score", consistency_score - 30),
+                                SetScreenVariable("current_question", 2)]
+                else:
+                    textbutton "他说要送我，但我拒绝了":
+                        action [SetScreenVariable("consistency_score", consistency_score - 20),
+                                SetScreenVariable("current_question", 2)]
+                    
+                    textbutton "我们去了酒店":
+                        action [SetScreenVariable("consistency_score", consistency_score - 40),
+                                SetScreenVariable("current_question", 2)]
+    
+    elif current_question == 2:
+        frame:
+            xalign 0.5
+            yalign 0.5
+            xpadding 40
+            ypadding 30
+            background "#ffffff"
+            
+            vbox:
+                spacing 20
+                text "Q3: 为什么现在才来报案？" size 20 color "#2c3e50"
+                
+                textbutton "我需要时间收集证据":
+                    action [Return(80)]
+                
+                textbutton "我害怕":
+                    action [Return(60)]
+                
+                textbutton "我不知道这算不算犯罪":
+                    action [Return(40)]
+
+label police_statement_game:
+    call screen police_statement_game
+    
+    $ police_credibility = _return
+    
+    jump police_result
+
+label police_result:
+    scene bg police_station
+    with fade
+    
+    show police_officer young at center
+    
+    "警官" "好的，佘小姐。我们会调查。"
+    
+    "{i}翻译：什么都不会发生。{/i}"
+    
+    hide police_officer young with dissolve
+    
+    scene bg bedroom_night
+    with fade
+    
+    "{i}3周后。{/i}"
+    
+    "【短信通知】"
+    "「经调查，证据不足，不予立案。」"
+    
+    $ police_report_2 = True
+    
+    "新物品：【报警回执单2号】"
+    "又一张盖着公章的纸。又一段被程序终结的正义。"
+    
+    jump chapter5_ending
+
+# ==========================================
+# 路线B：HR内部举报
+# ==========================================
+
+label route_b_hr:
+    scene bg bedroom_night
+    with fade
+    
+    "你选择了内部渠道。"
+    "你相信公司会保护自己人。你相信规则之内能解决。"
+    
+    jump task_5_b_1
+
+label task_5_b_1:
+    scene bg hr_office
+    with fade
+    
+    "HR总监办公室。3楼。"
+    
+    show hr_director at center with dissolve
+    
+    "HR总监" "佘小姐，请坐。这事很严重，你明白吗？"
+    "HR总监" "指控一位高级经理……我们需要非常谨慎。"
+    
+    menu:
+        "回应："
+        
+        "我不是指控，我是举报。":
+            s "我不是指控，我是举报。这是两回事。"
+            "HR总监" "……措辞的区别。继续。"
+            
+        "我有证据。":
+            s "我有证据。工资差异记录。聊天记录。证人。"
+            "HR总监" "请出示。"
+            $ courage += 10
+            
+        "我要留记录。":
+            s "我要这次谈话有记录。邮件抄送，或者会议纪要。"
+            "HR总监" "……当然。这是标准流程。"
+            $ courage += 5
+    
+    "你把证据摊在桌上。"
+    
+    "HR总监" "明白了。我们会内部调查。有结果通知你。"
+    
+    hide hr_director with dissolve
+    
+    scene black
+    with fade
+    
+    "{i}2周后。{/i}"
+    
+    scene bg hr_office
+    with fade
+    
+    show hr_director at center
+    
+    "HR总监" "调查结束。无充分证据证明不当行为。"
+    "HR总监" "但已提醒陈经理注意职业边界。"
+    
+    s "……就这样？"
+    
+    "HR总监" "佘小姐，我建议你关注自己的职业发展。"
+    "HR总监" "对了，部门重组的通知你收到了吗？"
+    
+    hide hr_director with dissolve
+    
+    $ department_reorganized = True
+    
+    scene bg remote_office
+    with fade
+    
+    "偏远办公室。独自一人。没团队。"
+    "你的工位对着墙。没有窗。"
+    
+    jump chapter5_ending
+
+# ==========================================
+# 路线C：公众曝光
+# ==========================================
+
+label route_c_public:
+    scene bg bedroom_night
+    with fade
+    
+    "你选择了公众。"
+    "你相信声音。你相信众目睽睽之下，真相无法被掩埋。"
+    
+    jump task_5_c_1
+
+screen xiaohongshu_post():
+    modal True
+    
+    default disclosure_level = "medium"
+    default selected_evidence = []
+    default post_title = ""
+    
+    add Solid("#ffffff")
+    
+    frame:
+        xalign 0.5
+        yalign 0.1
+        background "#ff2442"
+        xsize 800
+        ysize 60
+        padding (20, 10)
+        
+        text "小红书" size 24 color "#ffffff" xalign 0.5
+    
+    frame:
+        xalign 0.5
+        yalign 0.55
+        xsize 800
+        ysize 600
+        background "#f8f8f8"
+        padding (30, 30)
+        
+        vbox:
+            spacing 20
+            
+            hbox:
+                spacing 10
+                text "标题：" size 18 color "#333333"
+                
+                textbutton (post_title if post_title else "点击输入标题..."):
+                    xsize 600
+                    ysize 40
+                    background "#ffffff"
+                    text_size 16
+                    text_color ("#333333" if post_title else "#999999")
+                    action Show("post_title_input")
+            
+            null height 20
+            
+            text "披露程度：" size 18 color "#333333"
+            
+            hbox:
+                spacing 15
+                
+                textbutton "隐去细节":
+                    action SetScreenVariable("disclosure_level", "low")
+                    background ("#ff2442" if disclosure_level == "low" else "#dddddd")
+                
+                textbutton "部分实名":
+                    action SetScreenVariable("disclosure_level", "medium")
+                    background ("#ff2442" if disclosure_level == "medium" else "#dddddd")
+                
+                textbutton "完全公开":
+                    action SetScreenVariable("disclosure_level", "high")
+                    background ("#ff2442" if disclosure_level == "high" else "#dddddd")
+            
+            null height 20
+            
+            text "附带证据：" size 18 color "#333333"
+            
+            grid 2 2:
+                spacing 10
+                
+                textbutton "工资差异记录":
+                    action ToggleScreenVariable("selected_evidence", "salary")
+                    background ("#ff2442" if "salary" in selected_evidence else "#dddddd")
+                    xsize 200
+                    ysize 50
+                
+                textbutton "聊天记录截图":
+                    action ToggleScreenVariable("selected_evidence", "chat")
+                    background ("#ff2442" if "chat" in selected_evidence else "#dddddd")
+                    xsize 200
+                    ysize 50
+                
+                textbutton "报警回执":
+                    action ToggleScreenVariable("selected_evidence", "police")
+                    background ("#ff2442" if "police" in selected_evidence else "#dddddd")
+                    xsize 200
+                    ysize 50
+                
+                textbutton "证人证言":
+                    action ToggleScreenVariable("selected_evidence", "witness")
+                    background ("#ff2442" if "witness" in selected_evidence else "#dddddd")
+                    xsize 200
+                    ysize 50
+            
+            null height 30
+            
+            textbutton "发布":
+                xalign 0.5
+                xsize 200
+                ysize 50
+                background "#ff2442"
+                text_size 20
+                text_color "#ffffff"
+                action [Return({"disclosure": disclosure_level, "evidence": selected_evidence, "title": post_title})]
+
+screen post_title_input():
+    modal True
+    
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xpadding 30
+        ypadding 30
+        background "#ffffff"
+        
+        vbox:
+            spacing 15
+            
+            text "输入标题：" size 20
+            
+            textbutton "在游戏公司被性骚扰，我决定说出来":
+                action [SetScreenVariable("post_title", "在游戏公司被性骚扰，我决定说出来"), Hide("post_title_input")]
+            
+            textbutton "关于某游戏公司高管，一些必须讲的事":
+                action [SetScreenVariable("post_title", "关于某游戏公司高管，一些必须讲的事"), Hide("post_title_input")]
+            
+            textbutton "22k vs 19.5k，不只是工资":
+                action [SetScreenVariable("post_title", "22k vs 19.5k，不只是工资"), Hide("post_title_input")]
+            
+            textbutton "取消":
+                action Hide("post_title_input")
+                xalign 0.5
+
+label task_5_c_1:
+    call screen xiaohongshu_post
+    
+    $ post_result = _return
+    
+    scene bg bedroom_night
+    with fade
+    
+    "帖子发出。"
+    
+    $ post_views = 90000
+    $ post_comments = 7000
+    $ media_contacted = 2
+    
+    "24小时。"
+    "9万浏览量。"
+    "7000多条评论。"
+    "2家媒体联系。"
+    
+    "{i}反噬。{/i}"
+    
+    "她就是想要钱。"
+    "为什么不早说？"
+    "他是个好人，她在毁他。"
+    
+    $ public_pressure = 50
+    $ mental -= 30
+    
+    "压力+[public_pressure]。睡眠-80%。"
+    
+    "但……"
+    
+    "【私信】姐妹，我也经历过。谢谢你敢说。"
+    "【私信】我在这家公司3年了，一直不敢说。"
+    "【私信】你不是一个人。"
+    
+    "你不再是一个人。"
+    
+    jump chapter5_ending
+
+# ==========================================
+# 路线D：离开
+# ==========================================
+
+label route_d_leave:
+    scene bg bedroom_night
+    with fade
+    
+    "你选择了离开。"
+    "有时候，活下去比赢更重要。"
+    
+    jump task_5_d_1
+
+screen resignation_letter():
+    modal True
+    
+    default reason_choice = ""
+    
+    add Solid("#f5f5f5")
+    
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xsize 700
+        ysize 600
+        background "#ffffff"
+        padding (60, 60)
+        
+        vbox:
+            spacing 30
+            
+            text "辞职信" size 28 color "#333333" xalign 0.5
+            
+            null height 20
+            
+            text "尊敬的HR：" size 16 color "#333333"
+            text "    我申请辞去设计部职位，最后工作日为两周后。" size 16 color "#333333"
+            
+            null height 30
+            
+            text "辞职理由：" size 16 color "#333333" bold True
+            
+            vbox:
+                spacing 15
+                
+                button:
+                    xfill True
+                    ysize 50
+                    background ("#e8e8e8" if reason_choice == "personal" else "#ffffff")
+                    hover_background "#f0f0f0"
+                    action SetScreenVariable("reason_choice", "personal")
+                    
+                    text "A. 个人原因" size 16 color "#333333" xalign 0.5
+                
+                button:
+                    xfill True
+                    ysize 50
+                    background ("#e8e8e8" if reason_choice == "blank" else "#ffffff")
+                    hover_background "#f0f0f0"
+                    action SetScreenVariable("reason_choice", "blank")
+                    
+                    text "B. 不填" size 16 color "#333333" xalign 0.5
+                
+                button:
+                    xfill True
+                    ysize 50
+                    background ("#e8e8e8" if reason_choice == "truth" else "#ffffff")
+                    hover_background "#f0f0f0"
+                    action SetScreenVariable("reason_choice", "truth")
+                    
+                    text "C. 真相（即使什么也改变不了）" size 16 color "#333333" xalign 0.5
+            
+            null height 40
+            
+            text "申请人：佘小曼" size 16 color "#333333" xalign 1.0
+            text "日期：2028年4月15日" size 16 color "#333333" xalign 1.0
+            
+            null height 30
+            
+            textbutton "提交":
+                xalign 0.5
+                xsize 150
+                ysize 45
+                background ("#cccccc" if reason_choice == "" else "#27ae60")
+                text_size 18
+                text_color "#ffffff"
+                action [Return(reason_choice)]
+
+label task_5_d_1:
+    call screen resignation_letter
+    
+    $ resignation_reason = _return
+    
+    scene bg bedroom_night
+    with fade
+    
+    if resignation_reason == "personal":
+        "你写了'个人原因'。最安全的答案。最沉默的答案。"
+    elif resignation_reason == "blank":
+        "你留了一栏空白。有时候，空白比文字更响亮。"
+    elif resignation_reason == "truth":
+        "你写下了真相。每一个字都像是从骨头上刮下来的。"
+        "即使什么也改变不了。"
+    
+    $ resignation_written = True
+    
+    jump last_day
+
+label last_day:
+    scene bg office_floor
+    with fade
+    
+    "最后一天。"
+    
+    show xiaojin at left with dissolve
+    
+    xiaojin "……真的要走了？"
+    
+    s "嗯。"
+    
+    xiaojin "这地方配不上你。但也……别太拼了，好吗？"
+    
+    hide xiaojin with moveoutleft
+    
+    show linjie at right with moveinright
+    
+    "林姐走过来。她看着你，很久。"
+    "然后她抱了你。"
+    "{i}她第一次碰你。{/i}"
+    
+    linjie "我撑了3年。你4个月。"
+    linjie "你比我强。"
+    
+    hide linjie with dissolve
+    
+    scene bg building_exterior
+    with fade
+    
+    "你走出去。"
+    "大楼从外面看一样。永远一样。"
+    "已经有人坐在你工位上了。"
+    
+    $ last_day_done = True
+    
+    jump chapter5_ending
+
+# ==========================================
+# 第五章结局
+# ==========================================
+
+label chapter5_ending:
+    scene bg bedroom_night
+    with fade
+    
+    "第五章结束。"
+    
+    if route_legal:
+        "你选择了法律。程序走完了，正义还在路上。"
+    elif route_hr:
+        "你选择了内部。系统保护了系统，你学会了墙的颜色。"
+    elif route_public:
+        "你选择了公众。声音很吵，但至少有人听见了。"
+    elif route_leave:
+        "你选择了离开。活着走出去，本身就是一种胜利。"
+    
+    "《She: 镜中倒影》第五章 - 完"
+    
     return
