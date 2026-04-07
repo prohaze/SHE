@@ -66,7 +66,7 @@ screen item_description(description, name, image):
 screen items_screen():
     modal True
     # 添加进度显示
-    text "已发现物品[len(clicked_items)]/3":
+    text "已发现物品[len(clicked_items)]/4":
         xalign 0.95
         yalign 0.05
         size 36
@@ -286,7 +286,7 @@ label start:
 label chapter0:
     show black #替换黑幕布
     image chapter0_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
-    show chapter0_title "序章：入职"
+    show chapter0_title "序章：音信"
     with fade
     pause 2
     hide chapter0_title
@@ -295,13 +295,14 @@ label chapter0:
     scene office_hall
     with fade
     pause 1
-    show she_01_normal_nocard:
-        zoom 0.93
+    show she_01_normal_nocard onlayer front:
+        zoom 0.78
         xzoom -1.0
-        xpos 50
-        ypos 100
+        xpos -15
+        ypos 220
     "{i}这个招聘季投了147份简历, 12封是拒信，其他杳无音讯。{/i}"
-    "{i}妈妈每周日打电话问你什么时候能找到工作，别再挑了。但这一次……感觉不一样。{/i}"
+    "{i}妈妈每周日打电话问你什么时候能找到工作，别再挑了。\n但这一次……感觉不一样。{/i}"
+    hide she_01_normal_nocard onlayer front
     scene black with fade
     "{i}你进入了等待室，下一个就到你了。{/i}"
     jump waiting_room
@@ -447,46 +448,146 @@ screen low_notify(message, duration=1):
             spacing 8
             text message size 30
 
+#===================2×2选项方阵===================
+screen grid_choice(title, opt1, opt2, opt3, opt4, act1, act2, act3, act4):
+    modal True
+    style_prefix "choice"
+    
+    # 2×2 按钮网格
+    grid 2 2:
+        xalign 0.5
+        yalign 0.95
+        spacing 20
+        
+        # 第一行
+        button :
+            xsize 600
+            ysize 50
+            action act1
+            
+            text opt1:
+                size 32
+                xalign 0.5
+                yalign 0.5
+                idle_color "#888888"
+
+        button:
+            xsize 600
+            ysize 50
+            action act2
+            
+            text opt2:
+                size 32
+                xalign 0.5
+                yalign 0.5
+                idle_color "#888888"
+
+        # 第二行
+        button:
+            xsize 600
+            ysize 50
+            action act3
+            
+            text opt3:
+                size 32
+                xalign 0.5
+                yalign 0.5
+                idle_color "#888888"
+
+        button:
+            xsize 600
+            ysize 50
+            action act4
+            
+            text opt4:
+                size 32
+                xalign 0.5
+                yalign 0.5
+                idle_color "#888888"
+
+#=======================
+
 define c = Character("陈永仁")
 
 label chapter0_2:
-    scene chen_office:
-        zoom 2.7
-        xalign 0.5
+    scene chen_office with fade:
+        zoom 1.3
+        xalign 0.9
         yalign 0.4
-    show chen_03_narroweyes:
-        zoom 1.1
+    show she_01_normal_nocard onlayer front with dissolve:
+        zoom 0.78
         xzoom -1.0
-        xpos 1230
-        ypos 50
-    show she_01_normal_nocard:
+        xpos -15
+        ypos 220
+    show chen_03_narroweyes with dissolve:
         zoom 0.9
         xzoom -1.0
-        xpos 50
-        ypos 110
+        xpos 1250
+        ypos 160
     "{i}他站起来迎接你，温暖的笑容，完美的姿态。他是那种让你立刻感受到自己被看见的人。{/i}"
-    "{i}你坐下了，被他办公桌上的东西吸引了注意。{/i}"
+    show she_01_normal_nocard_eye onlayer front with dissolve:
+        zoom 0.78
+        xzoom -1.0
+        xpos -15
+        ypos 220
+    "{i}你坐下了，被他办公室的布置吸引了注意。{/i}"
+    hide she_01_normal_nocard onlayer front
+    hide she_01_normal_nocard_eye onlayer front
     scene chen_office with fade:
-        zoom 2.7
-        xalign 0.5
+        zoom 1.1
+        xalign 0.9
         yalign 0.4
-    menu:
-        "书架":
-            "上面摆放着一些法律书籍、商业策略，还有女性诗人的诗集。"
-        "桌上的照片":
-            "是一张全家福，上面有他的妻子、两个孩子，他们都在笑。"
-        "印有图案的咖啡杯":
-            "“世界最佳爸爸”——杯沿有缺口。"
-        "落地窗":
-            "站在这能看见整座城市。"
+    call screen grid_choice(
+        "你最想查看的物品是",
+        "书架", "桌上的照片",
+        "印有图案的咖啡杯", "落地窗",
+        Jump("bookshelf"), Jump("family_photo"),
+        Jump("coffee_mug"), Jump("french_window")
+    )
+label bookshelf:
+    "{i}上面摆放着一些法律书籍、商业策略，还有女性诗人的诗集。{/i}"
+    window hide
     jump after_menu
 
+label family_photo:
+    "{i}是一张全家福，上面有他的妻子、两个孩子，他们都在笑。{/i}"
+    window hide
+    jump after_menu
+
+label coffee_mug:
+    "{i}杯沿有个缺口的咖啡杯，上面印着“世界最佳爸爸”。{/i}"
+    window hide
+    jump after_menu
+
+label french_window:
+    "{i}站在这，仿佛整座城市都在自己的脚下。{/i}"
+    window hide
+    jump after_menu
+
+    #     "书架":
+    #         "上面摆放着一些法律书籍、商业策略，还有女性诗人的诗集。"
+    #     "桌上的照片":
+    #         "是一张全家福，上面有他的妻子、两个孩子，他们都在笑。"
+    #     "印有图案的咖啡杯":
+    #         "“世界最佳爸爸”——杯沿有缺口。"
+    #     "落地窗":
+    #         "站在这能看见整座城市。"
+
 label after_menu:
-    show chen_03_narroweyes:
-        zoom 1.1
+    scene chen_office with fade:
+        zoom 1.3
+        xalign 0.9
+        yalign 0.4
+    # show she_01_normal_nocard onlayer front with dissolve:
+    #     zoom 0.78
+    #     xzoom -1.0
+    #     xpos -15
+    #     ypos 220
+    show chen_03_narroweyes with dissolve:
+        zoom 0.9
         xzoom -1.0
-        xpos 650
-        ypos 50
+        xpos 680
+        ypos 160
     c"小曼，告诉我，你为什么想来这里工作？"
     menu:
         "我需要钱。":
@@ -497,11 +598,11 @@ label after_menu:
         "我想证明我能比任何人做得更好。":
             s"我想证明我能比任何人做得更好。"
             $ add_mental(1, "面试C")
-    show chen_01_normal:
-        zoom 1.1
+    show chen_01_normal with dissolve:
+        zoom 0.9
         xzoom -1.0
-        xpos 650
-        ypos 50
+        xpos 681
+        ypos 162
     c"明白了。你知道吗，我们有过更有经验的候选人。但我在你简历里看到了……渴望。"
     $ show_sequential_thoughts(
         "他在观察你的手。",
@@ -509,26 +610,29 @@ label after_menu:
         "他在看你的简历。"
     )
     pause 3
-    hide chen_01_normal
+    hide chen_01_normal with dissolve
+    hide screen high_notify
+    hide screen mid_notify
+    hide screen low_notify
     c"有什么问题想问我吗？"
     menu:
         "这里的女性晋升通道怎么样？":
             s"这里的女性晋升通道怎么样？"
             show chen_02_smile:
-                zoom 1.1
+                zoom 0.9
                 xzoom -1.0
-                xpos 650
-                ypos 50 
+                xpos 680
+                ypos 160 
             c"好问题。我们这里很进步。中层管理一半是女性……嗯，三分之一吧……有个Linda，她很优秀。"
             hide chen_02_smile
             jump chapter0_3
         "有居家办公的弹性吗？":
             s"有居家办公的弹性吗？"
             show chen_01_normal: #后面改人模狗样表情
-                zoom 1.1
+                zoom 0.9
                 xzoom -1.0
-                xpos 650
-                ypos 50
+                xpos 681
+                ypos 162
             c"好问题。我们公司其实很重视工作生活的平衡。居家办公原则上支持。"
             c"但……说实话，在游戏这行——尤其是设计师，前期最好多在场。当然，这不是强制，只是建议。"
             jump chapter0_3
@@ -537,37 +641,39 @@ label after_menu:
 
 label chapter0_3:
     show chen_03_narroweyes:
-        zoom 1.1
+        zoom 0.9
         xzoom -1.0
-        xpos 650
-        ypos 50
+        xpos 680
+        ypos 160
     c"还有别的问题吗？"
     hide chen_03_narroweyes
     show chen_03_narroweyes:
-        zoom 1.1
+        zoom 0.9
         xzoom -1.0
-        xpos 650
-        ypos 50
+        xpos 680
+        ypos 160
     show chen_03_narroweyes with move:
-        zoom 1.1
-        xzoom -1.0
-        xpos 1230
-        ypos 50
-    show she_01_normal_nocard:
         zoom 0.9
         xzoom -1.0
-        xpos 50
-        ypos 110
-    show she_03_tinysmile_nocard:
-        zoom 0.9
+        xpos 1280
+        ypos 160
+    show she_01_normal_nocard onlayer front:
+        zoom 0.78
         xzoom -1.0
-        xpos 50
-        ypos 110
+        xpos -15
+        ypos 220
+    show she_03_tinysmile_nocard onlayer front:
+        zoom 0.78
+        xzoom -1.0
+        xpos -15
+        ypos 220
     s"没有了，谢谢您。"
-
     c"那么面试就到这吧，和你的交流很愉快。"    
+    hide she_01_normal_nocard onlayer front
+    hide she_03_tinysmile_nocard onlayer front
     scene black with fade
     #show 邮件页面
+    jump chapter1
 
 
 
@@ -590,7 +696,7 @@ default eight_floor = False
 default twenty_third_floor = False
 
 # 场景定义（占位符图片）
-image bg lobby = "bg_lobby.png"  # 公司大堂
+#image bg lobby = "bg_lobby.png"  # 公司大堂
 image bg elevator = "bg_elevator.png"  # 电梯内部
 image bg coffee_stand = "bg_coffee_stand.png"  # 咖啡亭
 image bg third_floor = "bg_hr_floor.png"  # 3楼HR
@@ -604,7 +710,12 @@ image woman normal = "woman_normal.png"
 # ========== 第一章入口 ==========
 
 label chapter1:
-    scene bg lobby with fade
+    image chapter1_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
+    show chapter1_title "Chapter 1：入职"
+    with fade
+    pause 2
+    hide chapter1_title
+    scene lobby with fade
     
     # 开场
     "大楼里弥漫着空气清新剂和野心。你早到了13分钟。每个人都这样。"
@@ -618,37 +729,69 @@ screen lobby_menu(gate_used, coffee_bought, appearance_checked):
     # 临时位置设置
     vbox:
         xalign 0.5
-        yalign 0.35
+        yalign 0.45
         
-        text "大堂可探索："
+        text "大堂可探索：":
+            size 34
+            color "#ffffff"
+            outlines [ (2, "#000000", 0, 0) ]
         
         if not gate_used:
-            textbutton "闸机 - 刷工牌" action Jump("gate_interaction")
+            textbutton "闸机" action Jump("gate_interaction")
         if not coffee_bought:
-            textbutton "咖啡亭 - 买咖啡" action Jump("coffee_stand")
+            textbutton "咖啡亭" action Jump("coffee_stand")
         if not appearance_checked:
-            textbutton "电梯门倒影 - 整理仪容" action Jump("mirror_check")
+            textbutton "电梯门倒影" action Jump("mirror_check")
 
 label lobby_explore:
-    scene bg lobby
+    scene lobby with dissolve
     
     if gate_used and coffee_bought and appearance_checked:
+        show she_03_tinysmile onlayer front:
+            zoom 0.78
+            xzoom -1.0
+            xpos -15
+            ypos 220
         s "还有点时间，去熟悉熟悉办公楼层吧。"
+        hide she_03_tinysmile onlayer front with dissolve
         jump elevator_choice
     
     # 调用自定义位置的菜单
     call screen lobby_menu(gate_used, coffee_bought, appearance_checked)
 # ========== 闸机互动 ==========
+transform rotate_in:
+    # 起始：倒置旋转，透明
+    align(0.5, -0.1)
+    rotate 30
+    alpha 0.0
+    
+    # 快速滑入并旋转
+    easein 0.6 align(0.535, -0.07) rotate -5 alpha 1.0 
+
+
+transform bounce_rotate_in:
+    # 起始：倒置旋转，透明
+    align(-0.1, 1.5)
+    rotate 120
+    alpha 0.0
+    
+    # 快速滑入并旋转
+    easein 0.6 align(0.35, 0.51) rotate 0 alpha 1.0 
+    
+    # 弹性回弹
+    #easeout 0.5 rotate -10
+    easein 0.4 align(0.51, 0.505) rotate 10 
+    easeout 0.1 rotate 9 
 
 label gate_interaction:
-    scene bg lobby
     
-    "“哔！”"
+    show office_card at bounce_rotate_in
+    show office_card_rope at rotate_in
+    #"“哔！”" #改成音效
     
     "“欢迎，小曼！”{i}——这是你第一次在这里听到自己的名字{/i}"
     
     $ gate_used = True
-    
     jump lobby_explore
 
 # ========== 咖啡亭 ==========
@@ -669,7 +812,7 @@ label coffee_stand:
 # ========== 整理仪容 ==========
 
 label mirror_check:
-    scene bg lobby
+    scene lobby
     
     "{i}你穿着新买的职业裙，很合身{/i}"
     
@@ -696,8 +839,15 @@ screen elevator_menu(third_floor, eight_floor, twenty_third_floor):
             textbutton "23楼" action Jump("twenty_third_floor")
 
 label elevator_choice:
-    scene bg elevator
-    
+    scene black with dissolve
+    show elevator with fade:
+        zoom 2.3
+        align (0.5, 0.5)
+    show she_03_tinysmile onlayer front:
+        zoom 0.78
+        xzoom -1.0
+        xpos -15
+        ypos 220
     if third_floor and eight_floor and twenty_third_floor:
         jump chapter1_2
     call screen elevator_menu(third_floor, eight_floor, twenty_third_floor)
@@ -725,14 +875,21 @@ label twenty_third_floor:
 # ========== 电梯随机遭遇 ==========
 
 label elevator_encounter:
-    scene bg elevator with fade
+    scene bg elevator with fade:
+        zoom 2.3
+        align (0.5, 0.5)
     
     "{i}电梯门打开。一位40多岁的女人，套装干练，眼神疲惫。{/i}"
     
-    show woman normal at center
+    show woman normal at right
     
     unknown_woman "新来的？"
     
+    show she_05_happy onlayer front:
+        zoom 0.78
+        xzoom -1.0
+        xpos -15
+        ypos 220
     s "第一天。"
     
     unknown_woman "啊。"
@@ -741,6 +898,11 @@ label elevator_encounter:
     
     unknown_woman "设计部？"
     
+    show she_06_surprise_eye onlayer front:
+        zoom 0.78
+        xzoom -1.0
+        xpos -15
+        ypos 220
     s "诶，你怎么知道？"
     
     unknown_woman "就那种眼神。不知道你会在这待多久呢？"
@@ -754,7 +916,7 @@ label elevator_encounter:
 
 label chapter1_2:
     s"啊，时间到了，得赶紧去工位。"
-    scene bg your floor with fade
+    scene office with fade
     "{i}来到12楼，门牌标着“设计部”。{/i}"
     "{i}一排排办公桌。米色和灰色的隔间。有人在用微波炉热爆米花，快糊了。{/i}"
 
@@ -788,12 +950,6 @@ image linjie normal = "linjie_normal.png"
 image linjie stop = "linjie_stop.png"
 
 # ========== 第一章：自我介绍 ==========
-image chapter0_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
-show chapter0_title "Chapter 1 入职"
-with fade
-pause 2
-hide chapter0_title
-
 label chapter1_self_intro:
     scene bg office_floor with fade
     
@@ -1050,7 +1206,7 @@ default car_ride = False
 default xiaohongshu_contact = False
 
 label task_1_4:
-    scene bg night_office with fade
+    scene office_desk with fade
     
     "{i}入职第5天，晚上10:47{/i}"
     "{i}晚上的办公室不一样。更安静。自动售货机的嗡嗡声更响。{/i}"
@@ -1175,7 +1331,7 @@ label reject_car:
     jump task_1_4_end
 
 label task_1_4_end:
-    scene bg night_office with fade
+    scene office_desk with fade
     "{i}任务完成。{/i}"
     "{i}解锁：深夜办公室探索{/i}"
     #"{i}项目进度加5{/i}"
@@ -1223,7 +1379,7 @@ label mini_game_analysis:
 # ========== 任务1.5：家庭税 ==========
 define mom = Character("妈妈")
 label task_1_5:
-    scene bg home with fade
+    scene home with fade
     "{i}第2周，周日下午。{/i}"
     
     #增加手机画面，这部分screen可能要重做
@@ -1317,7 +1473,7 @@ label task_1_5_end:
 # ========== 任务1.6：不经意的触碰 ==========
 
 label task_1_6:
-    scene bg pantry with fade
+    scene tea_room with fade
     "{i}第3周，工作日。{/i}"
     "{i}你伸手拿杯子时，有人从你上方伸过手来。{/i}"
     
@@ -3049,7 +3205,7 @@ screen final_choice():
                 color "#FFFFFF"
                 size 16
 
-               # 逃跑选项（第5秒出现）
+        # 逃跑选项（第5秒出现）
         if countdown <= 5:
             if countdown > 2:
                 button at blink_effect:
