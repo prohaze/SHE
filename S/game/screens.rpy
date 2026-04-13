@@ -93,6 +93,8 @@ style frame:
 ## https://doc.renpy.cn/zh-CN/screen_special.html#say
 
 screen say(who, what):
+    layer "interface"  # 明确指定
+    zorder 50
 
     window:
         id "window"
@@ -105,7 +107,6 @@ screen say(who, what):
                 text who id "who"
 
         text what id "what"
-
 
     ## 如果有对话框头像，会将其显示在文本之上。请不要在手机界面下显示这个，因为
     ## 没有空间。
@@ -404,6 +405,7 @@ style main_menu_version:
 ## 屏幕同时使用，这些子屏幕将被嵌入（放置）在其中。
 
 screen game_menu(title, scroll=None, yinitial=0.0, spacing=0):
+    zorder 100
 
     style_prefix "game_menu"
 

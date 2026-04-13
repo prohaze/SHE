@@ -1,7 +1,4 @@
-﻿##自定义修改部分：
-define config.layers = ['master', 'transient', 'screens', 'interface', 'front']
-
-## 此文件包含有可自定义您游戏的设置。
+﻿## 此文件包含有可自定义您游戏的设置。
 ##
 ## 以“##”开头的语句是注释，您不应该对其取消注释。以“#”开头的语句是注释掉的代码，
 ## 在适用的时候您可能需要对其取消注释。
@@ -103,7 +100,6 @@ define config.end_game_transition = None
 ## 态。
 
 define config.window = "auto"
-
 
 ## 用于显示和隐藏对话框窗口的转场
 
