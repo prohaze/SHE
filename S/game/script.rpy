@@ -36,6 +36,13 @@ transform top_dissolve:
         alpha 1.0
         linear 0.25 alpha 0.0
 
+transform item3_left_rotate:
+    zoom 0.7
+    align(0.5, 1.0)
+    rotate 70
+    # 快速滑入并旋转
+    easein 0.6 align(0.5, 0.9) rotate 0
+
 # 物品描述屏幕，对应imagebutton中的show函数调用的screen_item_descriptions
 #！！！重要！原报错写法：用default定义默认的局部变量，无法传递参数
 #即：没有在screen中书写明确的参数声明（screen：我需要参数），show调取时screen只有局部变量传递不了存在字典里的参数信息
@@ -166,13 +173,21 @@ screen items_screen():
     
     # 物品3 - 手机
     imagebutton:
-        xpos 100
-        ypos 200
-        idle "item3_smartphone.png"
-        hover "item3_smartphone_hover.png"
+        at transform:
+            on idle:
+                zoom 0.75
+                rotate 80 
+                xpos 800
+                ypos 850
+            on hover:
+                zoom 1
+                linear 0.4 rotate 20 xpos 750 ypos 550
+        idle "chapter0_items/item3_smartphone.png"
+        hover "chapter0_items/item3_smartphone_hover.png"
+
         if not item3_smartphone_clicked: 
             action [
-                SetVariable("item3_smartphone_clicked", True),
+                SetVariable("chapter0_items/item3_smartphone_clicked", True),
                 SetVariable("clicked_items", 
                     clicked_items if "smartphone" in clicked_items else clicked_items + ["smartphone"]
                 ),
@@ -187,8 +202,8 @@ screen items_screen():
                 )
             ]
         else:
-            idle "item3_smartphone.png"
-            hover "item3_smartphone_hover.png"
+            idle "chapter0_items/item3_smartphone.png"
+            hover "chapter0_items/item3_smartphone_hover.png"
             action Show("item_description", description=item_descriptions["smartphone"], name=item_names["smartphone"], image=None)
 
     # 物品4 - 玻璃窗
@@ -362,6 +377,7 @@ label after_third_item:
     s "面试好像要开始了？"
     jump explore_complete
 
+#========================
 
 default money = 2000
 default social = 0
@@ -698,11 +714,8 @@ default twenty_third_floor = False
 
 # 场景定义（占位符图片）
 #image bg lobby = "bg_lobby.png"  # 公司大堂
-image bg elevator = "bg_elevator.png"  # 电梯内部
-image bg coffee_stand = "bg_coffee_stand.png"  # 咖啡亭
 image bg third_floor = "bg_hr_floor.png"  # 3楼HR
 image bg eight_floor = "bg_marketing_floor.png"  # 8楼市场部
-image bg your_floor = "bg_your_floor.png"  # 12楼你的部门（设计部）
 image bg twenty_third_floor = "bg_executive_floor.png"  # 23楼高管层
 
 # 角色立绘（占位符）
@@ -1059,6 +1072,7 @@ label xiaojin_neutral:
     s "等一会儿可以吗，我想先收拾一下桌面。"
     
     xiaojin "行，那你先忙，有事找我。"
+    hide she_03_tinysmile_eye onlayer top
     hide jin_01_happy with moveoutright
 
     jump linjie_encounter
@@ -1155,9 +1169,7 @@ label linjie_response_c:
 
 # ========== 任务1.3：第一个任务 ==========
 label task_1_3:
-    show meeting_room with fade:
-        zoom 1.45
-        yalign 0.6
+    show meeting_room with fade
     
     "{i}上午10点，C会议室。{/i}"
     "{i}日光灯嗡嗡响。8个人围坐。你比最年轻的至少小10岁。{/i}"
@@ -1282,9 +1294,7 @@ label task_response_c:
 
 # 任务分配后
 label after_task_assignment:
-    scene meeting_room with fade:
-        zoom 1.45
-        yalign 0.6
+    scene meeting_room with fade
     
     "{i}会议结束，大家都收拾东西离开了。{/i}"
     
@@ -2667,7 +2677,7 @@ default car_event = False
 label bar_ending:
     hide screen bar_scene
     
-    scene balck #bg street_night
+    scene bg street_night
     with fade
     
     "{i}夜深了，大家陆续离开。{i}"
@@ -3318,7 +3328,7 @@ init -1:
         repeat
 
 # ========== 屏幕定义 ==========
-# image flash = Movie(play="tv_breakdown.av1")
+
 
 
 # 第一个QTE：车内边界警报
@@ -3501,9 +3511,6 @@ transform appear_disappear:
 # 带倒计时的QTE screen
 screen car_qte_1_timer(duration=1.2):
     modal True
-    
-    # 背景抖动
-    add Solid("#1a202c") at screen_shake
     
     # 倒计时显示
     vbox:
@@ -3821,18 +3828,20 @@ label qte_loop:
 label qte_movie_phase:
     # 显示影片，不可交互
     play sound "flash.mp3"
-    show flash:
-            zoom 2
-            align(0.5, 0.5)
+    show expression Movie(play="videos/tv_breakdown.webm", size=(1960, 1080)) as flash_video at truecenter
+    
+    # 播放固定时间（1秒）
+    $ renpy.pause(1.0, hard=True)
+    
+    # 隐藏视频
+    hide flash_video
     #骚扰01
     if qte_cycle == 1:
         show touch
 
     #骚扰02
     if qte_cycle == 2:
-        show black:
-            zoom 2
-            align(0.5, 0.5)
+        scene black
         image harrassment_02a = ParameterizedText(xalign=0.5, yalign=0.45, size=68, color="#8a1616")
         image harrassment_02b = ParameterizedText(xalign=0.505, yalign=0.454, size=68, color="#b50d0d", bold=True)
         show harrassment_02a "有人告诉过你，\n你工作的时候有多迷人吗？" at re_shake
@@ -3849,11 +3858,11 @@ label qte_movie_phase:
 
     
     # 影片播放固定时间（例如1.5秒）
-    $ renpy.pause(1, hard=True)  # hard=True 防止点击跳过
+    # $ renpy.pause(1, hard=True)  # hard=True 防止点击跳过
     
     # 切换到screen阶段
     $ qte_phase = "screen"
-    hide flash
+    # hide flash
     
     jump qte_loop
 
@@ -3868,7 +3877,7 @@ label qte_screen_phase:
     # 检查玩家是否操作
     if _return:
         # 玩家成功操作，结束QTE
-        jump qte_success
+        jump car_ending_avoided
     else:
         # 玩家未操作，继续循环
         $ qte_cycle += 1
