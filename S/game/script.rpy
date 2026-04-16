@@ -796,7 +796,6 @@ transform rotate_in:
     # 快速滑入并旋转
     easein 0.6 align(0.535, -0.07) rotate -5 alpha 1.0 
 
-
 transform bounce_rotate_in:
     # 起始：倒置旋转，透明
     align(-0.1, 1.5)
@@ -813,6 +812,7 @@ transform bounce_rotate_in:
 
 label gate_interaction:
     
+    play sound "rope_drop.ogg"
     show office_card at bounce_rotate_in
     show office_card_rope at rotate_in
     #"“哔！”" #改成音效
@@ -2048,10 +2048,11 @@ label ask_xiaojin_directly:
     hide xiaojin
     
     # 任务更新界面
+    play sound "clue.ogg"
     call screen clue_unequal_wage("线索") with dissolve
     
     "{i}获得了线索：阴阳工资{/i}" #加音效：噔噔噔↑
-       
+
     $ salary_evidence = True
     $ investigation_unlocked = True
     $ linjie_interest += 1
@@ -2084,6 +2085,7 @@ label investigate_other_ways:
     "【正在浏览】{i}内部文档：薪酬制度细则{/i}"
     "【正在浏览】{i}匿名论坛：公司薪资讨论版块{/i}"
 
+    play sound "clue.ogg"
     call screen clue_unequal_wage("线索") with dissolve
     "{i}获得了线索：阴阳工资{/i}" #加音效：噔噔噔↑
 
@@ -2329,113 +2331,83 @@ default bar_menu_choice = False
 
 # 任务2.3：庆功酒
 label celebration_drink:
-    scene bg bar_night
-    with fade
+    scene bar_outside with fade
     
     "第7周，His Game项目成功上线。"
     "数据表现超过预期，部门办庆功酒，酒水畅饮，陈永仁买单。所有人都来了。"
-    
-    # 初始化酒吧场景
+
     jump bar_interaction
 
 # 酒吧交互界面
+# 箭头跳动特效
+transform heartbeat_bar1: #上下跳
+        linear 0.6 zoom 0.9 yoffset 2
+        linear 0.6 zoom 0.9 yoffset -2
+        repeat
+transform heartbeat_bar2: #左右跳
+        linear 0.6 zoom 0.9 xoffset 2
+        linear 0.6 zoom 0.9 xoffset -2
+        repeat
+transform arrow_style_ud:
+        on idle:
+            heartbeat_bar1
+        on hover:
+            zoom 1.05 
+transform arrow_style_lr:
+        on idle:
+            heartbeat_bar2
+        on hover:
+            zoom 1.05 
+
+# 初始化酒吧场景
+# 本场景bgm循环播放
 screen bar_scene():
-    add "bg bar_night"
-    
-    frame:
-        xalign 0.5
-        ypos 20
-        background "#00000080"
-        padding (20, 10)
-        text "Nine Bar" size 30 bold True xalign 0.1
 
     # 1. 酒单（左侧）
-    button:
-        xpos 100
-        ypos 200
-        xsize 120
-        ysize 150
-        background "#8b4513"
-        hover_background "#a0522d"
-        action Jump("bar_menu_choice")
-
-        vbox:
-            xalign 0.5
-            yalign 0.5
-            text "🍷" size 40 xalign 0.5
-            text "酒单" size 16 xalign 0.5
+    imagebutton at arrow_style_ud:
+        xpos 440
+        ypos 330
+        idle "arrow_down"
+        hover "arrow_down"
+        action [Hide("bar_scene", fade), Jump("bar_menu_choice")]
     
     # 2. 小金（大声聊天区域）
-    button:
-        xpos 300
-        ypos 250
-        xsize 140
-        ysize 120
-        background "#2e8b57"
-        hover_background "#3cb371"
-        #action Jump("talk_to_xiaojin")
-        action If(talk_to_xiaojin, Jump("talk_to_xiaojin_again"), Jump("talk_to_xiaojin"))
-
-        vbox:
-            xalign 0.5
-            yalign 0.5
-            text "💬" size 35 xalign 0.5
-            text "小金" size 16 xalign 0.5
-            text "(大声聊天)" size 12 xalign 0.5
+    imagebutton at arrow_style_lr:
+        align(0.01, 0.5)
+        idle "arrow_left"
+        hover "arrow_left"
+        action If(talk_to_xiaojin, [Hide("bar_scene", fade), Jump("talk_to_xiaojin_again")], 
+            [Hide("bar_scene", fade), Jump("talk_to_xiaojin")]
+            )
         
     # 3. 林姐（角落卡座）
-    button:
-        xpos 550
-        ypos 180
-        xsize 130
-        ysize 130
-        background "#4a4a4a"
-        hover_background "#696969"
-        action If(sit_with_lin, Jump("sit_with_lin_again"), Jump("sit_with_lin"))
-        
-        vbox:
-            xalign 0.5
-            yalign 0.5
-            text "🪑" size 35 xalign 0.5
-            text "林姐" size 16 xalign 0.5
-            text "(角落卡座)" size 12 xalign 0.5
-    
+    imagebutton at arrow_style_ud:
+        align (0.5, 0.05)
+        idle "arrow_up"
+        hover "arrow_up"
+        action If(sit_with_lin, [Hide("bar_scene", fade), Jump("sit_with_lin_again")], 
+            [Hide("bar_scene", fade), Jump("sit_with_lin")]
+            )
+
     # 4. 陈永仁（中心位置）
-    button:
-        xpos 400
-        ypos 350
-        xsize 140
-        ysize 140
-        background "#8b0000"
-        hover_background "#a52a2a"
+    imagebutton at arrow_style_lr:
+        align (0.99, 0.5)
+        idle "arrow_right"
+        hover "arrow_right"
         action If(observe_chen, Jump("observe_chen_again"), Jump("observe_chen"))
-        
-        vbox:
-            xalign 0.5
-            yalign 0.5
-            text "👔" size 40 xalign 0.5
-            text "陈永仁" size 16 xalign 0.5
-            text "(中心位置)" size 12 xalign 0.5
     
     # 5. 洗手间（逃离）
-    button:
-        xpos 650
-        ypos 100
-        xsize 100
-        ysize 100
-        background "#4682b4"
-        hover_background "#5f9ea0"
+    imagebutton at arrow_style_ud:
+        align (0.5, 0.95)
+        idle "arrow_down"
+        hover "arrow_down"
         action If(bar_restroom, Jump("bar_restroom_again"), Jump("bar_restroom"))
-        
-        vbox:
-            xalign 0.5
-            yalign 0.5
-            text "🚻" size 30 xalign 0.5
-            text "洗手间" size 14 xalign 0.5
 
 # 酒吧交互主循环
 label bar_interaction:
-    show screen bar_scene
+    scene bar_inside with fade
+    show screen bar_scene with dissolve
+    pause 0.3
     "酒吧里人声鼎沸。你想做什么？"
     $ ui.interact()
 
@@ -2447,27 +2419,30 @@ label check_all_bar_conditions:
         jump bar_interaction
 
 # 酒单选择
+screen bar_menu_choice:
+    add "bar_drinkmenu"
+    style_prefix "choice"
+    
+    # 临时位置设置
+    vbox:
+        xalign 0.5
+        yalign 0.6
+        
+        textbutton "啤酒": 
+            action Jump("beer")
+        textbutton "红酒": 
+            action Jump("wine")
+        textbutton "鸡尾酒": 
+            action Jump("cocktail")
+        textbutton "汽水": 
+            action Jump("soda")
+
 label bar_menu_choice:
     hide screen bar_scene
-    
-    menu:
-        "你拿起酒单，选择："
-        
-        "啤酒（轻松）":
-            $ drink_choice = "beer"
-            "你点了一杯精酿啤酒，泡沫细腻。"
-            
-        "红酒（正式）":
-            $ drink_choice = "wine"
-            "红酒在杯中摇晃，颜色深沉。"
-            
-        "鸡尾酒（冒险）":
-            $ drink_choice = "cocktail"
-            "五颜六色的液体，不知道里面有什么。"
-            
-        "软饮（清醒）":
-            $ drink_choice = "soft"
-            "可乐加冰，气泡刺激着喉咙。你保持清醒。"
+    scene bar_drinkmenu
+
+    show screen bar_menu_choice
+    $ ui.interact()
     
     $ bar_menu_choice = True
     jump check_all_bar_conditions
@@ -2475,7 +2450,7 @@ label bar_menu_choice:
 # 和小金聊天 - 修复：简化结构，确保变量设置正确
 label talk_to_xiaojin:
     hide screen bar_scene
-    scene bg bar_table
+    scene bar_counter
     
     "小金正在大声说着什么，周围几个人在笑。"
     
@@ -2507,9 +2482,12 @@ label talk_to_xiaojin:
     # 关键修复：在menu结束后统一设置变量
     $ talk_to_xiaojin = True
     $ xiaojin_interest += 1
+    hide talk_to_xiaojin with dissolve
     jump check_all_bar_conditions
 
 label talk_to_xiaojin_again:
+    hide screen bar_scene
+    show bar_counter
     "{i}小金还在和其他人聊天，插不进话。{/i}"
     jump check_all_bar_conditions
 
@@ -2541,9 +2519,7 @@ screen clue_moderec:
 
 label sit_with_lin:
     hide screen bar_scene
-    
-    scene bg bar_corner
-    with dissolve
+    scene bar_booth with dissolve
     
     "{i}角落的卡座，林姐一个人坐在那里，光影在她脸上切割出明与暗。{/i}"
     
@@ -2558,10 +2534,10 @@ label sit_with_lin:
     "{i}她没有回答你的问题，像是醉了。{/i}"
     linjie "去别的地方转转吧，别和我一样。"
 
-    scene black
-    with dissolve
+    scene black with dissolve
     pause 1.0
 
+    #这里加脚步声或者其他音效，表现小曼转身林姐追上来叫住她
     linjie "哎——"
     linjie "别认为“在他眼里我很特别”。”"
     linjie "你本来就特别。"
@@ -2571,36 +2547,57 @@ label sit_with_lin:
     $ hidden_truth_unlocked = True
     
     # 关键修复：使用call screen而不是show screen + ui.interact()
+    play sound "clue.ogg"
     call screen clue_moderec
     
     jump check_all_bar_conditions
 
 label sit_with_lin_again:
+    hide screen bar_scene
+    show bar_booth
     linjie "怎么又回来了？让我一个人待会儿，你出去转转吧。"
     jump check_all_bar_conditions
 
 # 观察陈永仁
 label observe_chen:
     hide screen bar_scene
+    show bar_chen with fade
     
-    show chen_looking_others
+    show chen_02_smile with dissolve:
+        zoom 0.9
+        xzoom 1.0
+        xpos 690
+        ypos 162
     "{i}你站在人群边缘，看着陈永仁。{/i}"
     "{i}他对男同事：拍肩、大笑、讲黄色笑话。{/i}"
     "{i}他对女同事：靠近、倾听、眼神专注。{/i}"
     "{i}他对上级：谦卑、递烟、不时倒酒。{/i}"
-    hide chen_looking_others
+    hide chen_02_smile
 
-    show chen_smile
-    "{i}他时不时看向你，微笑。{/i}"
-    hide chen_smile with dissolve
+    show chen_06_surprise:
+        zoom 0.9
+        xzoom 1.0
+        xpos 683
+        ypos 162 
+    "{i}他发现你在不远处……{/i}"
+    show chen_04_frontsmile with dissolve:
+        zoom 0.9
+        xzoom 1.0
+        xpos 688
+        ypos 161
+    hide chen_06_surprise
+    "{i}于是看向你，微笑。{/i}"
 
     "{i}他总能根据不同对象，切换最佳模式。{/i}"
+    hide chen_04_frontsmile
     
     $ observe_chen = True
     $ investigation_skill += 1
     jump check_all_bar_conditions
 
 label observe_chen_again:
+    hide screen bar_scene
+    show bar_chen with dissolve
     "{i}他还在和人推杯换盏……{/i}"
     jump check_all_bar_conditions
 
@@ -2623,8 +2620,35 @@ label bar_restroom:
     jump check_all_bar_conditions
 
 label bar_restroom_again:
+    hide screen bar_scene
+    show bg restroom_mirror
     "{i}洗手间有人，先出去吧。{/i}"
     jump check_all_bar_conditions
+
+# 酒单选酒
+label beer:
+    $ drink_choice = "beer"
+    "{i}你点了一杯精酿啤酒，泡沫细腻。{/i}"
+    hide screen bar_menu_choice
+    jump bar_interaction
+
+label wine:
+    $ drink_choice = "beer"
+    "{i}红酒在杯中摇晃，颜色深沉。{/i}"
+    hide screen bar_menu_choice
+    jump bar_interaction
+
+label cocktail:
+    $ drink_choice = "beer"
+    "{i}五颜六色的液体，不知道里面有什么。{/i}"
+    hide screen bar_menu_choice
+    jump bar_interaction
+
+label soda:
+    $ drink_choice = "beer"
+    "{i}可乐加冰，气泡刺激着喉咙。你保持清醒。{/i}"
+    hide screen bar_menu_choice
+    jump bar_interaction
 
 # 酒吧结束，进入任务2.4
 init python:
@@ -4838,3 +4862,89 @@ label chapter5_ending:
     "《She: 镜中倒影》第五章 - 完"
     
     return
+
+
+
+#     #1. 酒单（左侧）
+#     button:
+#         xpos 100
+#         ypos 200
+#         xsize 120
+#         ysize 150
+#         background "#8b4513"
+#         hover_background "#a0522d"
+#         action Jump("bar_menu_choice")
+
+#         vbox:
+#             xalign 0.5
+#             yalign 0.5
+#             text "🍷" size 40 xalign 0.5
+#             text "酒单" size 16 xalign 0.5
+    
+#     # 2. 小金（大声聊天区域）
+#     button:
+#         xpos 300
+#         ypos 250
+#         xsize 140
+#         ysize 120
+#         background "#2e8b57"
+#         hover_background "#3cb371"
+#         #action Jump("talk_to_xiaojin")
+#         action If(talk_to_xiaojin, Jump("talk_to_xiaojin_again"), Jump("talk_to_xiaojin"))
+
+#         vbox:
+#             xalign 0.5
+#             yalign 0.5
+#             text "💬" size 35 xalign 0.5
+#             text "小金" size 16 xalign 0.5
+#             text "(大声聊天)" size 12 xalign 0.5
+        
+#     # 3. 林姐（角落卡座）
+#     button:
+#         xpos 550
+#         ypos 180
+#         xsize 130
+#         ysize 130
+#         background "#4a4a4a"
+#         hover_background "#696969"
+#         action If(sit_with_lin, Jump("sit_with_lin_again"), Jump("sit_with_lin"))
+        
+#         vbox:
+#             xalign 0.5
+#             yalign 0.5
+#             text "🪑" size 35 xalign 0.5
+#             text "林姐" size 16 xalign 0.5
+#             text "(角落卡座)" size 12 xalign 0.5
+    
+#     # 4. 陈永仁（中心位置）
+#     button:
+#         xpos 400
+#         ypos 350
+#         xsize 140
+#         ysize 140
+#         background "#8b0000"
+#         hover_background "#a52a2a"
+#         action If(observe_chen, Jump("observe_chen_again"), Jump("observe_chen"))
+        
+#         vbox:
+#             xalign 0.5
+#             yalign 0.5
+#             text "👔" size 40 xalign 0.5
+#             text "陈永仁" size 16 xalign 0.5
+#             text "(中心位置)" size 12 xalign 0.5
+    
+#     # 5. 洗手间（逃离）
+#     button:
+#         xpos 650
+#         ypos 100
+#         xsize 100
+#         ysize 100
+#         background "#4682b4"
+#         hover_background "#5f9ea0"
+#         action If(bar_restroom, Jump("bar_restroom_again"), Jump("bar_restroom"))
+        
+#         vbox:
+#             xalign 0.5
+#             yalign 0.5
+#             text "🚻" size 30 xalign 0.5
+#             text "洗手间" size 14 xalign 0.5
