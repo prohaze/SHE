@@ -1540,7 +1540,8 @@ label reject_car:
 
 label task_1_4_end:
     scene office_desk with fade
-    "{i}任务完成。{/i}"
+    "{i}深夜的办公室闪烁的是代码的霓虹。{/i}"
+    "{i}电子bug能梦见仿生萤火虫吗？\n在刚来那天所看到的落地窗里，星星亮起，夜幕降临。{/i}"
     #"{i}解锁：深夜办公室探索{/i}"
     jump task_1_5
 
@@ -2296,10 +2297,10 @@ label reply_thumb_up:
     scene bg bedroom_night
     with dissolve
     
-    "你回复了一个👍。"
+    "你没看视频，但回复了一个赞。"
     
     chen "这么晚还没睡？"
-      
+    
     "消息秒回。你看着那个正在输入的提示，决定不再回复。"
     
     #保持了表面和平，但对方可能认为这是个信号）
@@ -2419,7 +2420,7 @@ label check_all_bar_conditions:
         jump bar_interaction
 
 # 酒单选择
-screen bar_menu_choice:
+screen drink_menu:
     add "bar_drinkmenu"
     style_prefix "choice"
     
@@ -2441,11 +2442,10 @@ label bar_menu_choice:
     hide screen bar_scene
     scene bar_drinkmenu
 
-    show screen bar_menu_choice
+    show screen drink_menu
     $ ui.interact()
     
-    $ bar_menu_choice = True
-    jump check_all_bar_conditions
+    # jump check_all_bar_conditions
 
 # 和小金聊天 - 修复：简化结构，确保变量设置正确
 label talk_to_xiaojin:
@@ -2627,28 +2627,33 @@ label bar_restroom_again:
 
 # 酒单选酒
 label beer:
+
     $ drink_choice = "beer"
+    $ bar_menu_choice = True
     "{i}你点了一杯精酿啤酒，泡沫细腻。{/i}"
-    hide screen bar_menu_choice
-    jump bar_interaction
+    hide screen drink_menu
+    jump check_all_bar_conditions
 
 label wine:
-    $ drink_choice = "beer"
+    $ drink_choice = "wine"
+    $ bar_menu_choice = True
     "{i}红酒在杯中摇晃，颜色深沉。{/i}"
-    hide screen bar_menu_choice
-    jump bar_interaction
+    hide screen drink_menu
+    jump check_all_bar_conditions
 
 label cocktail:
-    $ drink_choice = "beer"
+    $ drink_choice = "cocktail"
+    $ bar_menu_choice = True
     "{i}五颜六色的液体，不知道里面有什么。{/i}"
-    hide screen bar_menu_choice
-    jump bar_interaction
+    hide screen drink_menu
+    jump check_all_bar_conditions
 
 label soda:
-    $ drink_choice = "beer"
+    $ drink_choice = "soda"
+    $ bar_menu_choice = True
     "{i}可乐加冰，气泡刺激着喉咙。你保持清醒。{/i}"
-    hide screen bar_menu_choice
-    jump bar_interaction
+    hide screen drink_menu
+    jump check_all_bar_conditions
 
 # 酒吧结束，进入任务2.4
 init python:
