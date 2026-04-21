@@ -301,6 +301,8 @@ screen navigation():
 
         textbutton _("读取游戏") action ShowMenu("load")
 
+        textbutton _("画廊") action ShowMenu("gallery") #画廊按钮
+
         textbutton _("设置") action ShowMenu("preferences")
 
         if _in_replay:
