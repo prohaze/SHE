@@ -703,7 +703,6 @@ define unknown_woman = Character("陌生女人", color="#808080")
 define narrator = Character(None, what_italic=True)
 
 # 变量定义（延续已有default变量）
-# money已在前面定义为default money = 800
 default coffee_bought = False
 #default elevator_floor = 0
 default gate_used = False
@@ -714,9 +713,9 @@ default twenty_third_floor = False
 
 # 场景定义（占位符图片）
 #image bg lobby = "bg_lobby.png"  # 公司大堂
-image bg third_floor = "bg_hr_floor.png"  # 3楼HR
-image bg eight_floor = "bg_marketing_floor.png"  # 8楼市场部
-image bg twenty_third_floor = "bg_executive_floor.png"  # 23楼高管层
+image bg third_floor = "images/chapter1/third_floor.jpg"  # 3楼HR
+image bg eight_floor = "images/chapter1/eighth_floor.jpg"  # 8楼市场部
+image bg twenty_third_floor = "images/chapter1/twenty_third_floor.jpg"  # 23楼高管层
 
 # 角色立绘（占位符）
 image woman normal = "woman_normal.png"
@@ -906,13 +905,15 @@ label elevator_choice:
     call screen elevator_menu(third_floor, eight_floor, twenty_third_floor)
 
 label third_floor:
-    scene bg third_floor with dissolve
+    scene bg third_floor with dissolve:
+        zoom 1.5
     "{i}HR部门...{/i}"
     $ third_floor = True
     jump elevator_choice
             
 label eight_floor:
-    scene bg eight_floor with dissolve
+    scene bg eight_floor with dissolve:
+        xzoom -1
     "{i}市场部...{/i}"
     $ eight_floor = True
     jump elevator_encounter
@@ -930,11 +931,18 @@ label elevator_encounter:
         zoom 2.3
         align (0.5, 0.5)
     
+    show woman_01_normal with dissolve:
+        zoom 0.8
+        xpos 1350
+        ypos 160
     "{i}电梯门打开。一位40多岁的女人，套装干练，眼神疲惫。{/i}"
     
-    show woman normal at right
-    
+    show woman_02_talk:
+        zoom 0.8
+        xpos 1350
+        ypos 160
     unknown_woman "新来的？"
+    hide woman_02_talk
     
     show she_05_happy onlayer top at top_dissolve:
         zoom 0.8
@@ -943,27 +951,34 @@ label elevator_encounter:
         ypos 240
     s "第一天。"
     
+    show woman_02_talk:
+        zoom 0.8
+        xpos 1350
+        ypos 160
     unknown_woman "啊。"
-    
+    show she_05_happy_sweat onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     "{i}她盯着你看的时间有点长。{i}"
-    
     unknown_woman "设计部？"
 
-    hide she_05_happy onlayer top
     show she_06_surprise_eye onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
+    hide she_05_happy_sweat onlayer top
     s "诶，你怎么知道？"
     
     unknown_woman "就那种眼神。不知道你会在这待多久呢？"
     
-    hide woman normal with moveoutleft
-    
-    "{i}她在8楼下电梯。你始终不知道她的名字。{/i}"
+    hide woman_01_normal with dissolve    
+    "{i}她在3楼下电梯。你始终不知道她的名字。{/i}"
     
     # 剧情继续到下一部分...
+    hide she_05_happy onlayer top
     hide she_06_surprise_eye onlayer top
     jump elevator_choice
 
@@ -1005,8 +1020,7 @@ image bg office_floor = "bg_office_floor.png"
 # ========== 第一章：自我介绍 ==========
 label chapter1_self_intro:
     scene office_area with fade: #要替换空一点的办公桌图片
-        zoom 2
-    
+        zoom 0.75
     "{i}你来到工位，正在收拾东西。{/i}"
     
     show jin_01_happy with moveinright:
@@ -1098,7 +1112,7 @@ label xiaojin_cold:
 
 label linjie_encounter:
     scene office_area with fade:
-        zoom 2
+        zoom 0.75
     
     "{i}你继续整理工位。{/i}"
     
@@ -1434,8 +1448,11 @@ label task_1_4:
     
     "{i}你趴在桌上想着，耳边传来一阵脚步声。细听时，脚步声停了。{/i}"
     
-    show chen normal at center with dissolve
-    
+    show chen_03_narroweyes with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1350
+        ypos 160
     chen "还在？我刚才在楼上审方案，看到你们这层灯还亮着。"
     
     "{i}他把一杯咖啡放你桌上。{/i}"
@@ -1470,7 +1487,11 @@ label overtime_response_c:
 label chen_conversation:
     "{i}陈永仁坐在桌角。{/i}"
     chen "我看过你简历，你的履历顶尖，你可以去任何地方，为什么选这儿？"
-    
+    show chen_00_body:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1357
+        ypos 438
     menu:
         "别处都不要我。":
             jump chen_honest
@@ -1484,30 +1505,67 @@ label chen_conversation:
 label chen_honest:
     s "别处都不要我。"
     $ mental = mental + 2 if 'mental' in globals() else 2
-    show chen normal at center
+    
+    hide chen_03_narroweyes
+    show chen_06_surprise_head:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1357
+        ypos 162
+    chen "…………"
+    
+    show chen_02_smile_front with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1357
+        ypos 162
+    hide chen_00_body
+    hide chen_06_surprise_head
     "{i}陈永仁表情柔和下来。{/i}"
+
     chen "我懂。我就是从这个位置开始的——就是这张桌子，20年前。现在你看……"
     "{i}他模糊地往上指了指。{/i}"
+
+    show chen_04_frontsmile with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1350
+        ypos 161
     chen "努力工作，留到最后，这就是赢的方法。"
     "{i}他站起来。{/i}"
+    
+    hide chen_04_frontsmile with dissolve
     chen "别太晚，回家注意安全。"
-    "{i}顿了一下。{/i}"
+    chen "…………"
     chen "其实我也要走了……送你一程？"
     jump car_choice
 
 label chen_safe:
     s "这里的岗位和我的专业技能最匹配。"
+    show chen_02_smile:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1350
+        ypos 161 
+    hide chen_00_body
     chen "嗯，确实。你的拆解能力很强。"
     "{i}他站起来。{/i}"
+    hide chen_02_smile
     chen "别太晚，明天还有早会。"
     chen "……其实我也要走了，送你一程？"
     jump car_choice
 
 label chen_ambition:
     s "我想升得快一些。"
-    "{i}陈永仁笑了。{/i}"
+    show chen_02_smile with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1350
+        ypos 161
+    hide chen_00_body
     chen "有野心。我喜欢。"
     "{i}他站起来。{/i}"
+    hide chen_02_smile
     chen "别加班太晚。其实我也要走了……送你一程？"
     jump car_choice
 
@@ -1533,8 +1591,9 @@ label car_scene:
 label reject_car:
     s "不用，我坐地铁。"
     chen "随你。明天见。"
-    hide chen normal with moveoutright
-    "{i}走了。{/i}"
+    hide chen_02_smile_front with moveoutright
+    hide chen_03_narroweyes with moveoutright
+    "{i}陈永仁走了。{/i}"
     "{i}你看着他离开，胸口有什么东西松开了，不知道为什么。{/i}"
     jump task_1_4_end
 
@@ -1542,21 +1601,20 @@ label task_1_4_end:
     scene office_desk with fade
     "{i}深夜的办公室闪烁的是代码的霓虹。{/i}"
     "{i}电子bug能梦见仿生萤火虫吗？\n在刚来那天所看到的落地窗里，星星亮起，夜幕降临。{/i}"
-    #"{i}解锁：深夜办公室探索{/i}"
     jump task_1_5
 
 label mini_game_analysis:
-    "{i}你需要完成三款游戏的竞品拆解。{/i}"
+    "{i}你需要完成这几款游戏的竞品拆解。{/i}"
     #设置游戏ABC的图片 --> 提示玩家拆解方向
     
     menu:
-        "游戏A的核心付费点是？"
-        "月卡订阅":
+        "王者〇耀的核心付费点是？"
+        "VIP特权":
             $ temp_score = 1
         "抽卡保底":
-            $ temp_score = 1
-        "皮肤直售":
             $ temp_score = 0
+        "付费皮肤":
+            $ temp_score = 1
     
     menu:
         "游戏B的主要留存机制是？"
@@ -1568,15 +1626,24 @@ label mini_game_analysis:
             $ temp_score += 0
     
     menu:
-        "游戏C的美术风格属于？"
+        "艾〇登法环的美术风格属于？"
         "写实3D":
-            $ temp_score += 0
-        "二次元赛璐璐":
             $ temp_score += 1
+        "二次元赛璐璐":
+            $ temp_score += 0
         "像素复古":
             $ temp_score += 0
     
-    if temp_score >= 2:
+    menu:
+        "题目：游戏B属于以下哪种游戏类型？"
+        "单人角色扮演":
+            $ temp_score += 0
+        "双人合作解谜":
+            $ temp_score += 1
+        "多人竞技射击":
+            $ temp_score += 0
+
+    if temp_score >= 3:
         "{i}拆解完成。数据已保存。{/i}"
     else:
         "{i}部分数据存疑，但先这样吧。{/i}"
@@ -1589,91 +1656,497 @@ define mom = Character("妈妈")
 label task_1_5:
     scene home with fade
     "{i}第2周，周日下午。{/i}"
+    window hide
     
-    #增加手机画面，这部分screen可能要重做
+    #消息音效
+    show mom_phonecall with moveinbottom:
+        zoom 1.4
+        align (0.5, 0.45)
+    pause 1.5
+    hide mom_phonecall with fade
+jump salary_qte
+
+default quarrel_time_limit = 3.0    # 总时间（秒）
+default quarrel_time_left = 3.0     # 剩余时间
+default quarrel_answered = False    # 是否已回答
+
+screen qte_choice_timer(question, time_limit=2.0):
+    modal True
+    
+    default start_time = renpy.get_game_runtime()
+    default time_left = time_limit
+    
+    timer 0.05 repeat True action [
+        SetScreenVariable("time_left", max(0, time_limit - (renpy.get_game_runtime() - start_time))),
+        If(time_left <= 0, true=[Hide("qte_choice_timer"), Jump("qte_timeout")], false=NullAction())
+    ]
+    
+    $ progress = time_left / time_limit
+    
+    # 警告色：时间少于30%变红
+    $ bg_pulse = 0.1 if progress < 0.3 else 0.0
+    
+    # 背景闪烁警告
+    if progress < 0.3:
+        add Solid("#ff000010") at transform:
+            alpha 0.0
+            block:
+                linear 0.2 alpha 0.3
+                linear 0.2 alpha 0.0
+                repeat
+    
+    vbox:
+        xalign 0.5
+        yalign 0.6
+        spacing 30
+        
+        textbutton"两周后。":
+            xalign 0.5
+            background Frame("gui/textbox.png")
+            hover_background Frame("blue_textbox")
+            padding (180, 0)
+            text_color "#888888"
+            text_hover_color "#ffffff"
+            action [Hide("qte_choice_timer"), Jump("salary_truth")]
+        
+        textbutton "快了。": 
+            xalign 0.5
+            background Frame("gui/textbox.png")
+            hover_background Frame("blue_textbox")
+            padding (180, 0)
+            text_color "#888888"
+            text_hover_color "#ffffff"
+            action [Hide("qte_choice_timer"), Jump("salary_vague")]
+        
+        textbutton "问这干嘛？":
+            xalign 0.5
+            background Frame("gui/textbox.png")
+            hover_background Frame("blue_textbox")
+            padding (180, 0)
+            text_color "#888888"
+            text_hover_color "#ffffff"
+            action [Hide("qte_choice_timer"), Jump("salary_defensive")]
+    
+    # ===== 底部倒计时条 =====
+    frame:
+        xalign 0.5
+        yalign 1.0
+        yoffset -40
+        xsize 1400
+        ysize 25
+        background "#1a1a1a"
+        
+        # 内部进度条
+        add "white_time_bar":
+            xalign 0.5
+            xsize int(1400 * progress)
+            ysize 15
+        
+        # 时间文字
+        text "[time_left:.1f]":
+            xalign 0.5
+            yalign 0.55
+            size 18
+            color "#000000"
+            
+label salary_qte:
+    show mother_02_smallmouth:
+        zoom 0.83
+        xpos 1360
+        ypos 260
     mom "第一个月的工资。什么时候发？"
     
-    menu:
-        "两周后。":
-            jump salary_truth
-            
-        "快了。":
-            jump salary_vague
-            
-        "问这干嘛？":
-            jump salary_defensive
+    # 调用 QTE 选择题
+    call screen qte_choice_timer(
+        question="",
+        time_limit=3.0
+    )
+    
+    # 这里不会执行，因为 screen 直接 jump 了
+    return
 
+# 各选项结果
 label salary_truth:
     s "两周后。"
+    show mother_03_unhappy:
+        zoom 0.83
+        xpos 1360
+        ypos 260
     mom "好。你弟弟要换新校服，还有学校旅行要交钱，1200块钱。这钱就你出吧？你现在可是有大工作的人了。"
     jump family_money_choice
 
 label salary_vague:
     s "快了。"
+    show mother_03_unhappy:
+        zoom 0.83
+        xpos 1360
+        ypos 260
     mom "到底是多快？你弟弟要换新校服，还有学校旅行要交钱，1200块钱。你能出吧？"
     jump family_money_choice
 
 label salary_defensive:
     s "问这干嘛？"
+    show mother_01_bigmouth:
+        zoom 0.83
+        xpos 1360
+        ypos 260
     mom "怎么，翅膀硬了？你弟弟要换新校服，还有学校旅行要交钱，1200块钱。家里手头紧，你帮衬一下怎么了？"
-    $ family_pressure += 1
     jump family_money_choice
 
+# 超时未选择
+label qte_timeout:
+    s "…………"
+    mom "怎么不说话？"
+    mom "你弟弟要换新校服，还有学校旅行要交钱，1200块钱。这钱就你出吧？你现在可是有大工作的人了。"
+    jump family_money_choice
+
+# QTE第二题
+screen qte_choice_timer_2(question, time_limit=5.0):
+    modal True
+    
+    default start_time = renpy.get_game_runtime()
+    default time_left = time_limit
+    
+    timer 0.05 repeat True action [
+        SetScreenVariable("time_left", max(0, time_limit - (renpy.get_game_runtime() - start_time))),
+        If(time_left <= 0, true=[Hide("qte_choice_timer_2"), Jump("stay_silent")], false=NullAction())
+    ]
+    
+    $ progress = time_left / time_limit
+    
+    # 警告色：时间少于30%变红
+    $ bg_pulse = 0.1 if progress < 0.3 else 0.0
+    
+    # 背景闪烁警告
+    if progress < 0.3:
+        add Solid("#ff000010") at transform:
+            alpha 0.0
+            block:
+                linear 0.2 alpha 0.3
+                linear 0.2 alpha 0.0
+                repeat
+    
+    vbox:
+        xalign 0.5
+        yalign 0.6
+        spacing 30
+        
+        textbutton"好。":
+            xalign 0.5
+            background Frame("gui/textbox.png")
+            hover_background Frame("blue_textbox")
+            padding (180, 0)
+            text_color "#888888"
+            text_hover_color "#ffffff"
+            action [Hide("qte_choice_timer_2"), Jump("give_money")]
+        
+        textbutton "那是我一半伙食费。": 
+            xalign 0.5
+            background Frame("gui/textbox.png")
+            hover_background Frame("blue_textbox")
+            padding (180, 0)
+            text_color "#888888"
+            text_hover_color "#ffffff"
+            action [Hide("qte_choice_timer_2"), Jump("angry_game")]
+        
+        textbutton "（沉默）":
+            xalign 0.5
+            background Frame("gui/textbox.png")
+            hover_background Frame("blue_textbox")
+            padding (180, 0)
+            text_color "#888888"
+            text_hover_color "#ffffff"
+            action [Hide("qte_choice_timer_2"), Jump("stay_silent")]
+    
+    # ===== 底部倒计时条 =====
+    frame:
+        xalign 0.5
+        yalign 1.0
+        yoffset -40
+        xsize 1400
+        ysize 25
+        background "#1a1a1a"
+        
+        # 内部进度条
+        add "white_time_bar":
+            xalign 0.5
+            xsize int(1400 * progress)
+            ysize 15
+        
+        # 时间文字
+        text "[time_left:.1f]":
+            xalign 0.5
+            yalign 0.55
+            size 18
+            color "#000000"
+
 label family_money_choice:
-    menu:
-        "好。":
-            jump give_money
-            
-        "那是我一半伙食费。": #不，这里得改，香港一个月1200的房租也太便宜了
-            jump argue_start
-            
-        "沉默":
-            jump stay_silent
+    # 调用 QTE 选择题
+    # 前面回答有mom不同的问题了：mom "怎么，翅膀硬了？你弟弟要换新校服，还有学校旅行要交钱，1200块钱。家里手头紧，你帮衬一下怎么了？"
+    call screen qte_choice_timer_2(
+        question="",
+        time_limit=5.0
+    )
+    return
 
 label give_money:
     s "好。"
-    $ money -= 600
-    $ family_pressure += 1
+    $ money -= 1200
+    show mother_04_smile:
+        zoom 0.83
+        xpos 1360
+        ypos 260
     mom "乖。就知道你懂事。弟弟会谢谢你的。"
     "{i}-1200元。当前余额：[money]元{/i}"
-    jump task_1_5_end
+    jump family_tax_end
+
+label angry_game:
+    s "那是我一半吃饭钱！"
+    $ mother_anger += 2
+    jump argue_continue
 
 label stay_silent:
     s "……"
-    mom "你不说话是什么意思？算了，等你发工资再说吧。"
-    "{i}心头涌现一阵内疚。{/i}"
-    $ mental = mental - 1 if 'mental' in globals() else -1
-    jump task_1_5_end
+    show mother_03_unhappy:
+        zoom 0.83
+        xpos 1360
+        ypos 260
+    mom "你不说话是什么意思？"
+    show mother_02_smallmouth:
+        zoom 0.83
+        xpos 1360
+        ypos 260
+    mom "妈妈怎么省吃俭用把你带大的，你忘了吗？"
+    $ mother_anger += 1
+    jump stay_silent_continue #考虑到有保守派会沉默避免冲突但不是真的不抗争，设置沉默意图的二次验证
 
-label argue_start:
-    s "那是我一半吃饭钱。" #同步修改
-    mom "我们这么多年白养你的？他是你亲生弟弟，家人帮家人。到时候班上就他一个穿不起鞋，你弟弟得遭人看低的！"
-    call argue_minigame
-    jump task_1_5_end
+# QTE第三题
+screen qte_choice_timer_3(question, time_limit=3.0):
+    modal True
+    
+    default start_time = renpy.get_game_runtime()
+    default time_left = time_limit
+    
+    timer 0.05 repeat True action [
+        SetScreenVariable("time_left", max(0, time_limit - (renpy.get_game_runtime() - start_time))),
+        If(time_left <= 0, true=[Hide("qte_choice_timer_3"), Jump("silent_guilt")], false=NullAction())
+    ]
+    
+    $ progress = time_left / time_limit
+    
+    # 警告色：时间少于30%变红
+    $ bg_pulse = 0.1 if progress < 0.3 else 0.0
+    
+    # 背景闪烁警告
+    if progress < 0.3:
+        add Solid("#ff000010") at transform:
+            alpha 0.0
+            block:
+                linear 0.2 alpha 0.3
+                linear 0.2 alpha 0.0
+                repeat
+    
+    vbox:
+        xalign 0.5
+        yalign 0.6
+        spacing 30
+        
+        textbutton"(继续沉默)":
+            xalign 0.5
+            background Frame("gui/textbox.png")
+            hover_background Frame("blue_textbox")
+            padding (180, 0)
+            text_color "#888888"
+            text_hover_color "#ffffff"
+            action [Hide("qte_choice_timer_3"), Jump("silent_guilt")]
+        
+        textbutton "(反问)": 
+            xalign 0.5
+            background Frame("gui/textbox.png")
+            hover_background Frame("blue_textbox")
+            padding (180, 0)
+            text_color "#888888"
+            text_hover_color "#ffffff"
+            action [Hide("qte_choice_timer_3"), Jump("silent_argue")]
 
-label argue_minigame:
-    "{i}争吵开始了……{/i}"
-    $ mother_anger = 30
-    
-    menu:
-        "我也有我自己的生活……":
-            $ mother_anger += 20
-        "他的鞋凭什么我负责？我买鞋他穿，我没饭吃他管不管？":
-            $ mother_anger += 30
-        "我会给，别再这么说了。":
-            $ mother_anger += 10
-    
-    if mother_anger >= 50:
-        "{i}妈妈怒气冲冲地挂了电话。{/i}"
-        "{i}几天后，她发来消息，像什么都没发生。但你记得。{/i}"
-    else:
-        "{i}你勉强稳住了局面，保住了钱，但心里空落落的。{/i}"
-    
+    # ===== 底部倒计时条 =====
+    frame:
+        xalign 0.5
+        yalign 1.0
+        yoffset -40
+        xsize 1400
+        ysize 25
+        background "#1a1a1a"
+        
+        # 内部进度条
+        add "white_time_bar":
+            xalign 0.5
+            xsize int(1400 * progress)
+            ysize 15
+        
+        # 时间文字
+        text "[time_left:.1f]":
+            xalign 0.5
+            yalign 0.55
+            size 18
+            color "#000000"
+
+label stay_silent_continue:
+    call screen qte_choice_timer_3(
+        question="",
+        time_limit=3.0
+    )
     return
 
-label task_1_5_end:
+label silent_guilt:
+    s "{i}心头涌现一阵内疚。{/i}"
+    s "这钱我会给，别再这么说了。"
+    show mother_04_smile:
+        zoom 0.83
+        xpos 1360
+        ypos 260
+    # $ mental = mental - 1 if 'mental' in globals() else -1
+    jump family_tax_end
+
+label silent_argue:
+    s "现在倒是逼着我省吃俭用养弟弟了？"
+    $ mother_anger += 1
+    jump argue_continue
+
+# QTE第四题
+screen qte_choice_timer_4(question, time_limit=5.0):
+    modal True
+    
+    default start_time = renpy.get_game_runtime()
+    default time_left = time_limit
+    
+    timer 0.05 repeat True action [
+        SetScreenVariable("time_left", max(0, time_limit - (renpy.get_game_runtime() - start_time))),
+        If(time_left <= 0, true=[Hide("qte_choice_timer_4"), Jump("silent_guilt")], false=NullAction())
+    ]
+    
+    $ progress = time_left / time_limit
+    
+    # 警告色：时间少于30%变红
+    $ bg_pulse = 0.1 if progress < 0.3 else 0.0
+    
+    # 背景闪烁警告
+    if progress < 0.3:
+        add Solid("#ff000010") at transform:
+            alpha 0.0
+            block:
+                linear 0.2 alpha 0.3
+                linear 0.2 alpha 0.0
+                repeat
+    
+    vbox:
+        xalign 0.5
+        yalign 0.6
+        spacing 30
+        
+        textbutton"我也有我自己的生活……":
+            xalign 0.5
+            background Frame("gui/textbox.png")
+            hover_background Frame("blue_textbox")
+            padding (180, 0)
+            text_color "#888888"
+            text_hover_color "#ffffff"
+            action [Hide("qte_choice_timer_4"), Jump("angry_game_own_life")]
+        
+        textbutton "他的鞋凭什么我负责？": 
+            xalign 0.5
+            background Frame("gui/textbox.png")
+            hover_background Frame("blue_textbox")
+            padding (180, 0)
+            text_color "#888888"
+            text_hover_color "#ffffff"
+            action [Hide("qte_choice_timer_4"), Jump("angry_game_unresponsible")]
+
+        textbutton "(沉默)": 
+            xalign 0.5
+            background Frame("gui/textbox.png")
+            hover_background Frame("blue_textbox")
+            padding (180, 0)
+            text_color "#888888"
+            text_hover_color "#ffffff"
+            action [Hide("qte_choice_timer_4"), Jump("angry_game_calculation")]
+
+    # ===== 底部倒计时条 =====
+    frame:
+        xalign 0.5
+        yalign 1.0
+        yoffset -40
+        xsize 1400
+        ysize 25
+        background "#1a1a1a"
+        
+        # 内部进度条
+        add "white_time_bar":
+            xalign 0.5
+            xsize int(1400 * progress)
+            ysize 15
+        
+        # 时间文字
+        text "[time_left:.1f]":
+            xalign 0.5
+            yalign 0.55
+            size 18
+            color "#000000"
+
+label argue_continue:
+    show mother_05_soangry:
+        zoom 0.83
+        xpos 1360
+        ypos 260
+    mom "我们这么多年白养你的？他是你亲生弟弟，到时候班上就他一个穿不起鞋，得遭人看低的！"
+    mom "再说了，现在你帮弟弟，将来弟弟帮你，哪里亏了？"
+    show mother_03_unhappy with dissolve:
+        zoom 0.83
+        xpos 1360
+        ypos 260
+    hide mother_05_soangry with dissolve
+    mom "不都是家里人嘛，爸爸妈妈当时供你读书也没计较那么多呀。"
+    call screen qte_choice_timer_4(
+        question="",
+        time_limit=5.0
+    )
+    return
+    jump angry_game_calculation
+
+label angry_game_own_life:
+    $ mother_anger += 1
+    jump angry_game_calculation
+
+label angry_game_unresponsible:
+    $ mother_anger += 2
+    jump angry_game_calculation
+
+label angry_game_calculation:    
+    if mother_anger >= 3:
+        show mother_06_sosoangry:
+            zoom 0.83
+            xpos 1360
+            ypos 260
+        mom "怎么养了你这个白眼狼！"
+        hide mother_01_bigmouth
+        hide mother_02_smallmouth
+        hide mother_03_unhappy
+        hide mother_05_soangry
+        hide mother_06_sosoangry with dissolve
+        "{i}妈妈怒气冲冲地挂了电话。{/i}"
+        "{i}几天后，她发来消息，像什么都没发生。但你记得。{/i}"
+        jump family_tax_end
+    else:
+        mom "算了，半小时憋不出一个响。等你发工资再说吧。"
+        hide mother_01_bigmouth
+        hide mother_02_smallmouth
+        hide mother_03_unhappy with dissolve
+        "{i}你勉强稳住了局面，保住了钱，但心里空落落的。{/i}"
+        jump family_tax_end
+
+label family_tax_end:
     "{i}手机随后震动。{/i}"
-    '小紫书-你的粉丝'"姐妹，看到你发家里要钱的事了。同款遭遇，你不是一个人。"
+    '小紫书 你的粉丝'"姐妹，看到你发家里要钱的事了。同款遭遇，你不是一个人。"
     $ xiaohongshu_contact = True
     "{i}新联系人：小紫书姐妹{/i}"
     jump task_1_6
@@ -2539,7 +3012,7 @@ label sit_with_lin:
 
     #这里加脚步声或者其他音效，表现小曼转身林姐追上来叫住她
     linjie "哎——"
-    linjie "别认为“在他眼里我很特别”。”"
+    linjie "别认为“在他眼里我很特别”。"
     linjie "你本来就特别。"
     linjie "不是因为他。"
     
@@ -4106,8 +4579,6 @@ label game_ending:
 
     "[ending_text]"
 
-    "《She: 镜中倒影》第一章 - 完"
-
     return
 
 
@@ -4115,40 +4586,40 @@ label game_ending:
 # 第五章：抉择（第15周）
 # ==========================================
 
-# 定义变量
-default chapter5_started = False
-default evidence_complete = False
-default advice_heard = False
+# # 定义变量
+# default chapter5_started = False
+# default evidence_complete = False
+# default advice_heard = False
 
-# 路线选择标记
-default route_legal = False
-default route_hr = False
-default route_public = False
-default route_leave = False
+# # 路线选择标记
+# default route_legal = False
+# default route_hr = False
+# default route_public = False
+# default route_leave = False
 
-# 路线条件变量
-default lawyer_contacted = False
-default courage = 0
-default xiaohongshu_fans = 0
+# # 路线条件变量
+# default lawyer_contacted = False
+# default courage = 0
+# default xiaohongshu_fans = 0
 
-# 路线A变量
-default police_credibility = 100
-default police_report_2 = False
+# # 路线A变量
+# default police_credibility = 100
+# default police_report_2 = False
 
-# 路线B变量
-default hr_talk_done = False
-default department_reorganized = False
+# # 路线B变量
+# default hr_talk_done = False
+# default department_reorganized = False
 
-# 路线C变量
-default post_views = 0
-default post_comments = 0
-default media_contacted = 0
-default lawyer_letter_received = False
-default public_pressure = 0
+# # 路线C变量
+# default post_views = 0
+# default post_comments = 0
+# default media_contacted = 0
+# default lawyer_letter_received = False
+# default public_pressure = 0
 
-# 路线D变量
-default resignation_written = False
-default last_day_done = False
+# # 路线D变量
+# default resignation_written = False
+# default last_day_done = False
 
 # 第五章入口
 label chapter5:
