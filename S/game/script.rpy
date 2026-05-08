@@ -1293,7 +1293,7 @@ label task_response_c:
         xzoom -1.0
         xpos 1357
         ypos 162
-    chen "好问题。林姐会带你。就是市面上那几款头部二次元游戏，美术风格、养成线、付费点设计……那些有趣的东西。"
+    chen "好问题。林姐会带你。就是市面上那几款头部游戏，美术风格、养成线、付费点设计……那些有趣的东西。"
     show chen_03_narroweyes:
         zoom 0.9
         xzoom -1.0
@@ -1607,41 +1607,59 @@ label mini_game_analysis:
     "{i}你需要完成这几款游戏的竞品拆解。{/i}"
     #设置游戏ABC的图片 --> 提示玩家拆解方向
     
+    show game_wzry:
+        xpos 544
+        ypos 123
     menu:
-        "王者〇耀的核心付费点是？"
+        "这款游戏的核心付费点是？"
         "VIP特权":
             $ temp_score = 1
+            hide game_wzry
         "抽卡保底":
             $ temp_score = 0
+            hide game_wzry
         "付费皮肤":
             $ temp_score = 1
+            hide game_wzry
     
-    menu:
-        "游戏B的主要留存机制是？"
-        "每日签到":
-            $ temp_score += 1
-        "社交公会":
-            $ temp_score += 1
-        "剧情解锁":
-            $ temp_score += 0
+    # menu:
+    #     "游戏B的主要留存机制是？"
+    #     "每日签到":
+    #         $ temp_score += 1
+    #     "社交公会":
+    #         $ temp_score += 1
+    #     "剧情解锁":
+    #         $ temp_score += 0
     
+    show game_elden_ring:
+        xpos 544
+        ypos 123
     menu:
-        "艾〇登法环的美术风格属于？"
+        "这款游戏的美术风格属于？"
         "写实3D":
             $ temp_score += 1
+            hide game_elden_ring
         "二次元赛璐璐":
             $ temp_score += 0
+            hide game_elden_ring
         "像素复古":
             $ temp_score += 0
+            hide game_elden_ring
     
+    show game_srcx:
+        xpos 544
+        ypos 123
     menu:
-        "题目：游戏B属于以下哪种游戏类型？"
+        "这款游戏属于以下哪种游戏类型？"
         "单人角色扮演":
             $ temp_score += 0
+            hide game_srcx
         "双人合作解谜":
             $ temp_score += 1
+            hide game_srcx
         "多人竞技射击":
             $ temp_score += 0
+            hide game_srcx
 
     if temp_score >= 3:
         "{i}拆解完成。数据已保存。{/i}"
@@ -1670,7 +1688,7 @@ default quarrel_time_limit = 3.0    # 总时间（秒）
 default quarrel_time_left = 3.0     # 剩余时间
 default quarrel_answered = False    # 是否已回答
 
-screen qte_choice_timer(question, time_limit=2.0):
+screen qte_choice_timer(question, time_limit=3.0):
     modal True
     
     default start_time = renpy.get_game_runtime()
@@ -1892,11 +1910,14 @@ label family_money_choice:
 label give_money:
     s "好。"
     $ money -= 1200
-    show mother_04_smile:
+    show mother_04_smile with dissolve:
         zoom 0.83
         xpos 1360
         ypos 260
+    hide mother_02_smallmouth
+    hide mother_03_unhappy
     mom "乖。就知道你懂事。弟弟会谢谢你的。"
+    hide mother_04_smile with dissolve
     "{i}-1200元。当前余额：[money]元{/i}"
     jump family_tax_end
 
@@ -2001,10 +2022,16 @@ label stay_silent_continue:
 label silent_guilt:
     s "{i}心头涌现一阵内疚。{/i}"
     s "这钱我会给，别再这么说了。"
-    show mother_04_smile:
+    $ money -= 1200
+    show mother_04_smile with dissolve:
         zoom 0.83
         xpos 1360
         ypos 260
+    hide mother_02_smallmouth
+    hide mother_03_unhappy
+    mom "乖。就知道你懂事。弟弟会谢谢你的。"
+    hide mother_04_smile with dissolve
+    "{i}-1200元。当前余额：[money]元{/i}"
     # $ mental = mental - 1 if 'mental' in globals() else -1
     jump family_tax_end
 
@@ -2158,9 +2185,18 @@ label task_1_6:
     "{i}第3周，工作日。{/i}"
     "{i}你伸手拿杯子时，有人从你上方伸过手来。{/i}"
     
-    show chen normal at center with dissolve
-    
-    chen "抱歉，我也拿……哦，你也在泡咖啡？"
+    show chen_06_surprise with dissolve:
+        zoom 0.9
+        xzoom -1
+        xpos 1358
+        ypos 162
+    chen "抱歉，我也拿……"
+    show chen_04_frontsmile:
+        zoom 0.9
+        xzoom -1
+        xpos 1350
+        ypos 161
+    chen "哦，你也在泡咖啡？"
     "{i}他站得很近。比必要近。{/i}"
     "{i}他拿糖的时候手臂擦过你。{/i}"
     
@@ -2188,25 +2224,34 @@ label touch_reaction:
             jump touch_move
 
 label touch_ignore:
-    s "没什么，就是有点挤。"
     "{i}你继续泡咖啡。{/i}"
+    hide chen_06_surprise
     chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
     jump task_1_6_end
 
 label touch_alert:
     s "……"
-    "{i}你在心里问自己：他为什么站这么近？{/i}"
+    s "{i}他为什么站这么近？{/i}"
+    hide chen_06_surprise
+    show chen_02_smile_front with dissolve:
+        zoom 0.9
+        xzoom -1
+        xpos 1358
+        ypos 162
     chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
+    hide chen_04_frontsmile
     jump task_1_6_end
 
 label touch_move:
+    hide chen_06_surprise
     "{i}你稍微往旁边挪了一步。{/i}"
     "{i}陈永仁没明显反应。但你一动，他眼神扫了你一下。{/i}"
     chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
     jump task_1_6_end
 
 label task_1_6_end:
-    hide chen normal with moveoutright
+    hide chen_04_frontsmile with moveoutright
+    hide chen_02_smile_front with moveoutright
     "{i}他走了，你一个人对着茶杯发呆。{/i}"
     
     "{i}手机上林姐发来一条消息{/i}"
@@ -2996,6 +3041,10 @@ label sit_with_lin:
     
     "{i}角落的卡座，林姐一个人坐在那里，光影在她脸上切割出明与暗。{/i}"
     
+    show linjie_04_frown:
+        zoom 0.92
+        xpos 1450
+        ypos 200
     linjie "你做得太好了。好得过头了。"
     s "什么意思？"
     linjie "作为新人，陈永仁很中意你——非常中意。"
@@ -3179,7 +3228,7 @@ default car_event = False
 label bar_ending:
     hide screen bar_scene
     
-    scene bg street_night
+    scene street
     with fade
     
     "{i}夜深了，大家陆续离开。{i}"
@@ -3190,7 +3239,11 @@ label bar_ending:
     
     #音效+图片表示：一辆车滑停在身边，车窗降下
     
-    show chen car_smile
+    show chen_01_normal with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 681
+        ypos 162
     
     chen "上车吧，我们顺路。"
     
@@ -3263,8 +3316,7 @@ label question_chen:
 
 # 尴尬拒绝后续
 label safe_ending:
-    scene bg subway_night
-    with fade
+    scene subway_station with fade
     
     "{i}你冲进地铁站。{/i}"
     
@@ -3280,8 +3332,7 @@ label safe_ending:
 
 # chapter 2结束，安全支线
 label chapter_2_end:
-    scene bg bedroom_night
-    with fade
+    scene home with fade
     
     "{i}你终于回到家，锁上门。{i}"
     
