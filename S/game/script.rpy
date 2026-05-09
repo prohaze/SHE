@@ -1068,7 +1068,6 @@ label xiaojin_friendly:
         zoom 0.97
         xpos 700
         ypos 150
-
     xiaojin "你刚来，记得别得罪陈总——他挺随和的，但别惹他。还有HR那女的？也别得罪。"
     xiaojin "……算了，谁都别得罪。我来8个月了，还在琢磨。"
     hide jin_02_frown with dissolve
@@ -1677,6 +1676,7 @@ label task_1_5:
     window hide
     
     #消息音效
+    play sound "wx_voice_call.mp3"
     show mom_phonecall with moveinbottom:
         zoom 1.4
         align (0.5, 0.45)
@@ -2179,26 +2179,40 @@ label family_tax_end:
     jump task_1_6
 
 # ========== 任务1.6：不经意的触碰 ==========
-
+transform shock:
+    linear 0.2 xoffset 10 yoffset -10
+    linear 0.1 xoffset -10 yoffset 10
+    linear 0.2 xoffset 0 yoffset 0
 label task_1_6:
     scene tea_room with fade
     "{i}第3周，工作日。{/i}"
-    "{i}你伸手拿杯子时，有人从你上方伸过手来。{/i}"
+    show she_05_happy_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "咖啡，嘿嘿🎵~"
+    hide she_05_happy_nobag onlayer top
+    show she_06_surprise_eye_nobag onlayer top at shock:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    "{i}有人从你上方伸过手来。{/i}"
     
     show chen_06_surprise with dissolve:
         zoom 0.9
         xzoom -1
         xpos 1358
         ypos 162
-    chen "抱歉，我也拿……"
+    chen "抱歉，我拿一下方糖……"
     show chen_04_frontsmile:
         zoom 0.9
         xzoom -1
         xpos 1350
         ypos 161
     chen "哦，你也在泡咖啡？"
-    "{i}他站得很近。比必要近。{/i}"
-    "{i}他拿糖的时候手臂擦过你。{/i}"
+    "{i}他站得很近，拿糖的时候手臂擦过你。{/i}"
     
     menu:
         "观察他的表情":
@@ -2224,13 +2238,25 @@ label touch_reaction:
             jump touch_move
 
 label touch_ignore:
-    "{i}你继续泡咖啡。{/i}"
+    show she_03_tinysmile_eye_nobag onlayer top with dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    hide she_06_surprise_eye_nobag onlayer top
+    s "是的，早上喝一杯咖啡比较精神"
     hide chen_06_surprise
     chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
-    jump task_1_6_end
+    jump task_1_6_a
 
 label touch_alert:
     s "……"
+    s "哈哈，是。"
+    show she_02_sweat_eye_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     s "{i}他为什么站这么近？{/i}"
     hide chen_06_surprise
     show chen_02_smile_front with dissolve:
@@ -2240,42 +2266,101 @@ label touch_alert:
         ypos 162
     chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
     hide chen_04_frontsmile
-    jump task_1_6_end
+    jump task_1_6_bc
 
 label touch_move:
     hide chen_06_surprise
-    "{i}你稍微往旁边挪了一步。{/i}"
+    hide she_06_surprise_eye_nobag onlayer top
+    show she_01_normal_eye_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+        linear 0.6 xpos -50 ypos 240
+    s "是，喝一杯咖啡工作起来比较精神"
+    show chen_04_glance:
+        zoom 0.9
+        xzoom -1
+        xpos 1350
+        ypos 161
     "{i}陈永仁没明显反应。但你一动，他眼神扫了你一下。{/i}"
+    hide chen_04_glance
     chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
+    jump task_1_6_bc
+
+label task_1_6_a:
+    chen "我先走了，工作加油。"
+    hide chen_04_frontsmile with moveoutright
+    hide chen_02_smile_front with moveoutright
+    jump task_1_6_end
+
+label task_1_6_bc:
+    chen "我先走了，工作加油。"
+    hide chen_04_frontsmile with moveoutright
+    hide chen_02_smile_front with moveoutright
+    "{i}他走了，咖啡杯的热气缓缓蒸腾着。{/i}"
     jump task_1_6_end
 
 label task_1_6_end:
-    hide chen_04_frontsmile with moveoutright
-    hide chen_02_smile_front with moveoutright
-    "{i}他走了，你一个人对着茶杯发呆。{/i}"
-    
-    "{i}手机上林姐发来一条消息{/i}"
+    # show she_01_normal_eye_o_nobag onlayer top at top_dissolve:
+    #     zoom 0.8
+    #     xzoom -1.0
+    #     xpos -30
+    #     ypos 240
+    hide she_01_normal_eye_nobag onlayer top
+    hide she_02_sweat_eye_nobag onlayer top
+    hide she_03_tinysmile_eye_nobag onlayer top
+    hide she_09_unhappy onlayer top
+    play sound "phone_vibration.mp3" #替换短版
+    show linjie_wx_lockscreen with moveinbottom:
+        zoom 1.4
+        align (0.5, 0.45)
+    show linjie_wx_0 with dissolve: 
+        zoom 1.4
+        align (0.5, 0.45)
+        pause 1.0
     linjie "看到你和陈永仁在茶水间了，注意点。"
     
     menu:
         "什么意思？":
+            show linjie_wx_a1:
+                zoom 1.4
+                align (0.5, 0.45)
             s "注意什么？"
+            show linjie_wx_a2:
+                zoom 1.4
+                align (0.5, 0.45)
             linjie "没什么。接完水快回来，有个新的brief发你了。"
+            show linjie_wx_a3:
+                zoom 1.4
+                align (0.5, 0.45)
             $ linjie_interest += 1
+            # hide she_01_normal_eye_o_nobag onlayer top
             scene black with dissolve
             pause 1.0
             jump chapter_2
             
         "没什么事。":
+            show linjie_wx_b1:
+                zoom 1.4
+                align (0.5, 0.45)
             s "没什么事啊。"
+            show linjie_wx_b2:
+                zoom 1.4
+                align (0.5, 0.45)
             linjie "……随你。"
+            # hide she_01_normal_eye_o_nobag onlayer top
             scene black with dissolve
             pause 1.0
             jump chapter_2
             
         "删除消息":
-            "{i}你删掉了这条消息。{/i}"
+            show linjie_wx_c1:
+                zoom 1.4
+                align (0.5, 0.45)
+            "{i}消息已删除。{/i}"
             $ escape += 1
+            # hide she_01_normal_eye_o_nobag onlayer top
             scene black with dissolve
             pause 1.0
             jump chapter_2
@@ -2285,6 +2370,7 @@ label task_1_6_end:
             "{i}你正揣摩这条消息的的意图，斟酌着打下回复，又有新消息发来了。{/i}"
             linjie "接完水快回来，有个新的brief发你了。"
             $ linjie_interest += 1
+            # hide she_01_normal_eye_o_nobag onlayer top
             scene black with dissolve
             pause 1.0
             jump chapter_2
@@ -2462,9 +2548,8 @@ label chapter_2:
     
 # 工资条剧情
 label payslip_event:
-    scene bedroom_night #后期改
+    scene home_ceiling #后期改
     pause 0.5
-
     s "看看这个月努力的成果吧！" 
     window hide
     
@@ -2487,7 +2572,7 @@ label salary_ignore:
 
 # 打电话给林姐
 label call_lin_sister:
-    scene bg bedroom_night
+    scene home_ceiling
     with dissolve
 
     s "数目怎么不太对劲？"
@@ -2547,25 +2632,38 @@ screen clue_unequal_wage:
                 action [Hide("clue_unequal_wage"), Return()]
 
 label ask_xiaojin_directly:
-    scene bg office_day
-    with fade
+    scene office with fade
     
     "{i}第二天午休，你找到了小金。{/i}"
     
+    show she_01_normal_eye_o_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     s "小金，能问你个事吗？你当时刚入职的时候起薪是多少？"
     
-    show xiaojin awkward
-    
+    show jin_03_awkward with dissolve:
+        zoom 0.97
+        xpos 1360
+        ypos 150
     xiaojin "呃……这个……"
     xiaojin "22.5k……公司不让互相问工资来着，你别跟别人说啊。"
+    show jin_04_question:
+        zoom 0.97
+        xpos 1360
+        ypos 150
     xiaojin "出什么事了，突然说起这个？"
     
     s "我19.5k。"
     
-    show xiaojin shocked
+    show jin_05_shocked:
+        zoom 0.97
+        xpos 1360
+        ypos 150
     xiaojin "Oh shit……"
-    hide xiaojin
-    
+    hide she_01_normal_eye_o_nobag onlayer top at top_dissolve
+    scene black    
     # 任务更新界面
     play sound "clue.ogg"
     call screen clue_unequal_wage("线索") with dissolve
@@ -2580,7 +2678,7 @@ label ask_xiaojin_directly:
 
 # 选项B：不问
 label dont_ask_xiaojin:
-    scene bg bedroom_night with dissolve
+    scene home_ceiling with dissolve
     
     "{i}等心跳没那么快时，你放下了手机。{/i}"
     
@@ -2595,8 +2693,7 @@ label dont_ask_xiaojin:
 
 # 选项C：其他方式调查
 label investigate_other_ways:
-    scene bg bedroom_night
-    with dissolve
+    scene home_laptop with dissolve
     
     s "还是先自己查查看吧。"
     
@@ -2610,7 +2707,7 @@ label investigate_other_ways:
 
     $ investigation_unlocked = True
     
-    "{i}在调查中你发现很多资料来自和你有相似经历的前辈。{/i}"
+    "{i}在调查中，你发现很多资料来自和你有相似经历的前辈。{/i}"
     "{i}坏消息，走到这条路上的不止你一个人。{/i}"
     "{i}好消息是，走在这条路上的不止你一个人。{/i}"
 
@@ -2621,23 +2718,22 @@ label investigate_other_ways:
 
 # 健身视频事件
 label fitness_video_event:
-    scene bg bedroom_night
-    with fade
+    scene home_ceiling with fade
     
     "{i}第6周 周六，晚{/i}"
     "{i}你躺在床上刷手机，但眼皮已经开始打架。{/i}"
     
-    #微信消息提示音音效，接手机界面
-    show phone_screen_time:
+    show lockscreen with moveinbottom:
         zoom 1.5
         xalign 0.5
         yalign 0.35#锁屏时间
-    s "23:47，竟然已经这么晚了。"
+    s "23:55，竟然已经这么晚了。"
+    #微信消息提示音音效，接手机界面
 
-    s "有陈总的消息……"
+    s "陈总的消息……?"
 
-    hide phone_screen_time
-    show phone_pyq with pixellate:
+    hide lockscreen
+    show pyq with dissolve:
         zoom 1.5
         xalign 0.5
         yalign 0.35
@@ -2723,7 +2819,7 @@ transform chen_video_3:
         linear 0.5 align(10.5, 0.5) alpha 0.0
 
 label watch_fitness_video:
-    show phone_pyq at rotate_right #后续改这个
+    show pyq at rotate_right #后续改这个
     pause 0.5
     scene black with fade
     show gym_01 at chen_video_1:
@@ -2746,14 +2842,18 @@ label watch_fitness_video:
     
     "他眨了眨眼。"
     
+    scene black with fade
     "视频结束，黑屏。你的脸也黑了。"
-    
+    show home_ceiling with fade
     # hide screen video_player
     # with dissolve
     
     # $ fitness_video_watched = True
-    
-    s "呃…………（有某种不适感在胃里蔓延）"
+    show pyq at shock:
+        zoom 1.5
+        xalign 0.5
+        yalign 0.35
+    s "呃…………" #（有某种不适感在胃里蔓延）
     
     jump after_video
 
@@ -2798,13 +2898,10 @@ label ignore_video:
     scene bg bedroom_night
     with dissolve
     
-    "你锁屏，把手机倒扣在床头柜上。"
-    
-    "11:47。这个时间，这个内容。"
-    
-    "你的直觉告诉你，有些东西不需要打开。"
-    
-    "手机又震了一下，但你没有看。"
+    "{i}你锁屏，把手机倒扣在床头柜上。{/i}"
+    "{i}23:55。这个时间，这个内容。{/i}"
+    "{i}直觉告诉你，有些东西不需要打开。{/i}"
+    "{i}手机又震了一下，但你没有看。{/i}"
     
     #选择安全，但错过了观察对方行为模式的机会
     
@@ -2815,11 +2912,11 @@ label reply_thumb_up:
     scene bg bedroom_night
     with dissolve
     
-    "你没看视频，但回复了一个赞。"
+    "{i}你没看视频，敷衍了一个赞。{/i}"
     
-    chen "这么晚还没睡？"
+    "{i}【微信】陈总：这么晚还没睡？{/i}"
     
-    "消息秒回。你看着那个正在输入的提示，决定不再回复。"
+    "{i}消息秒回。你看着那个正在输入的提示，决定不再回复。{/i}"
     
     #保持了表面和平，但对方可能认为这是个信号）
     
@@ -2827,13 +2924,23 @@ label reply_thumb_up:
 
 # 视频事件后续
 label after_video:
-    scene bg_office_floor
-    with fade
+    scene office with fade
 
     "{i}第二天办公室，午餐时。{/i}"
-    s "哎，你昨晚看到陈总朋友圈的健身视频没？真有点东西。"
+    show she_03_tinysmile_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "哎，你昨晚看到陈总朋友圈的健身视频没？有点东西。"
+    show jin_02_frown with dissolve:
+        zoom 0.97
+        xpos 1360
+        ypos 150
     xiaojin "我好像没看到耶？可能没刷到吧。"
     s "……哦，这样啊。"
+    hide she_03_tinysmile_eye_nobag onlayer top
+    hide jin_02_frown with dissolve
     
     jump celebration_drink
 
