@@ -2694,9 +2694,7 @@ label dont_ask_xiaojin:
 # 选项C：其他方式调查
 label investigate_other_ways:
     scene home_laptop with dissolve
-    
     s "还是先自己查查看吧。"
-    
     "【正在浏览】{i}公司招聘网站：公司同岗位的薪资范围{/i}"
     "【正在浏览】{i}内部文档：薪酬制度细则{/i}"
     "【正在浏览】{i}匿名论坛：公司薪资讨论版块{/i}"
@@ -2833,14 +2831,15 @@ label watch_fitness_video:
     # with dissolve
 
     "30秒。陈永仁在健身房，器械的金属光泽映着他的汗水。"
-    
     "他做着标准的动作，肌肉随着呼吸起伏。"
-    
     "最后一秒，他突然直视镜头。"
     
+    hide gym_02
+    hide gym_03
+    show gym_01:
+        linear 0.4 zoom 1.55 xpos 2180 ypos 1430
+        linear 0.1 zoom 1.5 xpos 2130 ypos 1400
     chen "你能跟上吗，小曼？"
-    
-    "他眨了眨眼。"
     
     scene black with fade
     "视频结束，黑屏。你的脸也黑了。"
@@ -2913,11 +2912,8 @@ label reply_thumb_up:
     with dissolve
     
     "{i}你没看视频，敷衍了一个赞。{/i}"
-    
     "{i}【微信】陈总：这么晚还没睡？{/i}"
-    
     "{i}消息秒回。你看着那个正在输入的提示，决定不再回复。{/i}"
-    
     #保持了表面和平，但对方可能认为这是个信号）
     
     jump celebration_drink
@@ -2938,8 +2934,14 @@ label after_video:
         xpos 1360
         ypos 150
     xiaojin "我好像没看到耶？可能没刷到吧。"
+    show she_05_happy_sweat_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     s "……哦，这样啊。"
     hide she_03_tinysmile_eye_nobag onlayer top
+    hide she_05_happy_sweat_nobag onlayer top
     hide jin_02_frown with dissolve
     
     jump celebration_drink
@@ -3034,7 +3036,7 @@ label bar_interaction:
     scene bar_inside with fade
     show screen bar_scene with dissolve
     pause 0.3
-    "酒吧里人声鼎沸。你想做什么？"
+    "{i}酒吧里人声鼎沸。你想做什么？{/i}"
     $ ui.interact()
 
 # 检查函数 - 统一检查所有条件
@@ -3046,7 +3048,6 @@ label check_all_bar_conditions:
 
 # 酒单选择
 screen drink_menu:
-    add "bar_drinkmenu"
     style_prefix "choice"
     
     # 临时位置设置
@@ -3055,13 +3056,13 @@ screen drink_menu:
         yalign 0.6
         
         textbutton "啤酒": 
-            action Jump("beer")
+            action [Hide("drink_menu"), Jump("beer")]
         textbutton "红酒": 
-            action Jump("wine")
+            action [Hide("drink_menu"), Jump("wine")]
         textbutton "鸡尾酒": 
-            action Jump("cocktail")
+            action [Hide("drink_menu"), Jump("cocktail")]
         textbutton "汽水": 
-            action Jump("soda")
+            action [Hide("drink_menu"), Jump("soda")]
 
 label bar_menu_choice:
     hide screen bar_scene
@@ -3077,37 +3078,94 @@ label talk_to_xiaojin:
     hide screen bar_scene
     scene bar_counter
     
-    "小金正在大声说着什么，周围几个人在笑。"
-    
+    "{i}小金正在大声说着什么，周围几个人在笑。{/i}"
+    "{i}和他聊点什么呢？{/i}"
     menu:
-        "加入话题："
         
         "运动":
             $ xiaojin_topic = "sport"
-            xiaojin "你来啦？对了，前几天你问我陈总朋友圈是……"
+            show she_03_tinysmile_eye_nobag onlayer top at top_dissolve:
+                zoom 0.8
+                xzoom -1.0
+                xpos -30
+                ypos 240
+            show jin_drunk:
+                zoom 0.97
+                xpos 1360
+                ypos 150
+            xiaojin "你来啦？"
+            
+            show jin_04_question:
+                zoom 0.97
+                xpos 1360
+                ypos 150
+            xiaojin "对了，前几天你问我陈总朋友圈是……"
+
+            show she_05_happy_nobag onlayer top:
+                zoom 0.8
+                xzoom -1.0
+                xpos -30
+                ypos 240
+            hide she_03_tinysmile_eye_nobag onlayer top
             s "哦，偶然看到，就打算试试健身。你有没有什么健身经验分享的？"
+            
+            hide jin_04_question with dissolve
             xiaojin "有啊！我跟你说，蛋白粉就要选……"
+            hide she_05_happy_nobag onlayer top
+            scene black with dissolve
             "{i}他把自己的健身心得倾囊相授，真是个好人。{/i}"
             
         "吐槽工作":
             $ xiaojin_topic = "work"
-            s "这个项目真是累死了……"
+            show she_10_tired onlayer top at top_dissolve:
+                zoom 0.8
+                xzoom -1.0
+                xpos -30
+                ypos 240
+            s "我来了……这个项目真是累死了……"
+            show jin_02_frown with dissolve:
+                zoom 0.97
+                xpos 1360
+                ypos 150
             xiaojin "对吧！有时候觉得AI取代不了我们，因为根本读不懂甲方七零八落的诉求。"
             "{i}你们一起吐槽了半小时甲方，英雌惜英雄。{/i}"
+            hide she_10_tired onlayer top
+            hide jin_02_frown with dissolve
+            scene black with dissolve
             
         "恋爱话题":
             $ xiaojin_topic = "love"
+            show jin_02_frown:
+                zoom 0.97
+                xpos 1360
+                ypos 150
             xiaojin "你知道最近隔壁部门小x的男朋友和她冷战不？"
-            s "嗯？新瓜，细说。"
+            show she_11_interest onlayer top at top_dissolve:
+                zoom 0.8
+                xzoom -1.0
+                xpos -30
+                ypos 240
+            s "嗯？新瓜，细说！"
             xiaojin "小x和男朋友恋爱挺久了，最近她男朋友求婚，但是小x想这几年多专注在事业，往后推推。"
             xiaojin "她男朋友觉得求婚被拒，正沮丧，等着小x哄中……"
+            show she_05_sohappy_nobag onlayer top at top_dissolve:
+                zoom 0.8
+                xzoom -1.0
+                xpos -30
+                ypos 240
             s "那他可得等等了，小x手上的项目后天才交呢。小x姐，女王。"
+            hide she_11_interest onlayer top
+            show jin_drunk:
+                zoom 0.97
+                xpos 1360
+                ypos 150
             xiaojin "小x姐，女王！"
-
+            hide she_05_sohappy_nobag onlayer top
+            scene black with dissolve
     # 关键修复：在menu结束后统一设置变量
     $ talk_to_xiaojin = True
     $ xiaojin_interest += 1
-    hide talk_to_xiaojin with dissolve
+    hide jin_drunk with dissolve
     jump check_all_bar_conditions
 
 label talk_to_xiaojin_again:
@@ -3148,29 +3206,63 @@ label sit_with_lin:
     
     "{i}角落的卡座，林姐一个人坐在那里，光影在她脸上切割出明与暗。{/i}"
     
-    show linjie_04_frown:
+    show linjie_01_normal with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
     linjie "你做得太好了。好得过头了。"
+    show she_01_normal_eye_o_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     s "什么意思？"
+    show linjie_04_frown:
+        zoom 0.92
+        xpos 1450
+        ypos 200
     linjie "作为新人，陈永仁很中意你——非常中意。"
     "{i}她晃了晃酒杯，冰块碰撞发出清脆的声响。{/i}"
+    show linjie_06_bar_closeeyes with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
     linjie "他也这样注意过我，后来就不了。"
     s "……发生了什么？"
     "{i}酒有些辣，林姐长饮一口，好一会儿才说话。{/i}"
+    show linjie_06_bar with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
     linjie "我老了，对他来说，现在我只是有用。"
     "{i}她没有回答你的问题，像是醉了。{/i}"
+    show linjie_06_bar_notlikeme:
+        zoom 0.92
+        xpos 1450
+        ypos 200
     linjie "去别的地方转转吧，别和我一样。"
+    hide she_01_normal_eye_o_nobag onlayer top
 
     scene black with dissolve
     pause 1.0
 
     #这里加脚步声或者其他音效，表现小曼转身林姐追上来叫住她
-    linjie "哎——"
+    linjie "哎——" with vpunch
+    show bar_booth
+
+    show linjie_03_delicate:
+        zoom 0.92
+        xpos 1450
+        ypos 200
     linjie "别认为“在他眼里我很特别”。"
+    show linjie_02_smile:
+        zoom 0.92
+        xpos 1450
+        ypos 200
     linjie "你本来就特别。"
     linjie "不是因为他。"
+    hide linjie_03_delicate
+    hide linjie_02_smile with dissolve
     
     $ sit_with_lin = True
     $ hidden_truth_unlocked = True
@@ -3259,7 +3351,8 @@ label beer:
 
     $ drink_choice = "beer"
     $ bar_menu_choice = True
-    "{i}你点了一杯精酿啤酒，泡沫细腻。{/i}"
+    "{i}一杯精酿啤酒，泡沫细腻。{/i}"
+    "{i}人生得意须尽欢，此刻的泡沫托起你所有的轻盈。{/i}"
     hide screen drink_menu
     jump check_all_bar_conditions
 
@@ -3267,6 +3360,7 @@ label wine:
     $ drink_choice = "wine"
     $ bar_menu_choice = True
     "{i}红酒在杯中摇晃，颜色深沉。{/i}"
+    "{i}葡萄美酒夜光杯，敬那个在深夜依然一往无前的自己。{/i}"
     hide screen drink_menu
     jump check_all_bar_conditions
 
@@ -3274,13 +3368,15 @@ label cocktail:
     $ drink_choice = "cocktail"
     $ bar_menu_choice = True
     "{i}五颜六色的液体，不知道里面有什么。{/i}"
+    "{i}彩虹沉入杯底，等你打捞。每一口都是未知，每一步都是风景。{/i}"
     hide screen drink_menu
     jump check_all_bar_conditions
 
 label soda:
     $ drink_choice = "soda"
     $ bar_menu_choice = True
-    "{i}可乐加冰，气泡刺激着喉咙。你保持清醒。{/i}"
+    "{i}可乐加冰，气泡刺激着喉咙。{/i}"
+    "{i}众人皆醉我独醒。猛兽总是独行，牛羊才成群结队。{/i}"
     hide screen drink_menu
     jump check_all_bar_conditions
 
@@ -3335,8 +3431,7 @@ default car_event = False
 label bar_ending:
     hide screen bar_scene
     
-    scene street
-    with fade
+    scene street with fade
     
     "{i}夜深了，大家陆续离开。{i}"
     "{i}凉风吹在脸上，路灯是朦胧的，微醺的感觉。{i}"
@@ -3345,13 +3440,12 @@ label bar_ending:
     s "啊……末班车还有15分钟到，要过去地铁站时间有点紧啊……"
     
     #音效+图片表示：一辆车滑停在身边，车窗降下
-    
+    scene car
     show chen_01_normal with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 681
         ypos 162
-    
     chen "上车吧，我们顺路。"
     
     if investigation_skill > 1:
@@ -3359,10 +3453,12 @@ label bar_ending:
     else:
         pass
     
+    "{i}要上车吗？{/i}"
     menu:
-        "你握着手机，心跳在加速。" #音效
+        #音效：心跳
         
         "上车":
+            "那谢谢陈总了。"
             $ car_event == True 
             jump get_in_car
         
@@ -3374,12 +3470,10 @@ label bar_ending:
 
 # 选项A：上车
 label get_in_car:
-    hide chen
-    
+    #要开车门的音效
+    scene car_inside with fade
     "{i}拉开车门，坐进副驾驶，你感觉到皮革座椅的冰凉，闻到车内淡淡的古龙水味。{/i}"
-    
     chen "系好安全带。"
-
     jump chapter3
 
 # 选项B：安全拒绝
