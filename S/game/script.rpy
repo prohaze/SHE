@@ -29,7 +29,7 @@ transform top_dissolve:
     # 进入
     on show:
         alpha 0.0
-        linear 0.25 alpha 1.0
+        linear 0.3 alpha 1.0
     
     # 离开 - 关键
     on hide:
@@ -1580,12 +1580,14 @@ label car_choice:
 label car_scene:
     s "好，谢谢。"
     chen "走吧，车在楼下。"
-    scene black with fade
+    scene car_inside with fade
     "{i}车内很干净，有淡淡的皮革味。{/i}"
+    s "您把我放在711就好，我刚好买个早餐，麻烦您了。"
+    chen "没问题。"
     "{i}陈永仁放了一首老歌。你们都没说话。{/i}"
-    "{i}他在你公寓楼下停车。{/i}"
+    "{i}他在便利店前停车。{/i}"
     chen "明天见，好好休息。"
-    jump task_1_4_end
+    jump task_1_4_end2
 
 label reject_car:
     s "不用，我坐地铁。"
@@ -1594,11 +1596,18 @@ label reject_car:
     hide chen_03_narroweyes with moveoutright
     "{i}陈永仁走了。{/i}"
     "{i}你看着他离开，胸口有什么东西松开了，不知道为什么。{/i}"
-    jump task_1_4_end
+    jump task_1_4_end1
 
-label task_1_4_end:
+label task_1_4_end1:
     scene office_desk with fade
     "{i}深夜的办公室闪烁的是代码的霓虹。{/i}"
+    "{i}电子bug能梦见仿生萤火虫吗？\n在刚来那天所看到的落地窗里，星星亮起，夜幕降临。{/i}"
+    jump task_1_5
+
+label task_1_4_end2:
+    scene home with fade
+    "{i}回到家，你简单收拾后便躺下，很快就睡着了。{/i}"
+    "{i}梦里，深夜的办公室闪烁的是代码的霓虹。{/i}"
     "{i}电子bug能梦见仿生萤火虫吗？\n在刚来那天所看到的落地窗里，星星亮起，夜幕降临。{/i}"
     jump task_1_5
 
@@ -3326,14 +3335,18 @@ label observe_chen_again:
 label bar_restroom:
     hide screen bar_scene
     
-    scene bg restroom_mirror
-    with fade
+    scene restroom with fade
     
-    "{i}躲进洗手间锁上门，外面的说话声、碰杯声离你远去了。{/i}"
-    "{i}你看着镜子里的自己，脸颊微红。{/i}"
-    "{i}*嗡* 你的手机屏幕亮了。{/i}"
+    "{i}躲进洗手间锁上门，外面的说话声、碰杯声都远去了。{/i}"
+    "{i}镜子里的人脸颊微红。{/i}"
+    play sound "phone vibration.mp3"
+    pause 1.0
+    show restroom_wx with moveinbottom:
+        zoom 1.4
+        align (0.5, 0.45)
     "【微信】{i}妈：「你什么时候回家？」{/i}"
     "【微信】{i}闺蜜：「那个项目怎么样了？」{/i}"
+    hide restroom_wx with dissolve
     "{i}你深吸一口气，现在你暂时逃离了那个世界。{/i}"
     "{i}但你知道，总得回去，过明天。{/i}"
 
@@ -3342,7 +3355,7 @@ label bar_restroom:
 
 label bar_restroom_again:
     hide screen bar_scene
-    show bg restroom_mirror
+    show restroom with dissolve
     "{i}洗手间有人，先出去吧。{/i}"
     jump check_all_bar_conditions
 
@@ -3444,7 +3457,7 @@ label bar_ending:
     show chen_01_normal with dissolve:
         zoom 0.9
         xzoom -1.0
-        xpos 681
+        xpos 1350
         ypos 162
     chen "上车吧，我们顺路。"
     
@@ -3478,10 +3491,18 @@ label get_in_car:
 
 # 选项B：安全拒绝
 label refuse_car_safe:
+    show she_03_tinysmile_eye onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     s "不用了，我坐地铁，挺方便的。"
     
-    #"陈永仁的笑容没变，手指敲了敲方向盘。"
-    
+    show chen_05_wanwei with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1356
+        ypos 162
     chen "末班车快没了，你确定？"
     
     s "我赶得上，谢谢陈总。"
@@ -3489,60 +3510,145 @@ label refuse_car_safe:
     "{i}你后退一步，点头致谢。{/i}"
     
     #音效+图片，车开走
+    scene street with dissolve
     "{i}黑夜里尾灯消失，光线渐暗，但你感到十分心安。{/i}"
-    
+    hide she_03_tinysmile_eye onlayer top
+
     jump safe_ending
 
 # 选项C：质问（压力抉择）
 label question_chen:
+    show she_02_sweat_eye onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     s "您怎么知道我住在哪？"
-    
+    show chen_00_body:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1356
+        ypos 438
+    hide chen_01_normal
+
+    show chen_02_smile:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1349
+        ypos 161
     chen "HR档案里记着大家的联络地址，我记得自己手底下所有团队成员的信息。"
+    
+    show chen_04_frontsmile with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1349
+        ypos 162
+    hide chen_02_smile with dissolve
     chen "这是关心的方式，就像现在问你要不要搭便车一样。"
+    show chen_04_glance with dissolve:
+        zoom 0.9
+        xzoom -1
+        xpos 1350
+        ypos 161
     chen "怎么样，走吗？"
    
     menu:
         
         "上车":
+            show she_01_normal_eye onlayer top at top_dissolve:
+                zoom 0.8
+                xzoom -1.0
+                xpos -30
+                ypos 240
             "{i}你意识到继续对峙没有意义。{/i}"
+            hide she_01_normal_eye onlayer top
             s "……那麻烦您了。"
+            hide she_02_sweat_eye onlayer top
+            scene black with dissolve
             #音效：关车门
             $ car_event == True
             jump get_in_car
         
         "仍然拒绝":
+            show she_01_normal_eye onlayer top at top_dissolve:
+                zoom 0.8
+                xzoom -1.0
+                xpos -30
+                ypos 240
             s "我还是坐地铁吧，谢谢您关心。"
+            hide she_02_sweat_eye onlayer top
+            hide she_01_normal_eye onlayer top
+            scene black with fade
             "{i}背后的沉默像浓重的夜色，但你走得坚定无比。{/i}"
             jump safe_ending
 
 # 尴尬拒绝后续
 label safe_ending:
     scene subway_station with fade
-    
+    show she_12_breathe onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     "{i}你冲进地铁站。{/i}"
     
-    "{i}末班车还有3分钟。你赶上了。{/i}"
+    show she_05_happy_sweat onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "末班车还有3分钟。赶上了！"
+    hide she_12_breathe onlayer top
+    hide she_05_happy_sweat onlayer top
     
-    "{i}车厢里空荡荡的，你坐在角落，手还在抖。{/i}"
+    scene subway_inside with fade
+    "{i}车厢里空荡荡的，你坐在角落，剧烈喘息。{/i}"
     
-    "{i}*嗡* 你的手机在震动：{/i}"
+    play sound "phone vibration.mp3"
+    pause 1.0
+    show chen_wx_lockscreen with moveinbottom:
+        zoom 1.4
+        align (0.5, 0.45)
+    pause 1.0
     chen "注意安全。"
     s "……"
+    hide chen_wx_lockscreen with dissolve
     
     jump chapter_2_end
 
 # chapter 2结束，安全支线
 label chapter_2_end:
-    scene home with fade
+    scene black with dissolve
+    pause 1.0 
     
     "{i}你终于回到家，锁上门。{i}"
-    
+    show she_13_sigh onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    pause 1.0
+    scene home with fade
+    hide she_13_sigh onlayer top
+    show she_14_think onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "……"
     if hidden_truth_unlocked:
-        "{i}林姐的话在耳边回响：{/i}"
-        "{i}「别让他让你觉得自己特别。」{/i}"
+        "{i}放下包，靠在门上，林姐的话在耳边回响：{/i}"
+        "{i}「别认为“他”让你觉得自己特别。」{/i}"
         "{i}这一周结束了，His Game成功了。{/i}"
+        show she_15_unflinched onlayer top at top_dissolve:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
         "{i}但某种游戏，才刚刚开始。{/i}"
         "{i}游戏的一方是陈永仁，但你隐隐感觉自己不是另一方唯一的执棋人。"
+        hide she_15_unflinched onlayer top
+    hide she_14_think onlayer top
     jump chapter4
 
 
@@ -3560,244 +3666,129 @@ default office_searched = False
 label chapter4:
     $ chapter4_started = True
     
-    scene bg office_12f
-    with fade
+    scene office with fade
     
-    "你走进去。一切看起来一样。"
-    "每个人表现一样。"
-    "你却觉得自己戴着标签。"
-    
+    "{i}设计部的人与物，九点准时刷新在这里。一切看起来和往常一样。{/i}"
+
     # 陈永仁走廊相遇
-    show chen_normal at right
-    with dissolve
+    show chen_01_normal with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1350
+        ypos 162
+    chen "早啊小曼！昨天休息得还好吧。"
     
-    chen "早啊小曼！昨天那个PPT做得真棒。非常专业。"
-    
-    "昨天微妙的恶意已经从他眼中消失。"
-    "没有一丝迹象表明昨晚发生过什么。"
-    
+    show she_02_sweat_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "……啊，陈总早。"
+
+    hide chen_01_normal with dissolve
+    show she_09_unhappy onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    "{i}那种语气、那种压力——昨天微妙的一切都已经从他身上消失。{/i}"
+    hide she_02_sweat_eye_nobag onlayer top
+    s "如果我都无法抓住那一丝恶意，又怎么证明给其他人。"
     hide chen_normal with dissolve
     
     # 小金关心
-    show xiaojin_concerned at left
-    with dissolve
-    
-    xiaojin "嘿，你脸色不好。昨晚熬夜了？"
-    
+    show jin_04_question with dissolve:
+        zoom 0.97
+        xpos 1360
+        ypos 150
+    show she_01_normal_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    xiaojin "嘿，你脸色不太好。昨晚失眠了？"
+    hide she_09_unhappy onlayer top
+
     menu:
-        "加班":
-            s "嗯，加班。"
-            xiaojin "嗐，我也一样。这地方会害死我们。"
-            
-        "没睡好":
-            s "昨晚没睡好。"
-            xiaojin "那你中午好好补个觉，休息下。"
-            
+        "借口搪塞":
+            show she_05_happy_sweat_nobag onlayer top at top_dissolve:
+                zoom 0.8
+                xzoom -1.0
+                xpos -30
+                ypos 240
+            s "嗯，宿醉头晕，没睡好。"
+            show jin_02_frown:
+                zoom 0.97
+                xpos 1360
+                ypos 150
+            xiaojin "嗐，我也一样，早知道少喝点了"
+            hide jin_02_frown with dissolve
+            hide she_05_happy_sweat_nobag onlayer top
+
         "沉默":
             s "…………" 
-            #show image你盯着他，嘴唇抿成一条线。
-            xiaojin "……呃，看来是熬懵了？我不打扰了，你好好休息。"
-    
-    hide xiaojin_concerned with dissolve
-    
-    s "在证据集齐前，我得装作一切如常。"
-    
-    jump chapter4_evidence_prep
+            xiaojin "……呃，看来是困懵了？你中午好好补个觉，我不打扰了。"
+            hide jin_04_question with dissolve
+             
+        "告诉他真相":
+            show she_15_unflinched_card onlayer top at top_dissolve:
+                zoom 0.8
+                xzoom -1.0
+                xpos -30
+                ypos 240
+            s "陈总有问题。"
+            hide she_01_normal_eye_nobag onlayer top
+            jump search_fail
 
-# 任务4.2准备：选择工具
-label chapter4_evidence_prep:
-    scene bg bedroom_night
-    with fade
+    hide she_01_normal_eye_nobag onlayer top
+    scene black with fade
+    s "现在得先搜集证据。"
+    s "在证据集齐前，要装作一切如常。"
     
-    "今晚，你要行动。"
-    "从卧室带什么工具？"
-    
-    # 工具选择界面
-    call screen evidence_tools_select
-    
-    "你准备好了。"
-    jump digital_evidence_phase
+    jump harrassment_evidence
 
-# 工具选择界面
-screen evidence_tools_select():
-    modal True
-    
-    frame:
-        xalign 0.5
-        yalign 0.5
-        xpadding 50
-        ypadding 40
-        background "#2c3e50"
+label search_fail:
+    show jin_03_awkward:
+        zoom 0.97
+        xpos 1360
+        ypos 150
+    xiaojin "呃……小曼"
+    hide jin_04_question
+    hide jin_03_awkward
+    show she_16_shocked onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    hide she_15_unflinched_card onlayer top
+    show chen_04_frontsmile with vpunch:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1350
+        ypos 162
+    chen "哈哈大家聊什么呢，我也来听听。"
+    show chen_04_glance with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1350
+        ypos 162
+    chen "一个好上司，可要记得自己手底下所有团队成员的信息，包括聊天喜好……"
+    chen "对吗，小曼？"
+    hide she_16_shocked onlayer top
+    scene black with fade
+    show chen_08_horrible with dissolve:
+        zoom 2.0 xalign 0.45 ypos -600
+        linear 1.5 zoom 2.0 xalign 0.45 ypos -500
+        linear 0.1 zoom 7 xalign 0.65 ypos -800
+    pause 1.5
+    jump ending_gulang
         
-        vbox:
-            spacing 20
-            xalign 0.5
-            
-            text "选择携带工具" size 28 color "#ffffff" xalign 0.5
-            
-            grid 2 2:
-                spacing 15
-                
-                # 工具1：备用手机
-                button:
-                    xsize 200
-                    ysize 150
-                    background "#34495e"
-                    hover_background "#4a6fa5"
-                    action [SetVariable("tool_phone", True), Return()]
-                    
-                    vbox:
-                        xalign 0.5
-                        yalign 0.5
-                        text "📱" size 40
-                        text "备用手机" size 16 color "#ffffff"
-                        text "(截屏专用)" size 12 color "#95a5a6"
-                
-                # 工具2：录音笔
-                button:
-                    xsize 200
-                    ysize 150
-                    background "#34495e"
-                    hover_background "#4a6fa5"
-                    action [SetVariable("tool_recorder", True), Return()]
-                    
-                    vbox:
-                        xalign 0.5
-                        yalign 0.5
-                        text "🎙️" size 40
-                        text "录音笔" size 16 color "#ffffff"
-                        text "(持续录音)" size 12 color "#95a5a6"
-                
-                # 工具3：微型摄像头
-                button:
-                    xsize 200
-                    ysize 150
-                    background "#34495e"
-                    hover_background "#4a6fa5"
-                    action [SetVariable("tool_camera", True), Return()]
-                    
-                    vbox:
-                        xalign 0.5
-                        yalign 0.5
-                        text "📹" size 40
-                        text "微型摄像头" size 16 color "#ffffff"
-                        text "(隐蔽拍摄)" size 12 color "#95a5a6"
-                
-                # 工具4：什么都不带
-                button:
-                    xsize 200
-                    ysize 150
-                    background "#7f8c8d"
-                    hover_background "#95a5a6"
-                    action Return()
-                    
-                    vbox:
-                        xalign 0.5
-                        yalign 0.5
-                        text "🚫" size 40
-                        text "轻装上阵" size 16 color "#ffffff"
-                        text "(风险+)" size 12 color "#bdc3c7"
-
-# 第一阶段：数字证据 - 截屏快手小游戏
-label digital_evidence_phase:
-    scene bg bedroom_night
-    with fade
-    
-    "第一阶段：数字证据。"
-    "翻看所有陈永仁的消息。"
-    "警告：他可能会撤回。"
-    
-    "小游戏：截屏快手"
-    "每条消息5秒内截屏，否则消失。"
-    
-    # 7条消息，每条5秒限时
-    $ digital_evidence_count = 0
-    
-    call screen screenshot_game(msg="在吗", timeout=5.0)
-    call screen screenshot_game(msg="昨晚的事别多想", timeout=5.0)
-    call screen screenshot_game(msg="你很特别", timeout=5.0)
-    call screen screenshot_game(msg="我知道你家在哪", timeout=5.0)
-    call screen screenshot_game(msg="别告诉林姐", timeout=5.0)
-    call screen screenshot_game(msg="下周单独吃饭", timeout=5.0)
-    call screen screenshot_game(msg="你逃不掉的", timeout=5.0)
-    
-    "截屏完成。获得 [digital_evidence_count]/7 条证据。"
-    
-    if digital_evidence_count >= 5:
-        "足够作为数字证据。"
-        $ last_night_evidence = True
-    else:
-        "证据不足……有些消息被撤回了。"
-    
-    jump physical_evidence_phase
-
-# 截屏小游戏界面
-screen screenshot_game(msg, timeout=5.0):
-    modal True
-    
-    default start_time = renpy.get_game_time()
-    default captured = False
-    
-    # 实时检查时间
-    timer 0.05 repeat True action If(
-        (renpy.get_game_time() - start_time) >= timeout,
-        true=[Hide("screenshot_game"), Return()],
-        false=NullAction()
-    )
-    
-    frame:
-        xalign 0.5
-        yalign 0.5
-        xsize 400
-        ysize 300
-        background "#ffffff"
         
-        vbox:
-            xalign 0.5
-            yalign 0.5
-            spacing 20
-            
-            # 微信消息样式
-            frame:
-                background "#95ec69"
-                xpadding 15
-                ypadding 10
-                xalign 0.5
-                
-                text msg size 18 color "#000000"
-            
-            null height 30
-            
-            # 倒计时显示
-            $ remaining = max(0, timeout - (renpy.get_game_time() - start_time))
-            text "[remaining:.1f]秒" size 24 color "#e74c3c" xalign 0.5
-            
-            null height 20
-            
-            # 截屏按钮
-            if not captured:
-                textbutton "📸 截屏":
-                    xalign 0.5
-                    xsize 150
-                    ysize 50
-                    background "#3498db"
-                    hover_background "#2980b9"
-                    text_color "#ffffff"
-                    action [SetScreenVariable("captured", True), 
-                            SetVariable("digital_evidence_count", digital_evidence_count + 1),
-                            Show("screenshot_flash")]
-            else:
-                text "✓ 已截屏" color "#27ae60" size 20 xalign 0.5
 
-# 截屏闪光效果
-screen screenshot_flash():
-    add Solid("#ffffff")
-    timer 0.1 action Hide("screenshot_flash")
 
-# 第二阶段：实体证据
-label physical_evidence_phase:
-    scene bg office_night
-    with fade
+# 实体证据搜证
+label harrassment_evidence:
+    scene office with fade
     
     "第二阶段：实体证据。"
     "陈永仁的办公室。需要他不在时进去。"
@@ -5591,7 +5582,9 @@ label chapter5_ending:
     
     return
 
-
+label ending_gulang:
+    "结局：孤狼"
+    return
 
 #     #1. 酒单（左侧）
 #     button:
@@ -5676,3 +5669,194 @@ label chapter5_ending:
 #             yalign 0.5
 #             text "🚻" size 30 xalign 0.5
 #             text "洗手间" size 14 xalign 0.5
+
+
+# 任务4.2准备：选择工具
+# label chapter4_evidence_prep:
+#     scene bg bedroom_night
+#     with fade
+    
+#     "今晚，你要行动。"
+#     "从卧室带什么工具？"
+    
+#     # 工具选择界面
+#     call screen evidence_tools_select
+    
+#     "你准备好了。"
+#     jump digital_evidence_phase
+
+# # 工具选择界面
+# screen evidence_tools_select():
+#     modal True
+    
+#     frame:
+#         xalign 0.5
+#         yalign 0.5
+#         xpadding 50
+#         ypadding 40
+#         background "#2c3e50"
+        
+#         vbox:
+#             spacing 20
+#             xalign 0.5
+            
+#             text "选择携带工具" size 28 color "#ffffff" xalign 0.5
+            
+#             grid 2 2:
+#                 spacing 15
+                
+#                 # 工具1：备用手机
+#                 button:
+#                     xsize 200
+#                     ysize 150
+#                     background "#34495e"
+#                     hover_background "#4a6fa5"
+#                     action [SetVariable("tool_phone", True), Return()]
+                    
+#                     vbox:
+#                         xalign 0.5
+#                         yalign 0.5
+#                         text "📱" size 40
+#                         text "备用手机" size 16 color "#ffffff"
+#                         text "(截屏专用)" size 12 color "#95a5a6"
+                
+#                 # 工具2：录音笔
+#                 button:
+#                     xsize 200
+#                     ysize 150
+#                     background "#34495e"
+#                     hover_background "#4a6fa5"
+#                     action [SetVariable("tool_recorder", True), Return()]
+                    
+#                     vbox:
+#                         xalign 0.5
+#                         yalign 0.5
+#                         text "🎙️" size 40
+#                         text "录音笔" size 16 color "#ffffff"
+#                         text "(持续录音)" size 12 color "#95a5a6"
+                
+#                 # 工具3：微型摄像头
+#                 button:
+#                     xsize 200
+#                     ysize 150
+#                     background "#34495e"
+#                     hover_background "#4a6fa5"
+#                     action [SetVariable("tool_camera", True), Return()]
+                    
+#                     vbox:
+#                         xalign 0.5
+#                         yalign 0.5
+#                         text "📹" size 40
+#                         text "微型摄像头" size 16 color "#ffffff"
+#                         text "(隐蔽拍摄)" size 12 color "#95a5a6"
+                
+#                 # 工具4：什么都不带
+#                 button:
+#                     xsize 200
+#                     ysize 150
+#                     background "#7f8c8d"
+#                     hover_background "#95a5a6"
+#                     action Return()
+                    
+#                     vbox:
+#                         xalign 0.5
+#                         yalign 0.5
+#                         text "🚫" size 40
+#                         text "轻装上阵" size 16 color "#ffffff"
+#                         text "(风险+)" size 12 color "#bdc3c7"
+
+# # 第一阶段：数字证据 - 截屏快手小游戏
+# label digital_evidence_phase:
+#     scene bg bedroom_night
+#     with fade
+    
+#     "第一阶段：数字证据。"
+#     "翻看所有陈永仁的消息。"
+#     "警告：他可能会撤回。"
+    
+#     "小游戏：截屏快手"
+#     "每条消息5秒内截屏，否则消失。"
+    
+#     # 7条消息，每条5秒限时
+#     $ digital_evidence_count = 0
+    
+#     call screen screenshot_game(msg="在吗", timeout=5.0)
+#     call screen screenshot_game(msg="昨晚的事别多想", timeout=5.0)
+#     call screen screenshot_game(msg="你很特别", timeout=5.0)
+#     call screen screenshot_game(msg="我知道你家在哪", timeout=5.0)
+#     call screen screenshot_game(msg="别告诉林姐", timeout=5.0)
+#     call screen screenshot_game(msg="下周单独吃饭", timeout=5.0)
+#     call screen screenshot_game(msg="你逃不掉的", timeout=5.0)
+    
+#     "截屏完成。获得 [digital_evidence_count]/7 条证据。"
+    
+#     if digital_evidence_count >= 5:
+#         "足够作为数字证据。"
+#         $ last_night_evidence = True
+#     else:
+#         "证据不足……有些消息被撤回了。"
+    
+#     jump physical_evidence_phase
+
+# # 截屏小游戏界面
+# screen screenshot_game(msg, timeout=5.0):
+#     modal True
+    
+#     default start_time = renpy.get_game_time()
+#     default captured = False
+    
+#     # 实时检查时间
+#     timer 0.05 repeat True action If(
+#         (renpy.get_game_time() - start_time) >= timeout,
+#         true=[Hide("screenshot_game"), Return()],
+#         false=NullAction()
+#     )
+    
+#     frame:
+#         xalign 0.5
+#         yalign 0.5
+#         xsize 400
+#         ysize 300
+#         background "#ffffff"
+        
+#         vbox:
+#             xalign 0.5
+#             yalign 0.5
+#             spacing 20
+            
+#             # 微信消息样式
+#             frame:
+#                 background "#95ec69"
+#                 xpadding 15
+#                 ypadding 10
+#                 xalign 0.5
+                
+#                 text msg size 18 color "#000000"
+            
+#             null height 30
+            
+#             # 倒计时显示
+#             $ remaining = max(0, timeout - (renpy.get_game_time() - start_time))
+#             text "[remaining:.1f]秒" size 24 color "#e74c3c" xalign 0.5
+            
+#             null height 20
+            
+#             # 截屏按钮
+#             if not captured:
+#                 textbutton "📸 截屏":
+#                     xalign 0.5
+#                     xsize 150
+#                     ysize 50
+#                     background "#3498db"
+#                     hover_background "#2980b9"
+#                     text_color "#ffffff"
+#                     action [SetScreenVariable("captured", True), 
+#                             SetVariable("digital_evidence_count", digital_evidence_count + 1),
+#                             Show("screenshot_flash")]
+#             else:
+#                 text "✓ 已截屏" color "#27ae60" size 20 xalign 0.5
+
+# # 截屏闪光效果
+# screen screenshot_flash():
+#     add Solid("#ffffff")
+#     timer 0.1 action Hide("screenshot_flash")
