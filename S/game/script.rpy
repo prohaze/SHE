@@ -2377,11 +2377,17 @@ label task_1_6_end:
         "思索":
             s "林姐平常不说这些的，怎么……"
             "{i}你正揣摩这条消息的的意图，斟酌着打下回复，又有新消息发来了。{/i}"
+            show linjie_wx_d1:
+                zoom 1.4
+                align (0.5, 0.45)
             linjie "接完水快回来，有个新的brief发你了。"
+            show linjie_wx_d2:
+                zoom 1.4
+                align (0.5, 0.45)
             $ linjie_interest += 1
             # hide she_01_normal_eye_o_nobag onlayer top
             scene black with dissolve
-            pause 1.0
+            pause 2.0
             jump chapter_2
 
 
@@ -3730,13 +3736,14 @@ label chapter4:
             xiaojin "……呃，看来是困懵了？你中午好好补个觉，我不打扰了。"
             hide jin_04_question with dissolve
              
-        "告诉他真相":
+        "求助小金":
             show she_15_unflinched_card onlayer top at top_dissolve:
                 zoom 0.8
                 xzoom -1.0
                 xpos -30
                 ypos 240
             s "陈总有问题。"
+            s "你愿意跟我一起揭发他吗？"
             hide she_01_normal_eye_nobag onlayer top
             jump search_fail
 
@@ -3788,211 +3795,717 @@ label search_fail:
 
 # 实体证据搜证
 label harrassment_evidence:
-    scene office with fade
+    scene home with fade
     
-    "第二阶段：实体证据。"
-    "陈永仁的办公室。需要他不在时进去。"
-    
+    show she_14_deepthink onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "{i}陈永仁如果性骚扰女同事，总有引诱对方营造假象的一段时间。{/i}"
+    s "{i}看他的全家福照片，他已经结婚了，那他不太可能把用来经营其他女性社交关系的东西放在家……{/i}"
+    s "{i}也许，他的办公室是一个突破口。{/i}"
+    show she_14_think onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "{i}陈永仁下班后办公室会上锁，如果要进去搜查，只有上班的这段时间。怎么才能在不打草惊蛇的情况下进去找证据呢……{/i}"
+    hide she_14_deepthink onlayer top
+    show she_15_idea onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "……等等"
+    hide she_14_think onlayer top
+    hide she_15_idea onlayer top
+
     # 检查林姐关系
-    if linjie_relationship >= 3:
-        "林姐愿意帮忙。"
-        jump lure_chen_away
+    if linjie_interest >= 3:
+        jump linjie_help
     else:
-        "林姐关系不足。无法调虎离山。"
-        menu:
-            "怎么办？"
-            "直接闯（高风险）":
-                jump direct_break_in
-            "放弃实体证据":
-                jump chapter4_end
-
-# 调虎离山
-label lure_chen_away:
-    scene bg office_corridor
-    with fade
-    
-    "林姐拨通电话。"
-    
-    linjie "陈总，紧急会议，3楼会议室，马上。"
-    
-    "陈永仁从办公室出来，快步走向电梯。"
-    
-    show chen_walking at right
-    chen "来了。"
-    hide chen_walking
-    
-    "5分钟。计时开始。"
-    
-    # 5分钟倒计时搜查
-    call screen office_search_timer(duration=300.0)  # 5分钟 = 300秒
-
-label office_search_results:
-    scene bg chen_office
-    with fade
-    
-    "搜查结束。你发现了："
-    
-    # 根据点击发现显示结果
-    if "archives" in physical_evidence_found:
-        "【旧员工档案】最下抽屉"
-        "几个女性员工，都在两年内离职。原因不明。"
-    
-    if "gift" in physical_evidence_found:
-        "【礼盒】书柜顶层"
-        "昂贵香水——未拆封。收件人：无。"
-    
-    if "notebook" in physical_evidence_found:
-        "【笔记本】文件堆下"
-        "名字、日期、备注：「李哭了。处理好了。」"
-    
-    if "photo" in physical_evidence_found:
-        "【照片】书里夹着"
-        "陈永仁和年轻女性——不是他妻子。"
-    
-    $ office_searched = True
-    jump chapter4_end
-
-# 办公室搜查界面（限时）
-screen office_search_timer(duration):
-    modal True
-    
-    default start_time = renpy.get_game_time()
-    default time_left = duration
-    
-    # 倒计时
-    timer 0.1 repeat True action [
-        SetScreenVariable("time_left", max(0, duration - (renpy.get_game_time() - start_time))),
-        If(time_left <= 0, true=[Hide("office_search_timer"), Jump("office_search_results")], false=NullAction())
-    ]
-    
-    # 背景
-    add "bg chen_office"
-    
-    # 时间显示
-    frame:
-        xalign 0.5
-        ypos 20
-        background "#e74c3c"
-        padding (20, 10)
+        jump linjie_refuse_help
         
-        $ minutes = int(time_left // 60)
-        $ seconds = int(time_left % 60)
-        text "剩余时间：[minutes]:[seconds:02d]" size 24 color "#ffffff" xalign 0.5
-    
-    # 可搜查区域
-    # 1. 最下抽屉
-    if "archives" not in physical_evidence_found:
-        button:
-            xpos 200
-            ypos 400
-            xsize 120
-            ysize 80
-            background "#8b4513"
-            hover_background "#a0522d"
-            action [AddToSet("physical_evidence_found", "archives"), Show("evidence_found_popup", msg="发现旧员工档案")]
-            
-            text "🗄️ 抽屉" size 20 xalign 0.5 yalign 0.5
-    
-    # 2. 书柜顶层
-    if "gift" not in physical_evidence_found:
-        button:
-            xpos 500
-            ypos 150
-            xsize 100
-            ysize 100
-            background "#d4af37"
-            hover_background "#f4d03f"
-            action [AddToSet("physical_evidence_found", "gift"), Show("evidence_found_popup", msg="发现礼盒")]
-            
-            text "🎁" size 40 xalign 0.5 yalign 0.5
-    
-    # 3. 文件堆
-    if "notebook" not in physical_evidence_found:
-        button:
-            xpos 400
-            ypos 350
-            xsize 150
-            ysize 100
-            background "#95a5a6"
-            hover_background "#bdc3c7"
-            action [AddToSet("physical_evidence_found", "notebook"), Show("evidence_found_popup", msg="发现笔记本")]
-            
-            text "📄 文件堆" size 18 xalign 0.5 yalign 0.5
-    
-    # 4. 书架上的书
-    if "photo" not in physical_evidence_found:
-        button:
-            xpos 600
-            ypos 200
-            xsize 80
-            ysize 120
-            background "#3498db"
-            hover_background "#5dade2"
-            action [AddToSet("physical_evidence_found", "photo"), Show("evidence_found_popup", msg="发现照片")]
-            
-            text "📖" size 35 xalign 0.5 yalign 0.5
 
-# 发现证据弹窗
-screen evidence_found_popup(msg):
-    modal False
-    
-    frame:
-        xalign 0.5
-        yalign 0.3
-        background "#27ae60"
-        padding (30, 20)
-        
-        text msg size 20 color "#ffffff" xalign 0.5
-    
-    timer 1.5 action Hide("evidence_found_popup")
+label linjie_help:
+    scene corridor with fade
+    s "林姐，我……"
+    s "昨天晚上庆功宴结束，陈总要送我回家。"
 
-# 直接闯入（高风险）
-label direct_break_in:
-    "你选择直接闯入。"
-    "门锁着。"
+    linjie "!"
+
+    s "……我有点东西丢在车上了，不知道陈总是不是把东西放在办公室里，我想去看看。"
+    s "不知道是不是只有我丢了东西，如果可能，我想替大家把失物带回来。"
+    s "……即使无法弥补曾经那个空缺，也多少能在今后有个心安。"
+    s "你愿意帮帮我吗？"
     
+    # 两人对视
+    # 调虎离山
+    
+    linjie "………………"
+    linjie "……我这里还有些文件要处理，先走了。"
+
+    # 小曼失落
+    scene office_desk with fade
+    "{i}回到工位上，你继续想着搜证的办法。{/i}"
+    # 脚步声音效
+    s "哎？"
+    "{i}林姐从你旁边快速走过，她手机里传来微信电话的声音。{/i}"
+    linjie "陈总吗，这里有个甲方的视觉需求我需要找您确认一下，需要在11楼会议室放映，您现在有别的日程吗。"
+    linjie "了解，最多耽误您5分钟行吗？"
+    linjie "好的，我准备好设备了。"
+    "{i}你从工位上看到陈永仁从办公室出来，快步走向电梯。{/i}"
+jump cyro_office_start
+
+label linjie_refuse_help:
+    s "林姐，我……"
+    s "昨天晚上庆功宴结束，陈总要送我回家。"
+
+    linjie "!"
+
+    s "……我想找证据争一个结果，不管是好是坏"
+    s "听你昨天的话，我觉得你是明白的。我计划今天去陈总办公室试试，你能帮我吗？"
+
+    linjie "佘小姐，昨晚我喝多了，你说的这些我不太记得。"
+    linjie "如果昨天和你大吐苦水，说了太多我走到今天的诸多不易，给你造成困扰了，是我失态。"
+    linjie "不好意思，我手上还有工作，不能奉陪。"
+    #林姐走开
+    scene black
+    linjie "但无论如何，希望你今后顺利。"
+
+    s "……"
+    s "谢谢。"
+    
+    show office_desk with dissolve
+    s "{i}林姐拒绝了，接下来怎么办呢？{/i}"
     menu:
-        "强行撬锁（可能被发现）":
-            $ risk_roll = renpy.random.randint(1, 10)
-            if risk_roll <= 3:
-                "锁开了。但监控拍到了你。"
-                $ investigation_skill -= 2
-                call screen office_search_timer(duration=60.0)  # 只有1分钟
-            else:
-                "撬锁失败！保安正在赶来。"
-                jump chapter4_fail
-        
-        "放弃":
+        "自己搜查":
+            s "趁陈永仁不在时抓紧时间进办公室找找看吧。"
+            jump cyro_break_in
+        "找别的办法":
+            s "再想想别的办法吧。"
             jump chapter4_end
 
-label chapter4_fail:
-    "你被发现了。"
-    "陈永仁看着你，笑容意味深长。"
-    chen "小曼，你在找什么？"
-    jump bad_ending_investigation
+    # # 5分钟倒计时搜查
+    # call screen cyro_office_timer(duration=300.0)  # 5分钟 = 300秒
 
-label chapter4_end:
-    scene bg home_night
-    with fade
-    
-    "第11周结束。"
-    
-    if digital_evidence_count >= 5 or len(physical_evidence_found) >= 2:
-        "你掌握了足够的证据。"
-        "下一步：决定如何使用。"
-        jump chapter5_decision
-    else:
-        "证据仍然不足……"
-        "你需要更多时间，或者更多勇气。"
-        jump chapter5
-# 定义 AddToSet 函数（Ren'Py没有内置）
+# 陈永仁办公室：5分钟搜查
+# 复制到 game/cyro_office_search.rpy 即可
+# ============================================================
+
+
+# ---------- 全局变量：全部加 cyro_office_ 前缀，避免和其他 default 冲突 ----------
+
+default cyro_office_time_left = 300
+
+default cyro_office_found_files = False
+default cyro_office_found_perfume = False
+default cyro_office_found_notebook = False
+default cyro_office_found_photo = False
+default found_evidence = 0
+
 init python:
-    def add_to_set(set_name, item):
-        if item not in globals()[set_name]:
-            globals()[set_name].append(item)
+
+    def cyro_office_format_time(seconds):
+        seconds = max(0, int(seconds))
+        m = seconds // 60
+        s = seconds % 60
+        return "%02d:%02d" % (m, s)
+
+    def cyro_office_mark(name, found):
+        if found:
+            return "✓ " + name
+            found_evidence =+ 1
+        return name
+
+# ============================================================
+# 倒计时 Screen：四个搜查场景都会共用这个倒计时
+# ============================================================
+
+screen cyro_office_timer():
+
+    zorder 100
+
+    frame:
+        xalign 0.97
+        yalign 0.04
+        padding (22, 12)
+
+        text "[cyro_office_format_time(cyro_office_time_left)]":
+            size 42
+            color "#FFFFFF"
+            bold True
+
+    timer 1.0 repeat True action If(
+        cyro_office_time_left > 1,
+        SetVariable("cyro_office_time_left", cyro_office_time_left - 1),
+        [
+            SetVariable("cyro_office_time_left", 0),
+            Hide("cyro_office_timer"),
+            Jump("cyro_office_time_up")
+        ]
+    )
+
+# ============================================================
+# 办公室搜查地图
+# ============================================================
+
+# 退出房间的询问screen
+screen cyro_leave_office: 
+    modal True
+    zorder 120
     
-    # 注册为屏幕动作可用
-    # renpy.add_to_store("AddToSet", add_to_set)
+    # 半透明背景
+    add "#000000CC"
+    
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xpadding 30
+        ypadding 30
+        
+        vbox:
+                       
+            text "现在就离开房间吗":
+                size 35 color "#ffffff" xalign 0.5
+            null height 30
+            
+            add Solid("#FFFFFF"):
+                xsize 800
+                ysize 1
+                xalign 0.5
+                alpha 0.3  # 30%不透明度
+
+            textbutton "结束搜查":
+                xsize 200
+                ysize 50
+                align(0.55, 0.5)
+                action [Hide("cyro_leave_office"), Jump("cyro_search_leave_safe")]
+            textbutton "继续搜查":
+                xsize 200
+                ysize 50
+                align(0.55, 0.7)
+                action [Hide("cyro_leave_office")]
+# 办公室搜证地图
+screen cyro_office_map():
+
+    modal True
+    
+    # 线索点击区域设置，focus_mask
+    button:
+        xysize(400, 200)
+        background Frame (Transform ("images/chapter4/touming_1.png", xysize=(400, 200)))
+        focus_mask True
+        xpos 1220
+        ypos 480
+        # action [Hide("bar_scene", fade), Jump("bar_menu_choice")]
+        action [Jump("cyro_office_drawer")]
+    button:
+        xysize(190, 160)
+        background Frame (Transform ("images/chapter4/touming_2.png", xysize=(190, 160)))
+        focus_mask True
+        xpos 460
+        ypos 150
+        action [Jump("cyro_office_bookshelf")]
+    button:
+        xysize(200, 90)
+        background Frame (Transform ("images/chapter4/touming_3.png", xysize=(200, 90)))
+        focus_mask True
+        xpos 900
+        ypos 610
+        action [Jump("cyro_office_photo")]
+    button:
+        xysize(250, 115)
+        background Frame (Transform ("images/chapter4/touming_4.png", xysize=(250, 115)))
+        focus_mask True
+        xpos 530
+        ypos 600
+        action [Jump("cyro_office_desk")]
+    # textbutton "[cyro_office_mark('最下层抽屉', cyro_office_found_files)]":
+    #     xsize 500
+    #     ysize 120
+    #     action Return("drawer")
+
+    # textbutton "[cyro_office_mark('书柜顶层礼盒', cyro_office_found_perfume)]":
+    #     xsize 500
+    #     ysize 120
+    #     action Return("bookshelf")
+
+    # textbutton "[cyro_office_mark('文件堆下的笔记本', cyro_office_found_notebook)]":
+    #     xsize 500
+    #     ysize 120
+    #     action Return("desk")
+
+    # textbutton "[cyro_office_mark('照片书', cyro_office_found_photo)]":
+    #     xsize 500
+    #     ysize 120
+    #     action Return("photo")
+    # 手动退出键
+    imagebutton at arrow_style_ud:
+        align (0.5, 0.95)
+        idle "arrow_down"
+        hover "arrow_down"
+        action [Show ("cyro_leave_office")]
+
+
+# ============================================================
+# 进入办公室搜查
+# ============================================================
+# 直接闯门，时间短
+label cyro_break_in:
+
+    $ cyro_office_time_left = 60
+
+    $ cyro_office_found_files = False
+    $ cyro_office_found_perfume = False
+    $ cyro_office_found_notebook = False
+    $ cyro_office_found_photo = False
+    
+    show screen cyro_office_timer
+    scene black
+
+    # 推门音效
+    "{i}趁陈永仁去洗手间的空档，你溜进了他的办公室。{/i}"
+    s "只有1分钟，必须在他回来之前，找到能证明他性骚扰员工的证据。"
+    jump cyro_office_search
+
+# 林姐帮忙，时间长
+label cyro_office_start:
+
+    $ cyro_office_time_left = 300
+
+    $ cyro_office_found_files = False
+    $ cyro_office_found_perfume = False
+    $ cyro_office_found_notebook = False
+    $ cyro_office_found_photo = False
+    
+    show screen cyro_office_timer
+    scene black
+
+    # 推门音效
+    s "最多只有五分钟。"
+    s "必须在他回来之前，找到能证明他性骚扰员工的证据。"
+    jump cyro_office_search
+
+
+# ============================================================
+# 搜查主循环
+# ============================================================
+
+label cyro_office_search:
+    scene chen_office_clue
+
+    # 倒计时结束跳转
+    if cyro_office_time_left <= 0:
+        jump cyro_office_time_up
+
+    # 正常有时间时执行
+    # 所以要在map里面设置场景切换箭头，主循环（主screen 1个线索image button + 3个副screen）
+
+    $ renpy.call_screen("cyro_office_map")
+    # $ ui.interact()
+    # $ cyro_office_choice = renpy.call_screen("cyro_office_map")
+
+    # if cyro_office_choice == "drawer":
+    #     jump cyro_office_drawer
+
+    # elif cyro_office_choice == "bookshelf":
+    #     jump cyro_office_bookshelf
+
+    # elif cyro_office_choice == "desk":
+    #     jump cyro_office_desk
+
+    # elif cyro_office_choice == "photo":
+    #     jump cyro_office_photo
+
+    # elif cyro_office_choice == "finish":
+    #     jump cyro_office_complete
+
+    # jump cyro_office_search
+
+
+# ============================================================
+# 场景一：最下层抽屉
+# ============================================================
+
+label cyro_office_drawer:
+
+    if not cyro_office_found_files:
+        $ cyro_office_found_files = True
+        $ found_evidence += 1
+        show clue_01_files with fade
+        
+        "你蹲下身，拉开办公桌最下层的抽屉。"
+
+        "抽屉比想象中更沉。"
+
+        "最里面压着一叠旧员工档案。"
+
+        "你快速翻看。"
+
+        "里面有几个女性员工的资料。"
+
+        "奇怪的是，她们都在两年内陆续离职。"
+
+        "离职原因写得很简单。"
+
+        "“个人原因。”"
+
+        "但每一份档案都被单独折过，像是被人反复查看过。"
+
+    else:
+
+        "最下层抽屉已经搜查过了。"
+
+jump cyro_office_search_check
+
+
+# ============================================================
+# 场景二：书柜顶层礼盒
+# ============================================================
+
+label cyro_office_bookshelf:
+
+    if not cyro_office_found_perfume:
+        $ cyro_office_found_perfume = True
+        $ found_evidence += 1
+
+        show clue_02_bookshelf with fade
+        "你走到书柜前。"
+
+        "书柜顶层放着一个盒子。"
+
+        show clue_02_perfume with dissolve
+        "你踮起脚，把它取了下来。"
+
+        "盒子里是一瓶昂贵香水。"
+
+        "包装完整。"
+
+        "没有拆封。"
+
+        "这不像是普通办公用品。"
+
+        "更像是准备送给某个人的礼物。"
+
+    else:
+
+        "书柜顶层你已经搜查过了。"
+
+        "那个未拆封的香水礼盒仍然显得格外突兀。"
+
+jump cyro_office_search_check
+
+
+# ============================================================
+# 场景三：照片
+# ============================================================
+
+label cyro_office_photo:
+
+    if not cyro_office_found_photo:
+
+        $ cyro_office_found_photo = True
+        $ found_evidence += 1
+
+        show clue_03_photo with fade
+        "桌子上摆着陈永仁用来记散碎事务的笔记本。"
+
+        s "都推行无纸化工作留痕了，怎么还这么热衷写笔记，都堆成一摞了，是人到中年的怀旧吗……"
+        s "诶？"
+
+        show clue_03_photo_open with dissolve
+        "翻到中间时，一张照片掉了出来。"
+
+        "照片里是陈永仁和一个年轻女性。"
+
+        "他们靠得很近。"
+
+        "那个女人不是他的妻子。"
+
+        "照片背面没有名字。"
+
+        "只有一个日期。"
+
+        s "……原来留痕是为了不留痕。"
+
+    else:
+
+        "照片书你已经搜查过了。"
+
+        "那张照片仍然夹在书页之间。"
+
+jump cyro_office_search_check
+
+
+# ============================================================
+# 场景四：笔记本
+# ============================================================
+
+label cyro_office_desk:
+
+    if not cyro_office_found_notebook:
+
+        $ cyro_office_found_notebook = True
+        $ found_evidence += 1
+
+        show clue_04_notebook with fade
+        "桌上的文件层层叠叠，其中压着一本黑色笔记本。"
+
+        "你打开笔记本。"
+
+        "里面写着一些名字、日期，还有简短的备注。"
+
+        "字迹很潦草。"
+
+        "其中一行让你停了下来。"
+
+        "“李哭了。处理好了。”"
+
+        "这句话没有上下文。"
+
+        "但正因为没有上下文，才更让人不安。"
+
+    else:
+
+        "文件堆你已经搜查过了。"
+
+        "那本黑色笔记本里的字迹仍然让你感到不舒服。"
+
+jump cyro_office_search_check
+
+
+# ============================================================
+# 每次搜查后的判断
+# ============================================================
+
+label cyro_office_search_check:
+    if cyro_office_found_files and cyro_office_found_perfume and cyro_office_found_notebook and cyro_office_found_photo:
+
+        "四个关键位置，你已经全部搜查过了。"
+        jump cyro_search_leave_safe
+
+    else:
+        jump cyro_office_search
+
+label cyro_search_leave_safe:
+
+    "搜查完毕"
+    "证据数：[found_evidence]个"
+               
+    hide screen cyro_office_timer
+
+    scene black
+
+    if found_evidence > 0:
+        "{i}你把找到的线索拍了照后归位，在陈永仁返回前出了门。{/i}"
+    else:
+        "{i}没有找到证据，但该走了{/i}"
+jump chapter5
+
+
+# ============================================================
+# 时间耗尽
+# ============================================================
+
+label cyro_office_time_up:
+
+    $ cyro_office_time_left = 0
+
+    hide screen cyro_office_timer
+
+    "时间到了。"
+
+    "门外传来脚步声。"
+    
+    # 脚步声停在身后，小曼回头
+    
+    chen "……这是谁呀？"
+    scene black with fade
+    show chen_08_horrible with dissolve:
+        zoom 2.0 xalign 0.45 ypos -600
+        linear 1.5 zoom 2.0 xalign 0.45 ypos -500
+        linear 0.1 zoom 7 xalign 0.65 ypos -800
+    pause 1.5
+    jump ending_gulang
+
+    return
+
+
+
+
+
+
+
+
+
+
+# label office_search_results:
+#     scene bg chen_office
+#     with fade
+    
+#     "搜查结束。你发现了："
+    
+#     # 根据点击发现显示结果
+#     if "archives" in physical_evidence_found:
+#         "【旧员工档案】最下抽屉"
+#         "几个女性员工，都在两年内离职。原因不明。"
+    
+#     if "gift" in physical_evidence_found:
+#         "【礼盒】书柜顶层"
+#         "昂贵香水——未拆封。收件人：无。"
+    
+#     if "notebook" in physical_evidence_found:
+#         "【笔记本】文件堆下"
+#         "名字、日期、备注：「李哭了。处理好了。」"
+    
+#     if "photo" in physical_evidence_found:
+#         "【照片】书里夹着"
+#         "陈永仁和年轻女性——不是他妻子。"
+    
+#     $ office_searched = True
+#     jump chapter4_end
+
+# # 办公室搜查界面（限时）
+# screen office_search_timer(duration):
+#     modal True
+    
+#     default start_time = renpy.get_game_runtime()
+#     default time_left = duration
+    
+#     # 倒计时
+#     timer 0.1 repeat True action [
+#         SetScreenVariable("time_left", max(0, duration - (renpy.get_game_runtime() - start_time))),
+#         If(time_left <= 0, true=[Hide("office_search_timer"), Jump("office_search_results")], false=NullAction())
+#     ]
+    
+#     # 背景
+#     add "bg chen_office"
+    
+#     # 时间显示
+#     frame:
+#         xalign 0.5
+#         ypos 20
+#         background "#e74c3c"
+#         padding (20, 10)
+        
+#         $ minutes = int(time_left // 60)
+#         $ seconds = int(time_left % 60)
+#         text "剩余时间：[minutes]:[seconds:02d]" size 24 color "#ffffff" xalign 0.5
+    
+#     # 可搜查区域
+#     # 1. 最下抽屉
+#     if "archives" not in physical_evidence_found:
+#         button:
+#             xpos 200
+#             ypos 400
+#             xsize 120
+#             ysize 80
+#             background "#8b4513"
+#             hover_background "#a0522d"
+#             action [AddToSet("physical_evidence_found", "archives"), Show("evidence_found_popup", msg="发现旧员工档案")]
+            
+#             text "🗄️ 抽屉" size 20 xalign 0.5 yalign 0.5
+    
+#     # 2. 书柜顶层
+#     if "gift" not in physical_evidence_found:
+#         button:
+#             xpos 500
+#             ypos 150
+#             xsize 100
+#             ysize 100
+#             background "#d4af37"
+#             hover_background "#f4d03f"
+#             action [AddToSet("physical_evidence_found", "gift"), Show("evidence_found_popup", msg="发现礼盒")]
+            
+#             text "🎁" size 40 xalign 0.5 yalign 0.5
+    
+#     # 3. 文件堆
+#     if "notebook" not in physical_evidence_found:
+#         button:
+#             xpos 400
+#             ypos 350
+#             xsize 150
+#             ysize 100
+#             background "#95a5a6"
+#             hover_background "#bdc3c7"
+#             action [AddToSet("physical_evidence_found", "notebook"), Show("evidence_found_popup", msg="发现笔记本")]
+            
+#             text "📄 文件堆" size 18 xalign 0.5 yalign 0.5
+    
+#     # 4. 书架上的书
+#     if "photo" not in physical_evidence_found:
+#         button:
+#             xpos 600
+#             ypos 200
+#             xsize 80
+#             ysize 120
+#             background "#3498db"
+#             hover_background "#5dade2"
+#             action [AddToSet("physical_evidence_found", "photo"), Show("evidence_found_popup", msg="发现照片")]
+            
+#             text "📖" size 35 xalign 0.5 yalign 0.5
+
+# # 发现证据弹窗
+# screen evidence_found_popup(msg):
+#     modal False
+    
+#     frame:
+#         xalign 0.5
+#         yalign 0.3
+#         background "#27ae60"
+#         padding (30, 20)
+        
+#         text msg size 20 color "#ffffff" xalign 0.5
+    
+#     timer 1.5 action Hide("evidence_found_popup")
+
+# 直接闯入（高风险）
+# label direct_break_in:
+#     "你选择直接闯入。"
+    # menu:
+    #     "强行撬锁（可能被发现）":
+    #         $ risk_roll = renpy.random.randint(1, 10)
+    #         if risk_roll <= 3:
+    #             "锁开了。但监控拍到了你。"
+    #             $ investigation_skill -= 2
+    #             call screen office_search_timer(duration=60.0)  # 只有1分钟
+#             else:
+#                 "撬锁失败！保安正在赶来。"
+#                 jump chapter4_fail
+        
+#         "放弃":
+#             jump chapter4_end
+
+# label chapter4_fail:
+#     "你被发现了。"
+#     "陈永仁看着你，笑容意味深长。"
+#     chen "小曼，你在找什么？"
+#     jump bad_ending_investigation
+
+# label chapter4_end:
+#     scene bg home_night
+#     with fade
+    
+#     "第11周结束。"
+    
+#     if digital_evidence_count >= 5 or len(physical_evidence_found) >= 2:
+#         "你掌握了足够的证据。"
+#         "下一步：决定如何使用。"
+#         jump chapter5_decision
+#     else:
+#         "证据仍然不足……"
+#         "你需要更多时间，或者更多勇气。"
+#         jump chapter5
+# # 定义 AddToSet 函数（Ren'Py没有内置）
+# init python:
+#     def add_to_set(set_name, item):
+#         if item not in globals()[set_name]:
+#             globals()[set_name].append(item)
+    
+#     # 注册为屏幕动作可用
+#     # renpy.add_to_store("AddToSet", add_to_set)
 
 #==========================================
 init -1 python:
