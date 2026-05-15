@@ -9,16 +9,16 @@ default escape = 0 #【成就：鸵鸟】
 #运行python先打包一个字典给screen item_description调取不同描述用
 init python:
     item_descriptions = {
-        "magazine": "《女性领导者》特刊，有人撕掉了一半页面。",
-        "computer": "【Excel表格开着】你应聘岗位的薪资范围：男性起薪22K，女性18K。",
-        "smartphone": "妈妈的信息：工作找到了吗？弟弟要买新鞋。",
-        "window": "你看着这座城市，135封拒信散落其中。"
+         "magazine": "A special issue of Female Leaders, half a page torn out by someone.",
+        "computer": "An open Excel spreadsheet showing the salary range for your applied position: starting salary $22,000 for males, $18,000 for females.",
+        "smartphone": "A message from Mom: Have you found a job? Your brother needs new shoes.",
+        "window": "You gaze at the city, with 135 rejection letters scattered among it."
     }
     item_names = {
-        "magazine": "杂志",
-        "computer": "前台电脑",
-        "smartphone": "手机",
-        "window": "玻璃窗"
+        "magazine": "magazine",
+        "computer": "computer",
+        "smartphone": "smartphone",
+        "window": "window"
     }
     item_image = {
         "window": "chapter0_items/window_scenery.png" 
@@ -329,11 +329,13 @@ label chapter0:
         xzoom -1.0
         xpos -30
         ypos 240
-    "{i}这个招聘季投了147份简历, 12封是拒信，其他杳无音讯。{/i}"
-    "{i}妈妈每周日打电话问你什么时候能找到工作，别再挑了。\n但这一次……感觉不一样。{/i}"
+label your_label_name:
+
+    "{i}This recruiting season, you sent out 147 resumes. 12 came back as rejections. The rest disappeared without a trace.{/i}"
+    "{i}Mom calls every Sunday, asking when you’ll finally find a job and telling you to stop being so picky.\nBut this time… something feels different.{/i}"
     hide she_01_normal_nocard onlayer top
     scene black with fade
-    "{i}你进入了等待室，下一个就到你了。{/i}"
+    "{i}You enter the waiting room. You’re next.{/i}"
     jump waiting_room
     
 label waiting_room:
@@ -496,7 +498,7 @@ screen grid_choice(title, opt1, opt2, opt3, opt4, act1, act2, act3, act4):
             action act1
             
             text opt1:
-                size 32
+                size 28
                 xalign 0.5
                 yalign 0.5
                 idle_color "#888888"
@@ -507,7 +509,7 @@ screen grid_choice(title, opt1, opt2, opt3, opt4, act1, act2, act3, act4):
             action act2
             
             text opt2:
-                size 32
+                size 28
                 xalign 0.5
                 yalign 0.5
                 idle_color "#888888"
@@ -519,7 +521,7 @@ screen grid_choice(title, opt1, opt2, opt3, opt4, act1, act2, act3, act4):
             action act3
             
             text opt3:
-                size 32
+                size 28
                 xalign 0.5
                 yalign 0.5
                 idle_color "#888888"
@@ -530,7 +532,7 @@ screen grid_choice(title, opt1, opt2, opt3, opt4, act1, act2, act3, act4):
             action act4
             
             text opt4:
-                size 32
+                size 28
                 xalign 0.5
                 yalign 0.5
                 idle_color "#888888"
@@ -554,13 +556,13 @@ label chapter0_2:
         xzoom -1.0
         xpos 1350
         ypos 160
-    "{i}他站起来迎接你，温暖的笑容，完美的姿态。他是那种让你立刻感受到自己被看见的人。{/i}"
+    "{i}He stands up to greet you, with a warm smile and perfect posture. He is the kind of person who makes you feel seen the moment you meet him.{/i}"
     show she_01_normal_nocard_eye onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    "{i}你坐下了，被他办公室的布置吸引了注意。{/i}"
+    "{i}You sit down, your attention drawn to the arrangement of his office.{/i}"
     hide she_01_normal_nocard onlayer top
     hide she_01_normal_nocard_eye onlayer top
     scene chen_office with fade:
@@ -568,29 +570,30 @@ label chapter0_2:
         xalign 0.9
         yalign 0.4
     call screen grid_choice(
-        "你最想查看的物品是",
-        "书架", "桌上的照片",
-        "印有图案的咖啡杯", "落地窗",
+        "Which item do you want to examine most?",
+        "Bookshelf", "Photo on the Desk",
+        "Patterned Coffee Mug", "Floor-to-Ceiling Window",
         Jump("bookshelf"), Jump("family_photo"),
         Jump("coffee_mug"), Jump("french_window")
     )
+
 label bookshelf:
-    "{i}上面摆放着一些法律书籍、商业策略，还有女性诗人的诗集。{/i}"
+    "{i}There are books on law, business strategy, and a collection of poems by female poets.{/i}"
     window hide
     jump after_menu
 
 label family_photo:
-    "{i}是一张全家福，上面有他的妻子、两个孩子，他们都在笑。{/i}"
+    "{i}It is a family photo, showing his wife and two children. They are all smiling.{/i}"
     window hide
     jump after_menu
 
 label coffee_mug:
-    "{i}杯沿有个缺口的咖啡杯，上面印着“世界最佳爸爸”。{/i}"
+    "{i}A chipped coffee mug with the words “World’s Best Dad” printed on it.{/i}"
     window hide
     jump after_menu
 
 label french_window:
-    "{i}站在这，仿佛整座城市都在自己的脚下。{/i}"
+    "{i}Standing here, it feels as if the entire city is beneath your feet.{/i}"
     window hide
     jump after_menu
 
@@ -604,56 +607,55 @@ label after_menu:
         xzoom -1.0
         xpos 680
         ypos 160
-    c"小曼，告诉我，你为什么想来这里工作？"
+    c"Siu Man, tell me, why do you want to work here？"
+
     menu:
-        "我需要钱。":
-            s"我需要钱。"
-        "我欣赏贵公司的价值观。":
-            s"我欣赏贵公司的价值观。"
-            $ add_social(1, "面试B")
-        "我想证明我能比任何人做得更好。":
-            s"我想证明我能比任何人做得更好。"
-            $ add_mental(1, "面试C")
-    show chen_01_normal with dissolve:
-        zoom 0.9
-        xzoom -1.0
-        xpos 681
-        ypos 162
-    c"明白了。你知道吗，我们有过更有经验的候选人。但我在你简历里看到了……渴望。"
+        "I need the money.":
+            s "I need the money."
+
+        "I admire your company's values.":
+            s "I admire your company's values."
+            $ add_social(1, "Interview B")
+
+        "I want to prove I can do better than anyone else.":
+            s "I want to prove I can do better than anyone else."
+            $ add_mental(1, "Interview C")
+
+    c "I see. You know, there’s a contingency that we were like to get someone older, with more experience. But what I see in your resume is... hunger."
+
     $ show_sequential_thoughts(
-        "他在观察你的手。",
-        "他在观察你的脸。", 
-        "他在看你的简历。"
+        "He looks at your resume.",
+        "He looks at your face.",
+        "He looks at your hands."
     )
-    pause 1.5
-    hide chen_01_normal with dissolve
-    hide screen high_notify
-    hide screen mid_notify
-    hide screen low_notify
-    c"有什么问题想问我吗？"
+
+    c "Do you have any questions for me?"
+
     menu:
-        "这里的女性晋升通道怎么样？":
-            s"这里的女性晋升通道怎么样？"
+        "What are the promotion pathways for females here?":
+            s "What are the promotion pathways for females here?"
             show chen_02_smile:
                 zoom 0.9
                 xzoom -1.0
                 xpos 680
                 ypos 160 
-            c"好问题。我们这里很进步。中层管理一半是女性……嗯，三分之一吧……有个Linda，她很优秀。"
+            c "Good question. We're very progressive here. Half of our middle managers are females... well, one-third actually... there's Ms Lam, she's outstanding."
             hide chen_02_smile
             jump chapter0_3
-        "有居家办公的弹性吗？":
-            s"有居家办公的弹性吗？"
+
+        "Is there flexible remote work available?":
+            s "Is there flexible remote work available?"
             show chen_05_wanwei: 
                 zoom 0.9
                 xzoom -1.0
                 xpos 687
                 ypos 161
-            c"好问题。我们公司其实很重视工作生活的平衡。居家办公原则上支持。"
-            c"但……说实话，在游戏这行——尤其是设计师，前期最好多在场。当然，这不是强制，只是建议。"
+            c "Good question. Our company actually cares a lot about work-life balance. Flexible remote work is available in principle."
+            c "But... to be honest, in the gaming industry—especially for designers, it’s best to be on-site more often in the early stage. Of course, it’s not mandatory. Just a suggestion."
             hide chen_05_wanwei
             jump chapter0_3
-        "没有了，您都介绍得很清楚。":
+
+        "No, you've covered everything thoroughly.":
             jump chapter0_3
 
 label chapter0_3:
@@ -662,7 +664,7 @@ label chapter0_3:
         xzoom -1.0
         xpos 680
         ypos 160
-    c"还有别的问题吗？"
+    c"Do you have any other questions？"
     hide chen_03_narroweyes
     show chen_03_narroweyes:
         zoom 0.9
@@ -684,8 +686,8 @@ label chapter0_3:
         xzoom -1.0
         xpos -30
         ypos 240
-    s"没有了，谢谢您。"
-    c"那么面试就到这吧，和你的交流很愉快。"    
+    s"No, thank you."
+    c"Then that concludes the interview. It's been a pleasure talking with you."    
     hide she_01_normal_nocard onlayer top
     hide she_03_tinysmile_nocard onlayer top
     scene black with fade
@@ -816,7 +818,7 @@ label gate_interaction:
     show office_card_rope at rotate_in
     #"“哔！”" #改成音效
     
-    "“欢迎，小曼！”{i}——这是你第一次在这里听到自己的名字{/i}"
+    "{i}Welcome, Siu Man! This is the first time you hear your own name here.{/i}"
     
     $ gate_used = True
     jump lobby_explore
@@ -935,13 +937,13 @@ label elevator_encounter:
         zoom 0.8
         xpos 1350
         ypos 160
-    "{i}电梯门打开。一位40多岁的女人，套装干练，眼神疲惫。{/i}"
+    "{i}The elevator doors slide open. A woman in her forties, sharply dressed in a tailored suit, her eyes weary.{/i}"
     
     show woman_02_talk:
         zoom 0.8
         xpos 1350
         ypos 160
-    unknown_woman "新来的？"
+    unknown_woman "New here?"
     hide woman_02_talk
     
     show she_05_happy onlayer top at top_dissolve:
@@ -949,20 +951,20 @@ label elevator_encounter:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "第一天。"
+    s "First day."
     
     show woman_02_talk:
         zoom 0.8
         xpos 1350
         ypos 160
-    unknown_woman "啊。"
+    unknown_woman "I see."
     show she_05_happy_sweat onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    "{i}她盯着你看的时间有点长。{i}"
-    unknown_woman "设计部？"
+    "{i}She stares at you a little too long.{i}"
+    unknown_woman "Design department?"
 
     show she_06_surprise_eye onlayer top at top_dissolve:
         zoom 0.8
@@ -970,12 +972,12 @@ label elevator_encounter:
         xpos -30
         ypos 240
     hide she_05_happy_sweat onlayer top
-    s "诶，你怎么知道？"
+    s "Huh, how did you tell?"
     
-    unknown_woman "就那种眼神。不知道你会在这待多久呢？"
+    unknown_woman "It’s in your eyes. Wonder how long you’ll stick around here."
     
     hide woman_01_normal with dissolve    
-    "{i}她在3楼下电梯。你始终不知道她的名字。{/i}"
+    "{i}She gets off at the third floor. You never learn her name.{/i}"
     
     # 剧情继续到下一部分...
     hide she_05_happy onlayer top
@@ -1410,8 +1412,8 @@ label linjie_after_c:
 label chapter1_end:
     scene bg desk_area with fade
     
-    "{i}你回到工位，看着电脑屏幕上打开的共享文件夹。{/i}"
-    "{i}你证明自己的第一个任务，开始了。{/i}"
+    "{i}You’re back at your desk, staring at the shared folder open on your computer screen.{/i}"
+    "{i}Your first task to prove yourself has begun.{/i}"
     
     # 此处可跳转到下一章节
     # jump chapter1.4
@@ -1429,8 +1431,8 @@ default xiaohongshu_contact = False
 label task_1_4:
     scene office_desk with fade
     
-    "{i}入职第5天，晚上10:47{/i}"
-    "{i}晚上的办公室不一样。更安静。自动售货机的嗡嗡声更响。{/i}"
+    "{i}Day 5 at work, 10:47 PM.{/i}"
+    "{i}The office feels different at night, quieter, yet the hum of the vending machine grows louder.{/i}"
     
     call mini_game_analysis
     
@@ -1439,9 +1441,9 @@ label task_1_4:
     if fatigue > 60:
         n "好想睡觉……"
     if fatigue > 40:
-        n "这个抽卡概率曲线怎么算都不对……"
+        n "I can’t get this gacha probability curve to add up…"
     if fatigue > 30:
-        n "明天还要早会……"
+        n "And there’s an early‑morning meeting tomorrow…"
     
     n "但做不完的话，陈总会不会觉得我不行？"
     
@@ -1612,21 +1614,21 @@ label task_1_4_end2:
     jump task_1_5
 
 label mini_game_analysis:
-    "{i}你需要完成这几款游戏的竞品拆解。{/i}"
+    "{i}You need to finish competitive analysis for these games.{/i}"
     #设置游戏ABC的图片 --> 提示玩家拆解方向
     
     show game_wzry:
         xpos 544
         ypos 123
     menu:
-        "这款游戏的核心付费点是？"
-        "VIP特权":
+        "What is the core monetization driver of this game?"
+        "VIP Privileges":
             $ temp_score = 1
             hide game_wzry
-        "抽卡保底":
+        "Gacha Pity Mechanic":
             $ temp_score = 0
             hide game_wzry
-        "付费皮肤":
+        "Paid Skins":
             $ temp_score = 1
             hide game_wzry
     
@@ -1643,14 +1645,14 @@ label mini_game_analysis:
         xpos 544
         ypos 123
     menu:
-        "这款游戏的美术风格属于？"
-        "写实3D":
+        "What art style does this game adopt?"
+        "Realistic 3D":
             $ temp_score += 1
             hide game_elden_ring
-        "二次元赛璐璐":
+        "Anime Cel‑shaded":
             $ temp_score += 0
             hide game_elden_ring
-        "像素复古":
+        "Retro Pixel Art":
             $ temp_score += 0
             hide game_elden_ring
     
@@ -1658,19 +1660,19 @@ label mini_game_analysis:
         xpos 544
         ypos 123
     menu:
-        "这款游戏属于以下哪种游戏类型？"
-        "单人角色扮演":
+        "Which genre does this game belong to?"
+        "Single‑player Role‑Playing":
             $ temp_score += 0
             hide game_srcx
-        "双人合作解谜":
+        "Two‑Player Co‑op Puzzle":
             $ temp_score += 1
             hide game_srcx
-        "多人竞技射击":
+        "Multiplayer Competitive Shooter":
             $ temp_score += 0
             hide game_srcx
 
     if temp_score >= 3:
-        "{i}拆解完成。数据已保存。{/i}"
+        "{i}Analysis complete. Data saved.{/i}"
     else:
         "{i}部分数据存疑，但先这样吧。{/i}"
         $ fatigue += 20
@@ -1678,10 +1680,11 @@ label mini_game_analysis:
     return
 
 # ========== 任务1.5：家庭税 ==========
-define mom = Character("妈妈")
+define mom = Character("Mom")
+
 label task_1_5:
     scene home with fade
-    "{i}第2周，周日下午。{/i}"
+    "{i}Week 2, Sunday afternoon.{/i}"
     window hide
     
     #消息音效
@@ -1691,7 +1694,7 @@ label task_1_5:
         align (0.5, 0.45)
     pause 1.5
     hide mom_phonecall with fade
-jump salary_qte
+    jump salary_qte
 
 default quarrel_time_limit = 3.0    # 总时间（秒）
 default quarrel_time_left = 3.0     # 剩余时间
@@ -1727,7 +1730,7 @@ screen qte_choice_timer(question, time_limit=3.0):
         yalign 0.6
         spacing 30
         
-        textbutton"两周后。":
+        textbutton "In two weeks.":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1736,7 +1739,7 @@ screen qte_choice_timer(question, time_limit=3.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer"), Jump("salary_truth")]
         
-        textbutton "快了。": 
+        textbutton "Soon.": 
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1745,7 +1748,7 @@ screen qte_choice_timer(question, time_limit=3.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer"), Jump("salary_vague")]
         
-        textbutton "问这干嘛？":
+        textbutton "Why do you ask?":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1781,7 +1784,7 @@ label salary_qte:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "第一个月的工资。什么时候发？"
+    mom "Your first month's salary. When will it be paid?"
     
     # 调用 QTE 选择题
     call screen qte_choice_timer(
@@ -1794,37 +1797,37 @@ label salary_qte:
 
 # 各选项结果
 label salary_truth:
-    s "两周后。"
+    s "In two weeks."
     show mother_03_unhappy:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "好。你弟弟要换新校服，还有学校旅行要交钱，1200块钱。这钱就你出吧？你现在可是有大工作的人了。"
+    mom "Good. Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. You’ll pay for it, right? You have a big job now."
     jump family_money_choice
 
 label salary_vague:
-    s "快了。"
+    s "Soon."
     show mother_03_unhappy:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "到底是多快？你弟弟要换新校服，还有学校旅行要交钱，1200块钱。你能出吧？"
+    mom "How soon exactly? Your brother needs a new school uniform and to pay for his school trip—1,200 yuan. Can you pay for that?"
     jump family_money_choice
 
 label salary_defensive:
-    s "问这干嘛？"
+    s "Why are you asking?"
     show mother_01_bigmouth:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "怎么，翅膀硬了？你弟弟要换新校服，还有学校旅行要交钱，1200块钱。家里手头紧，你帮衬一下怎么了？"
+    mom "What, you think you’re all grown up now? Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. Money is tight at home. What’s wrong with helping out?"
     jump family_money_choice
 
 # 超时未选择
 label qte_timeout:
-    s "…………"
-    mom "怎么不说话？"
-    mom "你弟弟要换新校服，还有学校旅行要交钱，1200块钱。这钱就你出吧？你现在可是有大工作的人了。"
+    s "..."
+    mom "Why aren’t you saying anything?"
+    mom "Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. You’ll pay for it, right? You have a big job now."
     jump family_money_choice
 
 # QTE第二题
@@ -1858,7 +1861,7 @@ screen qte_choice_timer_2(question, time_limit=5.0):
         yalign 0.6
         spacing 30
         
-        textbutton"好。":
+        textbutton "Fine.":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1867,7 +1870,7 @@ screen qte_choice_timer_2(question, time_limit=5.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer_2"), Jump("give_money")]
         
-        textbutton "那是我一半伙食费。": 
+        textbutton "That’s half my food budget.": 
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1876,7 +1879,7 @@ screen qte_choice_timer_2(question, time_limit=5.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer_2"), Jump("angry_game")]
         
-        textbutton "（沉默）":
+        textbutton "(Stay silent)":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1917,7 +1920,7 @@ label family_money_choice:
     return
 
 label give_money:
-    s "好。"
+    s "Fine."
     $ money -= 1200
     show mother_04_smile with dissolve:
         zoom 0.83
@@ -1925,28 +1928,28 @@ label give_money:
         ypos 260
     hide mother_02_smallmouth
     hide mother_03_unhappy
-    mom "乖。就知道你懂事。弟弟会谢谢你的。"
+    mom "Good girl. I knew you were sensible. Your brother will thank you."
     hide mother_04_smile with dissolve
-    "{i}-1200元。当前余额：[money]元{/i}"
+    "{i}-1,200 yuan. Current balance: [money] yuan{/i}"
     jump family_tax_end
 
 label angry_game:
-    s "那是我一半吃饭钱！"
+    s "That’s half my food budget!"
     $ mother_anger += 2
     jump argue_continue
 
 label stay_silent:
-    s "……"
+    s "..."
     show mother_03_unhappy:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "你不说话是什么意思？"
+    mom "What is that silence supposed to mean?"
     show mother_02_smallmouth:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "妈妈怎么省吃俭用把你带大的，你忘了吗？"
+    mom "Have you forgotten how I scrimped and saved to raise you?"
     $ mother_anger += 1
     jump stay_silent_continue #考虑到有保守派会沉默避免冲突但不是真的不抗争，设置沉默意图的二次验证
 
@@ -1981,7 +1984,7 @@ screen qte_choice_timer_3(question, time_limit=3.0):
         yalign 0.6
         spacing 30
         
-        textbutton"(继续沉默)":
+        textbutton "(Keep silent)":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1990,7 +1993,7 @@ screen qte_choice_timer_3(question, time_limit=3.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer_3"), Jump("silent_guilt")]
         
-        textbutton "(反问)": 
+        textbutton "(Question her back)": 
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -2029,8 +2032,8 @@ label stay_silent_continue:
     return
 
 label silent_guilt:
-    s "{i}心头涌现一阵内疚。{/i}"
-    s "这钱我会给，别再这么说了。"
+    s "{i}A wave of guilt rises in your chest.{/i}"
+    s "I’ll give you the money. Please stop saying things like that."
     $ money -= 1200
     show mother_04_smile with dissolve:
         zoom 0.83
@@ -2038,14 +2041,14 @@ label silent_guilt:
         ypos 260
     hide mother_02_smallmouth
     hide mother_03_unhappy
-    mom "乖。就知道你懂事。弟弟会谢谢你的。"
+    mom "Good girl. I knew you were sensible. Your brother will thank you."
     hide mother_04_smile with dissolve
-    "{i}-1200元。当前余额：[money]元{/i}"
+    "{i}-1,200 yuan. Current balance: [money] yuan{/i}"
     # $ mental = mental - 1 if 'mental' in globals() else -1
     jump family_tax_end
 
 label silent_argue:
-    s "现在倒是逼着我省吃俭用养弟弟了？"
+    s "So now you’re forcing me to scrimp and save to support my younger brother?"
     $ mother_anger += 1
     jump argue_continue
 
@@ -2080,7 +2083,7 @@ screen qte_choice_timer_4(question, time_limit=5.0):
         yalign 0.6
         spacing 30
         
-        textbutton"我也有我自己的生活……":
+        textbutton "I have my own life too...":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -2089,7 +2092,7 @@ screen qte_choice_timer_4(question, time_limit=5.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer_4"), Jump("angry_game_own_life")]
         
-        textbutton "他的鞋凭什么我负责？": 
+        textbutton "Why am I responsible for his shoes?": 
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -2098,7 +2101,7 @@ screen qte_choice_timer_4(question, time_limit=5.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer_4"), Jump("angry_game_unresponsible")]
 
-        textbutton "(沉默)": 
+        textbutton "(Stay silent)": 
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -2134,14 +2137,14 @@ label argue_continue:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "我们这么多年白养你的？他是你亲生弟弟，到时候班上就他一个穿不起鞋，得遭人看低的！"
-    mom "再说了，现在你帮弟弟，将来弟弟帮你，哪里亏了？"
+    mom "Did we raise you all these years for nothing? He’s your own brother. If he’s the only one in class who can’t afford new shoes, people will look down on him!"
+    mom "Besides, if you help your brother now, he’ll help you in the future. How is that a loss?"
     show mother_03_unhappy with dissolve:
         zoom 0.83
         xpos 1360
         ypos 260
     hide mother_05_soangry with dissolve
-    mom "不都是家里人嘛，爸爸妈妈当时供你读书也没计较那么多呀。"
+    mom "We’re all family, aren’t we? When your father and I paid for your education, we didn’t keep score like this."
     call screen qte_choice_timer_4(
         question="",
         time_limit=5.0
@@ -2163,21 +2166,21 @@ label angry_game_calculation:
             zoom 0.83
             xpos 1360
             ypos 260
-        mom "怎么养了你这个白眼狼！"
+        mom "How did I raise such an ungrateful child!"
         hide mother_01_bigmouth
         hide mother_02_smallmouth
         hide mother_03_unhappy
         hide mother_05_soangry
         hide mother_06_sosoangry with dissolve
-        "{i}妈妈怒气冲冲地挂了电话。{/i}"
-        "{i}几天后，她发来消息，像什么都没发生。但你记得。{/i}"
+        "{i}Mom hangs up in a fury.{/i}"
+        "{i}A few days later, she sends you a message as if nothing happened. But you remember.{/i}"
         jump family_tax_end
     else:
-        mom "算了，半小时憋不出一个响。等你发工资再说吧。"
+        mom "Forget it. You can’t squeeze out a single word after half an hour. We’ll talk when you get paid."
         hide mother_01_bigmouth
         hide mother_02_smallmouth
         hide mother_03_unhappy with dissolve
-        "{i}你勉强稳住了局面，保住了钱，但心里空落落的。{/i}"
+        "{i}You barely manage to hold things together and keep the money, but your chest feels hollow.{/i}"
         jump family_tax_end
 
 label family_tax_end:
@@ -2418,20 +2421,20 @@ screen payslip_screen():
             spacing 12
 
             # 标题
-            text"工资条" size 28
+            text"Payslip" size 28
             
             null height 20
             
             # 基本信息
             hbox:
-                text"姓名："
-                text"佘小曼"
+                text"Name:"
+                text"SHEH Siu Man"
             hbox:
-                text"部门："
-                text"设计部"
+                text"Department:"
+                text"Design Dept."
             hbox:
-                text"日期："
-                text"2028年3月"
+                text"Date:"
+                text"March 2028"
             
             null height 20
             
@@ -2442,7 +2445,7 @@ screen payslip_screen():
                 # 基本工资
                 hbox:
                     xfill True
-                    text"基本工资"
+                    text"Basic Salary"
                     text"16,500" xalign 1.0
                 
                 # 绩效工资（悬停效果）
@@ -2453,7 +2456,7 @@ screen payslip_screen():
                     
                     hbox:
                         xfill True
-                        text"绩效调整"xalign -0.07
+                        text"Performance Adjustment"xalign -0.07
                         text"0" xalign 1.05
                     
                     # 悬停提示
@@ -2465,12 +2468,12 @@ screen payslip_screen():
                 # 其他项目
                 hbox:
                     xfill True
-                    text"交通补贴"
+                    text"Transportation Allowance"
                     text"500" xalign 1.0
                 
                 hbox:
                     xfill True
-                    text"餐补"
+                    text"Meal Allowance"
                     text"500" xalign 1.0
             
             null height 10
@@ -2488,7 +2491,7 @@ screen payslip_screen():
                 
                 hbox:
                     xfill True
-                    text"实发工资" xalign -0.07
+                    text"Net Pay" xalign -0.07
                     text"17,500" xalign 1.05
                 
                 if not salary_checked:
@@ -2633,11 +2636,11 @@ screen clue_unequal_wage:
         vbox:
             xalign 0.5
             yalign 0.5
-            text "【线索】阴阳工资" size 28
+            text "[Clue] Yin‑Yang Wage Divide" size 28
             null height 30
             add Solid("#cccccc") xsize 600 ysize 1
             null height 30
-            text "天与地，阴与阳；她与他，阴与阳" size 24 xalign 0.5
+            text "Sky and earth, shade and glow; her and him, split below." size 24 xalign 0.5
             null height 40
             
             textbutton "收起":
@@ -2649,28 +2652,28 @@ screen clue_unequal_wage:
 label ask_xiaojin_directly:
     scene office with fade
     
-    "{i}第二天午休，你找到了小金。{/i}"
+    "{i}The next day during lunch break, you find Siu Gam.{/i}"
     
     show she_01_normal_eye_o_nobag onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    s "小金，能问你个事吗？你当时刚入职的时候起薪是多少？"
+    s "Siu Gam, can I ask you something? What was your starting salary when you first joined the company?"
     
     show jin_03_awkward with dissolve:
         zoom 0.97
         xpos 1360
         ypos 150
-    xiaojin "呃……这个……"
-    xiaojin "22.5k……公司不让互相问工资来着，你别跟别人说啊。"
+    xiaojin "Uh… well…"
+    xiaojin "22.5k… The company forbids us from discussing salaries with each other. Don’t tell anyone, okay?"
     show jin_04_question:
         zoom 0.97
         xpos 1360
         ypos 150
-    xiaojin "出什么事了，突然说起这个？"
+    xiaojin "Why are you bringing this up all of a sudden?"
     
-    s "我19.5k。"
+    s "I get 19.5k."
     
     show jin_05_shocked:
         zoom 0.97
@@ -2683,7 +2686,7 @@ label ask_xiaojin_directly:
     play sound "clue.ogg"
     call screen clue_unequal_wage("线索") with dissolve
     
-    "{i}获得了线索：阴阳工资{/i}" #加音效：噔噔噔↑
+    "{i}[Clue] Yin‑Yang Wage Divide{/i}" #加音效：噔噔噔↑
 
     $ salary_evidence = True
     $ investigation_unlocked = True
@@ -2733,35 +2736,34 @@ label investigate_other_ways:
 label fitness_video_event:
     scene home_ceiling with fade
     
-    "{i}第6周 周六，晚{/i}"
-    "{i}你躺在床上刷手机，但眼皮已经开始打架。{/i}"
+    "{i}Week 6, Saturday night.{/i}"
+    "{i}You lie in bed scrolling through your phone, but your eyelids are already getting heavy.{/i}"
     
     show lockscreen with moveinbottom:
         zoom 1.5
         xalign 0.5
-        yalign 0.35#锁屏时间
-    s "23:55，竟然已经这么晚了。"
-    #微信消息提示音音效，接手机界面
+        yalign 0.35 #锁屏时间
 
-    s "陈总的消息……?"
+    s "23:55. I can't believe it's already this late."
+
+    s "A message from Chan Wing Yan...?"
 
     hide lockscreen
     show pyq with dissolve:
         zoom 1.5
         xalign 0.5
         yalign 0.35
-    "{i}【陈总】刚健完身，我发在朋友圈的技巧你可以试试，用来解压很不错。{/i}"
-    # show screen phone_notification("陈永仁", "【视频】刚健完身。你可以试试这个，用来解压很好！")
-    # with dissolve
-        
+
+    "{i}Chan Wing Yan: Just finished working out. You can try the techniques I posted on Moments. They’re great for relieving stress.{/i}"
+
     menu:
-        "看视频":
+        "Watch the video":
             jump watch_fitness_video
         
-        "忽略视频":
+        "Ignore the video":
             jump ignore_video
         
-        "点赞视频":
+        "Like the video":
             jump reply_thumb_up
 
 # 手机通知界面
@@ -2845,16 +2847,16 @@ label watch_fitness_video:
     # show screen video_player("chen_fitness")
     # with dissolve
 
-    "30秒。陈永仁在健身房，器械的金属光泽映着他的汗水。"
-    "他做着标准的动作，肌肉随着呼吸起伏。"
-    "最后一秒，他突然直视镜头。"
+    "Thirty seconds. Chan is at the gym, the metallic sheen of the equipment glinting off his sweat."
+    "He performs precise movements, his muscles rising and falling with each breath."
+    "On the final second, he suddenly stares straight into the camera."
     
     hide gym_02
     hide gym_03
     show gym_01:
         linear 0.4 zoom 1.55 xpos 2180 ypos 1430
         linear 0.1 zoom 1.5 xpos 2130 ypos 1400
-    chen "你能跟上吗，小曼？"
+    chen "Can you keep up, Siu Man?"
     
     scene black with fade
     "视频结束，黑屏。你的脸也黑了。"
@@ -3967,7 +3969,7 @@ screen cyro_leave_office:
         
         vbox:
                        
-            text "现在就离开房间吗":
+            text "Leave the room now?":
                 size 35 color "#ffffff" xalign 0.5
             null height 30
             
@@ -3977,12 +3979,12 @@ screen cyro_leave_office:
                 xalign 0.5
                 alpha 0.3  # 30%不透明度
 
-            textbutton "结束搜查":
+            textbutton "End Search":
                 xsize 200
                 ysize 50
                 align(0.55, 0.5)
                 action [Hide("cyro_leave_office"), Jump("cyro_search_leave_safe")]
-            textbutton "继续搜查":
+            textbutton "Continue Search":
                 xsize 200
                 ysize 50
                 align(0.55, 0.7)
@@ -4136,23 +4138,23 @@ label cyro_office_drawer:
         $ found_evidence += 1
         show clue_01_files with fade
         
-        "你蹲下身，拉开办公桌最下层的抽屉。"
+        "You squat down and pull open the bottom drawer of the desk."
 
-        "抽屉比想象中更沉。"
+        "It is heavier than you expected."
 
-        "最里面压着一叠旧员工档案。"
+        "At the back lies a stack of old employee files."
 
-        "你快速翻看。"
+        "You skim through them quickly."
 
-        "里面有几个女性员工的资料。"
+        "They contain records of several female staff members."
 
-        "奇怪的是，她们都在两年内陆续离职。"
+        "Oddly enough, all of them resigned one after another within two years."
 
-        "离职原因写得很简单。"
+        "Their reasons for leaving are briefly noted:"
 
-        "“个人原因。”"
+        "Personal reason."
 
-        "但每一份档案都被单独折过，像是被人反复查看过。"
+        "Yet each file has been folded separately, as if repeatedly checked by someone."
 
     else:
 
@@ -4172,22 +4174,22 @@ label cyro_office_bookshelf:
         $ found_evidence += 1
 
         show clue_02_bookshelf with fade
-        "你走到书柜前。"
+        "You walk over to the bookshelf."
 
-        "书柜顶层放着一个盒子。"
+        "A box sits on the top shelf."
 
         show clue_02_perfume with dissolve
-        "你踮起脚，把它取了下来。"
+        "You stand on tiptoes and take it down."
 
-        "盒子里是一瓶昂贵香水。"
+        "Inside the box is a bottle of expensive perfume,"
 
-        "包装完整。"
+        "still in its original packaging,"
 
-        "没有拆封。"
+        "unopened."
 
-        "这不像是普通办公用品。"
+        "This is nothing like regular office supplies."
 
-        "更像是准备送给某个人的礼物。"
+        "It looks more like a gift meant for someone."
 
     else:
 
@@ -4210,31 +4212,29 @@ label cyro_office_photo:
         $ found_evidence += 1
 
         show clue_03_photo with fade
-        "桌子上摆着陈永仁用来记散碎事务的笔记本。"
+        "On the desk lies the notebook Chan Wing Yan uses to jot down trivial matters."
 
-        s "都推行无纸化工作留痕了，怎么还这么热衷写笔记，都堆成一摞了，是人到中年的怀旧吗……"
-        s "诶？"
+        s "Paperless record‑keeping is standard now. Why is he still so fond of writing things down? Stacked up like this. Is this mid‑life nostalgia?"
+        s "Huh?"
 
         show clue_03_photo_open with dissolve
-        "翻到中间时，一张照片掉了出来。"
+        "As you flip to the middle, a photo slips out."
 
-        "照片里是陈永仁和一个年轻女性。"
+        "It shows Chan Wing Yan standing close to a young woman."
 
-        "他们靠得很近。"
+        "She is not his wife."
 
-        "那个女人不是他的妻子。"
+        "No name is written on the back of the photo,"
 
-        "照片背面没有名字。"
+        "only a date."
 
-        "只有一个日期。"
-
-        s "……原来留痕是为了不留痕。"
+        s " …So he marks to mask."
 
     else:
 
-        "照片书你已经搜查过了。"
+        "You have searched the photo album."
 
-        "那张照片仍然夹在书页之间。"
+        "The photo remains tucked between the pages."
 
 jump cyro_office_search_check
 
@@ -4251,27 +4251,27 @@ label cyro_office_desk:
         $ found_evidence += 1
 
         show clue_04_notebook with fade
-        "桌上的文件层层叠叠，其中压着一本黑色笔记本。"
+        "Papers pile up on the desk, with a black notebook tucked underneath."
 
-        "你打开笔记本。"
+        "You open the notebook."
 
-        "里面写着一些名字、日期，还有简短的备注。"
+        "It is filled with names, dates, and short notes,"
 
-        "字迹很潦草。"
+        "scrawled in messy handwriting."
 
-        "其中一行让你停了下来。"
+        "One line makes you freeze."
 
-        "“李哭了。处理好了。”"
+        "Lee cried. Handled."
 
-        "这句话没有上下文。"
+        "There is a lack of context for this line."
 
-        "但正因为没有上下文，才更让人不安。"
+        "Yet it is precisely the lack that makes it deeply unsettling."
 
     else:
 
-        "文件堆你已经搜查过了。"
+        "You have searched through the stacks of documents."
 
-        "那本黑色笔记本里的字迹仍然让你感到不舒服。"
+        "The handwriting in that black notebook still makes you uneasy."
 
 jump cyro_office_search_check
 
@@ -4283,7 +4283,7 @@ jump cyro_office_search_check
 label cyro_office_search_check:
     if cyro_office_found_files and cyro_office_found_perfume and cyro_office_found_notebook and cyro_office_found_photo:
 
-        "四个关键位置，你已经全部搜查过了。"
+        "You have searched all four key locations."
         jump cyro_search_leave_safe
 
     else:
@@ -4291,15 +4291,15 @@ label cyro_office_search_check:
 
 label cyro_search_leave_safe:
 
-    "搜查完毕"
-    "证据数：[found_evidence]个"
+    "Search Complete"
+    "Evidence Collected: 4"
                
     hide screen cyro_office_timer
 
     scene black
 
     if found_evidence > 0:
-        "{i}你把找到的线索拍了照后归位，在陈永仁返回前出了门。{/i}"
+        "{i}You take photos of all clues you have found, put everything back in place, and slip out before Chan Wing Yan returns.{/i}"
     else:
         "{i}没有找到证据，但该走了{/i}"
 jump chapter5
@@ -4775,12 +4775,12 @@ screen car_qte_1_timer(duration=1.2):
         align (0.5, 0.2)
         spacing 10
         
-        text "【边界警报】" at blink_effect:
+        text "【Boundary Alert】" at blink_effect:
             size 40
             color "#FC8181"
             xalign 0.5
         
-        text "系统警告：干扰协议激活" at subtle_shake:
+        text "【Boundary Warning】System Warning: Interference protocol activated" at subtle_shake:
             size 20
             color "#A0AEC0"
             xalign 0.5
@@ -4803,7 +4803,7 @@ screen car_qte_1_timer(duration=1.2):
             ysize 50
             action [SetVariable("qte_result", "a"), Return(True)]
             
-            text "躲开" at subtle_shake:
+            text "Dodge" at subtle_shake:
                 align (0.5, 0.5)
                 color "#FFFFFF"
                 size 16
@@ -4816,7 +4816,7 @@ screen car_qte_1_timer(duration=1.2):
             ysize 50
             action [SetVariable("qte_result", "b"), Return(True)]
             
-            text "不说话":
+            text "Stay silent":
                 align (0.5, 0.5)
                 color "#FFFFFF"
                 size 16
@@ -4829,7 +4829,7 @@ screen car_qte_1_timer(duration=1.2):
             ysize 50
             action [SetVariable("qte_result", "c"), Return(True)]
             
-            text "说不要":
+            text "Say stop":
                 align (0.5, 0.5)
                 color "#FFFFFF"
                 size 16
@@ -4968,7 +4968,7 @@ screen room_scan():
 
     add Solid("#2D3748")
 
-    text "房间扫描：点击物品触发思绪":
+    text "Room Scan: Click on items to trigger thoughts:":
         align (0.5, 0.1)
         size 28
         color "#E2E8F0"
@@ -4982,7 +4982,7 @@ screen room_scan():
         hover_background Frame(Solid("#A0AEC0"), 5, 5)
         action [SetVariable("clicked_item", "mirror"), Return(True)]
 
-        text "镜子":
+        text "Mirror":
             align (0.5, 0.5)
             size 20
             color "#FFFFFF"
@@ -4996,7 +4996,7 @@ screen room_scan():
         hover_background Frame(Solid("#718096"), 5, 5)
         action [SetVariable("clicked_item", "bed"), Return(True)]
 
-        text "床与小熊":
+        text "Bed & Teddy Bear":
             align (0.5, 0.5)
             size 20
             color "#FFFFFF"
@@ -5010,7 +5010,7 @@ screen room_scan():
         hover_background Frame(Solid("#4A5568"), 5, 5)
         action [SetVariable("clicked_item", "phone"), Return(True)]
 
-        text "手机":
+        text "Phone":
             align (0.5, 0.5)
             size 20
             color "#FFFFFF"
@@ -5024,7 +5024,7 @@ screen room_scan():
         hover_background Frame(Solid("#63B3ED"), 5, 5)
         action [SetVariable("clicked_item", "shower"), Return(True)]
 
-        text "淋浴":
+        text "Shower":
             align (0.5, 0.5)
             size 20
             color "#FFFFFF"
@@ -5038,12 +5038,12 @@ screen room_scan():
         hover_background Frame(Solid("#ECC94B"), 5, 5)
         action [SetVariable("clicked_item", "diary"), Return(True)]
 
-        text "日记":
+        text "Diary":
             align (0.5, 0.5)
             size 20
             color "#FFFFFF"
 
-    textbutton "离开房间":
+    textbutton "Leave the Room":
         align (0.5, 0.95)
         action Return(False)
 
@@ -5065,7 +5065,7 @@ label car_xsr:
     $ qte_phase = "movie"
     $ countdown_1 = 10
     
-    "【边界警报】系统警告：身体反应机制激活"
+    "【Boundary Warning】System Warning: Interference protocol activated"
     
     # 开始循环
     jump qte_loop
@@ -5259,11 +5259,11 @@ label ending_escape:
     jump room_scene
 
 label car_ending_avoided:
-    "气氛有些尴尬，但他很快恢复了常态。"
-    "我送你回去吧。"
-    extend "今天确实晚了。"
+    "The atmosphere turns awkward, yet he regains his composure quickly."
+    "Let me walk you back."
+    extend "It’s really late today."
 
-    "一路上，你们聊着工作，仿佛刚才的触碰从未发生。"
+    "Along the way, you talk about work, as if the earlier touch never happened."
 
     jump room_scene
 
@@ -5283,32 +5283,32 @@ label room_scene:
             jump game_ending
 
         if clicked_item == "mirror":
-            "你看向镜子。"
-            "看起来一样。感觉不一样。"
-            "那个女人的脸还是你的，但眼神...像是陌生人的。"
+            "You look into the mirror."
+            "You look the same, but feel different."
+            "The face in the glass is still yours, yet the eyes… belong to a stranger."
 
         elif clicked_item == "bed":
-            "床头的泰迪熊歪着头看你。"
-            "你想躺下。可能再也起不来。"
-            "被子还保持着今早你掀开时的形状。"
+            "The teddy bear by the bed tilts its head at you."
+            "You want to lie down, and maybe never get up again."
+            "The quilt still holds the shape you left when you pulled it back this morning."
 
         elif clicked_item == "phone":
-            "8条未读消息。"
-            "3条来自陈永仁。"
-            "到家了吗？"
-            "刚才的事，别多想。"
-            "明天见。"
+            "8 unread messages"
+            "3 from Chan Wing Yan"
+            "Have you gotten home?"
+            "About what happened earlier, don’t overthink it."
+            "See you tomorrow."
 
         elif clicked_item == "shower":
-            "你需要洗。"
-            "需要让水流冲走什么。"
-            "但你知道，有些东西冲不掉。"
+            "You need to wash."
+            "You need the running water to wash something away."
+            "But you know some things can never be rinsed off."
 
         elif clicked_item == "diary":
-            "你翻开日记。"
-            "空白页。"
-            "一个字都写不出来。"
-            "或者，有太多字，不知道从哪里开始。"
+            "You open your diary."
+            "Blank pages."
+            "Not a single word can be written."
+            "Or rather, there are too many words, and you don’t know where to start."
 
 label game_ending:
     if "拒绝" in qte_state.choices_made:
