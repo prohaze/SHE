@@ -3478,7 +3478,7 @@ label bar_ending:
         
         "上车":
             "那谢谢陈总了。"
-            $ car_event == True 
+            $ car_event = True 
             jump get_in_car
         
         "我坐地铁。":
@@ -3572,7 +3572,7 @@ label question_chen:
             hide she_02_sweat_eye onlayer top
             scene black with dissolve
             #音效：关车门
-            $ car_event == True
+            $ car_event = True
             jump get_in_car
         
         "仍然拒绝":
@@ -3916,7 +3916,7 @@ init python:
     def cyro_office_mark(name, found):
         if found:
             return "✓ " + name
-            found_evidence =+ 1
+            found_evidence += 1
         return name
 
 # ============================================================
@@ -5344,22 +5344,22 @@ label game_ending:
 
 # # 定义变量
 # default chapter5_started = False
-# default evidence_complete = False
+default evidence_complete = False
 # default advice_heard = False
 
 # # 路线选择标记
-# default route_legal = False
-# default route_hr = False
+default route_legal = False
+default route_hr = False
 # default route_public = False
 # default route_leave = False
 
 # # 路线条件变量
-# default lawyer_contacted = False
-# default courage = 0
+default lawyer_contacted = False
+default courage = 0
 # default xiaohongshu_fans = 0
 
 # # 路线A变量
-# default police_credibility = 100
+default police_credibility = 100
 # default police_report_2 = False
 
 # # 路线B变量
@@ -5914,7 +5914,7 @@ label task_5_c_1:
     $ public_pressure = 50
     $ mental -= 30
     
-    "压力+[public_pressure]。睡眠-80%。"
+    "压力+[public_pressure]。睡眠-80%%。"
     
     "但……"
     
