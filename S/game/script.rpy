@@ -5377,6 +5377,8 @@ default police_credibility = 100
 # default resignation_written = False
 # default last_day_done = False
 
+default disclosure_level = "medium"
+
 # 第五章入口
 label chapter5:
     $ chapter5_started = True
@@ -5758,7 +5760,7 @@ label route_c_public:
 screen xiaohongshu_post():
     modal True
     
-    default disclosure_level = "medium"
+    # default disclosure_level = "medium"
     default selected_evidence = []
     default post_title = ""
     
@@ -5805,15 +5807,18 @@ screen xiaohongshu_post():
                 spacing 15
                 
                 textbutton "隐去细节":
-                    action SetScreenVariable("disclosure_level", "low")
+                    action SetVariable("disclosure_level", "low")
+                    
                     background ("#ff2442" if disclosure_level == "low" else "#dddddd")
                 
                 textbutton "部分实名":
-                    action SetScreenVariable("disclosure_level", "medium")
+                    action SetVariable("disclosure_level", "medium")
+                    
                     background ("#ff2442" if disclosure_level == "medium" else "#dddddd")
                 
                 textbutton "完全公开":
-                    action SetScreenVariable("disclosure_level", "high")
+                    action SetVariable("disclosure_level", "high")
+                   
                     background ("#ff2442" if disclosure_level == "high" else "#dddddd")
             
             null height 20
@@ -5856,7 +5861,8 @@ screen xiaohongshu_post():
                 background "#ff2442"
                 text_size 20
                 text_color "#ffffff"
-                action [Return({"disclosure": disclosure_level, "evidence": selected_evidence, "title": post_title})]
+                # action [Return({"disclosure": disclosure_level, "evidence": selected_evidence, "title": post_title})]
+                action [Return({"evidence": selected_evidence, "title": post_title})]
 
 screen post_title_input():
     modal True
@@ -5923,6 +5929,12 @@ label task_5_c_1:
     "【私信】你不是一个人。"
     
     "你不再是一个人。"
+
+    # 改：不要碧莲结局判定
+    if linjie_interest >=2 and xiaojin_interest >= 1 and disclosure_level == "high":
+        jump route_c_she_scene
+    else:
+            jump chapter5_ending
     
     jump chapter5_ending
 
@@ -6098,6 +6110,110 @@ label chapter5_ending:
 label ending_gulang:
     "结局：孤狼"
     return
+
+# ==========================================
+# 标题选择界面
+# ==========================================
+screen post_title_input():
+    modal True
+
+    add Solid("#00000099")
+
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xsize 620
+        background "#ffffff"
+        padding (36, 32)
+
+        vbox:
+            spacing 18
+
+            text "选择标题" size 24 color "#333333" xalign 0.5
+
+            textbutton "在游戏公司被性骚扰，我决定说出来":
+                xsize 540
+                ysize 46
+                background "#f2f2f2"
+                hover_background "#8e44ad"
+                text_size 17
+                text_color "#333333"
+                text_hover_color "#ffffff"
+                action [SetScreenVariable("post_title", "在游戏公司被性骚扰，我决定说出来"), Hide("post_title_input")]
+
+            textbutton "关于某游戏公司高管，一些必须讲的事":
+                xsize 540
+                ysize 46
+                background "#f2f2f2"
+                hover_background "#8e44ad"
+                text_size 17
+                text_color "#333333"
+                text_hover_color "#ffffff"
+                action [SetScreenVariable("post_title", "关于某游戏公司高管，一些必须讲的事"), Hide("post_title_input")]
+
+            textbutton "22k vs 19.5k，不只是工资":
+                xsize 540
+                ysize 46
+                background "#f2f2f2"
+                hover_background "#8e44ad"
+                text_size 17
+                text_color "#333333"
+                text_hover_color "#ffffff"
+                action [SetScreenVariable("post_title", "22k vs 19.5k，不只是工资"), Hide("post_title_input")]
+
+            textbutton "取消":
+                xalign 0.5
+                xsize 160
+                ysize 42
+                background "#dddddd"
+                hover_background "#bbbbbb"
+                text_size 16
+                text_color "#333333"
+                action Hide("post_title_input")
+
+
+# ==========================================
+# 发帖后剧情判断
+# ==========================================
+label route_c_she_scene:
+
+    # $ disclosure_choice = post_result.get("disclosure", "medium")
+
+    # if disclosure_choice == "high":
+    #     jump bad_end_public
+    # else:
+        scene bg company_street_evening
+        with fade
+
+        "黄昏的公司路口，晚风微凉，夕阳把地面染成暖橘色，路边行道树随风轻晃。"
+
+        "小曼抱着装满个人物品的纸箱，站在路口，指尖微微收紧，望着公司方向轻轻叹了口气，转头看向身旁两人。"
+
+        s "就到这里吧，麻烦你们还特意下来送我。"
+
+        linjie "傻孩子，跟我们还说这些。这段时间辛苦你了，别把所有事都憋在心里。"
+
+        xiaojin "曼姐，以后不管遇到什么事，都别自己扛着，我们都在。"
+
+        "林姐轻轻开口，哼起《送别》的旋律，小金随即轻声附和，小曼垂眸，也慢慢跟着哼唱。"
+
+        "三人合唱（声音轻柔，满是离愁）：长亭外，古道边，芳草碧连天……"
+
+        s "……我们同唱芳草天。"
+
+        "林姐与小金对视一眼，没有打断，依旧顺着旋律继续唱，晚风将歌声轻轻吹散。"
+
+        "三人合唱：晚风拂柳笛声残，夕阳山外山。"
+
+        s "我走啦，你们回去吧。"
+
+        linjie "照顾好自己，常联系。"
+
+        xiaojin "对，有事随时说！"
+
+        "小曼转身，脚步平稳地向前走去，夕阳将她的影子拉长，林姐和小金站在原地，静静望着她的背影，直到渐渐远去。"
+
+        jump chapter5_ending
 
 #     #1. 酒单（左侧）
 #     button:
