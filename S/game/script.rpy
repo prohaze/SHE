@@ -701,7 +701,7 @@ label chapter0_3:
 # 任务1.1：第一天，第一印象
 
 # 角色定义（延续已有定义）
-define unknown_woman = Character("陌生女人", color="#808080")
+define unknown_woman = Character("？？？", color="#808080")
 define narrator = Character(None, what_italic=True)
 
 # 变量定义（延续已有default变量）
