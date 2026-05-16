@@ -9,7 +9,7 @@ default escape = 0 #【成就：鸵鸟】
 #运行python先打包一个字典给screen item_description调取不同描述用
 init python:
     item_descriptions = {
-         "magazine": "A special issue of Female Leaders, half a page torn out by someone.",
+        "magazine": "A special issue of Female Leaders, half a page torn out by someone.",
         "computer": "An open Excel spreadsheet showing the salary range for your applied position: starting salary $22,000 for males, $18,000 for females.",
         "smartphone": "A message from Mom: Have you found a job? Your brother needs new shoes.",
         "window": "You gaze at the city, with 135 rejection letters scattered among it."
@@ -2636,7 +2636,7 @@ screen clue_unequal_wage:
         vbox:
             xalign 0.5
             yalign 0.5
-            text "[Clue] Yin‑Yang Wage Divide" size 28
+            text "【Clue】 Yin‑Yang Wage Divide" size 28
             null height 30
             add Solid("#cccccc") xsize 600 ysize 1
             null height 30
