@@ -80,14 +80,14 @@ screen item_description(description, name, image):
                 xalign 0.5
             null height 50
             
-            textbutton "关闭":
+            textbutton "Close":
                 xalign 0.5
                 action Hide("item_description")
 
 screen items_screen():
     modal True
     # 添加进度显示
-    text "已发现物品[len(clicked_items)]/4":
+    text "Items Found[len(clicked_items)]/4":
         xalign 0.95
         yalign 0.05
         size 36
@@ -276,7 +276,7 @@ screen item_description(description, name, image):
                 xalign 0.5
             null height 50
 
-            textbutton "关闭":
+            textbutton "Close":
                 at transform:
                     zoom 0.9
                 xalign 0.5
@@ -303,19 +303,19 @@ label start:
     ##show eileen happy #Emma：需要透明底角色立绘，后续替换立绘图
 
     menu:
-        "开始游戏":
+        "Start Game":
             style choice_vbox:
                 xalign 0.5
                 ypos 700
                 yanchor 0.5
             jump chapter0
-        "退出游戏":
+        "Exit Game":
             return
 
 label chapter0:
     show black #替换黑幕布
     image chapter0_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
-    show chapter0_title "序章：音信"
+    show chapter0_title "Prologue: The Message"
     with fade
     pause 2
     hide chapter0_title
@@ -345,10 +345,10 @@ label waiting_room:
         xalign 0.5
         yalign 0.7
     menu:
-        "探索房间":
+        "Explore the Room":
             call explore_room #call完之后走jump
             jump explore_complete
-        "安静等待":
+        "Wait Quietly":
             jump explore_complete
 
 label explore_room:
@@ -371,12 +371,12 @@ label explore_room:
 label explore_complete:
     hide screen items_screen
     hide screen item_description
-    'HR'"佘小姐？陈总请您进去。"
+    'HR'"Miss Sheh? Mr. Chen is asking for you."
     jump chapter0_2
 
 label after_third_item:
     $ five_item_clicked = False  # 重置标记
-    s "面试好像要开始了？"
+    s "It seems the interview is about to start…"
     jump explore_complete
 
 #========================
@@ -390,22 +390,22 @@ init python:
     def add_money(amount, reason=""):
         global money
         money += amount
-        print(f"金钱 {amount:+} ({reason})，当前: {money}")
+        print(f"Money {amount:+} ({reason})，Current: {money}")
     
     def add_social(amount, reason=""):
         global social
         social += amount
-        print(f"社交 {amount:+} ({reason})，当前: {social}")
+        print(f"Social {amount:+} ({reason})，Current: {social}")
     
     def add_mental(amount, reason=""):
         global mental
         mental += amount
-        print(f"精神 {amount:+} ({reason})，当前: {mental}")
+        print(f"Mental {amount:+} ({reason})，Current: {mental}")
     
     def add_awakening(amount, reason=""):
         global awakening
         awakening += amount
-        print(f"觉醒 {amount:+} ({reason})，当前: {awakening}")
+        print(f"Awakening {amount:+} ({reason})，Current: {awakening}")
 
     #陈永仁到处乱看的提示            
     def show_sequential_thoughts(high_msg, mid_msg, low_msg, interval=0.5, duration=1.5):
@@ -726,7 +726,7 @@ image woman normal = "woman_normal.png"
 
 label chapter1:
     image chapter1_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
-    show chapter1_title "Chapter 1：入职"
+    show chapter1_title "Chapter 1：Onboarding"
     with fade
     pause 2
     hide chapter1_title
@@ -738,7 +738,7 @@ label chapter1:
         xzoom -1.0
         xpos -30
         ypos 240
-    "大楼里弥漫着空气清新剂和野心。你早到了13分钟。每个人都这样。"
+    "The building smells of air freshener and ambition. You’re 13 minutes early. Everyone is."
     hide she_03_tinysmile_eye onlayer top
 
     show she_03_tinysmile onlayer top at top_dissolve:
@@ -746,7 +746,7 @@ label chapter1:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "今天是入职第一天，先看看新环境怎么样。"
+    s "First day on the job. Time to get a feel for the place."
     hide she_03_tinysmile onlayer top
 
     jump lobby_explore
@@ -760,17 +760,17 @@ screen lobby_menu(gate_used, coffee_bought, appearance_checked):
         xalign 0.5
         yalign 0.45
         
-        text "大堂可探索：":
+        text "Items to Explore – Lobby":
             size 34
             color "#ffffff"
             outlines [ (2, "#000000", 0, 0) ]
         
         if not gate_used:
-            textbutton "闸机" action Jump("gate_interaction")
+            textbutton "Turnstile" action Jump("gate_interaction")
         if not coffee_bought:
-            textbutton "咖啡亭" action Jump("coffee_stand")
+            textbutton "Coffee Bar" action Jump("coffee_stand")
         if not appearance_checked:
-            textbutton "电梯门倒影" action Jump("mirror_check")
+            textbutton "Elevator Door Reflection" action Jump("mirror_check")
 
 label lobby_explore:
     scene lobby with dissolve
@@ -781,7 +781,7 @@ label lobby_explore:
             xzoom -1.0
             xpos -30
             ypos 240
-        s "还有点时间，去熟悉熟悉办公楼层吧。"
+        s "Still some time left. Might as well look around the office floor."
         hide she_03_tinysmile onlayer top
         jump elevator_choice
     
@@ -837,26 +837,26 @@ label coffee_stand:
         zoom 0.68
         xpos 690
         ypos 160
-    '咖啡店员'"你好，要点什么？"
+    'Barista'"Hi, what can I get for you?"
 
-    s "一杯热拿铁吧，谢谢。"
+    s "Hot latte, please. Thanks."
 
     show coffee_staff_03_chat with dissolve:
         zoom 0.68
         xpos 690
         ypos 160
-    '咖啡店员'"平时没怎么见过你呢，是新来的吗？"
+    'Barista'"Don’t see you often. New here?"
 
-    s "嗯，今天入职。"
+    s "Yeah, today’s my first day."
 
     show coffee_staff_02_smile with dissolve:
         zoom 0.68
         xpos 690
         ypos 160
-    '咖啡店员'"你的咖啡好了。祝你入职顺利。"
+    'Barista'"{i}You‘re wearing your new work skirt. It fits perfectly.{/i}"
 
     $ money -= 30
-    "-30元。【当前余额：[money]元】"
+    "-30 yuan。【Current balance：[money] yuan】"
     $ coffee_bought = True
     
     jump lobby_explore
@@ -866,7 +866,7 @@ label coffee_stand:
 label mirror_check:
     scene lobby
     show elevator_reflection with dissolve
-    "{i}你穿着新买的职业裙，很合身{/i}"
+    "{i}You‘re wearing your new work skirt. It fits perfectly.{/i}"
     
     $ appearance_checked = True
     
@@ -881,16 +881,16 @@ screen elevator_menu(third_floor, eight_floor, twenty_third_floor):
         xalign 0.5
         yalign 0.4
         
-        # text "探索办公楼层：":
+        # text ""Explore Office Floor":
         #     outlines [ (2, "#000000", 0, 0) ]
         #     xpos 50 
         
         if not third_floor:
-            textbutton "3楼" action Jump("third_floor")
+            textbutton "3rd Floor" action Jump("third_floor")
         if not eight_floor:
-            textbutton "8楼" action Jump("eight_floor")
+            textbutton "8th Floor" action Jump("eight_floor")
         if not twenty_third_floor:
-            textbutton "23楼" action Jump("twenty_third_floor")
+            textbutton "23rd Floor" action Jump("twenty_third_floor")
 
 label elevator_choice:
     scene black with dissolve
@@ -909,20 +909,20 @@ label elevator_choice:
 label third_floor:
     scene bg third_floor with dissolve:
         zoom 1.5
-    "{i}HR部门...{/i}"
+    "{i}HR Department...{/i}"
     $ third_floor = True
     jump elevator_choice
             
 label eight_floor:
     scene bg eight_floor with dissolve:
         xzoom -1
-    "{i}市场部...{/i}"
+    "{i}Marketing Department...{/i}"
     $ eight_floor = True
     jump elevator_encounter
             
 label twenty_third_floor:
     scene bg twenty_third_floor with dissolve
-    "{i}高管层...{/i}"
+    "{i}Executive Floor...{/i}"
     $ twenty_third_floor = True
     jump elevator_choice
 
@@ -990,13 +990,13 @@ label chapter1_2:
         xzoom -1.0
         xpos -30
         ypos 240
-    s"啊，时间到了，得赶紧去工位。"
+    s"Oh, time’s up. Better get to my desk."
     hide she_03_tinysmile onlayer top
     hide she_07_astonish onlayer top
     
     scene office with fade
-    "{i}{cps=10}12楼，“设计部”。{/cps}{/i}"
-    "{i}一排排办公桌。米色和灰色的隔间。有人在用微波炉热爆米花，快糊了。{/i}"
+    "{i}{cps=10}12th Floor – Design Department{/cps}{/i}"
+    "{i}Rows of desks. Beige and gray cubicles. Someone‘s microwaving popcorn — it’s about to burn.{/i}"
 
 # 延续已有定义的角色
 define s = Character("小曼")
@@ -1023,13 +1023,13 @@ image bg office_floor = "bg_office_floor.png"
 label chapter1_self_intro:
     scene office_area with fade: #要替换空一点的办公桌图片
         zoom 0.75
-    "{i}你来到工位，正在收拾东西。{/i}"
+    "{i}You arrive at your desk and start unpacking your things.{/i}"
     
     show jin_01_happy with moveinright:
         zoom 0.97
         xpos 700
         ypos 150
-    xiaojin "嘿！新来的美女！终于有个不是我爸年纪的人了。喝咖啡吗？我告诉你哪个机器好。"
+    xiaojin "Hey! The new girl! Finally, someone who’s not old enough to be my dad. Want coffee? I‘ll tell you which machine’s the best."
 
     show jin_01_happy with move:
         zoom 0.97
@@ -1043,14 +1043,14 @@ label chapter1_self_intro:
         ypos 240
 
     menu:
-        "好啊，谢谢！":
+        "Sure, thanks!":
             $ xiaojin_interest += 1
             jump xiaojin_friendly
             
-        "等会儿吧，我想先收拾一下。":
+        "Maybe later. I want to get settled in first.":
             jump xiaojin_neutral
             
-        "我自己带了。":
+        "I brought my own.":
             jump xiaojin_cold
 
 # 选项A：友好路线
@@ -1061,7 +1061,7 @@ label xiaojin_friendly:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "我在楼下买了一杯了，不过好啊，谢谢你。"
+    s "I already got one downstairs, but sure — thanks."
     hide she_05_happy onlayer top
 
     scene tea_room with dissolve
@@ -1070,8 +1070,8 @@ label xiaojin_friendly:
         zoom 0.97
         xpos 700
         ypos 150
-    xiaojin "你刚来，记得别得罪陈总——他挺随和的，但别惹他。还有HR那女的？也别得罪。"
-    xiaojin "……算了，谁都别得罪。我来8个月了，还在琢磨。"
+    xiaojin "You’re new, so just remember — don‘t cross Mr. Chan. He seems easygoing, but don’t push it. And that woman in HR? Stay on her good side too."
+    xiaojin "…Forget it. Just don’t offend anyone. I‘ve been here eight months, and I’m still figuring it out."
     hide jin_02_frown with dissolve
     
     jump linjie_encounter
@@ -1084,9 +1084,9 @@ label xiaojin_neutral:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "等一会儿可以吗，我想先收拾一下桌面。"
+    s "Give me a sec. I want to organize my desk first."
     
-    xiaojin "行，那你先忙，有事找我。"
+    xiaojin "Sure, no rush. Let me know if you need anything."
     hide she_03_tinysmile_eye onlayer top
     hide jin_01_happy with moveoutright
 
@@ -1100,9 +1100,9 @@ label xiaojin_cold:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "我自己带了。"
+    s "I brought my own."
 
-    xiaojin "……哈哈，那行，我就先走了。"
+    xiaojin "…Haha, cool. I‘ll see you around."
     hide jin_01_happy with moveoutright
 
     hide she_01_normal_eye onlayer top
@@ -1115,32 +1115,32 @@ label linjie_encounter:
     scene office_area with fade:
         zoom 0.75
     
-    "{i}你继续整理工位。{/i}"
+    "{i}You continue tidying up your desk.{/i}"
     
     show linjie_00_shade with moveinright:
         zoom 0.92
         xpos 790
         ypos 200
-    '？？' "欢迎。交接文件在共享链接里。10点有个会，别迟到。"
+    '？？' "Welcome. The handover documents are in the shared link. There’s a meeting at 10 — don‘t be late."
     hide linjie_00_shade with dissolve
     
-    "{i}她从你桌边走过，没停步。{/i}"
+    "{i}She walks by. No pause, no glance.{/i}"
     
     menu:
-        "好的，谢谢！":
+        "Okay, thanks!":
             jump linjie_response_a
             
-        "默默点头":
+        "You nod silently.":
             jump linjie_response_b
             
-        "期待开会。":
+        "Looking forward to the meeting.":
             jump linjie_response_c
 
 # 选项A：积极
 label linjie_response_a:
-    s "好的，谢谢！"
+    s "Okay, thanks!"
     
-    "{i}她脚步微顿，但没回头，继续走了。{/i}"
+    "{i}Her steps hesitate for a moment, but she doesn’t look back. She keeps walking.{/i}"
 
     $ linjie_interest += 1
     
@@ -1150,9 +1150,9 @@ label linjie_response_a:
 
 # 选项B：冷淡
 label linjie_response_b:
-    "{i}你默默点头。{/i}"
+    "{i}You nod silently.{/i}"
     
-    "{i}她似乎没注意到，径直走远了。{/i}"
+    "{i}She doesn‘t seem to notice. She just walks away.{/i}"
     
     hide linjie normal with moveoutleft
     
@@ -1160,19 +1160,19 @@ label linjie_response_b:
 
 # 选项C：职业（触发隐藏记录）
 label linjie_response_c:
-    s "期待开会。"
+    s "Looking forward to the meeting."
     
     show linjie_00_shade with dissolve:
         zoom 0.92
         xpos 790
         ypos 200
-    "{i}她停住，微微转身。{/i}"
+    "{i}She pauses, turning just a little.{/i}"
     
-    '？？' "是吗。"
+    '？？' "Oh, really?"
         
     hide linjie_00_shade with dissolve
     show black with dissolve
-    "{i}她走了。{/i}"
+    "{i}She’s gone.{/i}"
     
     $ linjie_interest += 1
 
@@ -1186,15 +1186,15 @@ label linjie_response_c:
 label task_1_3:
     show meeting_room with fade
     
-    "{i}上午10点，C会议室。{/i}"
-    "{i}日光灯嗡嗡响。8个人围坐。你比最年轻的至少小10岁。{/i}"
+    "{i}10:00 AM, Conference Room C.{/i}"
+    "{i}The fluorescent lights hum. Eight people sit around the table. You‘re at least ten years younger than the youngest one.{/i}"
     
     show chen_01_normal with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 681
         ypos 162
-    chen "各位早。快速更新——我们拿下了那个新IP项目。对方是大厂，这可是咱们翻身的机会。"
+    chen "Morning, everyone. Quick update — we’ve secured the new IP project. The client is a major studio. This is our chance to turn things around."
     hide chen_01_normal
 
     show chen_02_smile_front with dissolve:
@@ -1202,17 +1202,17 @@ label task_1_3:
         xzoom -1.0
         xpos 687
         ypos 162
-    chen "给新人一些机会。小曼，你来负责竞品游戏的拆解分析。"
+    chen "Time to let the newcomer shine. Siu Man, you‘ll take the competitor analysis."
     
     menu:
-        "太好了！":
+        "Great!":
             $ mental = mental + 2 if 'mental' in globals() else 2
             jump task_response_a
             
-        "我会尽力的。":
+        "I’ll do my best.":
             jump task_response_b
             
-        "具体要拆解哪些部分？":
+        "Which specific parts should I break down?":
             jump task_response_c
 
 # 选项A：积极
@@ -1229,14 +1229,14 @@ label task_response_a:
         xpos -30
         ypos 240
 
-    s "太好了！"
+    s "Great!"
 
     show chen_04_frontsmile with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 1342
         ypos 159
-    chen "有干劲是好事。林姐会带你入门。"
+    chen "Good to see you motivated. Lam will get you started."
 
     hide she_05_happy onlayer top
     
@@ -1256,9 +1256,9 @@ label task_response_b:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "我会尽力的。"
+    s "I’ll do my best."
     
-    chen "嗯，有问题找林姐。她经验很丰富。"
+    chen "Good, if there’s any problems, ask Lam. She‘s very experienced."
 
     hide she_03_tinysmile_eye onlayer top
 
@@ -1278,15 +1278,15 @@ label task_response_c:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "具体要拆解哪些部分？"
+    s "Which specific parts should I break down?"
     
     show she_02_sweat_eye onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    "{i}桌边有人轻笑。{/i}"
-    "{i}不是恶意，但……只有你不知道。{/i}"
+    "{i}Someone by the table lets out a soft laugh.{/i}"
+    "{i}Not malicious, but… you’re the only one who doesn‘t know.{/i}"
 
     hide chen_02_smile_front
     show chen_02_smile:
@@ -1294,13 +1294,13 @@ label task_response_c:
         xzoom -1.0
         xpos 1357
         ypos 162
-    chen "好问题。林姐会带你。就是市面上那几款头部游戏，美术风格、养成线、付费点设计……那些有趣的东西。"
+    chen "Good question. Lam will guide you. Just those few top games on the market — art style, progression systems, monetization design… the interesting stuff."
     show chen_03_narroweyes:
         zoom 0.9
         xzoom -1.0
         xpos 1358
         ypos 162
-    chen "别担心，我选你是有理由的。我看过你毕设，那些角色设计很有灵气。"
+    chen "Don’t worry. I chose you for a reason. I‘ve seen your graduation project — those character designs had real spark."
     hide she_03_tinysmile_eye onlayer top
     hide she_02_sweat_eye onlayer top
 
@@ -1311,23 +1311,23 @@ label task_response_c:
 label after_task_assignment:
     scene meeting_room with fade
     
-    "{i}会议结束，大家都收拾东西离开了。{/i}"
+    "{i}The meeting ends. Everyone packs up and leaves.{/i}"
     
     show linjie_04_frown with dissolve:
         zoom 0.92
         xpos 790
         ypos 200
     
-    linjie "他总把不可能的任务扔给新人。那几个竞品项目？每个都是几百人的大团队做了三年。你要一个人拆完？别累死自己。"
+    linjie "He always throws impossible tasks at newbies. Each of those competitor projects took hundreds of people three years. You’re going to break them down alone? You‘ll run yourself into the ground."
     
     menu:
-        "谢谢提醒，我会注意的。":
+        "Thanks for the reminder. I’ll be careful.":
             jump linjie_after_a
             
-        "我能搞定。在学校我拆过很多游戏。":
+        "I can handle it. I’ve analyzed plenty of games back in school.":
             jump linjie_after_b
             
-        "为什么不可能？不是有分析框架吗？":
+        "Why is it impossible? Isn‘t there an analytical framework?":
             jump linjie_after_c
 
 # 会后选项A：感激
@@ -1342,13 +1342,13 @@ label linjie_after_a:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "谢谢提醒，我会注意的。"
+    s "Thanks for the reminder. I’ll be careful."
     
     show linjie_01_normal with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
-    linjie "嗯。"
+    linjie "Mm."
     
     hide she_03_tinysmile_eye onlayer top
     $ task_assigned = True
@@ -1368,14 +1368,14 @@ label linjie_after_b:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "我能搞定。在学校我拆过很多游戏。"
+    s "I can handle it. I’ve analyzed plenty of games back in school."
     
     linjie "…………"
     show linjie_05_interested with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
-    linjie "行，有骨气。需要帮忙找我。"
+    linjie "Alright, I like that. Let me know if you need help."
     
     hide she_03_tinysmile_eye onlayer top
     $ task_assigned = True
@@ -1395,13 +1395,13 @@ label linjie_after_c:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "为什么不可能？不是有分析框架吗？"
+    s "Why is it impossible? Isn‘t there an analytical framework?"
     
     show linjie_01_normal with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
-    linjie "……框架是框架，执行是执行。你以后会明白的。"
+    linjie "…That’s how it works on paper. Not always in reality. You’ll see."
     
     hide she_06_surprise_eye onlayer top   
     $ task_assigned = True
@@ -1439,72 +1439,72 @@ label task_1_4:
     $ fatigue = 50
     
     if fatigue > 60:
-        n "好想睡觉……"
+        n "So sleepy…"
     if fatigue > 40:
         n "I can’t get this gacha probability curve to add up…"
     if fatigue > 30:
         n "And there’s an early‑morning meeting tomorrow…"
     
-    n "但做不完的话，陈总会不会觉得我不行？"
+    n "But if I can’t finish it… will Mr. Chen think I‘m not good enough?"
     
-    "{i}你趴在桌上想着，耳边传来一阵脚步声。细听时，脚步声停了。{/i}"
+    "{i}You rest your head on the desk, lost in thought. Then you hear footsteps. You listen closely — they stop.{/i}"
     
     show chen_03_narroweyes with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 1350
         ypos 160
-    chen "还在？我刚才在楼上审方案，看到你们这层灯还亮着。"
+    chen "Still working?I was going through some documents upstairs and noticed your floor’s lights were on."
     
-    "{i}他把一杯咖啡放你桌上。{/i}"
+    "{i}He places a cup of coffee on your desk.{/i}"
     
-    chen "给。楼下便利店的美式，不知道你喝不喝得惯。"
+    chen "Here. Americano from the convenience store downstairs. Not sure if it’s to your taste."
     
     menu:
-        "谢谢陈总。":
+        "Thank you, Mr. Chan.":
             jump overtime_response_a
             
-        "不用这么客气。":
+        "You shouldn‘t have.":
             jump overtime_response_b
             
-        "我快做完了。":
+        "I’m almost done.":
             jump overtime_response_c
 
 label overtime_response_a:
-    s "谢谢陈总。"
-    chen "别客气。"
+    s "Thank you, Mr. Chan."
+    chen "Don’t mention it."
     jump chen_conversation
 
 label overtime_response_b:
-    s "不用这么客气。"
-    "{i}陈永仁笑了笑，没说话。{/i}"
+    s "You shouldn‘t have."
+    "{i}Chan Wing Yan smiles but says nothing.{/i}"
     jump chen_conversation
 
 label overtime_response_c:
-    s "我快做完了。"
-    chen "效率挺高啊。"
+    s "I’m almost done."
+    chen "Pretty efficient, aren‘t you?"
     jump chen_conversation
 
 label chen_conversation:
-    "{i}陈永仁坐在桌角。{/i}"
-    chen "我看过你简历，你的履历顶尖，你可以去任何地方，为什么选这儿？"
+    "{i}Chan Wing Yan sits on the corner of the desk.{/i}"
+    chen "I‘ve seen your resume. Your qualifications are top-tier. You had options. What made you pick this place?"
     show chen_00_body:
         zoom 0.9
         xzoom -1.0
         xpos 1357
         ypos 438
     menu:
-        "别处都不要我。":
+        "No one else wanted me.":
             jump chen_honest
             
-        "最适合我的技能":
+        "This position is the best match for my professional expertise.":
             jump chen_safe
             
-        "我想升得快一些。":
+        "I‘m looking for faster career growth.":
             jump chen_ambition
 
 label chen_honest:
-    s "别处都不要我。"
+    s "No one else wanted me."
     $ mental = mental + 2 if 'mental' in globals() else 2
     
     hide chen_03_narroweyes
@@ -1522,95 +1522,95 @@ label chen_honest:
         ypos 162
     hide chen_00_body
     hide chen_06_surprise_head
-    "{i}陈永仁表情柔和下来。{/i}"
+    "{i}Chan Wing Yan‘s expression softens.{/i}"
 
-    chen "我懂。我就是从这个位置开始的——就是这张桌子，20年前。现在你看……"
-    "{i}他模糊地往上指了指。{/i}"
+    chen "I understand. I began exactly where you are — this same desk, 20 years back. And now…"
+    "{i}He gives a vague upward point.{/i}"
 
     show chen_04_frontsmile with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 1350
         ypos 161
-    chen "努力工作，留到最后，这就是赢的方法。"
-    "{i}他站起来。{/i}"
+    chen "Work hard. Stay till the end. That‘s how you win."
+    "{i}He stands up.{/i}"
     
     hide chen_04_frontsmile with dissolve
-    chen "别太晚，回家注意安全。"
+    chen "Don‘t stay too late. Be careful on your way home."
     chen "…………"
-    chen "其实我也要走了……送你一程？"
+    chen "Actually, I‘m leaving too… Want a ride?"
     jump car_choice
 
 label chen_safe:
-    s "这里的岗位和我的专业技能最匹配。"
+    s "This position is the best match for my professional expertise."
     show chen_02_smile:
         zoom 0.9
         xzoom -1.0
         xpos 1350
         ypos 161 
     hide chen_00_body
-    chen "嗯，确实。你的拆解能力很强。"
-    "{i}他站起来。{/i}"
+    chen "Yeah, you really do. Your analytical skills are impressive."
+    "{i}He stands up.{/i}"
     hide chen_02_smile
-    chen "别太晚，明天还有早会。"
-    chen "……其实我也要走了，送你一程？"
+    chen "Don‘t stay too late. There’s an early meeting tomorrow."
+    chen "Actually, I‘m leaving too… Want a ride?"
     jump car_choice
 
 label chen_ambition:
-    s "我想升得快一些。"
+    s "I‘m looking for faster career growth."
     show chen_02_smile with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 1350
         ypos 161
     hide chen_00_body
-    chen "有野心。我喜欢。"
-    "{i}他站起来。{/i}"
+    chen "Ambitious. I like that."
+    "{i}He stands up.{/i}"
     hide chen_02_smile
-    chen "别加班太晚。其实我也要走了……送你一程？"
+    chen "Don’t work too late. Actually, I‘m leaving too… Want a ride?"
     jump car_choice
 
 label car_choice:
     menu:
-        "好，谢谢。":
+        "Alright, thank you.":
             $ car_ride = True
             jump car_scene
             
-        "不用，我坐地铁。":
+        "No thanks, I’ll take the subway.":
             jump reject_car
 
 label car_scene:
-    s "好，谢谢。"
-    chen "走吧，车在楼下。"
+    s "Alright, thank you."
+    chen "Let's go. The car's downstairs."
     scene car_inside with fade
-    "{i}车内很干净，有淡淡的皮革味。{/i}"
-    s "您把我放在711就好，我刚好买个早餐，麻烦您了。"
-    chen "没问题。"
-    "{i}陈永仁放了一首老歌。你们都没说话。{/i}"
-    "{i}他在便利店前停车。{/i}"
-    chen "明天见，好好休息。"
+    "{i}The car is clean, with a faint scent of leather.{/i}"
+    s "You can just drop me at the the convenience store. I need to grab some breakfast anyway. Sorry to bother you."
+    chen "No problem"
+    "{i}Chan Wing Yan puts on an old song. Neither of you speaks.{/i}"
+    "{i}He stops the car in front of the convenience store.{/i}"
+    chen "See you tomorrow. Get some rest."
     jump task_1_4_end2
 
 label reject_car:
-    s "不用，我坐地铁。"
-    chen "随你。明天见。"
+    s "No thanks, I’ll take the subway."
+    chen "Suit yourself. See you tomorrow."
     hide chen_02_smile_front with moveoutright
     hide chen_03_narroweyes with moveoutright
-    "{i}陈永仁走了。{/i}"
-    "{i}你看着他离开，胸口有什么东西松开了，不知道为什么。{/i}"
+    "{i}Chan Wing Yan leaves.{/i}"
+    "{i}You watch him leave, and something in your chest unclenches. You don't know why.{/i}"
     jump task_1_4_end1
 
 label task_1_4_end1:
     scene office_desk with fade
-    "{i}深夜的办公室闪烁的是代码的霓虹。{/i}"
-    "{i}电子bug能梦见仿生萤火虫吗？\n在刚来那天所看到的落地窗里，星星亮起，夜幕降临。{/i}"
+    "{i}The late office flickers with the neon of code.{/i}"
+    "{i}Do electronic bugs dream of bionic fireflies?\nIn the floor-to-ceiling window you saw on your first day, stars ignite, and night falls.{/i}"
     jump task_1_5
 
 label task_1_4_end2:
     scene home with fade
-    "{i}回到家，你简单收拾后便躺下，很快就睡着了。{/i}"
-    "{i}梦里，深夜的办公室闪烁的是代码的霓虹。{/i}"
-    "{i}电子bug能梦见仿生萤火虫吗？\n在刚来那天所看到的落地窗里，星星亮起，夜幕降临。{/i}"
+    "{i}You get home, tidy up a bit, and lie down. Soon you're asleep.{/i}"
+    "{i}In dreams, the late office flickers with code's cold neon.{/i}"
+    "{i}Do electronic bugs dream of bionic fireflies?\nIn the floor-to-ceiling window you saw on your first day, stars ignite, and night falls.{/i}"
     jump task_1_5
 
 label mini_game_analysis:
@@ -1674,7 +1674,7 @@ label mini_game_analysis:
     if temp_score >= 3:
         "{i}Analysis complete. Data saved.{/i}"
     else:
-        "{i}部分数据存疑，但先这样吧。{/i}"
+        "{i}Not all the data looks right, but let‘s leave it for the moment.{/i}"
         $ fatigue += 20
     
     return
@@ -2184,10 +2184,10 @@ label angry_game_calculation:
         jump family_tax_end
 
 label family_tax_end:
-    "{i}手机随后震动。{/i}"
-    '小紫书 你的粉丝'"姐妹，看到你发家里要钱的事了。同款遭遇，你不是一个人。"
+    "{i}The phone buzzes a moment later.{/i}"
+    'Xiaozishu a follower of yours'"Girl, I saw your post about your family asking for money. Same boat. You’re not alone."
     $ xiaohongshu_contact = True
-    "{i}新联系人：小紫书姐妹{/i}"
+    "{i}New contact: Xiaozishu Sis{/i}"
     jump task_1_6
 
 # ========== 任务1.6：不经意的触碰 ==========
@@ -2197,56 +2197,56 @@ transform shock:
     linear 0.2 xoffset 0 yoffset 0
 label task_1_6:
     scene tea_room with fade
-    "{i}第3周，工作日。{/i}"
+    "{i}Week 3. A workday.{/i}"
     show she_05_happy_nobag onlayer top:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    s "咖啡，嘿嘿🎵~"
+    s "Coffee, yay~ 🎵~"
     hide she_05_happy_nobag onlayer top
     show she_06_surprise_eye_nobag onlayer top at shock:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    "{i}有人从你上方伸过手来。{/i}"
+    "{i}Someone reaches over from above you.{/i}"
     
     show chen_06_surprise with dissolve:
         zoom 0.9
         xzoom -1
         xpos 1358
         ypos 162
-    chen "抱歉，我拿一下方糖……"
+    chen "Sorry, just grabbing a sugar cube…"
     show chen_04_frontsmile:
         zoom 0.9
         xzoom -1
         xpos 1350
         ypos 161
-    chen "哦，你也在泡咖啡？"
-    "{i}他站得很近，拿糖的时候手臂擦过你。{/i}"
+    chen "Oh, you‘re making coffee too?"
+    "{i}He stands very close. His arm brushes against you as he reaches for the sugar.{/i}"
     
     menu:
-        "观察他的表情":
-            "{i}他在笑。{/i}"
+        "Watch his expression":
+            "{i}He’s smiling.{/i}"
             jump touch_reaction
             
-        "观察他的手":
-            "{i}他的手放在台面上，离你的手只有几寸。{/i}"
+        "Look at his hand":
+            "{i}His hand rests on the counter, just inches from yours.{/i}"
             jump touch_reaction
             
-        "注意自己的感受":
+        "Notice your own feelings":
             jump touch_reaction
 
 label touch_reaction:
     menu:
-        "没什么，就是有点挤。":
+        "Nothing, it‘s just a bit crowded.":
             jump touch_ignore
             
-        "他为什么站这么近？":
+        "Why is he standing so close?":
             jump touch_alert
             
-        "稍微挪开一点":
+        "Move away slightly":
             jump touch_move
 
 label touch_ignore:
@@ -2256,27 +2256,27 @@ label touch_ignore:
         xpos -30
         ypos 240
     hide she_06_surprise_eye_nobag onlayer top
-    s "是的，早上喝一杯咖啡比较精神"
+    s "Yeah, a cup of coffee in the morning helps me wake up."
     hide chen_06_surprise
-    chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
+    chen "You’ve been doing great work. And by the way, your breakdown analysis was excellent. I knew I was right about you."
     jump task_1_6_a
 
 label touch_alert:
     s "……"
-    s "哈哈，是。"
+    s "Haha, yeah."
     show she_02_sweat_eye_nobag onlayer top:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    s "{i}他为什么站这么近？{/i}"
+    s "{i}Why is he standing so close?{/i}"
     hide chen_06_surprise
     show chen_02_smile_front with dissolve:
         zoom 0.9
         xzoom -1
         xpos 1358
         ypos 162
-    chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
+    chen "You’ve been doing great work. And by the way, your breakdown analysis was excellent. I knew I was right about you."
     hide chen_04_frontsmile
     jump task_1_6_bc
 
@@ -2289,28 +2289,28 @@ label touch_move:
         xpos -30
         ypos 240
         linear 0.6 xpos -50 ypos 240
-    s "是，喝一杯咖啡工作起来比较精神"
+    s "Yeah, a cup of coffee helps me focus at work."
     show chen_04_glance:
         zoom 0.9
         xzoom -1
         xpos 1350
         ypos 161
-    "{i}陈永仁没明显反应。但你一动，他眼神扫了你一下。{/i}"
+    "{i}Chan Wing Yan doesn‘t react noticeably. But the moment you move, his eyes flick toward you.{/i}"
     hide chen_04_glance
-    chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
+    chen "You’ve been doing great work. And by the way, your breakdown analysis was excellent. I knew I was right about you."
     jump task_1_6_bc
 
 label task_1_6_a:
-    chen "我先走了，工作加油。"
+    chen "I’ll head off now. Keep up the good work."
     hide chen_04_frontsmile with moveoutright
     hide chen_02_smile_front with moveoutright
     jump task_1_6_end
 
 label task_1_6_bc:
-    chen "我先走了，工作加油。"
+    chen "I’ll head off now. Keep up the good work."
     hide chen_04_frontsmile with moveoutright
     hide chen_02_smile_front with moveoutright
-    "{i}他走了，咖啡杯的热气缓缓蒸腾着。{/i}"
+    "{i}He leaves. The steam from the coffee cup rises slowly.{/i}"
     jump task_1_6_end
 
 label task_1_6_end:
@@ -2331,18 +2331,18 @@ label task_1_6_end:
         zoom 1.4
         align (0.5, 0.45)
         pause 1.0
-    linjie "看到你和陈永仁在茶水间了，注意点。"
+    linjie "I saw you and Chan in the break room. Be careful."
     
     menu:
-        "什么意思？":
+        "What do you mean?":
             show linjie_wx_a1:
                 zoom 1.4
                 align (0.5, 0.45)
-            s "注意什么？"
+            s "Be careful? For what?"
             show linjie_wx_a2:
                 zoom 1.4
                 align (0.5, 0.45)
-            linjie "没什么。接完水快回来，有个新的brief发你了。"
+            linjie "Nothing. Just grab your water and come back. I sent you a new brief."
             show linjie_wx_a3:
                 zoom 1.4
                 align (0.5, 0.45)
@@ -2352,38 +2352,38 @@ label task_1_6_end:
             pause 1.0
             jump chapter_2
             
-        "没什么事。":
+        "Nothing happened.":
             show linjie_wx_b1:
                 zoom 1.4
                 align (0.5, 0.45)
-            s "没什么事啊。"
+            s "Nothing happened."
             show linjie_wx_b2:
                 zoom 1.4
                 align (0.5, 0.45)
-            linjie "……随你。"
+            linjie "…Suit yourself."
             # hide she_01_normal_eye_o_nobag onlayer top
             scene black with dissolve
             pause 1.0
             jump chapter_2
             
-        "删除消息":
+        "Message deleted.":
             show linjie_wx_c1:
                 zoom 1.4
                 align (0.5, 0.45)
-            "{i}消息已删除。{/i}"
+            "{i}Message deleted.{/i}"
             $ escape += 1
             # hide she_01_normal_eye_o_nobag onlayer top
             scene black with dissolve
             pause 1.0
             jump chapter_2
 
-        "思索":
-            s "林姐平常不说这些的，怎么……"
-            "{i}你正揣摩这条消息的的意图，斟酌着打下回复，又有新消息发来了。{/i}"
+        "Think it over":
+            s "Lam doesn‘t usually say things like this. Why…"
+            "{i}You’re mulling over the intent behind this message, carefully typing out a reply, when another message arrives.{/i}"
             show linjie_wx_d1:
                 zoom 1.4
                 align (0.5, 0.45)
-            linjie "接完水快回来，有个新的brief发你了。"
+            linjie "Come back soon after you grab your water. I sent you a new brief."
             show linjie_wx_d2:
                 zoom 1.4
                 align (0.5, 0.45)
@@ -2495,13 +2495,13 @@ screen payslip_screen():
                     text"17,500" xalign 1.05
                 
                 if not salary_checked:
-                    text"（开始心算对比）" size 12 xalign 1.03 yalign 0.3
+                    text"(Start calculating in your head)" size 12 xalign 1.03 yalign 0.3
             
 
             null height 30
             
             # 关闭按钮
-            textbutton "关闭":
+            textbutton "Close":
                 xalign 0.5
                 action If(salary_checked, 
                     [Hide("payslip_screen"), Jump("call_lin_sister")],
@@ -4879,6 +4879,7 @@ screen push_away_qte():
     timer (3.0 - qte_state.push_count * 0.4) action [Return(False)]
 
 # 10秒抉择窗口
+default final_choice = ""
 default countdown = 10
 
 screen final_choice():
@@ -5665,7 +5666,7 @@ label police_result:
     "新物品：【报警回执单2号】"
     "又一张盖着公章的纸。又一段被程序终结的正义。"
     
-    jump chapter5_ending
+    jump ending_a_empty_document
 
 # ==========================================
 # 路线B：HR内部举报
@@ -5742,7 +5743,10 @@ label task_5_b_1:
     "偏远办公室。独自一人。没团队。"
     "你的工位对着墙。没有窗。"
     
-    jump chapter5_ending
+    if linjie_interest >= 2 or xiaojin_interest >= 1:
+        jump ending_b_whisper
+    else:
+        jump ending_b_water
 
 # ==========================================
 # 路线C：公众曝光
@@ -5934,7 +5938,7 @@ label task_5_c_1:
     if linjie_interest >=2 and xiaojin_interest >= 1 and disclosure_level == "high":
         jump route_c_she_scene
     else:
-            jump chapter5_ending
+            jump ending_c_exit
     
     jump chapter5_ending
 
@@ -6214,6 +6218,266 @@ label route_c_she_scene:
         "小曼转身，脚步平稳地向前走去，夕阳将她的影子拉长，林姐和小金站在原地，静静望着她的背影，直到渐渐远去。"
 
         jump chapter5_ending
+
+
+# ==========================================
+# SHE 新结局区
+# ==========================================
+
+label ending_a_empty_document:
+    # A-1【空文】
+
+    scene bg police_station
+    with fade
+
+    "{i}You submit the evidence photos you found.{/i}"
+    "{i}The officer looks through the materials you provided.{/i}"
+
+    if not car_ride:
+        "Police Officer" "The people in these materials don’t look like you..."
+        s "These are other coworkers he harassed."
+        "Police Officer" "Miss Sheh, under our law, whoever makes a claim must provide evidence. But you cannot provide evidence on someone else’s behalf."
+        s "..."
+        "Police Officer" "...This is the receipt for your report. We’ll notify you if there is any progress."
+        s "Did you look at the chat records, workplace recordings, and coworker testimonies I submitted?"
+        "Police Officer" "We have received all the materials. We’ll process and investigate according to procedure. You may go."
+    else:
+        "Police Officer" "Alright, Miss Sheh. We’ve received your statement and materials."
+        s "Will the case be filed?"
+        "Police Officer" "We’ll process and investigate according to procedure. You may go."
+
+    scene black
+    with fade
+
+    "{i}Three weeks later:{/i}"
+    "{i}Insufficient evidence. Case not accepted.{/i}"
+
+    # CG：空文
+    # scene cg_empty_document with fade
+    # "{i}A blank document. A report that never became a case.{/i}"
+
+    jump ending_common
+
+
+label ending_b_water:
+    # B-1【饮水】
+
+    scene black
+    with fade
+
+    "{i}File: Transfer Notice. Chan Wing Yan’s signature is on it.{/i}"
+    "{i}You reported Chan Wing Yan to the company for sexual harassment.{/i}"
+    "{i}Without enough evidence, the company does not accept your report.{/i}"
+    "{i}Chan Wing Yan finds out about it. You are transferred somewhere else.{/i}"
+
+    scene office_area
+    with fade
+
+    s "My new desk is still on the same floor as the design department. Just very far away."
+    s "The water dispenser becomes my only colleague. It doesn’t talk, but at least it doesn’t touch me."
+    s "The edge of the office. The edge of the work."
+    s "If there’s one good thing, I guess drinking water has become easier."
+
+    "{i}You take a sip of water.{/i}"
+
+    "{i}Across the room, you see two people enter another pantry one after another.{/i}"
+
+    s "Contact: Bella. I saw Chan Wing Yan enter the pantry with you. Be careful."
+
+    s "The water temperature is just right."
+
+    "{i}In the corner near the pantry, a folding chair becomes your new workstation.{/i}"
+    "{i}Administrative scraps pile up in front of you: printing meeting notes, sticking receipts, sorting reimbursement forms, checking delivery lists.{/i}"
+    "{i}Your original desk has long been moved to the farthest corner of the office.{/i}"
+    "{i}All permissions for core projects have been removed from your computer.{/i}"
+    "{i}No real work emails come anymore.{/i}"
+
+    # CG：饮水
+    # scene cg_water with fade
+
+    jump ending_common
+
+
+label ending_c_exit:
+    # C-1【退场】
+
+    scene bg hr_office
+    with fade
+
+    s "May I ask, is the company here to deal with this matter, or to deal with me?"
+    s "If it’s not the former, there’s no need to continue."
+    s "There is no reason to stay in a place like this."
+    s "I resign."
+
+    scene black
+    with fade
+
+    # 桌面收拾干净，桌上只有背包和亮着的手机
+    # scene cg_clean_desk_phone with fade
+
+    "{i}Your Xiaozishu post stops at 423 comments. The heat has long faded.{/i}"
+    "{i}The latest comment, posted two days ago, says: “Another clout chaser.”{/i}"
+
+    "{i}Comment: Is there any evidence? I’ve been reading for ages.{/i}"
+    "{i}Comment: Hugs to the poster. Sexual harassment is really hard to collect evidence for. Sigh.{/i}"
+    "{i}Comment: I don’t know the full story, so I won’t comment.{/i}"
+    "{i}Comment: No pictures, no truth. Just account farming.{/i}"
+
+    "{i}You turn off your phone.{/i}"
+
+    # CG：退场
+    # scene cg_exit with fade
+
+    jump ending_common
+
+
+label ending_d_mutual_respect:
+    # D-1【相惜】
+
+    scene tea_room
+    with fade
+
+    s "Ms. Lam, sorry to bother you again... I found a lawyer—"
+    s "But the lawyer said that because I didn’t get in the car at the time, I neither experienced actual assault nor left direct evidence."
+    s "And the photos and materials I collected involve other people. I’m not the person directly involved..."
+    s "So there’s almost no chance of winning."
+
+    s "But when I saw those photos and files, I realized so many brilliant women should have stood somewhere higher."
+    s "Because of Chan Wing Yan, they faded instead."
+
+    s "I... I wanted to ask whether you would be willing to be the one to stand up and sue Chan Wing Yan."
+
+    linjie "Miss Sheh, did something I once said give you the wrong signal?"
+
+    linjie "You want to be a savior. You have ambition. But have you thought about this?"
+    linjie "You are standing in front of someone who actually went through it, asking her to reopen that memory for something you did not truly experience yourself."
+
+    linjie "You didn’t really go through it, so you don’t understand..."
+
+    linjie "...Forget it."
+    linjie "I still have work to do. Excuse me."
+
+    s "I’m sorry... I crossed a line."
+
+    linjie "..."
+
+    linjie "I don’t regret what I said after drinking that night."
+    linjie "But I also hope you can understand this."
+    linjie "Before a wound heals, no matter how thick the scab becomes, tearing it off will still draw blood."
+
+    s "...I’ll remember that."
+
+    "{i}Ms. Lam turns to leave.{/i}"
+
+    s "Ms. Lam, I’m sorry. And thank you..."
+    s "Also, I hope work goes well for you!"
+
+    s "That’s not empty small talk! Uh, I know that in a company, after certain things happen, work can become difficult—uh, no, that’s not what I mean..."
+    s "I just mean... I hope things go smoothly for you. I hope everything gets better."
+
+    scene elevator
+    with fade
+
+    "{i}The elevator doors close.{/i}"
+
+    linjie "I heard you."
+    linjie "You too. I hope things go smoothly for you too."
+
+    # CG：相惜
+    # scene cg_mutual_respect with fade
+
+    jump ending_common
+
+
+label ending_b_whisper:
+    # B-2【絮语】
+
+    scene bg hr_office
+    with fade
+
+    s "I want to report Chan Wing Yan for sexual harassment. All the evidence is here."
+
+    "HR" "Leave the materials here. You may go."
+
+    "{i}She keeps her head down, still working on her own tasks.{/i}"
+
+    s "Aren’t you going to look at the evidence?"
+
+    "HR" "...New here?"
+
+    "{i}She glances at you, then picks up the materials and slowly browses through them.{/i}"
+
+    "HR" "...Given the current situation, I suggest you don’t waste your effort."
+
+    s "Isn’t this enough evidence? Even if it isn’t, he has hurt enough people."
+
+    "{i}She does not answer.{/i}"
+
+    "HR" "..."
+    "HR" "Fine. I can submit this for you. Go back and wait for notice."
+
+    scene black
+    with fade
+
+    scene office_area
+    with fade
+
+    "{i}File: Transfer Notice. Chan Wing Yan’s signature is on it.{/i}"
+
+    "{i}You are about to leave your current desk.{/i}"
+
+    chen "Ah, perfect timing. Bella, you can sit here."
+
+    "{i}Bella looks at you with surprise. While Chan Wing Yan isn’t paying attention, she quietly greets you with her eyes.{/i}"
+
+    chen "So many capable newcomers these days. You have to cultivate them properly."
+
+    "{i}Chan Wing Yan leaves after saying that. You follow behind him.{/i}"
+
+    scene black
+    with fade
+
+    "{i}Corridor.{/i}"
+
+    chen "It took me more than ten years to get from a newcomer to this position."
+    chen "How to get promoted, how to swallow grievances—I know all of it too well."
+    chen "In recent years, I’ve seen more and more talented newcomers. I like them very much."
+    chen "Sometimes a few leave, and I do feel it’s a pity."
+    chen "But thankfully, there are always more newcomers."
+
+    "{i}He stops talking and enters his office. Your elevator arrives too.{/i}"
+
+    "{i}Your phone vibrates.{/i}"
+
+    chen "A few days in, and you think you can bring me down with a few photos. Too young."
+
+    "{i}You are about to take a screenshot.{/i}"
+
+    "{i}Chan Wing Yan recalled a message.{/i}"
+
+    chen "Siu Man, I wish you a bright future."
+
+    scene black
+    with fade
+
+    "HR" "I wouldn’t call that smart."
+    "HR" "But I would call it brave."
+
+    # CG：絮语
+    # scene cg_whisper with fade
+
+    jump ending_common
+
+
+label ending_common:
+    scene black
+    with fade
+
+    "{i}SHE{/i}"
+    "{i}THE END{/i}"
+
+    return
+
 
 #     #1. 酒单（左侧）
 #     button:
