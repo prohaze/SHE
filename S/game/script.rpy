@@ -87,7 +87,7 @@ screen item_description(description, name, image):
 screen items_screen():
     modal True
     # 添加进度显示
-    text "已发现物品[len(clicked_items)]/4":
+    text _("已发现物品[len(clicked_items)]/4"):
         xalign 0.95
         yalign 0.05
         size 36
@@ -760,7 +760,7 @@ screen lobby_menu(gate_used, coffee_bought, appearance_checked):
         xalign 0.5
         yalign 0.45
         
-        text "大堂可探索：":
+        text _("大堂可探索："):
             size 34
             color "#ffffff"
             outlines [ (2, "#000000", 0, 0) ]
@@ -2888,7 +2888,7 @@ screen video_player(video_id):
             yalign 0.5
             
             if video_id == "chen_fitness":
-                text "📹 健身视频播放中..." color "#ffffff" size 20
+                text _("📹 健身视频播放中...") color "#ffffff" size 20
                 null height 20
                 text "00:15 / 00:30" color "#ffffff" size 14
                 null height 10
@@ -3204,11 +3204,11 @@ screen clue_moderec:
         vbox:
             xalign 0.5
             yalign 0.5
-            text "【线索】模式识别" size 28
+            text _("【线索】模式识别") size 28
             null height 30
             add Solid("#cccccc") xsize 600 ysize 1
             null height 30
-            text "你开始明白，这不是偶然。" size 24 xalign 0.5
+            text _("你开始明白，这不是偶然。") size 24 xalign 0.5
             null height 40
 
             textbutton "收起":
@@ -4847,22 +4847,22 @@ screen push_away_qte():
         align (0.5, 0.3)
         spacing 20
 
-        text "他在吻你" at heartbeat:
+        text _("他在吻你") at heartbeat:
             size 36
             color "#E53E3E"
             xalign 0.5
 
-        text "快速点击鼠标推开他！":
+        text _("快速点击鼠标推开他！"):
             size 18
             color "#A0AEC0"
             xalign 0.5
 
-        text "（每次点击都比上一次更难）":
+        text _("（每次点击都比上一次更难）"):
             size 18
             color "#A0AEC0"
             xalign 0.5
 
-        text "点击次数: [qte_state.push_count] / 5":
+        text _("点击次数: [qte_state.push_count] / 5"):
             size 24
             color "#FC8181"
             xalign 0.5
@@ -4890,22 +4890,22 @@ screen final_choice():
         align (0.5, 0.2)
         spacing 15
 
-        text "心跳如鼓" at heartbeat:
+        text _("心跳如鼓") at heartbeat:
             size 32
             color "#FC8181"
             xalign 0.5
 
-        text "他在等":
+        text _("他在等"):
             size 24
             color "#E2E8F0"
             xalign 0.5
 
-        text "不抱的话，明天会很尴尬":
+        text _("不抱的话，明天会很尴尬"):
             size 18
             color "#A0AEC0"
             xalign 0.5
 
-        text "抱了的话，这事就过去了":
+        text _("抱了的话，这事就过去了"):
             size 18
             color "#A0AEC0"
             xalign 0.5
@@ -4928,7 +4928,7 @@ screen final_choice():
             ysize 60
             action [SetVariable("final_choice", "hug"), Return(True)]
 
-            text "拥抱他（场景结束，回家）":
+            text _("拥抱他（场景结束，回家）"):
                 align (0.5, 0.5)
                 color "#FFFFFF"
                 size 16
@@ -4943,7 +4943,7 @@ screen final_choice():
                     ysize 60
                     action [SetVariable("final_choice", "escape"), Return(True)]
 
-                    text "推开车门逃跑":
+                    text _("推开车门逃跑"):
                         align (0.5, 0.5)
                         color "#FFFFFF"
                         size 16
@@ -4955,7 +4955,7 @@ screen final_choice():
                     ysize 60
                     action [SetVariable("final_choice", "escape"), Return(True)]
 
-                    text "推开车门逃跑":
+                    text _("推开车门逃跑"):
                         align (0.5, 0.5)
                         color "#FFFFFF"
                         size 16
@@ -5411,8 +5411,8 @@ screen route_choice_screen():
             spacing 25
             xalign 0.5
             
-            text "第五章：抉择" size 36 color "#ffffff" xalign 0.5
-            text "四条路" size 28 color "#bdc3c7" xalign 0.5
+            text _("第五章：抉择") size 36 color "#ffffff" xalign 0.5
+            text _("四条路") size 28 color "#bdc3c7" xalign 0.5
             
             null height 20
             
@@ -5432,8 +5432,8 @@ screen route_choice_screen():
                     
                     text "⚖️" size 30
                     vbox:
-                        text "路线A：法律途径" size 20 color "#ffffff"
-                        text "条件：证据 + 律师联系" size 14 color "#bdc3c7"
+                        text _("路线A：法律途径") size 20 color "#ffffff"
+                        text _("条件：证据 + 律师联系") size 14 color "#bdc3c7"
             
             # 路线B
             button:
@@ -5451,8 +5451,8 @@ screen route_choice_screen():
                     
                     text "🏢" size 30
                     vbox:
-                        text "路线B：HR内部举报" size 20 color "#ffffff"
-                        text "条件：证据 + 勇气 > 50" size 14 color "#bdc3c7"
+                        text _("路线B：HR内部举报") size 20 color "#ffffff"
+                        text _("条件：证据 + 勇气 > 50") size 14 color "#bdc3c7"
             
             # 路线C
             button:
@@ -5470,8 +5470,8 @@ screen route_choice_screen():
                     
                     text "📱" size 30
                     vbox:
-                        text "路线C：公众曝光" size 20 color "#ffffff"
-                        text "条件：证据 + 小红书粉丝 > 800" size 14 color "#bdc3c7"
+                        text _("路线C：公众曝光") size 20 color "#ffffff"
+                        text _("条件：证据 + 小红书粉丝 > 800") size 14 color "#bdc3c7"
             
             # 路线D
             button:
@@ -5489,8 +5489,8 @@ screen route_choice_screen():
                     
                     text "🚪" size 30
                     vbox:
-                        text "路线D：离开" size 20 color "#ffffff"
-                        text "条件：心理健康 < 20" size 14 color "#bdc3c7"
+                        text _("路线D：离开") size 20 color "#ffffff"
+                        text _("条件：心理健康 < 20") size 14 color "#bdc3c7"
 
 label route_selection:
     call screen route_choice_screen
@@ -5551,10 +5551,10 @@ screen police_statement_game():
         background "#2c3e50"
         padding (30, 20)
         
-        text "陈述一致性: [consistency_score]%" size 24 color "#ffffff" xalign 0.5
+        text _("陈述一致性: [consistency_score]%") size 24 color "#ffffff" xalign 0.5
         
         if consistency_score < 60:
-            text "可信度不足" size 18 color "#e74c3c" xalign 0.5
+            text _("可信度不足") size 18 color "#e74c3c" xalign 0.5
     
     if current_question == 0:
         frame:
@@ -5566,19 +5566,19 @@ screen police_statement_game():
             
             vbox:
                 spacing 20
-                text "Q1: 第一次不当接触发生在什么时候？" size 20 color "#2c3e50"
+                text _("Q1: 第一次不当接触发生在什么时候？") size 20 color "#2c3e50"
                 
-                textbutton "办公室茶水间":
+                textbutton _("办公室茶水间"):
                     action [SetScreenVariable("statement_history", statement_history + ["pantry"]), 
                             SetScreenVariable("current_question", 1)]
                 
-                textbutton "我不记得了":
+                textbutton _("我不记得了"):
                     action [SetScreenVariable("consistency_score", consistency_score - 20),
                             SetScreenVariable("statement_history", statement_history + ["unknown"]), 
                             SetScreenVariable("current_question", 1)]
 
                 if car_event:
-                    textbutton "庆功酒后，他送我回家":
+                    textbutton _("庆功酒后，他送我回家"):
                         action [SetScreenVariable("statement_history", statement_history + ["car"]), 
                                 SetScreenVariable("current_question", 1)]
                 else: 
@@ -5594,21 +5594,21 @@ screen police_statement_game():
             
             vbox:
                 spacing 20
-                text "Q2: 详细描述当晚他送你回家的经过？" size 20 color "#2c3e50"
+                text _("Q2: 详细描述当晚他送你回家的经过？") size 20 color "#2c3e50"
                 
                 if "car" in statement_history:
-                    textbutton "他在车里试图吻我，我推开了他":
+                    textbutton _("他在车里试图吻我，我推开了他"):
                         action [SetScreenVariable("current_question", 2)]
                     
-                    textbutton "什么都没发生，他只是送我回家":
+                    textbutton _("什么都没发生，他只是送我回家"):
                         action [SetScreenVariable("consistency_score", consistency_score - 30),
                                 SetScreenVariable("current_question", 2)]
                 else:
-                    textbutton "他说要送我，但我拒绝了":
+                    textbutton _("他说要送我，但我拒绝了"):
                         action [SetScreenVariable("consistency_score", consistency_score - 20),
                                 SetScreenVariable("current_question", 2)]
                     
-                    textbutton "我们去了酒店":
+                    textbutton _("我们去了酒店"):
                         action [SetScreenVariable("consistency_score", consistency_score - 40),
                                 SetScreenVariable("current_question", 2)]
     
@@ -5622,15 +5622,15 @@ screen police_statement_game():
             
             vbox:
                 spacing 20
-                text "Q3: 为什么现在才来报案？" size 20 color "#2c3e50"
+                text _("Q3: 为什么现在才来报案？") size 20 color "#2c3e50"
                 
-                textbutton "我需要时间收集证据":
+                textbutton _("我需要时间收集证据"):
                     action [Return(80)]
                 
-                textbutton "我害怕":
+                textbutton _("我害怕"):
                     action [Return(60)]
                 
-                textbutton "我不知道这算不算犯罪":
+                textbutton _("我不知道这算不算犯罪"):
                     action [Return(40)]
 
 label police_statement_game:
@@ -5774,7 +5774,7 @@ screen xiaohongshu_post():
         ysize 60
         padding (20, 10)
         
-        text "小红书" size 24 color "#ffffff" xalign 0.5
+        text _("小红书") size 24 color "#ffffff" xalign 0.5
     
     frame:
         xalign 0.5
@@ -5789,7 +5789,7 @@ screen xiaohongshu_post():
             
             hbox:
                 spacing 10
-                text "标题：" size 18 color "#333333"
+                text _("标题：" size 18 color "#333333")
                 
                 textbutton (post_title if post_title else "点击输入标题..."):
                     xsize 600
@@ -5801,52 +5801,52 @@ screen xiaohongshu_post():
             
             null height 20
             
-            text "披露程度：" size 18 color "#333333"
+            text _("披露程度：" size 18 color "#333333")
             
             hbox:
                 spacing 15
                 
-                textbutton "隐去细节":
+                textbutton _("隐去细节"):
                     action SetVariable("disclosure_level", "low")
                     
                     background ("#ff2442" if disclosure_level == "low" else "#dddddd")
                 
-                textbutton "部分实名":
+                textbutton _("部分实名"):
                     action SetVariable("disclosure_level", "medium")
                     
                     background ("#ff2442" if disclosure_level == "medium" else "#dddddd")
                 
-                textbutton "完全公开":
+                textbutton _("完全公开"):
                     action SetVariable("disclosure_level", "high")
                    
                     background ("#ff2442" if disclosure_level == "high" else "#dddddd")
             
             null height 20
             
-            text "附带证据：" size 18 color "#333333"
+            text _("附带证据：") size 18 color "#333333"
             
             grid 2 2:
                 spacing 10
                 
-                textbutton "工资差异记录":
+                textbutton _("工资差异记录"):
                     action ToggleScreenVariable("selected_evidence", "salary")
                     background ("#ff2442" if "salary" in selected_evidence else "#dddddd")
                     xsize 200
                     ysize 50
                 
-                textbutton "聊天记录截图":
+                textbutton _("聊天记录截图"):
                     action ToggleScreenVariable("selected_evidence", "chat")
                     background ("#ff2442" if "chat" in selected_evidence else "#dddddd")
                     xsize 200
                     ysize 50
                 
-                textbutton "报警回执":
+                textbutton _("报警回执"):
                     action ToggleScreenVariable("selected_evidence", "police")
                     background ("#ff2442" if "police" in selected_evidence else "#dddddd")
                     xsize 200
                     ysize 50
                 
-                textbutton "证人证言":
+                textbutton _("证人证言"):
                     action ToggleScreenVariable("selected_evidence", "witness")
                     background ("#ff2442" if "witness" in selected_evidence else "#dddddd")
                     xsize 200
@@ -5854,7 +5854,7 @@ screen xiaohongshu_post():
             
             null height 30
             
-            textbutton "发布":
+            textbutton _("发布"):
                 xalign 0.5
                 xsize 200
                 ysize 50
@@ -5877,18 +5877,18 @@ screen post_title_input():
         vbox:
             spacing 15
             
-            text "输入标题：" size 20
+            text _("输入标题：") size 20
             
-            textbutton "在游戏公司被性骚扰，我决定说出来":
+            textbutton _("在游戏公司被性骚扰，我决定说出来"):
                 action [SetScreenVariable("post_title", "在游戏公司被性骚扰，我决定说出来"), Hide("post_title_input")]
             
-            textbutton "关于某游戏公司高管，一些必须讲的事":
+            textbutton _("关于某游戏公司高管，一些必须讲的事"):
                 action [SetScreenVariable("post_title", "关于某游戏公司高管，一些必须讲的事"), Hide("post_title_input")]
             
             textbutton "22k vs 19.5k，不只是工资":
                 action [SetScreenVariable("post_title", "22k vs 19.5k，不只是工资"), Hide("post_title_input")]
             
-            textbutton "取消":
+            textbutton _("取消"):
                 action Hide("post_title_input")
                 xalign 0.5
 
@@ -5969,16 +5969,16 @@ screen resignation_letter():
         vbox:
             spacing 30
             
-            text "辞职信" size 28 color "#333333" xalign 0.5
+            text _("辞职信") size 28 color "#333333" xalign 0.5
             
             null height 20
             
-            text "尊敬的HR：" size 16 color "#333333"
-            text "    我申请辞去设计部职位，最后工作日为两周后。" size 16 color "#333333"
+            text _("尊敬的HR：") size 16 color "#333333"
+            text _("    我申请辞去设计部职位，最后工作日为两周后。") size 16 color "#333333"
             
             null height 30
             
-            text "辞职理由：" size 16 color "#333333" bold True
+            text _("辞职理由：") size 16 color "#333333" bold True
             
             vbox:
                 spacing 15
@@ -5990,7 +5990,7 @@ screen resignation_letter():
                     hover_background "#f0f0f0"
                     action SetScreenVariable("reason_choice", "personal")
                     
-                    text "A. 个人原因" size 16 color "#333333" xalign 0.5
+                    text _("A. 个人原因") size 16 color "#333333" xalign 0.5
                 
                 button:
                     xfill True
@@ -5999,7 +5999,7 @@ screen resignation_letter():
                     hover_background "#f0f0f0"
                     action SetScreenVariable("reason_choice", "blank")
                     
-                    text "B. 不填" size 16 color "#333333" xalign 0.5
+                    text _("B. 不填") size 16 color "#333333" xalign 0.5
                 
                 button:
                     xfill True
@@ -6008,16 +6008,16 @@ screen resignation_letter():
                     hover_background "#f0f0f0"
                     action SetScreenVariable("reason_choice", "truth")
                     
-                    text "C. 真相（即使什么也改变不了）" size 16 color "#333333" xalign 0.5
+                    text _("C. 真相（即使什么也改变不了）") size 16 color "#333333" xalign 0.5
             
             null height 40
             
-            text "申请人：佘小曼" size 16 color "#333333" xalign 1.0
-            text "日期：2028年4月15日" size 16 color "#333333" xalign 1.0
+            text _("申请人：佘小曼") size 16 color "#333333" xalign 1.0
+            text _("日期：2028年4月15日") size 16 color "#333333" xalign 1.0
             
             null height 30
             
-            textbutton "提交":
+            textbutton _("提交"):
                 xalign 0.5
                 xsize 150
                 ysize 45
@@ -6129,9 +6129,9 @@ screen post_title_input():
         vbox:
             spacing 18
 
-            text "选择标题" size 24 color "#333333" xalign 0.5
+            text _("选择标题") size 24 color "#333333" xalign 0.5
 
-            textbutton "在游戏公司被性骚扰，我决定说出来":
+            textbutton _("在游戏公司被性骚扰，我决定说出来"):
                 xsize 540
                 ysize 46
                 background "#f2f2f2"
@@ -6141,7 +6141,7 @@ screen post_title_input():
                 text_hover_color "#ffffff"
                 action [SetScreenVariable("post_title", "在游戏公司被性骚扰，我决定说出来"), Hide("post_title_input")]
 
-            textbutton "关于某游戏公司高管，一些必须讲的事":
+            textbutton _("关于某游戏公司高管，一些必须讲的事"):
                 xsize 540
                 ysize 46
                 background "#f2f2f2"
@@ -6151,7 +6151,7 @@ screen post_title_input():
                 text_hover_color "#ffffff"
                 action [SetScreenVariable("post_title", "关于某游戏公司高管，一些必须讲的事"), Hide("post_title_input")]
 
-            textbutton "22k vs 19.5k，不只是工资":
+            textbutton _("22k vs 19.5k，不只是工资"):
                 xsize 540
                 ysize 46
                 background "#f2f2f2"
@@ -6161,7 +6161,7 @@ screen post_title_input():
                 text_hover_color "#ffffff"
                 action [SetScreenVariable("post_title", "22k vs 19.5k，不只是工资"), Hide("post_title_input")]
 
-            textbutton "取消":
+            textbutton _("取消"):
                 xalign 0.5
                 xsize 160
                 ysize 42
