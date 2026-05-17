@@ -1410,7 +1410,7 @@ label linjie_after_c:
 
 # 1.3结束标记
 label chapter1_end:
-    scene bg desk_area with fade
+    scene office_area with fade
     
     "{i}You’re back at your desk, staring at the shared folder open on your computer screen.{/i}"
     "{i}Your first task to prove yourself has begun.{/i}"
@@ -5343,7 +5343,6 @@ label game_ending:
 # 第五章：抉择（第15周）
 # ==========================================
 
-<<<<<<< Updated upstream
 # # 定义变量
 # default chapter5_started = False
 default evidence_complete = False
@@ -5363,30 +5362,6 @@ default courage = 0
 # # 路线A变量
 default police_credibility = 100
 # default police_report_2 = False
-=======
-# ----------------------
-# 全局变量初始化
-# ----------------------
-default chapter5_started = False
-default evidence_complete = False
-default advice_heard = False
-
-# 路线选择标记
-default route_legal = False
-default route_hr = False
-default route_public = False
-default route_leave = False
-
-# 路线条件变量
-default lawyer_contacted = False
-default courage = 0
-default xiaohongshu_fans = 0
-# default mental = 50
-
-# 路线A变量
-default police_credibility = 100
-default police_report_2 = False
->>>>>>> Stashed changes
 
 # 路线B变量
 default hr_talk_done = False
@@ -5403,13 +5378,8 @@ default public_pressure = 0
 default resignation_written = False
 default last_day_done = False
 
-<<<<<<< Updated upstream
 default disclosure_level = "medium"
 
-=======
-
-# ----------------------
->>>>>>> Stashed changes
 # 第五章入口
 # ----------------------
 label chapter5:
@@ -5814,13 +5784,8 @@ label task_5_c_1:
 # ==========================================
 screen xiaohongshu_post():
     modal True
-<<<<<<< Updated upstream
     
     # default disclosure_level = "medium"
-=======
-
-    default disclosure_level = "medium"
->>>>>>> Stashed changes
     default selected_evidence = []
     default post_title = ""
 
@@ -5865,7 +5830,6 @@ screen xiaohongshu_post():
                     text_color ("#333333" if post_title else "#999999")
                     text_hover_color "#333333"
                     action Show("post_title_input")
-<<<<<<< Updated upstream
             
             null height 20
             
@@ -5922,112 +5886,6 @@ screen xiaohongshu_post():
             
             null height 30
             
-=======
-
-            # 披露程度
-            vbox:
-                spacing 12
-
-                text "披露程度：" size 20 color "#333333"
-
-                hbox:
-                    spacing 16
-
-                    textbutton "隐去细节":
-                        xsize 145
-                        ysize 44
-                        background ("#8e44ad" if disclosure_level == "low" else "#dddddd")
-                        hover_background "#9b59b6"
-                        text_size 16
-                        text_color ("#ffffff" if disclosure_level == "low" else "#666666")
-                        text_hover_color "#ffffff"
-                        action SetScreenVariable("disclosure_level", "low")
-
-                    textbutton "部分实名":
-                        xsize 145
-                        ysize 44
-                        background ("#8e44ad" if disclosure_level == "medium" else "#dddddd")
-                        hover_background "#9b59b6"
-                        text_size 16
-                        text_color ("#ffffff" if disclosure_level == "medium" else "#666666")
-                        text_hover_color "#ffffff"
-                        action SetScreenVariable("disclosure_level", "medium")
-
-                    textbutton "完全公开":
-                        xsize 145
-                        ysize 44
-                        background ("#8e44ad" if disclosure_level == "high" else "#dddddd")
-                        hover_background "#9b59b6"
-                        text_size 16
-                        text_color ("#ffffff" if disclosure_level == "high" else "#666666")
-                        text_hover_color "#ffffff"
-                        action SetScreenVariable("disclosure_level", "high")
-
-            # 附带证据
-            vbox:
-                spacing 12
-
-                text "附带证据：" size 20 color "#333333"
-
-                grid 2 2:
-                    spacing 14
-
-                    textbutton "工资差异记录":
-                        xsize 210
-                        ysize 48
-                        background ("#8e44ad" if "salary" in selected_evidence else "#dddddd")
-                        hover_background "#9b59b6"
-                        text_size 16
-                        text_color ("#ffffff" if "salary" in selected_evidence else "#666666")
-                        text_hover_color "#ffffff"
-                        action SetScreenVariable(
-                            "selected_evidence",
-                            selected_evidence + ["salary"] if "salary" not in selected_evidence else [i for i in selected_evidence if i != "salary"]
-                        )
-
-                    textbutton "聊天记录截图":
-                        xsize 210
-                        ysize 48
-                        background ("#8e44ad" if "chat" in selected_evidence else "#dddddd")
-                        hover_background "#9b59b6"
-                        text_size 16
-                        text_color ("#ffffff" if "chat" in selected_evidence else "#666666")
-                        text_hover_color "#ffffff"
-                        action SetScreenVariable(
-                            "selected_evidence",
-                            selected_evidence + ["chat"] if "chat" not in selected_evidence else [i for i in selected_evidence if i != "chat"]
-                        )
-
-                    textbutton "报警回执":
-                        xsize 210
-                        ysize 48
-                        background ("#8e44ad" if "police" in selected_evidence else "#dddddd")
-                        hover_background "#9b59b6"
-                        text_size 16
-                        text_color ("#ffffff" if "police" in selected_evidence else "#666666")
-                        text_hover_color "#ffffff"
-                        action SetScreenVariable(
-                            "selected_evidence",
-                            selected_evidence + ["police"] if "police" not in selected_evidence else [i for i in selected_evidence if i != "police"]
-                        )
-
-                    textbutton "证人证言":
-                        xsize 210
-                        ysize 48
-                        background ("#8e44ad" if "witness" in selected_evidence else "#dddddd")
-                        hover_background "#9b59b6"
-                        text_size 16
-                        text_color ("#ffffff" if "witness" in selected_evidence else "#666666")
-                        text_hover_color "#ffffff"
-                        action SetScreenVariable(
-                            "selected_evidence",
-                            selected_evidence + ["witness"] if "witness" not in selected_evidence else [i for i in selected_evidence if i != "witness"]
-                        )
-
-            null height 10
-
-            # 发布
->>>>>>> Stashed changes
             textbutton "发布":
                 xalign 0.5
                 xsize 220
@@ -6036,17 +5894,8 @@ screen xiaohongshu_post():
                 hover_background "#9b59b6"
                 text_size 20
                 text_color "#ffffff"
-<<<<<<< Updated upstream
                 # action [Return({"disclosure": disclosure_level, "evidence": selected_evidence, "title": post_title})]
                 action [Return({"evidence": selected_evidence, "title": post_title})]
-=======
-                text_hover_color "#ffffff"
-                action Return({
-                    "disclosure": disclosure_level,
-                    "evidence": selected_evidence,
-                    "title": post_title
-                })
->>>>>>> Stashed changes
 
 
 # ==========================================
@@ -6111,62 +5960,14 @@ screen post_title_input():
 
 
 # ==========================================
-# 发帖后剧情判断
-# ==========================================
-label route_c_she_scene:
-
-    $ disclosure_choice = post_result.get("disclosure", "medium")
-
-    if disclosure_choice == "high":
-        jump bad_end_public
-    else:
-        scene bg company_street_evening
-        with fade
-
-        "黄昏的公司路口，晚风微凉，夕阳把地面染成暖橘色，路边行道树随风轻晃。"
-
-        "小曼抱着装满个人物品的纸箱，站在路口，指尖微微收紧，望着公司方向轻轻叹了口气，转头看向身旁两人。"
-
-        s "就到这里吧，麻烦你们还特意下来送我。"
-
-        linjie "傻孩子，跟我们还说这些。这段时间辛苦你了，别把所有事都憋在心里。"
-
-        xiaojin "曼姐，以后不管遇到什么事，都别自己扛着，我们都在。"
-
-        "林姐轻轻开口，哼起《送别》的旋律，小金随即轻声附和，小曼垂眸，也慢慢跟着哼唱。"
-
-        "三人合唱（声音轻柔，满是离愁）：长亭外，古道边，芳草碧连天……"
-
-        s "……我们同唱芳草天。"
-
-        "林姐与小金对视一眼，没有打断，依旧顺着旋律继续唱，晚风将歌声轻轻吹散。"
-
-        "三人合唱：晚风拂柳笛声残，夕阳山外山。"
-
-        s "我走啦，你们回去吧。"
-
-        linjie "照顾好自己，常联系。"
-
-        xiaojin "对，有事随时说！"
-
-        "小曼转身，脚步平稳地向前走去，夕阳将她的影子拉长，林姐和小金站在原地，静静望着她的背影，直到渐渐远去。"
-
-        jump chapter5_ending
-
-
-# ==========================================
 # 坏结局：完全公开
 # ==========================================
 label bad_end_public:
     scene bg company_street_evening
     with fade
-<<<<<<< Updated upstream
     
     "帖子发出。"
     
-    $ post_views = 90000
-    $ post_comments = 7000
-    $ media_contacted = 2
     
     "24小时。"
     "9万浏览量。"
@@ -6178,9 +5979,6 @@ label bad_end_public:
     "她就是想要钱。"
     "为什么不早说？"
     "他是个好人，她在毁他。"
-    
-    $ public_pressure = 50
-    $ mental -= 30
     
     "压力+[public_pressure]。睡眠-80%%。"
     
@@ -6199,7 +5997,6 @@ label bad_end_public:
             jump ending_c_exit
     
     jump chapter5_ending
-=======
 
     "你选择了完全公开。"
     "真实姓名、公司信息、聊天截图、所有细节一起被转发。"
@@ -6214,7 +6011,6 @@ label bad_end_public:
     "【坏结局：完全暴露】"
 
     return
->>>>>>> Stashed changes
 
 # ==========================================
 # 路线D：离开
@@ -6544,7 +6340,7 @@ label ending_b_water:
     "{i}Without enough evidence, the company does not accept your report.{/i}"
     "{i}Chan Wing Yan finds out about it. You are transferred somewhere else.{/i}"
 
-    scene office_area
+    scene office_desk
     with fade
 
     s "My new desk is still on the same floor as the design department. Just very far away."
