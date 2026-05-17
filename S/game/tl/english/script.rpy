@@ -1,4 +1,4 @@
-﻿# TODO: Translation updated at 2026-05-17 16:01
+﻿# TODO: Translation updated at 2026-05-17 22:13
 
 # game/script.rpy:334
 translate english your_label_name_226fe497:
@@ -4112,5 +4112,269 @@ translate english strings:
 
     # game/script.rpy:5706
     old "我要留记录。"
+    new ""
+
+# TODO: Translation updated at 2026-05-17 22:59
+
+translate english strings:
+
+    # game/script.rpy:90
+    old "已发现物品[len(clicked_items)]/4"
+    new ""
+
+    # game/script.rpy:763
+    old "大堂可探索："
+    new ""
+
+    # game/script.rpy:2891
+    old "📹 健身视频播放中..."
+    new ""
+
+    # game/script.rpy:3207
+    old "【线索】模式识别"
+    new ""
+
+    # game/script.rpy:3211
+    old "你开始明白，这不是偶然。"
+    new ""
+
+    # game/script.rpy:4850
+    old "他在吻你"
+    new ""
+
+    # game/script.rpy:4855
+    old "快速点击鼠标推开他！"
+    new ""
+
+    # game/script.rpy:4860
+    old "（每次点击都比上一次更难）"
+    new ""
+
+    # game/script.rpy:4865
+    old "点击次数: [qte_state.push_count] / 5"
+    new ""
+
+    # game/script.rpy:4893
+    old "心跳如鼓"
+    new ""
+
+    # game/script.rpy:4898
+    old "他在等"
+    new ""
+
+    # game/script.rpy:4903
+    old "不抱的话，明天会很尴尬"
+    new ""
+
+    # game/script.rpy:4908
+    old "抱了的话，这事就过去了"
+    new ""
+
+    # game/script.rpy:4931
+    old "拥抱他（场景结束，回家）"
+    new ""
+
+    # game/script.rpy:4946
+    old "推开车门逃跑"
+    new ""
+
+    # game/script.rpy:5414
+    old "第五章：抉择"
+    new ""
+
+    # game/script.rpy:5415
+    old "四条路"
+    new ""
+
+    # game/script.rpy:5435
+    old "路线A：法律途径"
+    new ""
+
+    # game/script.rpy:5436
+    old "条件：证据 + 律师联系"
+    new ""
+
+    # game/script.rpy:5454
+    old "路线B：HR内部举报"
+    new ""
+
+    # game/script.rpy:5455
+    old "条件：证据 + 勇气 > 50"
+    new ""
+
+    # game/script.rpy:5473
+    old "路线C：公众曝光"
+    new ""
+
+    # game/script.rpy:5474
+    old "条件：证据 + 小红书粉丝 > 800"
+    new ""
+
+    # game/script.rpy:5492
+    old "路线D：离开"
+    new ""
+
+    # game/script.rpy:5493
+    old "条件：心理健康 < 20"
+    new ""
+
+    # game/script.rpy:5554
+    old "陈述一致性: [consistency_score]%"
+    new ""
+
+    # game/script.rpy:5557
+    old "可信度不足"
+    new ""
+
+    # game/script.rpy:5569
+    old "Q1: 第一次不当接触发生在什么时候？"
+    new ""
+
+    # game/script.rpy:5571
+    old "办公室茶水间"
+    new ""
+
+    # game/script.rpy:5575
+    old "我不记得了"
+    new ""
+
+    # game/script.rpy:5581
+    old "庆功酒后，他送我回家"
+    new ""
+
+    # game/script.rpy:5597
+    old "Q2: 详细描述当晚他送你回家的经过？"
+    new ""
+
+    # game/script.rpy:5600
+    old "他在车里试图吻我，我推开了他"
+    new ""
+
+    # game/script.rpy:5603
+    old "什么都没发生，他只是送我回家"
+    new ""
+
+    # game/script.rpy:5607
+    old "他说要送我，但我拒绝了"
+    new ""
+
+    # game/script.rpy:5611
+    old "我们去了酒店"
+    new ""
+
+    # game/script.rpy:5625
+    old "Q3: 为什么现在才来报案？"
+    new ""
+
+    # game/script.rpy:5627
+    old "我需要时间收集证据"
+    new ""
+
+    # game/script.rpy:5630
+    old "我害怕"
+    new ""
+
+    # game/script.rpy:5633
+    old "我不知道这算不算犯罪"
+    new ""
+
+    # game/script.rpy:5777
+    old "小红书"
+    new ""
+
+    # game/script.rpy:5809
+    old "隐去细节"
+    new ""
+
+    # game/script.rpy:5814
+    old "部分实名"
+    new ""
+
+    # game/script.rpy:5819
+    old "完全公开"
+    new ""
+
+    # game/script.rpy:5826
+    old "附带证据："
+    new ""
+
+    # game/script.rpy:5831
+    old "工资差异记录"
+    new ""
+
+    # game/script.rpy:5837
+    old "聊天记录截图"
+    new ""
+
+    # game/script.rpy:5843
+    old "报警回执"
+    new ""
+
+    # game/script.rpy:5849
+    old "证人证言"
+    new ""
+
+    # game/script.rpy:5857
+    old "发布"
+    new ""
+
+    # game/script.rpy:5880
+    old "输入标题："
+    new ""
+
+    # game/script.rpy:5882
+    old "在游戏公司被性骚扰，我决定说出来"
+    new ""
+
+    # game/script.rpy:5885
+    old "关于某游戏公司高管，一些必须讲的事"
+    new ""
+
+    # game/script.rpy:5972
+    old "辞职信"
+    new ""
+
+    # game/script.rpy:5976
+    old "尊敬的HR："
+    new ""
+
+    # game/script.rpy:5977
+    old "    我申请辞去设计部职位，最后工作日为两周后。"
+    new ""
+
+    # game/script.rpy:5981
+    old "辞职理由："
+    new ""
+
+    # game/script.rpy:5993
+    old "A. 个人原因"
+    new ""
+
+    # game/script.rpy:6002
+    old "B. 不填"
+    new ""
+
+    # game/script.rpy:6011
+    old "C. 真相（即使什么也改变不了）"
+    new ""
+
+    # game/script.rpy:6015
+    old "申请人：佘小曼"
+    new ""
+
+    # game/script.rpy:6016
+    old "日期：2028年4月15日"
+    new ""
+
+    # game/script.rpy:6020
+    old "提交"
+    new ""
+
+    # game/script.rpy:6132
+    old "选择标题"
+    new ""
+
+    # game/script.rpy:6154
+    old "22k vs 19.5k，不只是工资"
     new ""
 
