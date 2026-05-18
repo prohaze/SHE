@@ -5351,8 +5351,8 @@ default evidence_complete = False
 # # 路线选择标记
 default route_legal = False
 default route_hr = False
-# default route_public = False
-# default route_leave = False
+default route_public = False
+default route_leave = False
 
 # # 路线条件变量
 default lawyer_contacted = False
@@ -5374,6 +5374,117 @@ default media_contacted = 0
 default lawyer_letter_received = False
 default public_pressure = 0
 
+# ==========================================
+# 小红书发帖：证据联动变量
+# ==========================================
+
+default xhs_selected_evidence = []
+default xhs_post_title = ""
+
+
+init python:
+
+    def get_xhs_available_evidence():
+        items = []
+
+        # 1. 工资差异记录：不是性骚扰直接证据，可触发歪结局
+        if salary_evidence:
+            items.append({
+                "id": "salary",
+                "label": "工资差异记录",
+                "related": False
+            })
+
+        # 2. 上车经历
+        if car_event:
+            items.append({
+                "id": "car",
+                "label": "上车经历",
+                "related": True
+            })
+
+        # 3. 旧员工档案
+        if cyro_office_found_files:
+            items.append({
+                "id": "files",
+                "label": "旧员工档案",
+                "related": True
+            })
+
+        # 4. 未拆封香水礼盒
+        if cyro_office_found_perfume:
+            items.append({
+                "id": "perfume",
+                "label": "未拆封香水礼盒",
+                "related": True
+            })
+
+        # 5. 夹在书里的照片
+        if cyro_office_found_photo:
+            items.append({
+                "id": "photo",
+                "label": "夹在书里的照片",
+                "related": True
+            })
+
+        # 6. 黑色笔记本
+        if cyro_office_found_notebook:
+            items.append({
+                "id": "notebook",
+                "label": "黑色笔记本",
+                "related": True
+            })
+
+        return items
+
+
+    def chunk_list(items, size):
+        return [items[i:i + size] for i in range(0, len(items), size)]
+
+
+    def xhs_toggle_evidence(evidence_id):
+        global xhs_selected_evidence
+
+        if evidence_id in xhs_selected_evidence:
+            xhs_selected_evidence.remove(evidence_id)
+        else:
+            xhs_selected_evidence.append(evidence_id)
+
+        renpy.restart_interaction()
+
+
+    def make_xhs_post_body(selected_ids):
+        all_items = get_xhs_available_evidence()
+        label_map = {item["id"]: item["label"] for item in all_items}
+
+        selected_labels = []
+
+        for evidence_id in selected_ids:
+            if evidence_id in label_map:
+                selected_labels.append(label_map[evidence_id])
+
+        if len(selected_labels) == 0:
+            if len(all_items) == 0:
+                return "我没有留下证据。可这不代表事情没有发生。只是这一次，我不想再装作没事。"
+            else:
+                return "我手上有一些材料，但我还没有决定公开哪一部分。"
+
+        return "我整理了" + str(len(selected_labels)) + "份材料：" + "、".join(selected_labels) + "。我知道这条路会很难，但我不想再沉默。"
+
+
+    def xhs_only_unrelated_evidence(selected_ids):
+        all_items = get_xhs_available_evidence()
+        related_map = {item["id"]: item["related"] for item in all_items}
+
+        if len(selected_ids) == 0:
+            return False
+
+        for evidence_id in selected_ids:
+            if related_map.get(evidence_id, False):
+                return False
+
+        return True
+
 # 路线D变量
 default resignation_written = False
 default last_day_done = False
@@ -5394,8 +5505,290 @@ label chapter5:
     
     "四条路清晰浮现。"
     
-    jump chapter5_route_selection
+    jump week13_lawyer_evidence_check
 
+# ==========================================
+# 第五章前置：律师证据审查
+# 放置位置：label chapter5 后面，screen route_choice_screen 前面
+# ==========================================
+
+define zhao_lawyer = Character("赵律师")
+
+# 如果前面已经定义过这些 default，重复 default 不会重置已存在存档里的值
+default evidence_count = 0
+
+default has_message_evidence = False
+default has_car_xsr_experience = False
+default has_hug_evidence = False
+default has_kiss_evidence = False
+default has_audio_evidence = False
+default has_photo_or_video_evidence = False
+default has_witness_evidence = False
+default has_other_victim_evidence = False
+default has_company_complaint_evidence = False
+default has_medical_or_psychological_evidence = False
+default has_retaliation_evidence = False
+
+# 避免你 route_choice_screen 里 xiaohongshu_fans 未定义时报错
+default xiaohongshu_fans = 0
+
+
+label week13_lawyer_evidence_check:
+
+    # ----------------------
+    # 自动整理已有证据
+    # ----------------------
+
+    $ evidence_count = 0
+
+    # 办公室搜证数量
+    if found_evidence > 0:
+        $ evidence_count += found_evidence
+        $ has_photo_or_video_evidence = True
+        $ has_other_victim_evidence = True
+
+    # 工资差异证据
+    if salary_evidence:
+        $ evidence_count += 1
+        $ has_company_complaint_evidence = True
+
+    # 车内经历
+    if car_event:
+        $ evidence_count += 1
+        $ has_car_xsr_experience = True
+        $ has_kiss_evidence = True
+
+    # 林姐线索 / 模式识别
+    if hidden_truth_unlocked:
+        $ evidence_count += 1
+        $ has_witness_evidence = True
+        $ has_other_victim_evidence = True
+
+    # 小红书联系 / 其他受害者线索
+    if xiaohongshu_contact:
+        $ evidence_count += 1
+        $ has_other_victim_evidence = True
+
+    # 如果玩家看过陈永仁深夜健身视频，算作一条模糊数字证据
+    if fitness_video_watched:
+        $ evidence_count += 1
+        $ has_message_evidence = True
+
+    # 如果没有专门设置录音/医疗/报复证据，保持 False
+
+    # ----------------------
+    # 正式剧情
+    # ----------------------
+
+    scene bg cafe_central
+    with fade
+
+    "第13周。中环某咖啡馆。"
+
+    "赵律师五十岁，套装干练，戴着眼镜。"
+    "她看着你，把咖啡放到一边。"
+
+    zhao_lawyer "给我看看你有的。"
+
+    "证据审查界面打开。"
+    "你把证据一件件拖到桌上。"
+
+    # ----------------------
+    # 证据数量 check
+    # ----------------------
+
+    if evidence_count == 0:
+
+        zhao_lawyer "没有证据。"
+        zhao_lawyer "法律上，这会变成你说发生了，他说没有。"
+        zhao_lawyer "难立案，难证明，也容易被反过来质疑。"
+
+    elif evidence_count <= 3:
+
+        zhao_lawyer "证据太少，还不能形成完整链条。"
+        zhao_lawyer "它们能证明你不舒服，但不一定能证明他做了什么。"
+        zhao_lawyer "对方可以说是误会、玩笑，或者你们关系本来就不错。"
+
+    else:
+
+        zhao_lawyer "证据不少，但数量不等于胜算。"
+        zhao_lawyer "法律看的是关键证据。"
+        zhao_lawyer "如果没有直接证明，他仍然有解释空间。"
+
+    # ----------------------
+    # 证据类型 check
+    # ----------------------
+
+    zhao_lawyer "我逐项看。"
+
+    if has_message_evidence:
+
+        zhao_lawyer "聊天记录能证明联系。"
+        zhao_lawyer "但如果内容不够明确，他可以说是关心、玩笑，或者普通同事互动。"
+
+    if has_car_xsr_experience:
+
+        zhao_lawyer "车里的事最严重，也最难证明。"
+        zhao_lawyer "没有监控、录音、证人，你最多能证明你上过车。"
+        zhao_lawyer "但车里具体发生了什么，法律上还需要更直接的材料。"
+
+    if has_hug_evidence:
+
+        zhao_lawyer "拥抱可以被他说成普通安慰。"
+        zhao_lawyer "尤其在你们存在上下级关系时，他会把它包装成关心。"
+
+    if has_kiss_evidence:
+
+        zhao_lawyer "吻更严重。"
+        zhao_lawyer "但如果没有证人、录像、录音，他可以否认，也可以说你同意了。"
+        zhao_lawyer "这就是这类案件最残酷的地方。"
+
+    if has_audio_evidence:
+
+        zhao_lawyer "录音有用。"
+        zhao_lawyer "但如果内容模糊，或者没有清楚指向具体行为，他仍然可以解释成别的事。"
+
+    if has_photo_or_video_evidence:
+
+        zhao_lawyer "照片和视频要看有没有拍到关键动作。"
+        zhao_lawyer "如果只是同框、同行、同处一个空间，只能证明你们在一起。"
+
+    if has_witness_evidence:
+
+        zhao_lawyer "证人有用。"
+        zhao_lawyer "但如果她只是听你转述，只能算辅助。"
+        zhao_lawyer "如果她亲眼见过、亲耳听过，证明力会强很多。"
+
+    if has_other_victim_evidence:
+
+        zhao_lawyer "其他受害者能证明他可能有行为模式。"
+        zhao_lawyer "但它不能直接证明他对你做过什么。"
+        zhao_lawyer "法律会把这两件事分开看。"
+
+    if has_company_complaint_evidence:
+
+        zhao_lawyer "投诉记录能证明你反映过。"
+        zhao_lawyer "但它不一定能证明他做过。"
+        zhao_lawyer "公司也可能说，他们已经按流程处理。"
+
+    if has_medical_or_psychological_evidence:
+
+        zhao_lawyer "医疗或心理记录能证明你受到了伤害。"
+        zhao_lawyer "但它不一定证明伤害是谁造成的。"
+
+    if has_retaliation_evidence:
+
+        zhao_lawyer "打击报复材料可以走公司责任。"
+        zhao_lawyer "但你要证明它和投诉之间有明确关联。"
+
+    # ----------------------
+    # 如果没有任何具体类型证据
+    # ----------------------
+
+    if not has_message_evidence and not has_car_xsr_experience and not has_hug_evidence and not has_kiss_evidence and not has_audio_evidence and not has_photo_or_video_evidence and not has_witness_evidence and not has_other_victim_evidence and not has_company_complaint_evidence and not has_medical_or_psychological_evidence and not has_retaliation_evidence:
+
+        zhao_lawyer "目前没有可以被拿出来讨论的具体材料。"
+        zhao_lawyer "你经历的痛苦是真的。"
+        zhao_lawyer "但法律要看的，是能不能把痛苦变成证据。"
+
+    # ----------------------
+    # 总结
+    # ----------------------
+
+    "赵律师把证据放回桌上。"
+
+    zhao_lawyer "所以，法律这条路很难。"
+
+    s "那我什么都做不了？"
+
+    zhao_lawyer "我没这么说。"
+
+    zhao_lawyer "我说的是，法律帮不了你，至少现在很难。"
+
+    s "那还有什么路？"
+
+    zhao_lawyer "媒体。集体行动。制造声音。"
+
+    zhao_lawyer "声音够大，公司会怕。"
+
+    zhao_lawyer "但这条路会公开。你会被陌生人审判，也会被各种名字骂。"
+
+    zhao_lawyer "你要想清楚。"
+
+    $ lawyer_contacted = True
+
+    if evidence_count > 0:
+        $ evidence_complete = True
+    else:
+        $ evidence_complete = False
+
+    menu:
+        "你看着桌上的证据。"
+
+        "什么路？":
+            jump lawyer_media_route
+
+        "那我该放弃？":
+            jump lawyer_despair_route
+
+        "我还是要走法律。":
+            jump lawyer_legal_route
+
+
+# ==========================================
+# 律师咨询后的三条出口
+# ==========================================
+
+label lawyer_media_route:
+
+    scene bg bedroom_night
+    with fade
+
+    "你离开咖啡馆。"
+    "赵律师的话还在耳边。"
+    "法律很窄。"
+    "但声音，也许能从缝里长出来。"
+
+    $ route_legal = False
+    $ route_hr = False
+    $ route_public = True
+    $ route_leave = False
+
+    jump route_c_public
+
+
+label lawyer_despair_route:
+
+    scene bg bedroom_night
+    with fade
+
+    "你回到房间，把证据重新收进文件夹。"
+    "不是不痛了。"
+    "只是你忽然很累。"
+
+    $ route_legal = False
+    $ route_hr = False
+    $ route_public = False
+    $ route_leave = True
+
+    jump route_d_leave
+
+
+label lawyer_legal_route:
+
+    scene bg bedroom_night
+    with fade
+
+    "你把证据重新整理了一遍。"
+    "哪怕赵律师说很难，你还是想试一次。"
+    "至少，要让系统留下你的名字。"
+
+    $ route_legal = True
+    $ route_hr = False
+    $ route_public = False
+    $ route_leave = False
+
+    jump route_a_legal
 
 # ----------------------
 # 路线选择界面
@@ -5772,130 +6165,193 @@ label route_c_public:
 # 路线C：小红书发帖
 # ==========================================
 label task_5_c_1:
-    call screen xiaohongshu_post
+
+    $ xhs_selected_evidence = []
+    $ xhs_post_title = ""
+
+    call screen xiaozishu_post
 
     $ post_result = _return
 
-    jump route_c_she_scene
+    if xhs_only_unrelated_evidence(post_result["evidence"]):
+        jump ending_manyou
+
+    elif disclosure_level == "high":
+        jump bad_end_public
+
+    else:
+        jump route_c_she_scene
 
 
 # ==========================================
 # 小红书发帖界面
 # ==========================================
-screen xiaohongshu_post():
+screen xiaozishu_post():
     modal True
-    
-    # default disclosure_level = "medium"
-    default selected_evidence = []
-    default post_title = ""
 
-    add Solid("#f5f5f5")
+    add Solid("#f6f2fb")
 
-    # 顶部标题栏
+    $ available_evidence = get_xhs_available_evidence()
+    $ evidence_rows = chunk_list(available_evidence, 2)
+    $ post_body = make_xhs_post_body(xhs_selected_evidence)
+
+    # 主卡片
     frame:
         xalign 0.5
-        yalign 0.05
-        xsize 820
-        ysize 64
-        background "#8e44ad"
-        padding (20, 10)
-
-        text "小红书" size 28 color "#ffffff" xalign 0.5 yalign 0.5
-
-    # 主体卡片
-    frame:
-        xalign 0.5
-        yalign 0.55
-        xsize 820
-        ysize 620
+        yalign 0.5
+        xsize 900
+        ysize 720
         background "#ffffff"
-        padding (42, 36)
+        padding (48, 38)
 
         vbox:
-            spacing 24
+            spacing 22
+
+            # 顶部
+            frame:
+                xfill True
+                ysize 58
+                background "#7b3fb2"
+                padding (20, 10)
+
+                text "xiaozishu":
+                    size 24
+                    color "#ffffff"
+                    xalign 0.5
+                    yalign 0.5
+
+            null height 8
 
             # 标题
             hbox:
-                spacing 16
+                spacing 18
                 yalign 0.5
 
-                text "标题：" size 20 color "#333333" yalign 0.5
+                text "标题：":
+                    size 18
+                    color "#333333"
+                    yalign 0.5
 
-                textbutton (post_title if post_title else "点击输入标题..."):
-                    xsize 610
-                    ysize 44
-                    background "#f2f2f2"
-                    hover_background "#e8e8e8"
-                    text_size 17
-                    text_color ("#333333" if post_title else "#999999")
+                textbutton (xhs_post_title if xhs_post_title else "点击输入标题..."):
+                    xsize 660
+                    ysize 46
+                    background "#f3edf8"
+                    hover_background "#eadcf5"
+                    text_size 18
+                    text_color ("#333333" if xhs_post_title else "#9b8aaa")
                     text_hover_color "#333333"
                     action Show("post_title_input")
-            
-            null height 20
-            
-            text "披露程度：" size 18 color "#333333"
-            
+
+            # 披露程度
+            text "披露程度：":
+                size 18
+                color "#333333"
+
             hbox:
-                spacing 15
-                
+                spacing 12
+
                 textbutton "隐去细节":
+                    xsize 180
+                    ysize 48
+                    background ("#7b3fb2" if disclosure_level == "low" else "#eee6f5")
+                    hover_background "#9b62c9"
+                    text_size 18
+                    text_color ("#ffffff" if disclosure_level == "low" else "#6b3a91")
+                    text_hover_color "#ffffff"
                     action SetVariable("disclosure_level", "low")
-                    
-                    background ("#ff2442" if disclosure_level == "low" else "#dddddd")
-                
+
                 textbutton "部分实名":
+                    xsize 180
+                    ysize 48
+                    background ("#7b3fb2" if disclosure_level == "medium" else "#eee6f5")
+                    hover_background "#9b62c9"
+                    text_size 18
+                    text_color ("#ffffff" if disclosure_level == "medium" else "#6b3a91")
+                    text_hover_color "#ffffff"
                     action SetVariable("disclosure_level", "medium")
-                    
-                    background ("#ff2442" if disclosure_level == "medium" else "#dddddd")
-                
+
                 textbutton "完全公开":
+                    xsize 180
+                    ysize 48
+                    background ("#7b3fb2" if disclosure_level == "high" else "#eee6f5")
+                    hover_background "#9b62c9"
+                    text_size 18
+                    text_color ("#ffffff" if disclosure_level == "high" else "#6b3a91")
+                    text_hover_color "#ffffff"
                     action SetVariable("disclosure_level", "high")
-                   
-                    background ("#ff2442" if disclosure_level == "high" else "#dddddd")
-            
-            null height 20
-            
-            text "附带证据：" size 18 color "#333333"
-            
-            grid 2 2:
-                spacing 10
-                
-                textbutton "工资差异记录":
-                    action ToggleScreenVariable("selected_evidence", "salary")
-                    background ("#ff2442" if "salary" in selected_evidence else "#dddddd")
-                    xsize 200
+
+            # 附带证据
+            text "附带证据：":
+                size 18
+                color "#333333"
+
+            if len(available_evidence) == 0:
+
+                frame:
+                    xsize 760
                     ysize 50
-                
-                textbutton "聊天记录截图":
-                    action ToggleScreenVariable("selected_evidence", "chat")
-                    background ("#ff2442" if "chat" in selected_evidence else "#dddddd")
-                    xsize 200
-                    ysize 50
-                
-                textbutton "报警回执":
-                    action ToggleScreenVariable("selected_evidence", "police")
-                    background ("#ff2442" if "police" in selected_evidence else "#dddddd")
-                    xsize 200
-                    ysize 50
-                
-                textbutton "证人证言":
-                    action ToggleScreenVariable("selected_evidence", "witness")
-                    background ("#ff2442" if "witness" in selected_evidence else "#dddddd")
-                    xsize 200
-                    ysize 50
-            
-            null height 30
-            
+                    background "#f3edf8"
+                    padding (18, 10)
+
+                    text "暂无可附带证据":
+                        size 18
+                        color "#9b8aaa"
+                        yalign 0.5
+
+            else:
+
+                vbox:
+                    spacing 12
+
+                    for row in evidence_rows:
+
+                        hbox:
+                            spacing 12
+
+                            for ev in row:
+
+                                textbutton ev["label"]:
+                                    xsize 330
+                                    ysize 48
+                                    background ("#7b3fb2" if ev["id"] in xhs_selected_evidence else "#eee6f5")
+                                    hover_background "#9b62c9"
+                                    text_size 18
+                                    text_color ("#ffffff" if ev["id"] in xhs_selected_evidence else "#6b3a91")
+                                    text_hover_color "#ffffff"
+                                    action Function(xhs_toggle_evidence, ev["id"])
+
+            # 发布内容
+            text "发布内容：":
+                size 18
+                color "#333333"
+
+            frame:
+                xsize 800
+                ysize 145
+                background "#f8f4fb"
+                padding (20, 16)
+
+                text post_body:
+                    size 18
+                    color "#333333"
+                    xmaximum 760
+
+            null height 4
+
             textbutton "发布":
                 xalign 0.5
-                xsize 220
+                xsize 240
                 ysize 52
-                background "#8e44ad"
-                hover_background "#9b59b6"
-                text_size 20
+                background "#7b3fb2"
+                hover_background "#9b62c9"
+                text_size 18
                 text_color "#ffffff"
-                # action [Return({"disclosure": disclosure_level, "evidence": selected_evidence, "title": post_title})]
-                action [Return({"evidence": selected_evidence, "title": post_title})]
+                text_hover_color "#ffffff"
+                action Return({
+                    "evidence": xhs_selected_evidence,
+                    "title": xhs_post_title,
+                    "body": post_body
+                })
 
 
 # ==========================================
@@ -5909,53 +6365,68 @@ screen post_title_input():
     frame:
         xalign 0.5
         yalign 0.5
-        xsize 620
+        xsize 680
         background "#ffffff"
-        padding (36, 32)
+        padding (38, 34)
 
         vbox:
             spacing 18
 
-            text "选择标题" size 24 color "#333333" xalign 0.5
+            text "选择标题":
+                size 22
+                color "#333333"
+                xalign 0.5
 
             textbutton "在游戏公司被性骚扰，我决定说出来":
-                xsize 540
-                ysize 46
-                background "#f2f2f2"
-                hover_background "#8e44ad"
-                text_size 17
+                xsize 600
+                ysize 48
+                background "#f3edf8"
+                hover_background "#7b3fb2"
+                text_size 18
                 text_color "#333333"
                 text_hover_color "#ffffff"
-                action [SetScreenVariable("post_title", "在游戏公司被性骚扰，我决定说出来"), Hide("post_title_input")]
+                action [
+                    SetVariable("xhs_post_title", "在游戏公司被性骚扰，我决定说出来"),
+                    Hide("post_title_input")
+                ]
 
             textbutton "关于某游戏公司高管，一些必须讲的事":
-                xsize 540
-                ysize 46
-                background "#f2f2f2"
-                hover_background "#8e44ad"
-                text_size 17
+                xsize 600
+                ysize 48
+                background "#f3edf8"
+                hover_background "#7b3fb2"
+                text_size 18
                 text_color "#333333"
                 text_hover_color "#ffffff"
-                action [SetScreenVariable("post_title", "关于某游戏公司高管，一些必须讲的事"), Hide("post_title_input")]
+                action [
+                    SetVariable("xhs_post_title", "关于某游戏公司高管，一些必须讲的事"),
+                    Hide("post_title_input")
+                ]
 
             textbutton "22k vs 19.5k，不只是工资":
-                xsize 540
-                ysize 46
-                background "#f2f2f2"
-                hover_background "#8e44ad"
-                text_size 17
+                xsize 600
+                ysize 48
+                background "#f3edf8"
+                hover_background "#7b3fb2"
+                text_size 18
                 text_color "#333333"
                 text_hover_color "#ffffff"
-                action [SetScreenVariable("post_title", "22k vs 19.5k，不只是工资"), Hide("post_title_input")]
+                action [
+                    SetVariable("xhs_post_title", "22k vs 19.5k，不只是工资"),
+                    Hide("post_title_input")
+                ]
+
+            null height 6
 
             textbutton "取消":
                 xalign 0.5
-                xsize 160
-                ysize 42
-                background "#dddddd"
-                hover_background "#bbbbbb"
-                text_size 16
-                text_color "#333333"
+                xsize 180
+                ysize 44
+                background "#eee6f5"
+                hover_background "#7b3fb2"
+                text_size 18
+                text_color "#6b3a91"
+                text_hover_color "#ffffff"
                 action Hide("post_title_input")
 
 
@@ -5963,32 +6434,43 @@ screen post_title_input():
 # 坏结局：完全公开
 # ==========================================
 label bad_end_public:
+
     scene bg company_street_evening
     with fade
-    
+
+    $ public_pressure += 80
+
+    "你选择了完全公开。"
+
+    "真实姓名、公司信息、聊天截图、所有细节一起被发了出去。"
+
     "帖子发出。"
-    
-    
+
     "24小时。"
     "9万浏览量。"
     "7000多条评论。"
     "2家媒体联系。"
-    
+
     "{i}反噬。{/i}"
-    
+
     "她就是想要钱。"
     "为什么不早说？"
     "他是个好人，她在毁他。"
-    
-    "压力+[public_pressure]。睡眠-80%%。"
-    
+
+    "压力 +[public_pressure]。睡眠 -80%%。"
+
     "但……"
-    
+
     "【私信】姐妹，我也经历过。谢谢你敢说。"
     "【私信】我在这家公司3年了，一直不敢说。"
     "【私信】你不是一个人。"
-    
+
     "你不再是一个人。"
+
+    if linjie_interest >= 2 and xiaojin_interest >= 1:
+        jump route_c_she_scene
+    else:
+        jump ending_c_exit
 
     # 改：不要碧莲结局判定
     if linjie_interest >=2 and xiaojin_interest >= 1 and disclosure_level == "high":
@@ -6027,6 +6509,7 @@ label route_d_leave:
 
 screen resignation_letter():
     modal True
+    zorder 100
     
     default reason_choice = ""
     
@@ -6034,71 +6517,105 @@ screen resignation_letter():
     
     frame:
         xalign 0.5
-        yalign 0.5
-        xsize 700
-        ysize 600
+        yalign 0.48
+        xsize 760
+        ysize 720
         background "#ffffff"
-        padding (60, 60)
+        padding (50, 38)
         
         vbox:
-            spacing 30
+            spacing 16
+            xfill True
             
-            text "辞职信" size 28 color "#333333" xalign 0.5
+            text "辞职信":
+                size 28
+                color "#333333"
+                xalign 0.5
             
-            null height 20
+            null height 10
             
-            text "尊敬的HR：" size 16 color "#333333"
-            text "    我申请辞去设计部职位，最后工作日为两周后。" size 16 color "#333333"
+            text "尊敬的HR：":
+                size 16
+                color "#333333"
+
+            text "    我申请辞去设计部职位，最后工作日为两周后。":
+                size 16
+                color "#333333"
             
-            null height 30
+            null height 18
             
-            text "辞职理由：" size 16 color "#333333" bold True
+            text "辞职理由：":
+                size 16
+                color "#333333"
+                bold True
             
             vbox:
-                spacing 15
+                spacing 12
+                xfill True
                 
                 button:
                     xfill True
-                    ysize 50
+                    ysize 48
                     background ("#e8e8e8" if reason_choice == "personal" else "#ffffff")
                     hover_background "#f0f0f0"
                     action SetScreenVariable("reason_choice", "personal")
                     
-                    text "A. 个人原因" size 16 color "#333333" xalign 0.5
+                    text "A. 个人原因":
+                        size 16
+                        color "#333333"
+                        xalign 0.5
+                        yalign 0.5
                 
                 button:
                     xfill True
-                    ysize 50
+                    ysize 48
                     background ("#e8e8e8" if reason_choice == "blank" else "#ffffff")
                     hover_background "#f0f0f0"
                     action SetScreenVariable("reason_choice", "blank")
                     
-                    text "B. 不填" size 16 color "#333333" xalign 0.5
+                    text "B. 不填":
+                        size 16
+                        color "#333333"
+                        xalign 0.5
+                        yalign 0.5
                 
                 button:
                     xfill True
-                    ysize 50
+                    ysize 48
                     background ("#e8e8e8" if reason_choice == "truth" else "#ffffff")
                     hover_background "#f0f0f0"
                     action SetScreenVariable("reason_choice", "truth")
                     
-                    text "C. 真相（即使什么也改变不了）" size 16 color "#333333" xalign 0.5
+                    text "C. 真相（即使什么也改变不了）":
+                        size 16
+                        color "#333333"
+                        xalign 0.5
+                        yalign 0.5
             
-            null height 40
+            null height 18
             
-            text "申请人：佘小曼" size 16 color "#333333" xalign 1.0
-            text "日期：2028年4月15日" size 16 color "#333333" xalign 1.0
+            text "申请人：佘小曼":
+                size 16
+                color "#333333"
+                xalign 1.0
+
+            text "日期：2028年4月15日":
+                size 16
+                color "#333333"
+                xalign 1.0
             
-            null height 30
+            null height 18
             
             textbutton "提交":
                 xalign 0.5
-                xsize 150
-                ysize 45
+                xsize 180
+                ysize 48
                 background ("#cccccc" if reason_choice == "" else "#27ae60")
+                hover_background ("#cccccc" if reason_choice == "" else "#2ecc71")
                 text_size 18
                 text_color "#ffffff"
-                action [Return(reason_choice)]
+                sensitive reason_choice != ""
+                action Return(reason_choice)
 
 label task_5_d_1:
     call screen resignation_letter
@@ -6181,9 +6698,32 @@ label chapter5_ending:
     
     return
 
+label ending_manyou:
+
+    scene bg bedroom_night
+    with fade
+
+    "帖子发出去了。"
+
+    "评论区很快吵成一团。"
+
+    "“所以到底是被骚扰，还是工资太少？”"
+    "“看了半天，全是工资问题啊。”"
+    "“标题写性骚扰，内容讲薪资，这不是带节奏吗？”"
+
+    "你看着屏幕，手指僵在半空。"
+
+    "你说了很多。"
+    "但最重要的那件事，反而被淹没了。"
+
+    "【歪结局：漫游】"
+
+    return
+
 label ending_gulang:
     "结局：孤狼"
     return
+
 
 # ==========================================
 # 标题选择界面
