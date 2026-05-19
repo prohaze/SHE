@@ -4,25 +4,25 @@
 translate english your_label_name_226fe497:
 
     # "{i}This recruiting season, you sent out 147 resumes. 12 came back as rejections. The rest disappeared without a trace.{/i}"
-    ""
+    "{i}This recruiting season, you sent out 147 resumes. 12 came back as rejections. The rest disappeared without a trace.{/i}"
 
 # game/script.rpy:335
 translate english your_label_name_200fe904:
 
     # "{i}Mom calls every Sunday, asking when you’ll finally find a job and telling you to stop being so picky.\nBut this time… something feels different.{/i}"
-    ""
+    "{i}Mom calls every Sunday, asking when you’ll finally find a job and telling you to stop being so picky.\nBut this time… something feels different.{/i}"
 
 # game/script.rpy:338
 translate english your_label_name_a6a724e7:
 
     # "{i}You enter the waiting room. You’re next.{/i}"
-    ""
+    "{i}You enter the waiting room. You’re next.{/i}"
 
 # game/script.rpy:374
 translate english explore_complete_bac34967:
 
     # 'HR' "佘小姐？陈总请您进去。"
-    'HR' "Miss Sheh? Mr. Chen is asking for you."
+    'HR' "Miss Sheh? Mr. Chan is asking for you."
 
 # game/script.rpy:379
 translate english after_third_item_dcd355c0:
@@ -34,121 +34,121 @@ translate english after_third_item_dcd355c0:
 translate english chapter0_2_459ebc2d:
 
     # "{i}He stands up to greet you, with a warm smile and perfect posture. He is the kind of person who makes you feel seen the moment you meet him.{/i}"
-    ""
+    "{i}He stands up to greet you, with a warm smile and perfect posture. He is the kind of person who makes you feel seen the moment you meet him.{/i}"
 
 # game/script.rpy:565
 translate english chapter0_2_ee3f334f:
 
     # "{i}You sit down, your attention drawn to the arrangement of his office.{/i}"
-    ""
+    "{i}You sit down, your attention drawn to the arrangement of his office.{/i}"
 
 # game/script.rpy:581
 translate english bookshelf_36f1ebe6:
 
     # "{i}There are books on law, business strategy, and a collection of poems by female poets.{/i}"
-    ""
+    "{i}There are books on law, business strategy, and a collection of poems by female poets.{/i}"
 
 # game/script.rpy:586
 translate english family_photo_3e38fa36:
 
     # "{i}It is a family photo, showing his wife and two children. They are all smiling.{/i}"
-    ""
+    "{i}It is a family photo, showing his wife and two children. They are all smiling.{/i}"
 
 # game/script.rpy:591
 translate english coffee_mug_693f8491:
 
     # "{i}A chipped coffee mug with the words “World’s Best Dad” printed on it.{/i}"
-    ""
+    "{i}A chipped coffee mug with the words “World’s Best Dad” printed on it.{/i}"
 
 # game/script.rpy:596
 translate english french_window_9bc8062f:
 
     # "{i}Standing here, it feels as if the entire city is beneath your feet.{/i}"
-    ""
+    "{i}Standing here, it feels as if the entire city is beneath your feet.{/i}"
 
 # game/script.rpy:610
 translate english after_menu_c6fedec4:
 
     # c "Siu Man, tell me, why do you want to work here？"
-    c ""
+    c "Siu Man, tell me, why do you want to work here?"
 
 # game/script.rpy:614
 translate english after_menu_29efa6af:
 
     # s "I need the money."
-    s ""
+    s "I need the money."
 
 # game/script.rpy:617
 translate english after_menu_225962b8:
 
     # s "I admire your company's values."
-    s ""
+    s "I admire your company's values."
 
 # game/script.rpy:621
 translate english after_menu_978ffb39:
 
     # s "I want to prove I can do better than anyone else."
-    s ""
+    s "I want to prove I can do better than anyone else."
 
 # game/script.rpy:624
 translate english after_menu_0bec1e5a:
 
     # c "I see. You know, there’s a contingency that we were like to get someone older, with more experience. But what I see in your resume is... hunger."
-    c ""
+    c "I see. You know, we originally considered someone older, someone with more experience. But what I see in your resume is... hunger."
 
 # game/script.rpy:632
 translate english after_menu_aba4c560:
 
     # c "Do you have any questions for me?"
-    c ""
+    c "Do you have any questions for me?"
 
 # game/script.rpy:636
 translate english after_menu_f49f59b6:
 
     # s "What are the promotion pathways for females here?"
-    s ""
+    s "What are the promotion pathways for women here?"
 
 # game/script.rpy:642
 translate english after_menu_490b3496:
 
     # c "Good question. We're very progressive here. Half of our middle managers are females... well, one-third actually... there's Ms Lam, she's outstanding."
-    c ""
+    c "Good question. We're very progressive here. Half of our middle managers are women... well, one-third, actually... there's Ms Lam. She's outstanding."
 
 # game/script.rpy:647
 translate english after_menu_c5db2f1d:
 
     # s "Is there flexible remote work available?"
-    s ""
+    s "Is there flexible remote work available?"
 
 # game/script.rpy:653
 translate english after_menu_d42062d5:
 
     # c "Good question. Our company actually cares a lot about work-life balance. Flexible remote work is available in principle."
-    c ""
+    c "Good question. Our company actually cares a lot about work-life balance. Flexible remote work is available in principle."
 
 # game/script.rpy:654
 translate english after_menu_6c048a6a:
 
     # c "But... to be honest, in the gaming industry—especially for designers, it’s best to be on-site more often in the early stage. Of course, it’s not mandatory. Just a suggestion."
-    c ""
+    c "But... to be honest, in the gaming industry—especially for designers—it’s best to be on-site more often in the early stage. Of course, it’s not mandatory. Just a suggestion."
 
 # game/script.rpy:667
 translate english chapter0_3_0816dec2:
 
     # c "Do you have any other questions？"
-    c ""
+    c "Do you have any other questions?"
 
 # game/script.rpy:689
 translate english chapter0_3_fbc1dc11:
 
     # s "No, thank you."
-    s ""
+    s "No, thank you."
 
 # game/script.rpy:690
 translate english chapter0_3_113645df:
 
     # c "Then that concludes the interview. It's been a pleasure talking with you."
-    c ""
+    c "Then that concludes the interview. It's been a pleasure talking with you."
 
 # game/script.rpy:741
 translate english chapter1_af784c7c:
@@ -166,1831 +166,1831 @@ translate english chapter1_93c4e8ce:
 translate english lobby_explore_6f2864d3:
 
     # s "还有点时间，去熟悉熟悉办公楼层吧。"
-    s ""
+    s "There’s still some time left. I might as well get familiar with the office floor."
 
 # game/script.rpy:821
 translate english gate_interaction_c4083fd9:
 
     # "{i}Welcome, Siu Man! This is the first time you hear your own name here.{/i}"
-    ""
+    "{i}Welcome, Siu Man! This is the first time you hear your own name here.{/i}"
 
 # game/script.rpy:840
 translate english coffee_stand_5e6c86df:
 
     # '咖啡店员' "你好，要点什么？"
-    '咖啡店员' ""
+    'Barista' "Hi, what can I get for you?"
 
 # game/script.rpy:842
 translate english coffee_stand_6ecec96a:
 
     # s "一杯热拿铁吧，谢谢。"
-    s ""
+    s "A hot latte, please. Thank you."
 
 # game/script.rpy:848
 translate english coffee_stand_ef0c958c:
 
     # '咖啡店员' "平时没怎么见过你呢，是新来的吗？"
-    '咖啡店员' ""
+    'Barista' "I haven’t seen you around before. Are you new here?"
 
 # game/script.rpy:850
 translate english coffee_stand_27fa5da2:
 
     # s "嗯，今天入职。"
-    s ""
+    s "Yeah, today’s my first day."
 
 # game/script.rpy:856
 translate english coffee_stand_65e1dc32:
 
     # '咖啡店员' "你的咖啡好了。祝你入职顺利。"
-    '咖啡店员' ""
+    'Barista' "Here’s your coffee. Good luck on your first day."
 
 # game/script.rpy:859
 translate english coffee_stand_1fb85763:
 
     # "-30元。【当前余额：[money]元】"
-    ""
+    "-30 yuan. Current balance: [money] yuan."
 
 # game/script.rpy:869
 translate english mirror_check_305b4fae:
 
     # "{i}你穿着新买的职业裙，很合身{/i}"
-    ""
+    "{i}You’re wearing your new work skirt. It fits perfectly.{/i}"
 
 # game/script.rpy:912
 translate english third_floor_1aa577e2:
 
     # "{i}HR部门...{/i}"
-    ""
+    "{i}HR Department...{/i}"
 
 # game/script.rpy:919
 translate english eight_floor_c47f5d46:
 
     # "{i}市场部...{/i}"
-    ""
+    "{i}Marketing Department...{/i}"
 
 # game/script.rpy:925
 translate english twenty_third_floor_3312e9ed:
 
     # "{i}高管层...{/i}"
-    ""
+    "{i}Executive Floor...{/i}"
 
 # game/script.rpy:940
 translate english elevator_encounter_9feae76c:
 
     # "{i}The elevator doors slide open. A woman in her forties, sharply dressed in a tailored suit, her eyes weary.{/i}"
-    ""
+    "{i}The elevator doors slide open. A woman in her forties, sharply dressed in a tailored suit, her eyes weary.{/i}"
 
 # game/script.rpy:946
 translate english elevator_encounter_575986a7:
 
     # unknown_woman "New here?"
-    unknown_woman ""
+    unknown_woman "New here?"
 
 # game/script.rpy:954
 translate english elevator_encounter_89d475ab:
 
     # s "First day."
-    s ""
+    s "First day."
 
 # game/script.rpy:960
 translate english elevator_encounter_67432107:
 
     # unknown_woman "I see."
-    unknown_woman ""
+    unknown_woman "I see."
 
 # game/script.rpy:966
 translate english elevator_encounter_1e94cd7a:
 
     # "{i}She stares at you a little too long.{i}"
-    ""
+    "{i}She stares at you a little too long.{/i}"
 
 # game/script.rpy:967
 translate english elevator_encounter_41b86a23:
 
     # unknown_woman "Design department?"
-    unknown_woman ""
+    unknown_woman "Design department?"
 
 # game/script.rpy:975
 translate english elevator_encounter_654080cc:
 
     # s "Huh, how did you tell?"
-    s ""
+    s "Huh, how did you tell?"
 
 # game/script.rpy:977
 translate english elevator_encounter_4f61f5da:
 
     # unknown_woman "It’s in your eyes. Wonder how long you’ll stick around here."
-    unknown_woman ""
+    unknown_woman "It’s in your eyes. Wonder how long you’ll stick around here."
 
 # game/script.rpy:980
 translate english elevator_encounter_05995d7d:
 
     # "{i}She gets off at the third floor. You never learn her name.{/i}"
-    ""
+    "{i}She gets off at the third floor. You never learn her name.{/i}"
 
 # game/script.rpy:993
 translate english chapter1_2_9dafb5da:
 
     # s "啊，时间到了，得赶紧去工位。"
-    s ""
+    s "Oh, time’s up. I should hurry to my desk."
 
 # game/script.rpy:998
 translate english chapter1_2_d62e6a23:
 
     # "{i}{cps=10}12楼，“设计部”。{/cps}{/i}"
-    ""
+    "{i}{cps=10}12th Floor, Design Department.{/cps}{/i}"
 
 # game/script.rpy:999
 translate english chapter1_2_b8de2b34:
 
     # "{i}一排排办公桌。米色和灰色的隔间。有人在用微波炉热爆米花，快糊了。{/i}"
-    ""
+    "{i}Rows of desks. Beige and gray cubicles. Someone is microwaving popcorn, and it’s about to burn.{/i}"
 
 # game/script.rpy:1026
 translate english chapter1_self_intro_13610960:
 
     # "{i}你来到工位，正在收拾东西。{/i}"
-    ""
+    "{i}You arrive at your desk and start unpacking your things.{/i}"
 
 # game/script.rpy:1032
 translate english chapter1_self_intro_873baabf:
 
     # xiaojin "嘿！新来的美女！终于有个不是我爸年纪的人了。喝咖啡吗？我告诉你哪个机器好。"
-    xiaojin ""
+    xiaojin "Hey! The new girl! Finally, someone who isn’t old enough to be my dad. Want coffee? I’ll tell you which machine is best."
 
 # game/script.rpy:1064
 translate english xiaojin_friendly_3739b9e6:
 
     # s "我在楼下买了一杯了，不过好啊，谢谢你。"
-    s ""
+    s "I already got one downstairs, but sure. Thank you."
 
 # game/script.rpy:1073
 translate english xiaojin_friendly_4ac846d5:
 
     # xiaojin "你刚来，记得别得罪陈总——他挺随和的，但别惹他。还有HR那女的？也别得罪。"
-    xiaojin ""
+    xiaojin "You’re new, so remember—don’t cross Mr. Chan. He seems easygoing, but don’t push him. And that woman in HR? Don’t cross her either."
 
 # game/script.rpy:1074
 translate english xiaojin_friendly_33edea2e:
 
     # xiaojin "……算了，谁都别得罪。我来8个月了，还在琢磨。"
-    xiaojin ""
+    xiaojin "...Forget it. Just don’t offend anyone. I’ve been here eight months, and I’m still figuring it out."
 
 # game/script.rpy:1087
 translate english xiaojin_neutral_124f7dae:
 
     # s "等一会儿可以吗，我想先收拾一下桌面。"
-    s ""
+    s "Can we do it later? I want to organize my desk first."
 
 # game/script.rpy:1089
 translate english xiaojin_neutral_0d8155ab:
 
     # xiaojin "行，那你先忙，有事找我。"
-    xiaojin ""
+    xiaojin "Sure. You do your thing. Let me know if you need anything."
 
 # game/script.rpy:1103
 translate english xiaojin_cold_5c789a43:
 
     # s "我自己带了。"
-    s ""
+    s "I brought my own."
 
 # game/script.rpy:1105
 translate english xiaojin_cold_afc602f9:
 
     # xiaojin "……哈哈，那行，我就先走了。"
-    xiaojin ""
+    xiaojin "...Haha, cool. I’ll get going then."
 
 # game/script.rpy:1118
 translate english linjie_encounter_69e16b8c:
 
     # "{i}你继续整理工位。{/i}"
-    ""
+    "{i}You continue tidying up your desk.{/i}"
 
 # game/script.rpy:1124
 translate english linjie_encounter_2c6a3a4a:
 
     # '？？' "欢迎。交接文件在共享链接里。10点有个会，别迟到。"
-    '？？' ""
+    '???' "Welcome. The handover documents are in the shared link. There’s a meeting at 10. Don’t be late."
 
 # game/script.rpy:1127
 translate english linjie_encounter_0656ffe8:
 
     # "{i}她从你桌边走过，没停步。{/i}"
-    ""
+    "{i}She walks past your desk without stopping.{/i}"
 
 # game/script.rpy:1141
 translate english linjie_response_a_38accd78:
 
     # s "好的，谢谢！"
-    s ""
+    s "Okay, thank you!"
 
 # game/script.rpy:1143
 translate english linjie_response_a_66633cf1:
 
     # "{i}她脚步微顿，但没回头，继续走了。{/i}"
-    ""
+    "{i}Her steps pause for a moment, but she doesn’t look back. She keeps walking.{/i}"
 
 # game/script.rpy:1153
 translate english linjie_response_b_f06be63a:
 
     # "{i}你默默点头。{/i}"
-    ""
+    "{i}You nod silently.{/i}"
 
 # game/script.rpy:1155
 translate english linjie_response_b_c9da98a4:
 
     # "{i}她似乎没注意到，径直走远了。{/i}"
-    ""
+    "{i}She doesn’t seem to notice. She just walks away.{/i}"
 
 # game/script.rpy:1163
 translate english linjie_response_c_e6cc9be3:
 
     # s "期待开会。"
-    s ""
+    s "Looking forward to the meeting."
 
 # game/script.rpy:1169
 translate english linjie_response_c_c7372c9b:
 
     # "{i}她停住，微微转身。{/i}"
-    ""
+    "{i}She pauses, turning slightly.{/i}"
 
 # game/script.rpy:1171
 translate english linjie_response_c_d4f1a5bf:
 
     # '？？' "是吗。"
-    '？？' ""
+    '???' "Oh, really?"
 
 # game/script.rpy:1175
 translate english linjie_response_c_ac61e8a8:
 
     # "{i}她走了。{/i}"
-    ""
+    "{i}She’s gone.{/i}"
 
 # game/script.rpy:1189
 translate english task_1_3_05292e46:
 
     # "{i}上午10点，C会议室。{/i}"
-    ""
+    "{i}10:00 AM, Conference Room C.{/i}"
 
 # game/script.rpy:1190
 translate english task_1_3_7cd3409b:
 
     # "{i}日光灯嗡嗡响。8个人围坐。你比最年轻的至少小10岁。{/i}"
-    ""
+    "{i}The fluorescent lights hum. Eight people sit around the table. You’re at least ten years younger than the youngest one.{/i}"
 
 # game/script.rpy:1197
 translate english task_1_3_0a345fe6:
 
     # chen "各位早。快速更新——我们拿下了那个新IP项目。对方是大厂，这可是咱们翻身的机会。"
-    chen ""
+    chen "Morning, everyone. Quick update—we’ve secured the new IP project. The client is a major studio. This is our chance to turn things around."
 
 # game/script.rpy:1205
 translate english task_1_3_ef67b7d8:
 
     # chen "给新人一些机会。小曼，你来负责竞品游戏的拆解分析。"
-    chen ""
+    chen "Let’s give the newcomer a chance. Siu Man, you’ll handle the competitor game analysis."
 
 # game/script.rpy:1232
 translate english task_response_a_457fd3a3:
 
     # s "太好了！"
-    s ""
+    s "Great!"
 
 # game/script.rpy:1239
 translate english task_response_a_c7f6edb8:
 
     # chen "有干劲是好事。林姐会带你入门。"
-    chen ""
+    chen "Good to see you motivated. Ms Lam will get you started."
 
 # game/script.rpy:1259
 translate english task_response_b_df16a692:
 
     # s "我会尽力的。"
-    s ""
+    s "I’ll do my best."
 
 # game/script.rpy:1261
 translate english task_response_b_8ea75118:
 
     # chen "嗯，有问题找林姐。她经验很丰富。"
-    chen ""
+    chen "Good. If you have any questions, ask Ms Lam. She’s very experienced."
 
 # game/script.rpy:1281
 translate english task_response_c_a4a94bf4:
 
     # s "具体要拆解哪些部分？"
-    s ""
+    s "Which specific parts should I break down?"
 
 # game/script.rpy:1288
 translate english task_response_c_699089dc:
 
     # "{i}桌边有人轻笑。{/i}"
-    ""
+    "{i}Someone at the table lets out a soft laugh.{/i}"
 
 # game/script.rpy:1289
 translate english task_response_c_5cfba6ec:
 
     # "{i}不是恶意，但……只有你不知道。{/i}"
-    ""
+    "{i}Not malicious, but... you’re the only one who doesn’t know.{/i}"
 
 # game/script.rpy:1297
 translate english task_response_c_e8c13700:
 
     # chen "好问题。林姐会带你。就是市面上那几款头部游戏，美术风格、养成线、付费点设计……那些有趣的东西。"
-    chen ""
+    chen "Good question. Ms Lam will guide you. Just those leading games on the market—their art style, progression systems, monetization design... the interesting stuff."
 
 # game/script.rpy:1303
 translate english task_response_c_316eb9ae:
 
     # chen "别担心，我选你是有理由的。我看过你毕设，那些角色设计很有灵气。"
-    chen ""
+    chen "Don’t worry. I chose you for a reason. I’ve seen your graduation project. Those character designs had real spark."
 
 # game/script.rpy:1314
 translate english after_task_assignment_7873a755:
 
     # "{i}会议结束，大家都收拾东西离开了。{/i}"
-    ""
+    "{i}The meeting ends. Everyone packs up and leaves.{/i}"
 
 # game/script.rpy:1321
 translate english after_task_assignment_43deebf8:
 
     # linjie "他总把不可能的任务扔给新人。那几个竞品项目？每个都是几百人的大团队做了三年。你要一个人拆完？别累死自己。"
-    linjie ""
+    linjie "He always throws impossible tasks at newcomers. Those competitor projects? Each one took hundreds of people three years to make. And you’re supposed to break them all down alone? Don’t work yourself to death."
 
 # game/script.rpy:1345
 translate english linjie_after_a_1d2cf0cc:
 
     # s "谢谢提醒，我会注意的。"
-    s ""
+    s "Thanks for the reminder. I’ll be careful."
 
 # game/script.rpy:1351
 translate english linjie_after_a_f3fc9fdb:
 
     # linjie "嗯。"
-    linjie ""
+    linjie "Mm."
 
 # game/script.rpy:1371
 translate english linjie_after_b_8aba0c90:
 
     # s "我能搞定。在学校我拆过很多游戏。"
-    s ""
+    s "I can handle it. I analyzed plenty of games back in school."
 
 # game/script.rpy:1373
 translate english linjie_after_b_162ff05c:
 
     # linjie "…………"
-    linjie ""
+    linjie "..."
 
 # game/script.rpy:1378
 translate english linjie_after_b_4a77b5be:
 
     # linjie "行，有骨气。需要帮忙找我。"
-    linjie ""
+    linjie "Alright. You’ve got backbone. Come to me if you need help."
 
 # game/script.rpy:1398
 translate english linjie_after_c_f7ada570:
 
     # s "为什么不可能？不是有分析框架吗？"
-    s ""
+    s "Why is it impossible? Isn’t there an analytical framework?"
 
 # game/script.rpy:1404
 translate english linjie_after_c_07cab291:
 
     # linjie "……框架是框架，执行是执行。你以后会明白的。"
-    linjie ""
+    linjie "...Frameworks are one thing. Execution is another. You’ll understand eventually."
 
 # game/script.rpy:1415
 translate english chapter1_end_d5cb35fa:
 
     # "{i}You’re back at your desk, staring at the shared folder open on your computer screen.{/i}"
-    ""
+    "{i}You’re back at your desk, staring at the shared folder open on your computer screen.{/i}"
 
 # game/script.rpy:1416
 translate english chapter1_end_9ee44728:
 
     # "{i}Your first task to prove yourself has begun.{/i}"
-    ""
+    "{i}Your first task to prove yourself has begun.{/i}"
 
 # game/script.rpy:1434
 translate english task_1_4_55b49457:
 
     # "{i}Day 5 at work, 10:47 PM.{/i}"
-    ""
+    "{i}Day 5 at work, 10:47 PM.{/i}"
 
 # game/script.rpy:1435
 translate english task_1_4_83c3410a:
 
     # "{i}The office feels different at night, quieter, yet the hum of the vending machine grows louder.{/i}"
-    ""
+    "{i}The office feels different at night, quieter, yet the hum of the vending machine grows louder.{/i}"
 
 # game/script.rpy:1442
 translate english task_1_4_50c7978b:
 
     # n "好想睡觉……"
-    n ""
+    n "I’m so sleepy..."
 
 # game/script.rpy:1444
 translate english task_1_4_8b6cffa6:
 
     # n "I can’t get this gacha probability curve to add up…"
-    n ""
+    n "I can’t get this gacha probability curve to add up…"
 
 # game/script.rpy:1446
 translate english task_1_4_ea5b537d:
 
-    # n "And there’s an early‑morning meeting tomorrow…"
-    n ""
+    # n "And there’s an early-morning meeting tomorrow…"
+    n "And there’s an early-morning meeting tomorrow…"
 
 # game/script.rpy:1448
 translate english task_1_4_e8c44157:
 
     # n "但做不完的话，陈总会不会觉得我不行？"
-    n ""
+    n "But if I can’t finish it, will Mr. Chan think I’m not good enough?"
 
 # game/script.rpy:1450
 translate english task_1_4_e86c07dc:
 
     # "{i}你趴在桌上想着，耳边传来一阵脚步声。细听时，脚步声停了。{/i}"
-    ""
+    "{i}You rest your head on the desk, lost in thought. Then you hear footsteps. You listen closely—and they stop.{/i}"
 
 # game/script.rpy:1457
 translate english task_1_4_a1ff22ff:
 
     # chen "还在？我刚才在楼上审方案，看到你们这层灯还亮着。"
-    chen ""
+    chen "Still here? I was reviewing a proposal upstairs and noticed the lights on your floor were still on."
 
 # game/script.rpy:1459
 translate english task_1_4_6d2e99df:
 
     # "{i}他把一杯咖啡放你桌上。{/i}"
-    ""
+    "{i}He places a cup of coffee on your desk.{/i}"
 
 # game/script.rpy:1461
 translate english task_1_4_fe0b5505:
 
     # chen "给。楼下便利店的美式，不知道你喝不喝得惯。"
-    chen ""
+    chen "Here. An Americano from the convenience store downstairs. Not sure if it’s to your taste."
 
 # game/script.rpy:1474
 translate english overtime_response_a_d374ced1:
 
     # s "谢谢陈总。"
-    s ""
+    s "Thank you, Mr. Chan."
 
 # game/script.rpy:1475
 translate english overtime_response_a_39ee70e5:
 
     # chen "别客气。"
-    chen ""
+    chen "Don’t mention it."
 
 # game/script.rpy:1479
 translate english overtime_response_b_4405e3e6:
 
     # s "不用这么客气。"
-    s ""
+    s "You didn’t have to."
 
 # game/script.rpy:1480
 translate english overtime_response_b_b9f0d81e:
 
     # "{i}陈永仁笑了笑，没说话。{/i}"
-    ""
+    "{i}Chan Wing Yan smiles but says nothing.{/i}"
 
 # game/script.rpy:1484
 translate english overtime_response_c_5aaecc8c:
 
     # s "我快做完了。"
-    s ""
+    s "I’m almost done."
 
 # game/script.rpy:1485
 translate english overtime_response_c_11641cd2:
 
     # chen "效率挺高啊。"
-    chen ""
+    chen "Pretty efficient, aren’t you?"
 
 # game/script.rpy:1489
 translate english chen_conversation_23f4efe2:
 
     # "{i}陈永仁坐在桌角。{/i}"
-    ""
+    "{i}Chan Wing Yan sits on the corner of the desk.{/i}"
 
 # game/script.rpy:1490
 translate english chen_conversation_3af3cb2f:
 
     # chen "我看过你简历，你的履历顶尖，你可以去任何地方，为什么选这儿？"
-    chen ""
+    chen "I’ve seen your resume. Your qualifications are top-tier. You could have gone anywhere. Why did you choose this place?"
 
 # game/script.rpy:1507
 translate english chen_honest_b2eb31be:
 
     # s "别处都不要我。"
-    s ""
+    s "No one else wanted me."
 
 # game/script.rpy:1516
 translate english chen_honest_e999f489:
 
     # chen "…………"
-    chen ""
+    chen "..."
 
 # game/script.rpy:1525
 translate english chen_honest_30300364:
 
     # "{i}陈永仁表情柔和下来。{/i}"
-    ""
+    "{i}Chan Wing Yan’s expression softens.{/i}"
 
 # game/script.rpy:1527
 translate english chen_honest_82122afd:
 
     # chen "我懂。我就是从这个位置开始的——就是这张桌子，20年前。现在你看……"
-    chen ""
+    chen "I understand. I began exactly where you are—at this very desk, twenty years ago. And now, look..."
 
 # game/script.rpy:1528
 translate english chen_honest_aacbbd84:
 
     # "{i}他模糊地往上指了指。{/i}"
-    ""
+    "{i}He gives a vague upward point.{/i}"
 
 # game/script.rpy:1535
 translate english chen_honest_22dbdfd6:
 
     # chen "努力工作，留到最后，这就是赢的方法。"
-    chen ""
+    chen "Work hard. Stay till the end. That’s how you win."
 
 # game/script.rpy:1536
 translate english chen_honest_d7d85deb:
 
     # "{i}他站起来。{/i}"
-    ""
+    "{i}He stands up.{/i}"
 
 # game/script.rpy:1539
 translate english chen_honest_c92ed483:
 
     # chen "别太晚，回家注意安全。"
-    chen ""
+    chen "Don’t stay too late. Be careful on your way home."
 
 # game/script.rpy:1540
 translate english chen_honest_e999f489_1:
 
     # chen "…………"
-    chen ""
+    chen "..."
 
 # game/script.rpy:1541
 translate english chen_honest_1d60a3ca:
 
     # chen "其实我也要走了……送你一程？"
-    chen ""
+    chen "Actually, I’m leaving too... Want a ride?"
 
 # game/script.rpy:1545
 translate english chen_safe_ebc36cf8:
 
     # s "这里的岗位和我的专业技能最匹配。"
-    s ""
+    s "This position is the best match for my professional skills."
 
 # game/script.rpy:1552
 translate english chen_safe_39d1ed8f:
 
     # chen "嗯，确实。你的拆解能力很强。"
-    chen ""
+    chen "Yes, it is. Your analytical skills are impressive."
 
 # game/script.rpy:1553
 translate english chen_safe_d7d85deb:
 
     # "{i}他站起来。{/i}"
-    ""
+    "{i}He stands up.{/i}"
 
 # game/script.rpy:1555
 translate english chen_safe_a0196f02:
 
     # chen "别太晚，明天还有早会。"
-    chen ""
+    chen "Don’t stay too late. There’s an early meeting tomorrow."
 
 # game/script.rpy:1556
 translate english chen_safe_6b7b2777:
 
     # chen "……其实我也要走了，送你一程？"
-    chen ""
+    chen "...Actually, I’m leaving too. Want a ride?"
 
 # game/script.rpy:1560
 translate english chen_ambition_d8ee6633:
 
     # s "我想升得快一些。"
-    s ""
+    s "I want to grow faster."
 
 # game/script.rpy:1567
 translate english chen_ambition_31abf8d1:
 
     # chen "有野心。我喜欢。"
-    chen ""
+    chen "Ambitious. I like that."
 
 # game/script.rpy:1568
 translate english chen_ambition_d7d85deb:
 
     # "{i}他站起来。{/i}"
-    ""
+    "{i}He stands up.{/i}"
 
 # game/script.rpy:1570
 translate english chen_ambition_da35dd52:
 
     # chen "别加班太晚。其实我也要走了……送你一程？"
-    chen ""
+    chen "Don’t work too late. Actually, I’m leaving too... Want a ride?"
 
 # game/script.rpy:1583
 translate english car_scene_d5210224:
 
     # s "好，谢谢。"
-    s ""
+    s "Alright, thank you."
 
 # game/script.rpy:1584
 translate english car_scene_0a557610:
 
     # chen "走吧，车在楼下。"
-    chen ""
+    chen "Let’s go. The car is downstairs."
 
 # game/script.rpy:1586
 translate english car_scene_74ada729:
 
     # "{i}车内很干净，有淡淡的皮革味。{/i}"
-    ""
+    "{i}The car is clean, with a faint scent of leather.{/i}"
 
 # game/script.rpy:1587
 translate english car_scene_ae43b1c9:
 
     # s "您把我放在711就好，我刚好买个早餐，麻烦您了。"
-    s ""
+    s "You can just drop me at the 7-Eleven. I need to grab some breakfast anyway. Sorry for the trouble."
 
 # game/script.rpy:1588
 translate english car_scene_585438c3:
 
     # chen "没问题。"
-    chen ""
+    chen "No problem."
 
 # game/script.rpy:1589
 translate english car_scene_9a8e77c8:
 
     # "{i}陈永仁放了一首老歌。你们都没说话。{/i}"
-    ""
+    "{i}Chan Wing Yan puts on an old song. Neither of you speaks.{/i}"
 
 # game/script.rpy:1590
 translate english car_scene_c538a931:
 
     # "{i}他在便利店前停车。{/i}"
-    ""
+    "{i}He stops the car in front of the convenience store.{/i}"
 
 # game/script.rpy:1591
 translate english car_scene_702fd019:
 
     # chen "明天见，好好休息。"
-    chen ""
+    chen "See you tomorrow. Get some rest."
 
 # game/script.rpy:1595
 translate english reject_car_79d82fbd:
 
     # s "不用，我坐地铁。"
-    s ""
+    s "No thanks, I’ll take the subway."
 
 # game/script.rpy:1596
 translate english reject_car_10d3128e:
 
     # chen "随你。明天见。"
-    chen ""
+    chen "Suit yourself. See you tomorrow."
 
 # game/script.rpy:1599
 translate english reject_car_50f93b58:
 
     # "{i}陈永仁走了。{/i}"
-    ""
+    "{i}Chan Wing Yan leaves.{/i}"
 
 # game/script.rpy:1600
 translate english reject_car_b75192f1:
 
     # "{i}你看着他离开，胸口有什么东西松开了，不知道为什么。{/i}"
-    ""
+    "{i}You watch him leave, and something in your chest unclenches. You don’t know why.{/i}"
 
 # game/script.rpy:1605
 translate english task_1_4_end1_f29066b9:
 
     # "{i}深夜的办公室闪烁的是代码的霓虹。{/i}"
-    ""
+    "{i}The late-night office flickers with the neon of code.{/i}"
 
 # game/script.rpy:1606
 translate english task_1_4_end1_44e9f2a5:
 
     # "{i}电子bug能梦见仿生萤火虫吗？\n在刚来那天所看到的落地窗里，星星亮起，夜幕降临。{/i}"
-    ""
+    "{i}Do electronic bugs dream of bionic fireflies?\nIn the floor-to-ceiling window you saw on your first day, stars ignite, and night falls.{/i}"
 
 # game/script.rpy:1611
 translate english task_1_4_end2_1bc3de65:
 
     # "{i}回到家，你简单收拾后便躺下，很快就睡着了。{/i}"
-    ""
+    "{i}You get home, tidy up a bit, and lie down. Soon, you fall asleep.{/i}"
 
 # game/script.rpy:1612
 translate english task_1_4_end2_0b1c6b05:
 
     # "{i}梦里，深夜的办公室闪烁的是代码的霓虹。{/i}"
-    ""
+    "{i}In your dreams, the late-night office flickers with the neon of code.{/i}"
 
 # game/script.rpy:1613
 translate english task_1_4_end2_44e9f2a5:
 
     # "{i}电子bug能梦见仿生萤火虫吗？\n在刚来那天所看到的落地窗里，星星亮起，夜幕降临。{/i}"
-    ""
+    "{i}Do electronic bugs dream of bionic fireflies?\nIn the floor-to-ceiling window you saw on your first day, stars ignite, and night falls.{/i}"
 
 # game/script.rpy:1617
 translate english mini_game_analysis_e28860e8:
 
     # "{i}You need to finish competitive analysis for these games.{/i}"
-    ""
+    "{i}You need to finish competitive analysis for these games.{/i}"
 
 # game/script.rpy:1675
 translate english mini_game_analysis_f77ce01a:
 
     # "{i}Analysis complete. Data saved.{/i}"
-    ""
+    "{i}Analysis complete. Data saved.{/i}"
 
 # game/script.rpy:1677
 translate english mini_game_analysis_6404820a:
 
     # "{i}部分数据存疑，但先这样吧。{/i}"
-    ""
+    "{i}Some of the data looks questionable, but let’s leave it for now.{/i}"
 
 # game/script.rpy:1687
 translate english task_1_5_79c79da6:
 
     # "{i}Week 2, Sunday afternoon.{/i}"
-    ""
+    "{i}Week 2, Sunday afternoon.{/i}"
 
 # game/script.rpy:1787
 translate english salary_qte_d3e5cf32:
 
     # mom "Your first month's salary. When will it be paid?"
-    mom ""
+    mom "Your first month’s salary. When will it be paid?"
 
 # game/script.rpy:1800
 translate english salary_truth_a1485140:
 
     # s "In two weeks."
-    s ""
+    s "In two weeks."
 
 # game/script.rpy:1805
 translate english salary_truth_fbf51869:
 
     # mom "Good. Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. You’ll pay for it, right? You have a big job now."
-    mom ""
+    mom "Good. Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. You’ll pay for it, right? You have a big job now."
 
 # game/script.rpy:1809
 translate english salary_vague_a87bfa61:
 
     # s "Soon."
-    s ""
+    s "Soon."
 
 # game/script.rpy:1814
 translate english salary_vague_05ea1e86:
 
     # mom "How soon exactly? Your brother needs a new school uniform and to pay for his school trip—1,200 yuan. Can you pay for that?"
-    mom ""
+    mom "How soon exactly? Your brother needs a new school uniform and a school trip fee—1,200 yuan. Can you pay for that?"
 
 # game/script.rpy:1818
 translate english salary_defensive_23743949:
 
     # s "Why are you asking?"
-    s ""
+    s "Why are you asking?"
 
 # game/script.rpy:1823
 translate english salary_defensive_3ea2d533:
 
     # mom "What, you think you’re all grown up now? Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. Money is tight at home. What’s wrong with helping out?"
-    mom ""
+    mom "What, you think you’re all grown up now? Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. Money is tight at home. What’s wrong with helping out?"
 
 # game/script.rpy:1828
 translate english qte_timeout_e1554201:
 
     # s "..."
-    s ""
+    s "..."
 
 # game/script.rpy:1829
 translate english qte_timeout_4f91bcdc:
 
     # mom "Why aren’t you saying anything?"
-    mom ""
+    mom "Why aren’t you saying anything?"
 
 # game/script.rpy:1830
 translate english qte_timeout_6b5b739f:
 
     # mom "Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. You’ll pay for it, right? You have a big job now."
-    mom ""
+    mom "Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. You’ll pay for it, right? You have a big job now."
 
 # game/script.rpy:1923
 translate english give_money_83a7bf3d:
 
     # s "Fine."
-    s ""
+    s "Fine."
 
 # game/script.rpy:1931
 translate english give_money_d2ec326e:
 
     # mom "Good girl. I knew you were sensible. Your brother will thank you."
-    mom ""
+    mom "Good girl. I knew you were sensible. Your brother will thank you."
 
 # game/script.rpy:1933
 translate english give_money_d8d5de4d:
 
     # "{i}-1,200 yuan. Current balance: [money] yuan{/i}"
-    ""
+    "{i}-1,200 yuan. Current balance: [money] yuan{/i}"
 
 # game/script.rpy:1937
 translate english angry_game_338ad8c6:
 
     # s "That’s half my food budget!"
-    s ""
+    s "That’s half my food budget!"
 
 # game/script.rpy:1942
 translate english stay_silent_e1554201:
 
     # s "..."
-    s ""
+    s "..."
 
 # game/script.rpy:1947
 translate english stay_silent_89ecd4e5:
 
     # mom "What is that silence supposed to mean?"
-    mom ""
+    mom "What is that silence supposed to mean?"
 
 # game/script.rpy:1952
 translate english stay_silent_704c6a97:
 
     # mom "Have you forgotten how I scrimped and saved to raise you?"
-    mom ""
+    mom "Have you forgotten how I scrimped and saved to raise you?"
 
 # game/script.rpy:2035
 translate english silent_guilt_64e6a032:
 
     # s "{i}A wave of guilt rises in your chest.{/i}"
-    s ""
+    s "{i}A wave of guilt rises in your chest.{/i}"
 
 # game/script.rpy:2036
 translate english silent_guilt_958e098c:
 
     # s "I’ll give you the money. Please stop saying things like that."
-    s ""
+    s "I’ll give you the money. Please stop saying things like that."
 
 # game/script.rpy:2044
 translate english silent_guilt_d2ec326e:
 
     # mom "Good girl. I knew you were sensible. Your brother will thank you."
-    mom ""
+    mom "Good girl. I knew you were sensible. Your brother will thank you."
 
 # game/script.rpy:2046
 translate english silent_guilt_d8d5de4d:
 
     # "{i}-1,200 yuan. Current balance: [money] yuan{/i}"
-    ""
+    "{i}-1,200 yuan. Current balance: [money] yuan{/i}"
 
 # game/script.rpy:2051
 translate english silent_argue_c8e1ac8b:
 
     # s "So now you’re forcing me to scrimp and save to support my younger brother?"
-    s ""
+    s "So now you’re forcing me to scrimp and save to support my younger brother?"
 
 # game/script.rpy:2140
 translate english argue_continue_56055780:
 
     # mom "Did we raise you all these years for nothing? He’s your own brother. If he’s the only one in class who can’t afford new shoes, people will look down on him!"
-    mom ""
+    mom "Did we raise you all these years for nothing? He’s your own brother. If he’s the only one in class who can’t afford new shoes, people will look down on him!"
 
 # game/script.rpy:2141
 translate english argue_continue_4dfdf8b0:
 
     # mom "Besides, if you help your brother now, he’ll help you in the future. How is that a loss?"
-    mom ""
+    mom "Besides, if you help your brother now, he’ll help you in the future. How is that a loss?"
 
 # game/script.rpy:2147
 translate english argue_continue_800f9f4d:
 
     # mom "We’re all family, aren’t we? When your father and I paid for your education, we didn’t keep score like this."
-    mom ""
+    mom "We’re all family, aren’t we? When your father and I paid for your education, we didn’t keep score like this."
 
 # game/script.rpy:2169
 translate english angry_game_calculation_6355f345:
 
     # mom "How did I raise such an ungrateful child!"
-    mom ""
+    mom "How did I raise such an ungrateful child!"
 
 # game/script.rpy:2175
 translate english angry_game_calculation_b5d6e145:
 
     # "{i}Mom hangs up in a fury.{/i}"
-    ""
+    "{i}Mom hangs up in a fury.{/i}"
 
 # game/script.rpy:2176
 translate english angry_game_calculation_56244f7a:
 
     # "{i}A few days later, she sends you a message as if nothing happened. But you remember.{/i}"
-    ""
+    "{i}A few days later, she sends you a message as if nothing happened. But you remember.{/i}"
 
 # game/script.rpy:2179
 translate english angry_game_calculation_c8af8449:
 
     # mom "Forget it. You can’t squeeze out a single word after half an hour. We’ll talk when you get paid."
-    mom ""
+    mom "Forget it. You can’t squeeze out a single word after half an hour. We’ll talk when you get paid."
 
 # game/script.rpy:2183
 translate english angry_game_calculation_bbde75a0:
 
     # "{i}You barely manage to hold things together and keep the money, but your chest feels hollow.{/i}"
-    ""
+    "{i}You barely manage to hold things together and keep the money, but your chest feels hollow.{/i}"
 
 # game/script.rpy:2187
 translate english family_tax_end_79991253:
 
     # "{i}手机随后震动。{/i}"
-    ""
+    "{i}Your phone buzzes a moment later.{/i}"
 
 # game/script.rpy:2188
 translate english family_tax_end_0e584402:
 
     # '小紫书 你的粉丝' "姐妹，看到你发家里要钱的事了。同款遭遇，你不是一个人。"
-    '小紫书 你的粉丝' ""
+    'PurpleNote Follower' "Girl, I saw your post about your family asking for money. Same boat. You’re not alone."
 
 # game/script.rpy:2190
 translate english family_tax_end_1fc39c94:
 
     # "{i}新联系人：小紫书姐妹{/i}"
-    ""
+    "{i}New contact: PurpleNote Sis{/i}"
 
 # game/script.rpy:2200
 translate english task_1_6_855d6afb:
 
     # "{i}第3周，工作日。{/i}"
-    ""
+    "{i}Week 3. A workday.{/i}"
 
 # game/script.rpy:2206
 translate english task_1_6_7f404fdf:
 
     # s "咖啡，嘿嘿🎵~"
-    s ""
+    s "Coffee, hehe 🎵~"
 
 # game/script.rpy:2213
 translate english task_1_6_0c1d109b:
 
     # "{i}有人从你上方伸过手来。{/i}"
-    ""
+    "{i}Someone reaches over from above you.{/i}"
 
 # game/script.rpy:2220
 translate english task_1_6_6e54e4dd:
 
     # chen "抱歉，我拿一下方糖……"
-    chen ""
+    chen "Sorry, just grabbing a sugar cube..."
 
 # game/script.rpy:2226
 translate english task_1_6_01a212ea:
 
     # chen "哦，你也在泡咖啡？"
-    chen ""
+    chen "Oh, you’re making coffee too?"
 
 # game/script.rpy:2227
 translate english task_1_6_4aa36588:
 
     # "{i}他站得很近，拿糖的时候手臂擦过你。{/i}"
-    ""
+    "{i}He stands very close. His arm brushes against you as he reaches for the sugar.{/i}"
 
 # game/script.rpy:2231
 translate english task_1_6_041d6adc:
 
     # "{i}他在笑。{/i}"
-    ""
+    "{i}He’s smiling.{/i}"
 
 # game/script.rpy:2235
 translate english task_1_6_cd8aa0ee:
 
     # "{i}他的手放在台面上，离你的手只有几寸。{/i}"
-    ""
+    "{i}His hand rests on the counter, only a few inches from yours.{/i}"
 
 # game/script.rpy:2259
 translate english touch_ignore_e3e4c9a9:
 
     # s "是的，早上喝一杯咖啡比较精神"
-    s ""
+    s "Yeah, a cup of coffee in the morning helps me wake up."
 
 # game/script.rpy:2261
 translate english touch_ignore_fbe9ab52:
 
     # chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
-    chen ""
+    chen "You’ve been doing great work. And by the way, your breakdown analysis was excellent. I knew I was right about you."
 
 # game/script.rpy:2265
 translate english touch_alert_7c279645:
 
     # s "……"
-    s ""
+    s "..."
 
 # game/script.rpy:2266
 translate english touch_alert_85d539a3:
 
     # s "哈哈，是。"
-    s ""
+    s "Haha, yeah."
 
 # game/script.rpy:2272
 translate english touch_alert_6485d8d2:
 
     # s "{i}他为什么站这么近？{/i}"
-    s ""
+    s "{i}Why is he standing so close?{/i}"
 
 # game/script.rpy:2279
 translate english touch_alert_fbe9ab52:
 
     # chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
-    chen ""
+    chen "You’ve been doing great work. And by the way, your breakdown analysis was excellent. I knew I was right about you."
 
 # game/script.rpy:2292
 translate english touch_move_d618cbbf:
 
     # s "是，喝一杯咖啡工作起来比较精神"
-    s ""
+    s "Yeah, a cup of coffee helps me focus at work."
 
 # game/script.rpy:2298
 translate english touch_move_f9a60084:
 
     # "{i}陈永仁没明显反应。但你一动，他眼神扫了你一下。{/i}"
-    ""
+    "{i}Chan Wing Yan doesn’t react noticeably. But the moment you move, his eyes flick toward you.{/i}"
 
 # game/script.rpy:2300
 translate english touch_move_fbe9ab52:
 
     # chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
-    chen ""
+    chen "You’ve been doing great work. And by the way, your breakdown analysis was excellent. I knew I was right about you."
 
 # game/script.rpy:2304
 translate english task_1_6_a_b4e43b55:
 
     # chen "我先走了，工作加油。"
-    chen ""
+    chen "I’ll head off now. Keep up the good work."
 
 # game/script.rpy:2310
 translate english task_1_6_bc_b4e43b55:
 
     # chen "我先走了，工作加油。"
-    chen ""
+    chen "I’ll head off now. Keep up the good work."
 
 # game/script.rpy:2313
 translate english task_1_6_bc_4f857387:
 
     # "{i}他走了，咖啡杯的热气缓缓蒸腾着。{/i}"
-    ""
+    "{i}He leaves. Steam slowly rises from the coffee cup.{/i}"
 
 # game/script.rpy:2334
 translate english task_1_6_end_446cf30a:
 
     # linjie "看到你和陈永仁在茶水间了，注意点。"
-    linjie ""
+    linjie "I saw you and Chan Wing Yan in the break room. Be careful."
 
 # game/script.rpy:2341
 translate english task_1_6_end_3d246359:
 
     # s "注意什么？"
-    s ""
+    s "Careful about what?"
 
 # game/script.rpy:2345
 translate english task_1_6_end_a8d9ea72:
 
     # linjie "没什么。接完水快回来，有个新的brief发你了。"
-    linjie ""
+    linjie "Nothing. Come back soon after you get your water. I sent you a new brief."
 
 # game/script.rpy:2359
 translate english task_1_6_end_91c6b490:
 
     # s "没什么事啊。"
-    s ""
+    s "Nothing happened."
 
 # game/script.rpy:2363
 translate english task_1_6_end_3e58d5ce:
 
     # linjie "……随你。"
-    linjie ""
+    linjie "...Suit yourself."
 
 # game/script.rpy:2373
 translate english task_1_6_end_e68debf0:
 
     # "{i}消息已删除。{/i}"
-    ""
+    "{i}Message deleted.{/i}"
 
 # game/script.rpy:2381
 translate english task_1_6_end_f7b52be5:
 
     # s "林姐平常不说这些的，怎么……"
-    s ""
+    s "Ms Lam doesn’t usually say things like this. Why..."
 
 # game/script.rpy:2382
 translate english task_1_6_end_5549f453:
 
     # "{i}你正揣摩这条消息的的意图，斟酌着打下回复，又有新消息发来了。{/i}"
-    ""
+    "{i}You are still trying to understand the intent behind that message, carefully typing a reply, when another message arrives.{/i}"
 
 # game/script.rpy:2386
 translate english task_1_6_end_2341eb75:
 
     # linjie "接完水快回来，有个新的brief发你了。"
-    linjie ""
+    linjie "Come back soon after you get your water. I sent you a new brief."
 
 # game/script.rpy:2571
 translate english payslip_event_a564294d:
 
     # s "看看这个月努力的成果吧！"
-    s ""
+    s "Time to see the result of this month’s hard work!"
 
 # game/script.rpy:2586
 translate english salary_ignore_86898d18:
 
     # s "有点少啊……"
-    s ""
+    s "It’s a bit low..."
 
 # game/script.rpy:2587
 translate english salary_ignore_e7da14b3:
 
     # s "不过也还可以了，下个月继续努力吧。"
-    s ""
+    s "But it’s still okay. I’ll keep working hard next month."
 
 # game/script.rpy:2596
 translate english call_lin_sister_0b5e95c5:
 
     # s "数目怎么不太对劲？"
-    s ""
+    s "Why does the amount seem off?"
 
 # game/script.rpy:2598
 translate english call_lin_sister_361ae9b0:
 
     # s "怎么会这样……我得找人问明白。"
-    s ""
+    s "How could this happen... I need to ask someone and figure it out."
 
 # game/script.rpy:2600
 translate english call_lin_sister_d1acd23b:
 
     # "{i}【电话联系人 林姐】 拨号中……{/i}"
-    ""
+    "{i}Calling contact: Ms Lam...{/i}"
 
 # game/script.rpy:2601
 translate english call_lin_sister_1b96c66c:
 
     # "{i}*……嘟嘟……*{/i}"
-    ""
+    "{i}*...beep... beep...*{/i}"
 
 # game/script.rpy:2603
 translate english call_lin_sister_8de42609:
 
     # s "林姐，不好意思打扰你了——我发现自己的工资条好像不太对？"
-    s ""
+    s "Ms Lam, sorry to bother you—I noticed something seems wrong with my payslip."
 
 # game/script.rpy:2605
 translate english call_lin_sister_baf0e29e:
 
     # linjie "…………………………"
-    linjie ""
+    linjie "..."
 
 # game/script.rpy:2607
 translate english call_lin_sister_43532b07:
 
     # linjie "你查过男新人的起薪吗？"
-    linjie ""
+    linjie "Have you checked the starting salary for male newcomers?"
 
 # game/script.rpy:2609
 translate english call_lin_sister_9a8dc4f1:
 
     # s "……什么？"
-    s ""
+    s "...What?"
 
 # game/script.rpy:2611
 translate english call_lin_sister_e7954308:
 
     # linjie "小金当初进公司时和你同岗位，问他当时拿多少。"
-    linjie ""
+    linjie "Siu Gam joined the company in the same position as you. Ask him how much he made back then."
 
 # game/script.rpy:2613
 translate english call_lin_sister_d7cfb652:
 
     # "{i}电话挂断了。{/i}"
-    ""
+    "{i}The call ends.{/i}"
 
 # game/script.rpy:2614
 translate english call_lin_sister_16114cf4:
 
     # "{i}你握着手机，心跳得有点快。{/i}"
-    ""
+    "{i}You hold the phone, your heartbeat a little too fast.{/i}"
 
 # game/script.rpy:2655
 translate english ask_xiaojin_directly_8ee6f5bf:
 
     # "{i}The next day during lunch break, you find Siu Gam.{/i}"
-    ""
+    "{i}The next day during lunch break, you find Siu Gam.{/i}"
 
 # game/script.rpy:2662
 translate english ask_xiaojin_directly_3d3e0900:
 
     # s "Siu Gam, can I ask you something? What was your starting salary when you first joined the company?"
-    s ""
+    s "Siu Gam, can I ask you something? What was your starting salary when you first joined the company?"
 
 # game/script.rpy:2668
 translate english ask_xiaojin_directly_4e8f4aaf:
 
     # xiaojin "Uh… well…"
-    xiaojin ""
+    xiaojin "Uh... well..."
 
 # game/script.rpy:2669
 translate english ask_xiaojin_directly_7460fe90:
 
     # xiaojin "22.5k… The company forbids us from discussing salaries with each other. Don’t tell anyone, okay?"
-    xiaojin ""
+    xiaojin "22.5k... The company forbids us from discussing salaries with each other. Don’t tell anyone, okay?"
 
 # game/script.rpy:2674
 translate english ask_xiaojin_directly_750d34d4:
 
     # xiaojin "Why are you bringing this up all of a sudden?"
-    xiaojin ""
+    xiaojin "Why are you bringing this up all of a sudden?"
 
 # game/script.rpy:2676
 translate english ask_xiaojin_directly_7d32748b:
 
     # s "I get 19.5k."
-    s ""
+    s "I get 19.5k."
 
 # game/script.rpy:2682
 translate english ask_xiaojin_directly_995d66d6:
 
     # xiaojin "Oh shit……"
-    xiaojin ""
+    xiaojin "Oh shit..."
 
 # game/script.rpy:2689
 translate english ask_xiaojin_directly_f1ebfaeb:
 
-    # "{i}[Clue] Yin‑Yang Wage Divide{/i}"
-    ""
+    # "{i}[Clue] Yin-Yang Wage Divide{/i}"
+    "{i}[Clue] Yin-Yang Wage Divide{/i}"
 
 # game/script.rpy:2701
 translate english dont_ask_xiaojin_c39ea879:
 
     # "{i}等心跳没那么快时，你放下了手机。{/i}"
-    ""
+    "{i}When your heartbeat finally slows down, you put down the phone.{/i}"
 
 # game/script.rpy:2703
 translate english dont_ask_xiaojin_bd9c928e:
 
     # s "不问，就不会尴尬。不问，就不会惹麻烦。"
-    s ""
+    s "If I don’t ask, it won’t be awkward. If I don’t ask, I won’t cause trouble."
 
 # game/script.rpy:2705
 translate english dont_ask_xiaojin_05782583:
 
     # "{i}你起身去洗漱，仿佛什么都没发生。{/i}"
-    ""
+    "{i}You get up and go wash up, as if nothing happened.{/i}"
 
 # game/script.rpy:2706
 translate english dont_ask_xiaojin_504a47c2:
 
     # "{i}涟漪过后，风平浪静。涟漪下有没有更深的漩涡……{/i}"
-    ""
+    "{i}After the ripples fade, the surface is calm. Whether there is a deeper whirlpool beneath...{/i}"
 
 # game/script.rpy:2707
 translate english dont_ask_xiaojin_e9273a08:
 
     # "{i}谁知道呢。{/i}"
-    ""
+    "{i}Who knows?{/i}"
 
 # game/script.rpy:2715
 translate english investigate_other_ways_d0d04473:
 
     # s "还是先自己查查看吧。"
-    s ""
+    s "I should look into it myself first."
 
 # game/script.rpy:2716
 translate english investigate_other_ways_777fdc53:
 
     # "【正在浏览】{i}公司招聘网站：公司同岗位的薪资范围{/i}"
-    ""
+    "{i}Browsing: Company recruitment site — salary range for the same position.{/i}"
 
 # game/script.rpy:2717
 translate english investigate_other_ways_c6ca3766:
 
     # "【正在浏览】{i}内部文档：薪酬制度细则{/i}"
-    ""
+    "{i}Browsing: Internal documents — compensation policy details.{/i}"
 
 # game/script.rpy:2718
 translate english investigate_other_ways_bde68efc:
 
     # "【正在浏览】{i}匿名论坛：公司薪资讨论版块{/i}"
-    ""
+    "{i}Browsing: Anonymous forum — company salary discussion board.{/i}"
 
 # game/script.rpy:2722
 translate english investigate_other_ways_6f30e55a:
 
     # "{i}获得了线索：阴阳工资{/i}"
-    ""
+    "{i}Clue obtained: Yin-Yang Wage Divide.{/i}"
 
 # game/script.rpy:2726
 translate english investigate_other_ways_1c26505e:
 
     # "{i}在调查中，你发现很多资料来自和你有相似经历的前辈。{/i}"
-    ""
+    "{i}During your search, you realize many of the materials came from seniors who had experiences similar to yours.{/i}"
 
 # game/script.rpy:2727
 translate english investigate_other_ways_74580056:
 
     # "{i}坏消息，走到这条路上的不止你一个人。{/i}"
-    ""
+    "{i}The bad news: you are not the only one who ended up on this path.{/i}"
 
 # game/script.rpy:2728
 translate english investigate_other_ways_b1956c49:
 
     # "{i}好消息是，走在这条路上的不止你一个人。{/i}"
-    ""
+    "{i}The good news: you are not the only one walking this path.{/i}"
 
 # game/script.rpy:2739
 translate english fitness_video_event_1bc93a30:
 
     # "{i}Week 6, Saturday night.{/i}"
-    ""
+    "{i}Week 6, Saturday night.{/i}"
 
 # game/script.rpy:2740
 translate english fitness_video_event_142ce887:
 
     # "{i}You lie in bed scrolling through your phone, but your eyelids are already getting heavy.{/i}"
-    ""
+    "{i}You lie in bed scrolling through your phone, but your eyelids are already getting heavy.{/i}"
 
 # game/script.rpy:2747
 translate english fitness_video_event_d85ac041:
 
     # s "23:55. I can't believe it's already this late."
-    s ""
+    s "23:55. I can’t believe it’s already this late."
 
 # game/script.rpy:2749
 translate english fitness_video_event_e7f6df9c:
 
     # s "A message from Chan Wing Yan...?"
-    s ""
+    s "A message from Chan Wing Yan...?"
 
 # game/script.rpy:2757
 translate english fitness_video_event_09242349:
 
     # "{i}Chan Wing Yan: Just finished working out. You can try the techniques I posted on Moments. They’re great for relieving stress.{/i}"
-    ""
+    "{i}Chan Wing Yan: Just finished working out. You can try the techniques I posted on Moments. They’re great for relieving stress.{/i}"
 
 # game/script.rpy:2850
 translate english watch_fitness_video_f9e758d0:
 
     # "Thirty seconds. Chan is at the gym, the metallic sheen of the equipment glinting off his sweat."
-    ""
+    "Thirty seconds. Chan is at the gym, the metallic sheen of the equipment glinting off his sweat."
 
 # game/script.rpy:2851
 translate english watch_fitness_video_bc848406:
 
     # "He performs precise movements, his muscles rising and falling with each breath."
-    ""
+    "He performs precise movements, his muscles rising and falling with each breath."
 
 # game/script.rpy:2852
 translate english watch_fitness_video_422aa8ca:
 
     # "On the final second, he suddenly stares straight into the camera."
-    ""
+    "On the final second, he suddenly stares straight into the camera."
 
 # game/script.rpy:2859
 translate english watch_fitness_video_d715df2e:
 
     # chen "Can you keep up, Siu Man?"
-    chen ""
+    chen "Can you keep up, Siu Man?"
 
 # game/script.rpy:2862
 translate english watch_fitness_video_ee36343b:
 
     # "视频结束，黑屏。你的脸也黑了。"
-    ""
+    "The video ends. The screen goes black. So does your face."
 
 # game/script.rpy:2872
 translate english watch_fitness_video_c93caba1:
 
     # s "呃…………"
-    s ""
+    s "Uh..."
 
 # game/script.rpy:2917
 translate english ignore_video_26098c1d:
 
     # "{i}你锁屏，把手机倒扣在床头柜上。{/i}"
-    ""
+    "{i}You lock the screen and place your phone face down on the bedside table.{/i}"
 
 # game/script.rpy:2918
 translate english ignore_video_1180e483:
 
     # "{i}23:55。这个时间，这个内容。{/i}"
-    ""
+    "{i}23:55. This time. This kind of content.{/i}"
 
 # game/script.rpy:2919
 translate english ignore_video_49a2d851:
 
     # "{i}直觉告诉你，有些东西不需要打开。{/i}"
-    ""
+    "{i}Your instinct tells you some things don’t need to be opened.{/i}"
 
 # game/script.rpy:2920
 translate english ignore_video_5f85667d:
 
     # "{i}手机又震了一下，但你没有看。{/i}"
-    ""
+    "{i}Your phone vibrates again, but you don’t look.{/i}"
 
 # game/script.rpy:2931
 translate english reply_thumb_up_1920f884:
 
     # "{i}你没看视频，敷衍了一个赞。{/i}"
-    ""
+    "{i}You don’t watch the video. You give it a perfunctory like.{/i}"
 
 # game/script.rpy:2932
 translate english reply_thumb_up_944ce6c1:
 
     # "{i}【微信】陈总：这么晚还没睡？{/i}"
-    ""
+    "{i}WeChat — Mr. Chan: Still awake this late?{/i}"
 
 # game/script.rpy:2933
 translate english reply_thumb_up_2c6670f4:
 
     # "{i}消息秒回。你看着那个正在输入的提示，决定不再回复。{/i}"
-    ""
+    "{i}The reply comes instantly. You stare at the typing indicator and decide not to respond again.{/i}"
 
 # game/script.rpy:2942
 translate english after_video_9e692a59:
 
     # "{i}第二天办公室，午餐时。{/i}"
-    ""
+    "{i}The next day at the office, during lunch break.{/i}"
 
 # game/script.rpy:2948
 translate english after_video_f1efa5da:
 
     # s "哎，你昨晚看到陈总朋友圈的健身视频没？有点东西。"
-    s ""
+    s "Hey, did you see Mr. Chan’s workout video on Moments last night? It was... something."
 
 # game/script.rpy:2953
 translate english after_video_84f41fab:
 
     # xiaojin "我好像没看到耶？可能没刷到吧。"
-    xiaojin ""
+    xiaojin "I don’t think I saw it? Maybe it just didn’t show up for me."
 
 # game/script.rpy:2959
 translate english after_video_c06c6dc3:
 
     # s "……哦，这样啊。"
-    s ""
+    s "...Oh. I see."
 
 # game/script.rpy:2981
 translate english celebration_drink_8a916667:
 
     # "第7周，His Game项目成功上线。"
-    ""
+    "Week 7. The His Game project launches successfully."
 
 # game/script.rpy:2982
 translate english celebration_drink_38e3ad82:
 
     # "数据表现超过预期，部门办庆功酒，酒水畅饮，陈永仁买单。所有人都来了。"
-    ""
+    "The data exceeds expectations. The department holds a celebration, drinks are unlimited, and Chan Wing Yan pays the bill. Everyone is there."
 
 # game/script.rpy:3056
 translate english bar_interaction_936630dd:
 
     # "{i}酒吧里人声鼎沸。你想做什么？{/i}"
-    ""
+    "{i}The bar is loud and crowded. What do you want to do?{/i}"
 
 # game/script.rpy:3098
 translate english talk_to_xiaojin_d6ebc068:
 
     # "{i}小金正在大声说着什么，周围几个人在笑。{/i}"
-    ""
+    "{i}Siu Gam is saying something loudly, and several people around him are laughing.{/i}"
 
 # game/script.rpy:3099
 translate english talk_to_xiaojin_e5247d82:
 
     # "{i}和他聊点什么呢？{/i}"
-    ""
+    "{i}What should you talk to him about?{/i}"
 
 # game/script.rpy:3113
 translate english talk_to_xiaojin_1dd58952:
 
     # xiaojin "你来啦？"
-    xiaojin ""
+    xiaojin "You’re here?"
 
 # game/script.rpy:3119
 translate english talk_to_xiaojin_13a3a6d1:
 
     # xiaojin "对了，前几天你问我陈总朋友圈是……"
-    xiaojin ""
+    xiaojin "By the way, the thing you asked me about Mr. Chan’s Moments the other day..."
 
 # game/script.rpy:3127
 translate english talk_to_xiaojin_bc760922:
 
     # s "哦，偶然看到，就打算试试健身。你有没有什么健身经验分享的？"
-    s ""
+    s "Oh, I just happened to see it and thought I might try working out. Do you have any fitness tips?"
 
 # game/script.rpy:3130
 translate english talk_to_xiaojin_8c0d3b73:
 
     # xiaojin "有啊！我跟你说，蛋白粉就要选……"
-    xiaojin ""
+    xiaojin "Of course! Let me tell you, when it comes to protein powder, you have to choose..."
 
 # game/script.rpy:3133
 translate english talk_to_xiaojin_91d4cc52:
 
     # "{i}他把自己的健身心得倾囊相授，真是个好人。{/i}"
-    ""
+    "{i}He shares all his fitness knowledge with you. What a good person.{/i}"
 
 # game/script.rpy:3142
 translate english talk_to_xiaojin_ad737d89:
 
     # s "我来了……这个项目真是累死了……"
-    s ""
+    s "I’m here... This project is killing me..."
 
 # game/script.rpy:3147
 translate english talk_to_xiaojin_ae82145a:
 
     # xiaojin "对吧！有时候觉得AI取代不了我们，因为根本读不懂甲方七零八落的诉求。"
-    xiaojin ""
+    xiaojin "Right? Sometimes I think AI can’t replace us because it could never understand clients’ chaotic demands."
 
 # game/script.rpy:3148
 translate english talk_to_xiaojin_88a09257:
 
     # "{i}你们一起吐槽了半小时甲方，英雌惜英雄。{/i}"
-    ""
+    "{i}The two of you complain about clients for half an hour. Heroes recognize heroes.{/i}"
 
 # game/script.rpy:3159
 translate english talk_to_xiaojin_cb97ec0c:
 
     # xiaojin "你知道最近隔壁部门小x的男朋友和她冷战不？"
-    xiaojin ""
+    xiaojin "Did you hear that X from the next department is in a cold war with her boyfriend?"
 
 # game/script.rpy:3165
 translate english talk_to_xiaojin_d7b4123c:
 
     # s "嗯？新瓜，细说！"
-    s ""
+    s "Huh? Fresh gossip. Tell me more!"
 
 # game/script.rpy:3166
 translate english talk_to_xiaojin_dadb4da2:
 
     # xiaojin "小x和男朋友恋爱挺久了，最近她男朋友求婚，但是小x想这几年多专注在事业，往后推推。"
-    xiaojin ""
+    xiaojin "X has been with her boyfriend for a long time. Recently, he proposed, but she wants to focus on her career for the next few years and push it back."
 
 # game/script.rpy:3167
 translate english talk_to_xiaojin_0ab256c2:
 
     # xiaojin "她男朋友觉得求婚被拒，正沮丧，等着小x哄中……"
-    xiaojin ""
+    xiaojin "Her boyfriend feels rejected and is sulking, waiting for her to comfort him..."
 
 # game/script.rpy:3173
 translate english talk_to_xiaojin_bd0c8292:
 
     # s "那他可得等等了，小x手上的项目后天才交呢。小x姐，女王。"
-    s ""
+    s "Then he’ll have to wait. X’s project isn’t due until the day after tomorrow. Queen X."
 
 # game/script.rpy:3179
 translate english talk_to_xiaojin_818b1d29:
 
     # xiaojin "小x姐，女王！"
-    xiaojin ""
+    xiaojin "Queen X!"
 
 # game/script.rpy:3191
 translate english talk_to_xiaojin_again_d0dd94ec:
 
     # "{i}小金还在和其他人聊天，插不进话。{/i}"
-    ""
+    "{i}Siu Gam is still chatting with other people. There’s no chance to join in.{/i}"
 
 # game/script.rpy:3224
 translate english sit_with_lin_49a01222:
 
     # "{i}角落的卡座，林姐一个人坐在那里，光影在她脸上切割出明与暗。{/i}"
-    ""
+    "{i}In the corner booth, Ms Lam sits alone, light and shadow cutting her face into brightness and darkness.{/i}"
 
 # game/script.rpy:3230
 translate english sit_with_lin_7039d393:
 
     # linjie "你做得太好了。好得过头了。"
-    linjie ""
+    linjie "You did too well. Too well."
 
 # game/script.rpy:3236
 translate english sit_with_lin_f6969871:
 
     # s "什么意思？"
-    s ""
+    s "What do you mean?"
 
 # game/script.rpy:3241
 translate english sit_with_lin_6286c63b:
 
     # linjie "作为新人，陈永仁很中意你——非常中意。"
-    linjie ""
+    linjie "As a newcomer, Chan Wing Yan likes you—a lot."
 
 # game/script.rpy:3242
 translate english sit_with_lin_561e241f:
 
     # "{i}她晃了晃酒杯，冰块碰撞发出清脆的声响。{/i}"
-    ""
+    "{i}She swirls her glass. The ice cubes clink sharply against each other.{/i}"
 
 # game/script.rpy:3247
 translate english sit_with_lin_7ac62965:
 
     # linjie "他也这样注意过我，后来就不了。"
-    linjie ""
+    linjie "He used to pay that kind of attention to me too. Then he stopped."
 
 # game/script.rpy:3248
 translate english sit_with_lin_fec4b154:
 
     # s "……发生了什么？"
-    s ""
+    s "...What happened?"
 
 # game/script.rpy:3249
 translate english sit_with_lin_6ec7679a:
 
     # "{i}酒有些辣，林姐长饮一口，好一会儿才说话。{/i}"
-    ""
+    "{i}The drink is strong. Ms Lam takes a long sip and stays quiet for a while before speaking.{/i}"
 
 # game/script.rpy:3254
 translate english sit_with_lin_0aa95d9a:
 
     # linjie "我老了，对他来说，现在我只是有用。"
-    linjie ""
+    linjie "I’m old now. To him, I’m only useful."
 
 # game/script.rpy:3255
 translate english sit_with_lin_ab44e9f6:
 
     # "{i}她没有回答你的问题，像是醉了。{/i}"
-    ""
+    "{i}She doesn’t answer your question. She seems drunk.{/i}"
 
 # game/script.rpy:3260
 translate english sit_with_lin_ae0fe291:
 
     # linjie "去别的地方转转吧，别和我一样。"
-    linjie ""
+    linjie "Go look around somewhere else. Don’t become like me."
 
 # game/script.rpy:3267
 translate english sit_with_lin_fddf7ecd:
 
     # linjie "哎——" with vpunch
-    linjie "" with vpunch
+    linjie "Hey—" with vpunch
 
 # game/script.rpy:3274
 translate english sit_with_lin_1271da70:
 
     # linjie "别认为“在他眼里我很特别”。"
-    linjie ""
+    linjie "Don’t think, “I’m special in his eyes.”"
 
 # game/script.rpy:3279
 translate english sit_with_lin_dcc659f8:
 
     # linjie "你本来就特别。"
-    linjie ""
+    linjie "You were already special."
 
 # game/script.rpy:3280
 translate english sit_with_lin_2fb6cf83:
 
     # linjie "不是因为他。"
-    linjie ""
+    linjie "Not because of him."
 
 # game/script.rpy:3296
 translate english sit_with_lin_again_d5e11e1a:
 
     # linjie "怎么又回来了？让我一个人待会儿，你出去转转吧。"
-    linjie ""
+    linjie "Why are you back again? Let me sit alone for a while. Go look around."
 
 # game/script.rpy:3309
 translate english observe_chen_d197dbf8:
 
     # "{i}你站在人群边缘，看着陈永仁。{/i}"
-    ""
+    "{i}You stand at the edge of the crowd, watching Chan Wing Yan.{/i}"
 
 # game/script.rpy:3310
 translate english observe_chen_80119bf9:
 
     # "{i}他对男同事：拍肩、大笑、讲黄色笑话。{/i}"
-    ""
+    "{i}With male colleagues: shoulder pats, loud laughter, dirty jokes.{/i}"
 
 # game/script.rpy:3311
 translate english observe_chen_56c15b36:
 
     # "{i}他对女同事：靠近、倾听、眼神专注。{/i}"
-    ""
+    "{i}With female colleagues: leaning close, listening carefully, eyes focused.{/i}"
 
 # game/script.rpy:3312
 translate english observe_chen_11d26f78:
 
     # "{i}他对上级：谦卑、递烟、不时倒酒。{/i}"
-    ""
+    "{i}With superiors: humble posture, offering cigarettes, refilling drinks at just the right moment.{/i}"
 
 # game/script.rpy:3320
 translate english observe_chen_31426aa9:
 
     # "{i}他发现你在不远处……{/i}"
-    ""
+    "{i}He notices you nearby...{/i}"
 
 # game/script.rpy:3327
 translate english observe_chen_d076c407:
 
     # "{i}于是看向你，微笑。{/i}"
-    ""
+    "{i}Then he looks at you and smiles.{/i}"
 
 # game/script.rpy:3329
 translate english observe_chen_1b1e6ebd:
 
     # "{i}他总能根据不同对象，切换最佳模式。{/i}"
-    ""
+    "{i}He can always switch to the perfect mode for whoever is in front of him.{/i}"
 
 # game/script.rpy:3339
 translate english observe_chen_again_23a544b2:
 
     # "{i}他还在和人推杯换盏……{/i}"
-    ""
+    "{i}He is still drinking and laughing with the others...{/i}"
 
 # game/script.rpy:3348
 translate english bar_restroom_235dfaf5:
 
     # "{i}躲进洗手间锁上门，外面的说话声、碰杯声都远去了。{/i}"
-    ""
+    "{i}You hide in the restroom and lock the door. The voices and clinking glasses outside fade away.{/i}"
 
 # game/script.rpy:3349
 translate english bar_restroom_3d2bcd25:
 
     # "{i}镜子里的人脸颊微红。{/i}"
-    ""
+    "{i}The person in the mirror has flushed cheeks.{/i}"
 
 # game/script.rpy:3355
 translate english bar_restroom_830d7f43:
 
     # "【微信】{i}妈：「你什么时候回家？」{/i}"
-    ""
+    "{i}WeChat — Mom: When are you coming home?{/i}"
 
 # game/script.rpy:3356
 translate english bar_restroom_4e232a9e:
 
     # "【微信】{i}闺蜜：「那个项目怎么样了？」{/i}"
-    ""
+    "{i}WeChat — Best Friend: How’s that project going?{/i}"
 
 # game/script.rpy:3358
 translate english bar_restroom_5e0476ce:
 
     # "{i}你深吸一口气，现在你暂时逃离了那个世界。{/i}"
-    ""
+    "{i}You take a deep breath. For now, you have escaped that world.{/i}"
 
 # game/script.rpy:3359
 translate english bar_restroom_4f2c9a9e:
 
     # "{i}但你知道，总得回去，过明天。{/i}"
-    ""
+    "{i}But you know you still have to go back. You still have to live through tomorrow.{/i}"
 
 # game/script.rpy:3367
 translate english bar_restroom_again_a53f4636:
 
     # "{i}洗手间有人，先出去吧。{/i}"
-    ""
+    "{i}Someone is in the restroom. Better go out first.{/i}"
 
 # game/script.rpy:3375
 translate english beer_adfd4c12:
 
     # "{i}一杯精酿啤酒，泡沫细腻。{/i}"
-    ""
+    "{i}A glass of craft beer, its foam soft and delicate.{/i}"
 
 # game/script.rpy:3376
 translate english beer_96e0e713:
 
     # "{i}人生得意须尽欢，此刻的泡沫托起你所有的轻盈。{/i}"
-    ""
+    "{i}When life offers a moment of joy, take it. For now, the foam holds up all your lightness.{/i}"
 
 # game/script.rpy:3383
 translate english wine_13d690e2:
 
     # "{i}红酒在杯中摇晃，颜色深沉。{/i}"
-    ""
+    "{i}Red wine sways in the glass, dark and deep.{/i}"
 
 # game/script.rpy:3384
 translate english wine_53d476ce:
 
     # "{i}葡萄美酒夜光杯，敬那个在深夜依然一往无前的自己。{/i}"
-    ""
+    "{i}A luminous cup of wine—to the self that still moves forward in the dark.{/i}"
 
 # game/script.rpy:3391
 translate english cocktail_458dfea0:
 
     # "{i}五颜六色的液体，不知道里面有什么。{/i}"
-    ""
+    "{i}A colorful liquid. You don’t know what’s inside.{/i}"
 
 # game/script.rpy:3392
 translate english cocktail_5b005bf5:
 
     # "{i}彩虹沉入杯底，等你打捞。每一口都是未知，每一步都是风景。{/i}"
-    ""
+    "{i}A rainbow sinks to the bottom of the glass, waiting for you to fish it out. Every sip is unknown. Every step is a view.{/i}"
 
 # game/script.rpy:3399
 translate english soda_7b25a5dc:
 
     # "{i}可乐加冰，气泡刺激着喉咙。{/i}"
-    ""
+    "{i}Cola with ice. The bubbles sting your throat.{/i}"
 
 # game/script.rpy:3400
 translate english soda_7556e63e:
 
     # "{i}众人皆醉我独醒。猛兽总是独行，牛羊才成群结队。{/i}"
-    ""
+    "{i}Everyone else is drunk, but you remain awake. Beasts walk alone; cattle and sheep move in herds.{/i}"
 
 # game/script.rpy:3457
 translate english bar_ending_95ef0ed1:
 
     # "{i}夜深了，大家陆续离开。{i}"
-    ""
+    "{i}It is late. People begin leaving one after another.{/i}"
 
 # game/script.rpy:3458
 translate english bar_ending_cd78e1e2:

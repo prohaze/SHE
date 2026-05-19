@@ -2722,6 +2722,7 @@ label investigate_other_ways:
     call screen clue_unequal_wage("线索") with dissolve
     "{i}获得了线索：阴阳工资{/i}" #加音效：噔噔噔↑
 
+    $ salary_evidence = True
     $ investigation_unlocked = True
     
     "{i}在调查中，你发现很多资料来自和你有相似经历的前辈。{/i}"
@@ -3791,7 +3792,7 @@ label search_fail:
         linear 1.5 zoom 2.0 xalign 0.45 ypos -500
         linear 0.1 zoom 7 xalign 0.65 ypos -800
     pause 1.5
-    jump ending_gulang
+    jump she_ending_gulang
         
         
 
@@ -3888,7 +3889,7 @@ label linjie_refuse_help:
             jump cyro_break_in
         "找别的办法":
             s "再想想别的办法吧。"
-            jump chapter4_end
+            jump chapter5
 
     # # 5分钟倒计时搜查
     # call screen cyro_office_timer(duration=300.0)  # 5分钟 = 300秒
@@ -4329,7 +4330,7 @@ label cyro_office_time_up:
         linear 1.5 zoom 2.0 xalign 0.45 ypos -500
         linear 0.1 zoom 7 xalign 0.65 ypos -800
     pause 1.5
-    jump ending_gulang
+    jump she_ending_gulang
 
     return
 
@@ -5337,8 +5338,7 @@ label game_ending:
 
     "[ending_text]"
 
-    return
-
+    jump chapter4
 
 # ==========================================
 # 第五章：抉择（第15周）
@@ -5507,6 +5507,7 @@ label chapter5:
     "四条路清晰浮现。"
     
     jump week13_lawyer_evidence_check
+
 
 # ==========================================
 # 第五章前置：律师证据审查
@@ -5737,7 +5738,8 @@ label week13_lawyer_evidence_check:
 
 
 # ==========================================
-# 律师咨询后的三条出口
+# 律师咨询后的出口
+# 统一回到 V2 路线选择
 # ==========================================
 
 label lawyer_media_route:
@@ -5750,12 +5752,7 @@ label lawyer_media_route:
     "法律很窄。"
     "但声音，也许能从缝里长出来。"
 
-    $ route_legal = False
-    $ route_hr = False
-    $ route_public = True
-    $ route_leave = False
-
-    jump route_c_public
+    jump chapter5_route_selection
 
 
 label lawyer_despair_route:
@@ -5767,12 +5764,11 @@ label lawyer_despair_route:
     "不是不痛了。"
     "只是你忽然很累。"
 
-    $ route_legal = False
-    $ route_hr = False
-    $ route_public = False
-    $ route_leave = True
-
-    jump route_d_leave
+    if escape >= 2:
+        jump she_ending_tuoniao
+    else:
+        "但真正要怎么做，还没有结束。"
+        jump chapter5_route_selection
 
 
 label lawyer_legal_route:
@@ -5782,406 +5778,34 @@ label lawyer_legal_route:
 
     "你把证据重新整理了一遍。"
     "哪怕赵律师说很难，你还是想试一次。"
-    "至少，要让系统留下你的名字。"
 
-    $ route_legal = True
-    $ route_hr = False
-    $ route_public = False
-    $ route_leave = False
+    "但在按下决定之前，你还是看向了另外几条路。"
 
-    jump route_a_legal
+    jump chapter5_route_selection
 
-# ----------------------
-# 路线选择界面
-# ----------------------
-screen route_choice_screen():
-    modal True
-    
-    add Solid("#000000CC")
-    
-    frame:
-        xalign 0.5
-        yalign 0.5
-        xpadding 60
-        ypadding 50
-        background "#2c3e50"
-        
-        vbox:
-            spacing 25
-            xalign 0.5
-            
-            text "第五章：抉择" size 36 color "#ffffff" xalign 0.5
-            text "四条路" size 28 color "#bdc3c7" xalign 0.5
-            
-            null height 20
-            
-            # 路线A
-            button:
-                xsize 500
-                ysize 80
-                background ("#27ae60" if (evidence_complete and lawyer_contacted) else "#7f8c8d")
-                hover_background "#2ecc71"
-                action [SetVariable("route_legal", True), Return("legal")]
-                
-                hbox:
-                    xfill True
-                    spacing 15
-                    xalign 0.5
-                    yalign 0.5
-                    
-                    text "⚖️" size 30
-                    vbox:
-                        text "路线A：法律途径" size 20 color "#ffffff"
-                        text "条件：证据 + 律师联系" size 14 color "#bdc3c7"
-            
-            # 路线B
-            button:
-                xsize 500
-                ysize 80
-                background ("#3498db" if (evidence_complete and courage > 50) else "#7f8c8d")
-                hover_background "#5dade2"
-                action [SetVariable("route_hr", True), Return("hr")]
-                
-                hbox:
-                    xfill True
-                    spacing 15
-                    xalign 0.5
-                    yalign 0.5
-                    
-                    text "🏢" size 30
-                    vbox:
-                        text "路线B：HR内部举报" size 20 color "#ffffff"
-                        text "条件：证据 + 勇气 > 50" size 14 color "#bdc3c7"
-            
-            # 路线C
-            button:
-                xsize 500
-                ysize 80
-                background ("#e74c3c" if (evidence_complete and xiaohongshu_fans > 800) else "#7f8c8d")
-                hover_background "#ec7063"
-                action [SetVariable("route_public", True), Return("public")]
-                
-                hbox:
-                    xfill True
-                    spacing 15
-                    xalign 0.5
-                    yalign 0.5
-                    
-                    text "📱" size 30
-                    vbox:
-                        text "路线C：公众曝光" size 20 color "#ffffff"
-                        text "条件：证据 + 小红书粉丝 > 800" size 14 color "#bdc3c7"
-            
-            # 路线D
-            button:
-                xsize 500
-                ysize 80
-                background ("#f39c12" if (mental < 20) else "#7f8c8d")
-                hover_background "#f5b041"
-                action [SetVariable("route_leave", True), Return("leave")]
-                
-                hbox:
-                    xfill True
-                    spacing 15
-                    xalign 0.5
-                    yalign 0.5
-                    
-                    text "🚪" size 30
-                    vbox:
-                        text "路线D：离开" size 20 color "#ffffff"
-                        text "条件：心理健康 < 20" size 14 color "#bdc3c7"
 
 
 # ----------------------
 # 第五章路线选择标签（改名避免冲突）
 # ----------------------
 label chapter5_route_selection:
-    call screen route_choice_screen
+
+    call screen she_final_route_screen
+
     $ result = _return
-    
+
     if result == "legal":
-        jump route_a_legal
+        jump she_route_legal
+
     elif result == "hr":
-        jump route_b_hr
+        jump she_route_hr
+
     elif result == "public":
-        jump route_c_public
-    elif result == "leave":
-        jump route_d_leave
-        
-# ==========================================
-# 路线A：法律途径
-# ==========================================
+        jump she_route_public
 
-label route_a_legal:
-    scene bg bedroom_night
-    with fade
-    
-    "你选择了法律途径。"
-    "你相信系统。你相信正义需要程序。"
-    
-    jump task_5_a_1
+    elif result == "linjie":
+        jump she_route_linjie
 
-label task_5_a_1:
-    scene bg police_station
-    with fade
-    
-    "中区警署。下午2:30。"
-    
-    show police_officer young at center with dissolve
-    
-    "警官很年轻。他努力显得友善。"
-    
-    "警官" "佘小姐，请坐。你想补充报案？"
-    
-    s "是的。我有新的证据。"
-    
-    hide police_officer young
-    jump police_statement_game
-
-screen police_statement_game():
-    modal True
-    
-    default statement_history = []
-    default current_question = 0
-    default consistency_score = 100
-    
-    add Solid("#34495e")
-    
-    frame:
-        xalign 0.5
-        yalign 0.2
-        background "#2c3e50"
-        padding (30, 20)
-        
-        text "陈述一致性: [consistency_score]%" size 24 color "#ffffff" xalign 0.5
-        
-        if consistency_score < 60:
-            text "可信度不足" size 18 color "#e74c3c" xalign 0.5
-    
-    if current_question == 0:
-        frame:
-            xalign 0.5
-            yalign 0.5
-            xpadding 40
-            ypadding 30
-            background "#ffffff"
-            
-            vbox:
-                spacing 20
-                text "Q1: 第一次不当接触发生在什么时候？" size 20 color "#2c3e50"
-                
-                textbutton "办公室茶水间":
-                    action [SetScreenVariable("statement_history", statement_history + ["pantry"]), 
-                            SetScreenVariable("current_question", 1)]
-                
-                textbutton "我不记得了":
-                    action [SetScreenVariable("consistency_score", consistency_score - 20),
-                            SetScreenVariable("statement_history", statement_history + ["unknown"]), 
-                            SetScreenVariable("current_question", 1)]
-
-                if car_event:
-                    textbutton "庆功酒后，他送我回家":
-                        action [SetScreenVariable("statement_history", statement_history + ["car"]), 
-                                SetScreenVariable("current_question", 1)]
-                else: 
-                    pass
-    
-    elif current_question == 1:
-        frame:
-            xalign 0.5
-            yalign 0.5
-            xpadding 40
-            ypadding 30
-            background "#ffffff"
-            
-            vbox:
-                spacing 20
-                text "Q2: 详细描述当晚他送你回家的经过？" size 20 color "#2c3e50"
-                
-                if "car" in statement_history:
-                    textbutton "他在车里试图吻我，我推开了他":
-                        action [SetScreenVariable("current_question", 2)]
-                    
-                    textbutton "什么都没发生，他只是送我回家":
-                        action [SetScreenVariable("consistency_score", consistency_score - 30),
-                                SetScreenVariable("current_question", 2)]
-                else:
-                    textbutton "他说要送我，但我拒绝了":
-                        action [SetScreenVariable("consistency_score", consistency_score - 20),
-                                SetScreenVariable("current_question", 2)]
-                    
-                    textbutton "我们去了酒店":
-                        action [SetScreenVariable("consistency_score", consistency_score - 40),
-                                SetScreenVariable("current_question", 2)]
-    
-    elif current_question == 2:
-        frame:
-            xalign 0.5
-            yalign 0.5
-            xpadding 40
-            ypadding 30
-            background "#ffffff"
-            
-            vbox:
-                spacing 20
-                text "Q3: 为什么现在才来报案？" size 20 color "#2c3e50"
-                
-                textbutton "我需要时间收集证据":
-                    action [Return(80)]
-                
-                textbutton "我害怕":
-                    action [Return(60)]
-                
-                textbutton "我不知道这算不算犯罪":
-                    action [Return(40)]
-
-label police_statement_game:
-    call screen police_statement_game
-    
-    $ police_credibility = _return
-    
-    jump police_result
-
-label police_result:
-    scene bg police_station
-    with fade
-    
-    show police_officer young at center
-    
-    "警官" "好的，佘小姐。我们会调查。"
-    
-    "{i}翻译：什么都不会发生。{/i}"
-    
-    hide police_officer young with dissolve
-    
-    scene bg bedroom_night
-    with fade
-    
-    "{i}3周后。{/i}"
-    
-    "【短信通知】"
-    "「经调查，证据不足，不予立案。」"
-    
-    $ police_report_2 = True
-    
-    "新物品：【报警回执单2号】"
-    "又一张盖着公章的纸。又一段被程序终结的正义。"
-    
-    jump ending_a_empty_document
-
-# ==========================================
-# 路线B：HR内部举报
-# ==========================================
-
-label route_b_hr:
-    scene bg bedroom_night
-    with fade
-    
-    "你选择了内部渠道。"
-    "你相信公司会保护自己人。你相信规则之内能解决。"
-    
-    jump task_5_b_1
-
-label task_5_b_1:
-    scene bg hr_office
-    with fade
-    
-    "HR总监办公室。3楼。"
-    
-    show hr_director at center with dissolve
-    
-    'HR总监' "佘小姐，请坐。这事很严重，你明白吗？"
-    'HR总监' "指控一位高级经理……我们需要非常谨慎。"
-    
-    menu:
-        "回应："
-        
-        "我不是指控，我是举报。":
-            s "我不是指控，我是举报。这是两回事。"
-            'HR总监' "……措辞的区别。继续。"
-            
-        "我有证据。":
-            s "我有证据。工资差异记录。聊天记录。证人。"
-            'HR总监' "请出示。"
-            $ courage += 10
-            
-        "我要留记录。":
-            s "我要这次谈话有记录。邮件抄送，或者会议纪要。"
-            'HR总监' "……当然。这是标准流程。"
-            $ courage += 5
-    
-    "你把证据摊在桌上。"
-    
-    'HR总监' "明白了。我们会内部调查。有结果通知你。"
-    
-    hide hr_director with dissolve
-    
-    scene black
-    with fade
-    
-    "{i}2周后。{/i}"
-    
-    scene bg hr_office
-    with fade
-    
-    show hr_director at center
-    
-    'HR总监' "调查结束。无充分证据证明不当行为。"
-    'HR总监' "但已提醒陈经理注意职业边界。"
-    
-    s "……就这样？"
-    
-    'HR总监' "佘小姐，我建议你关注自己的职业发展。"
-    'HR总监'"对了，部门重组的通知你收到了吗？"
-    
-    hide hr_director with dissolve
-    
-    $ department_reorganized = True
-    
-    scene bg remote_office
-    with fade
-    
-    "偏远办公室。独自一人。没团队。"
-    "你的工位对着墙。没有窗。"
-    
-    if linjie_interest >= 2 or xiaojin_interest >= 1:
-        jump ending_b_whisper
-    else:
-        jump ending_b_water
-
-# ==========================================
-# 路线C：公众曝光
-# ==========================================
-label route_c_public:
-    scene bg bedroom_night
-    with fade
-    
-    "你选择了公众。"
-    "你相信声音。你相信众目睽睽之下，真相无法被掩埋。"
-    
-    jump task_5_c_1
-
-
-# ==========================================
-# 路线C：小红书发帖
-# ==========================================
-label task_5_c_1:
-
-    $ xhs_selected_evidence = []
-    $ xhs_post_title = ""
-
-    call screen xiaozishu_post
-
-    $ post_result = _return
-
-    if xhs_only_unrelated_evidence(post_result["evidence"]):
-        jump ending_manyou
-
-    elif disclosure_level == "high":
-        jump bad_end_public
-
-    else:
-        jump route_c_she_scene
 
 
 # ==========================================
@@ -6430,405 +6054,6 @@ screen post_title_input():
                 text_hover_color "#ffffff"
                 action Hide("post_title_input")
 
-
-# ==========================================
-# 坏结局：完全公开
-# ==========================================
-label bad_end_public:
-
-    scene bg company_street_evening
-    with fade
-
-    $ public_pressure += 80
-
-    "你选择了完全公开。"
-
-    "真实姓名、公司信息、聊天截图、所有细节一起被发了出去。"
-
-    "帖子发出。"
-
-    "24小时。"
-    "9万浏览量。"
-    "7000多条评论。"
-    "2家媒体联系。"
-
-    "{i}反噬。{/i}"
-
-    "她就是想要钱。"
-    "为什么不早说？"
-    "他是个好人，她在毁他。"
-
-    "压力 +[public_pressure]。睡眠 -80%%。"
-
-    "但……"
-
-    "【私信】姐妹，我也经历过。谢谢你敢说。"
-    "【私信】我在这家公司3年了，一直不敢说。"
-    "【私信】你不是一个人。"
-
-    "你不再是一个人。"
-
-    if linjie_interest >= 2 and xiaojin_interest >= 1:
-        jump route_c_she_scene
-    else:
-        jump ending_c_exit
-
-    # 改：不要碧莲结局判定
-    if linjie_interest >=2 and xiaojin_interest >= 1 and disclosure_level == "high":
-        jump route_c_she_scene
-    else:
-            jump ending_c_exit
-    
-    jump chapter5_ending
-
-    "你选择了完全公开。"
-    "真实姓名、公司信息、聊天截图、所有细节一起被转发。"
-    "流量来得比你想象中更快，也更凶。"
-
-    "有人支持你。"
-    "也有人把你的过去、照片、学校、家庭，全都翻了出来。"
-
-    "事情不再由你控制。"
-    "这不是你想要的正义。"
-
-    "【坏结局：完全暴露】"
-
-    return
-
-# ==========================================
-# 路线D：离开
-# ==========================================
-
-label route_d_leave:
-    scene bg bedroom_night
-    with fade
-    
-    "你选择了离开。"
-    "有时候，活下去比赢更重要。"
-    
-    jump task_5_d_1
-
-screen resignation_letter():
-    modal True
-    zorder 100
-    
-    default reason_choice = ""
-    
-    add Solid("#f5f5f5")
-    
-    frame:
-        xalign 0.5
-        yalign 0.48
-        xsize 760
-        ysize 720
-        background "#ffffff"
-        padding (50, 38)
-        
-        vbox:
-            spacing 16
-            xfill True
-            
-            text "辞职信":
-                size 28
-                color "#333333"
-                xalign 0.5
-            
-            null height 10
-            
-            text "尊敬的HR：":
-                size 16
-                color "#333333"
-
-            text "    我申请辞去设计部职位，最后工作日为两周后。":
-                size 16
-                color "#333333"
-            
-            null height 18
-            
-            text "辞职理由：":
-                size 16
-                color "#333333"
-                bold True
-            
-            vbox:
-                spacing 12
-                xfill True
-                
-                button:
-                    xfill True
-                    ysize 48
-                    background ("#e8e8e8" if reason_choice == "personal" else "#ffffff")
-                    hover_background "#f0f0f0"
-                    action SetScreenVariable("reason_choice", "personal")
-                    
-                    text "A. 个人原因":
-                        size 16
-                        color "#333333"
-                        xalign 0.5
-                        yalign 0.5
-                
-                button:
-                    xfill True
-                    ysize 48
-                    background ("#e8e8e8" if reason_choice == "blank" else "#ffffff")
-                    hover_background "#f0f0f0"
-                    action SetScreenVariable("reason_choice", "blank")
-                    
-                    text "B. 不填":
-                        size 16
-                        color "#333333"
-                        xalign 0.5
-                        yalign 0.5
-                
-                button:
-                    xfill True
-                    ysize 48
-                    background ("#e8e8e8" if reason_choice == "truth" else "#ffffff")
-                    hover_background "#f0f0f0"
-                    action SetScreenVariable("reason_choice", "truth")
-                    
-                    text "C. 真相（即使什么也改变不了）":
-                        size 16
-                        color "#333333"
-                        xalign 0.5
-                        yalign 0.5
-            
-            null height 18
-            
-            text "申请人：佘小曼":
-                size 16
-                color "#333333"
-                xalign 1.0
-
-            text "日期：2028年4月15日":
-                size 16
-                color "#333333"
-                xalign 1.0
-            
-            null height 18
-            
-            textbutton "提交":
-                xalign 0.5
-                xsize 180
-                ysize 48
-                background ("#cccccc" if reason_choice == "" else "#27ae60")
-                hover_background ("#cccccc" if reason_choice == "" else "#2ecc71")
-                text_size 18
-                text_color "#ffffff"
-                sensitive reason_choice != ""
-                action Return(reason_choice)
-
-label task_5_d_1:
-    call screen resignation_letter
-    
-    $ resignation_reason = _return
-    
-    scene bg bedroom_night
-    with fade
-    
-    if resignation_reason == "personal":
-        "你写了'个人原因'。最安全的答案。最沉默的答案。"
-    elif resignation_reason == "blank":
-        "你留了一栏空白。有时候，空白比文字更响亮。"
-    elif resignation_reason == "truth":
-        "你写下了真相。每一个字都像是从骨头上刮下来的。"
-        "即使什么也改变不了。"
-    
-    $ resignation_written = True
-    
-    jump last_day
-
-label last_day:
-    scene bg office_floor
-    with fade
-    
-    "最后一天。"
-    
-    show xiaojin at left with dissolve
-    
-    xiaojin "……真的要走了？"
-    
-    s "嗯。"
-    
-    xiaojin "这地方配不上你。但也……别太拼了，好吗？"
-    
-    hide xiaojin with moveoutleft
-    
-    show linjie at right with moveinright
-    
-    "林姐走过来。她看着你，很久。"
-    "然后她抱了你。"
-    "{i}她第一次碰你。{/i}"
-    
-    linjie "我撑了3年。你4个月。"
-    linjie "你比我强。"
-    
-    hide linjie with dissolve
-    
-    scene bg building_exterior
-    with fade
-    
-    "你走出去。"
-    "大楼从外面看一样。永远一样。"
-    "已经有人坐在你工位上了。"
-    
-    $ last_day_done = True
-    
-    jump chapter5_ending
-
-# ==========================================
-# 第五章结局
-# ==========================================
-
-label chapter5_ending:
-    scene bg bedroom_night
-    with fade
-    
-    "第五章结束。"
-    
-    if route_legal:
-        "你选择了法律。程序走完了，正义还在路上。"
-    elif route_hr:
-        "你选择了内部。系统保护了系统，你学会了墙的颜色。"
-    elif route_public:
-        "你选择了公众。声音很吵，但至少有人听见了。"
-    elif route_leave:
-        "你选择了离开。活着走出去，本身就是一种胜利。"
-    
-    "《She: 镜中倒影》第五章 - 完"
-    
-    return
-
-label ending_manyou:
-
-    scene bg bedroom_night
-    with fade
-
-    "帖子发出去了。"
-
-    "评论区很快吵成一团。"
-
-    "“所以到底是被骚扰，还是工资太少？”"
-    "“看了半天，全是工资问题啊。”"
-    "“标题写性骚扰，内容讲薪资，这不是带节奏吗？”"
-
-    "你看着屏幕，手指僵在半空。"
-
-    "你说了很多。"
-    "但最重要的那件事，反而被淹没了。"
-
-    "【歪结局：漫游】"
-
-    return
-
-label ending_gulang:
-    "结局：孤狼"
-    return
-
-
-# ==========================================
-# 标题选择界面
-# ==========================================
-screen post_title_input():
-    modal True
-
-    add Solid("#00000099")
-
-    frame:
-        xalign 0.5
-        yalign 0.5
-        xsize 620
-        background "#ffffff"
-        padding (36, 32)
-
-        vbox:
-            spacing 18
-
-            text "选择标题" size 24 color "#333333" xalign 0.5
-
-            textbutton "在游戏公司被性骚扰，我决定说出来":
-                xsize 540
-                ysize 46
-                background "#f2f2f2"
-                hover_background "#8e44ad"
-                text_size 17
-                text_color "#333333"
-                text_hover_color "#ffffff"
-                action [SetScreenVariable("post_title", "在游戏公司被性骚扰，我决定说出来"), Hide("post_title_input")]
-
-            textbutton "关于某游戏公司高管，一些必须讲的事":
-                xsize 540
-                ysize 46
-                background "#f2f2f2"
-                hover_background "#8e44ad"
-                text_size 17
-                text_color "#333333"
-                text_hover_color "#ffffff"
-                action [SetScreenVariable("post_title", "关于某游戏公司高管，一些必须讲的事"), Hide("post_title_input")]
-
-            textbutton "22k vs 19.5k，不只是工资":
-                xsize 540
-                ysize 46
-                background "#f2f2f2"
-                hover_background "#8e44ad"
-                text_size 17
-                text_color "#333333"
-                text_hover_color "#ffffff"
-                action [SetScreenVariable("post_title", "22k vs 19.5k，不只是工资"), Hide("post_title_input")]
-
-            textbutton "取消":
-                xalign 0.5
-                xsize 160
-                ysize 42
-                background "#dddddd"
-                hover_background "#bbbbbb"
-                text_size 16
-                text_color "#333333"
-                action Hide("post_title_input")
-
-
-# ==========================================
-# 发帖后剧情判断
-# ==========================================
-label route_c_she_scene:
-
-    # $ disclosure_choice = post_result.get("disclosure", "medium")
-
-    # if disclosure_choice == "high":
-    #     jump bad_end_public
-    # else:
-        scene bg company_street_evening
-        with fade
-
-        "黄昏的公司路口，晚风微凉，夕阳把地面染成暖橘色，路边行道树随风轻晃。"
-
-        "小曼抱着装满个人物品的纸箱，站在路口，指尖微微收紧，望着公司方向轻轻叹了口气，转头看向身旁两人。"
-
-        s "就到这里吧，麻烦你们还特意下来送我。"
-
-        linjie "傻孩子，跟我们还说这些。这段时间辛苦你了，别把所有事都憋在心里。"
-
-        xiaojin "曼姐，以后不管遇到什么事，都别自己扛着，我们都在。"
-
-        "林姐轻轻开口，哼起《送别》的旋律，小金随即轻声附和，小曼垂眸，也慢慢跟着哼唱。"
-
-        "三人合唱（声音轻柔，满是离愁）：长亭外，古道边，芳草碧连天……"
-
-        s "……我们同唱芳草天。"
-
-        "林姐与小金对视一眼，没有打断，依旧顺着旋律继续唱，晚风将歌声轻轻吹散。"
-
-        "三人合唱：晚风拂柳笛声残，夕阳山外山。"
-
-        s "我走啦，你们回去吧。"
-
-        linjie "照顾好自己，常联系。"
-
-        xiaojin "对，有事随时说！"
-
-        "小曼转身，脚步平稳地向前走去，夕阳将她的影子拉长，林姐和小金站在原地，静静望着她的背影，直到渐渐远去。"
-
-        jump chapter5_ending
 
 
 # ==========================================
@@ -7089,6 +6314,1234 @@ label ending_common:
 
     return
 
+# ==========================================
+# SHE 完整结局系统 V2
+# 全部新增 label，避免和旧 label 重名
+# ==========================================
+
+default she_last_route = ""
+default she_public_result = ""
+default she_public_selected_evidence = []
+
+
+init python:
+
+    def she_evidence_count():
+        count = 0
+
+        if cyro_office_found_files:
+            count += 1
+
+        if cyro_office_found_perfume:
+            count += 1
+
+        if cyro_office_found_photo:
+            count += 1
+
+        if cyro_office_found_notebook:
+            count += 1
+
+        return count
+
+
+    def she_has_full_evidence():
+        return she_evidence_count() >= 4
+
+
+    def she_friend_full():
+        return linjie_interest >= 2 and xiaojin_interest >= 1
+
+
+    def she_only_unrelated_evidence(selected_ids):
+        if len(selected_ids) == 0:
+            return False
+
+        related_ids = ["car", "files", "perfume", "photo", "notebook"]
+
+        for evidence_id in selected_ids:
+            if evidence_id in related_ids:
+                return False
+
+        return True
+
+
+# ==========================================
+# 最终路线选择界面
+# 证据 < 4：法律 / 内部举报 / 小紫书 / 找林姐
+# 证据 = 4：法律 / 内部举报 / 小紫书
+# ==========================================
+
+screen she_final_route_screen():
+
+    modal True
+
+    add Solid("#000000CC")
+
+    $ e_count = she_evidence_count()
+
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xsize 720
+        background "#ffffff"
+        padding (50, 42)
+
+        vbox:
+            spacing 22
+
+            text "回到家中，你看着整理好的材料。":
+                size 24
+                color "#333333"
+                xalign 0.5
+
+            text "当前证据：[e_count]/4":
+                size 18
+                color "#7b3fb2"
+                xalign 0.5
+
+            null height 10
+
+            textbutton "法律":
+                xsize 620
+                ysize 54
+                background "#eee6f5"
+                hover_background "#7b3fb2"
+                text_size 20
+                text_color "#6b3a91"
+                text_hover_color "#ffffff"
+                action Return("legal")
+
+            textbutton "内部举报":
+                xsize 620
+                ysize 54
+                background "#eee6f5"
+                hover_background "#7b3fb2"
+                text_size 20
+                text_color "#6b3a91"
+                text_hover_color "#ffffff"
+                action Return("hr")
+
+            textbutton "小紫书":
+                xsize 620
+                ysize 54
+                background "#eee6f5"
+                hover_background "#7b3fb2"
+                text_size 20
+                text_color "#6b3a91"
+                text_hover_color "#ffffff"
+                action Return("public")
+
+            if e_count < 4:
+
+                textbutton "找林姐":
+                    xsize 620
+                    ysize 54
+                    background "#eee6f5"
+                    hover_background "#7b3fb2"
+                    text_size 20
+                    text_color "#6b3a91"
+                    text_hover_color "#ffffff"
+                    action Return("linjie")
+
+
+# ==========================================
+# 路线分发
+# ==========================================
+
+label she_route_legal:
+
+    $ she_last_route = "legal"
+
+    if she_has_full_evidence():
+        jump she_ending_a3_poxiao
+
+    elif she_evidence_count() > 0:
+        jump she_ending_a1_kongwen_easter
+
+    else:
+        jump she_ending_a1_kongwen
+
+
+label she_route_hr:
+
+    $ she_last_route = "hr"
+
+    if she_has_full_evidence():
+        jump she_ending_b3_feiniao
+
+    elif she_evidence_count() > 0:
+        jump she_ending_b2_xuyu
+
+    else:
+        jump she_ending_b1_yinshui
+
+
+label she_route_public:
+
+    $ she_last_route = "public"
+
+    if she_has_full_evidence():
+        $ disclosure_level = "high"
+        jump she_ending_c3_qingyun
+
+    call screen xiaozishu_post
+
+    $ post_result = _return
+    $ she_public_selected_evidence = post_result["evidence"]
+
+    if disclosure_level == "high":
+        jump she_bad_end_public
+
+    elif she_only_unrelated_evidence(she_public_selected_evidence):
+        jump she_ending_manyou
+
+    elif she_evidence_count() == 0 and car_event:
+        jump she_ending_c2_qingping_no_evidence
+
+    elif she_evidence_count() == 0 and not car_event:
+        jump she_ending_c1_tuichang
+
+    else:
+        jump she_ending_c2_qingping_with_evidence
+
+
+label she_route_linjie:
+
+    $ she_last_route = "linjie"
+
+    if she_evidence_count() == 0 and not car_event:
+        jump she_ending_d1_xiangxi
+
+    else:
+        jump she_ending_d2_lijian
+
+
+# ==========================================
+# 完全公开中转
+# ==========================================
+
+label she_bad_end_public:
+
+    scene bg company_street_evening
+    with fade
+
+    "你选择了完全公开。"
+
+    "真实姓名、公司信息、聊天截图、所有细节一起被发了出去。"
+
+    "帖子发出。"
+
+    "24小时。"
+    "9万浏览量。"
+    "7000多条评论。"
+    "2家媒体联系。"
+
+    "{i}反噬。{/i}"
+
+    "她就是想要钱。"
+    "为什么不早说？"
+    "他是个好人，她在毁他。"
+
+    "但……"
+
+    "【私信】姐妹，我也经历过。谢谢你敢说。"
+    "【私信】我在这家公司3年了，一直不敢说。"
+    "【私信】你不是一个人。"
+
+    "你不再是一个人。"
+
+    if she_friend_full():
+        jump she_ending_songbie
+    else:
+        jump she_ending_gulang
+
+
+# ==========================================
+# A-1【空文】
+# 无证据走法律
+# ==========================================
+
+label she_ending_a1_kongwen:
+
+    scene bg police_station
+    with fade
+
+    if not car_event:
+
+        '值班民警' "您好，您举报陈永仁性骚扰，有什么证据吗？"
+
+        '小曼' "这是他给我发的朋友圈，另外我同事也经受过他的骚扰。"
+
+        '值班民警' "佘小姐，这个朋友圈并没有达到性骚扰的标准。"
+
+        '值班民警' "另外，我们的法律是“谁主张，谁举证”。但是你不可以代为举证。"
+
+        '小曼' "…………"
+
+        '值班民警' "我们理解您的心情，但是我们也需要靠证据办事。"
+
+        '值班民警' "这是受理回执，有进展会通知您。"
+
+    else:
+
+        '值班民警' "您说车里发生了性骚扰行为，有录音、录像或者第三人在场吗？"
+
+        '小曼' "没有。"
+
+        '值班民警' "那目前只能先登记。是否立案，还需要进一步判断。"
+
+    scene black
+    with fade
+
+    "{i}3周后。{/i}"
+
+    "证据不足，不予立案。"
+
+    "CG：空文"
+
+    jump she_ending_common
+
+
+# ==========================================
+# A-1【空文】彩蛋
+# 有证据但不够，走法律
+# ==========================================
+
+label she_ending_a1_kongwen_easter:
+
+    scene bg police_station
+    with fade
+
+    "你找林姐请假，去派出所提交了找到的证据照片。"
+
+    "民警在看你提供的材料。"
+
+    if not car_event:
+
+        '值班民警' "这些材料里出现的人不像你啊。"
+
+        '小曼' "这些是他骚扰的其他同事。"
+
+        '值班民警' "佘小姐，我们的法律是“谁主张，谁举证”。"
+
+        '值班民警' "你不可以代为举证。"
+
+        '小曼' "…………"
+
+        '值班民警' "这是受理回执，有进展会通知你。"
+
+        '小曼' "我提交的聊天记录、职场录音、同事证词，你们都看了吗？"
+
+        '值班民警' "这些材料我们都收到了，我们会按流程处理调查，您可以回去了。"
+
+    else:
+
+        '值班民警' "材料我们收到了。"
+
+        '值班民警' "但车里的关键事实仍然缺少直接证据。"
+
+    scene black
+    with fade
+
+    "3周后。"
+
+    "证据不足，不予立案。"
+
+    "CG：空文"
+
+    scene office
+    with fade
+
+    '小曼' "好受打击，但还是得干活，继续找线索。"
+
+    '小曼' "我一定要让陈永仁付出代价！"
+
+    "你正要继续工作，却看到陈永仁把 Bella 单独叫进办公室。"
+
+    '小曼' "？我得去看看。"
+
+    scene corridor
+    with fade
+
+    "你到办公室门口正要进去，发现林姐也在。"
+
+    "你正要进门，林姐拦住了你。"
+
+    '小曼' "不是林姐，Bella 刚刚……"
+
+    '林姐' "你在这儿等着。"
+
+    "林姐进去提起了有关其他深度项目的话题，把实习生 Bella 支走了。"
+
+    '小曼' "……小心点啊。"
+
+    'Bella' "啊？……哦。"
+
+    "看 Bella 的表情从迷茫到若有所思，你放心了，回到工位上。"
+
+    "【微信】林姐：你很勇敢。"
+    "【微信】林姐：那么我也该更进一步了。"
+
+    '小曼' "墨镜黄豆表情。"
+
+    jump she_ending_common
+
+
+# ==========================================
+# B-1【饮水】
+# 无证据内部举报
+# ==========================================
+
+label she_ending_b1_yinshui:
+
+    scene black
+    with fade
+
+    "{i}文件：调岗通知，上面有陈永仁的签字。{/i}"
+
+    "你向公司举报陈永仁性骚扰。"
+
+    "因为没有证据，公司并未接受你的举报。"
+
+    "举报的消息被陈永仁知道，你被调岗去了别的地方。"
+
+    scene office_desk
+    with fade
+
+    '小曼' "新工位和设计部还在同一层，只是离得很远。"
+
+    '小曼' "饮水机成了我唯一的同事，它不会说话，不过也不会对我动手动脚。"
+
+    '小曼' "办公区的最边缘，工作内容也是最边缘。"
+
+    '小曼' "好处的话……大概是喝水变得容易了吧。"
+
+    "小曼喝水。"
+
+    "她抬头看到对面另外一个茶水间先后进去了两个人。"
+
+    '小曼' "【联系人-Bella】我看到陈永仁和你一起在茶水间，注意点。"
+
+    '小曼' "水温刚好。"
+
+    "CG：饮水"
+
+    jump she_ending_common
+
+
+# ==========================================
+# C-1【退场】
+# 无证据、没上车，小紫书
+# ==========================================
+
+label she_ending_c1_tuichang:
+
+    scene bg bedroom_night
+    with fade
+
+    "你把自己的经历和猜测发上网，希望大家关注职场性骚扰问题。"
+
+    "公司好像发现了这个帖子，你被人事约谈了。"
+
+    scene bg hr_office
+    with fade
+
+    '小曼' "冒昧问一下，公司是想来处理这件事，还是来处理我？"
+
+    '小曼' "如果不是前者的话，不用说了。"
+
+    '小曼' "这样的地方没有待下去的必要。"
+
+    '小曼' "我辞职。"
+
+    scene black
+    with fade
+
+    "桌面收拾干净了，桌上只有一个背包和一个屏幕亮着的手机。"
+
+    "你的小紫书帖子评论总数停在423条，热度早就掉了。"
+
+    "最新一条评论是：又一个蹭热度的。"
+
+    "你关掉了手机。"
+
+    "CG：退场"
+
+    jump she_ending_common
+
+
+# ==========================================
+# D-1【相惜】
+# 找林姐，但自己不是当事人
+# ==========================================
+
+label she_ending_d1_xiangxi:
+
+    scene tea_room
+    with fade
+
+    '小曼' "林姐，不好意思又打扰你……我找律师了。"
+
+    '小曼' "但是律师说我当时没有上车，既没有实际遭遇侵害，也没有留下证据。"
+
+    '小曼' "其他收集的材料照片，我并不是当事人。几乎没有胜算。"
+
+    '小曼' "可是我看到那些照片和档案，好多惊才绝艳的前辈本应该站在更高的位置，却因为陈永仁黯淡下去了。"
+
+    '小曼' "我、我想问问你，愿意成为站出来起诉陈永仁的人吗。"
+
+    '林姐' "佘小姐，是我曾经对你说的话释放了一些错误的信号吗？"
+
+    '林姐' "你想做救世主，有野心。"
+
+    '林姐' "但是你想过吗，站在亲历者面前诉说你没有经历过这件事，需要亲历者重新再现那段记忆。"
+
+    '林姐' "你没有真正经历过，你根本……"
+
+    '林姐' "……算了。"
+
+    '林姐' "我还有工作事宜，失陪。"
+
+    '小曼' "对不起……是我冒犯。"
+
+    '林姐' "我不后悔酒后说的那番话。"
+
+    '林姐' "但也希望你能理解，一个伤口愈合前，它的痂不管有多么厚，撕下来都是血淋淋的。"
+
+    '小曼' "……我记住了。"
+
+    "林姐走开。"
+
+    '小曼' "嗯，林姐，对不起，还有谢谢你。"
+
+    '小曼' "以及祝你工作顺利！"
+
+    '小曼' "不是没营养的客套，就是希望你顺利，一切都好。"
+
+    "电梯门关上。"
+
+    scene elevator
+    with fade
+
+    '林姐' "我听到了。你也顺利。"
+
+    "CG：相惜"
+
+    jump she_ending_common
+
+
+# ==========================================
+# B-2【絮语】
+# 有证据但不足，内部举报
+# ==========================================
+
+label she_ending_b2_xuyu:
+
+    scene bg hr_office
+    with fade
+
+    '小曼' "我要举报陈永仁性骚扰，所有证据都在这里。"
+
+    'HR' "材料放这儿，你可以走了。"
+
+    "她低头干着手头的工作。"
+
+    '小曼' "您不看看证据吗？"
+
+    'HR' "……新来的？"
+
+    "她瞥了你一眼，拿起你提交的材料浏览起来。"
+
+    'HR' "现在的情况，我建议你不要做无用功。"
+
+    '小曼' "这些证据不够多吗？但是他伤害的人够多了。"
+
+    'HR' "……"
+
+    'HR' "行，我可以帮你提交，回去等通知吧。"
+
+    scene office
+    with fade
+
+    "{i}文件：调岗通知，上面有陈永仁的签字。{/i}"
+
+    "你正要离开现在的工位。"
+
+    '陈永仁' "哎，刚好，Bella 你坐这里吧。"
+
+    "Bella 惊喜地看了你一眼，趁陈永仁不注意，悄悄用眼神和你打了个招呼。"
+
+    '陈永仁' "有能力的新人真多啊，要好好深耕啊。"
+
+    scene corridor
+    with fade
+
+    '陈永仁' "从新人走到这个位置十几年，想要晋升怎么做、遇到委屈怎么忍，我可太清楚了。"
+
+    '陈永仁' "最近几年看有才的新人是越来越多，太喜欢她们了。偶尔走了几个，也会觉得可惜。"
+
+    '陈永仁' "不过还好，新人还多着呢。"
+
+    "他没再继续说话，进了办公室，你的电梯也到了。"
+
+    "电话震动。"
+
+    '陈永仁' "进来几天，凭几张照片就想扳倒我，太嫩了。"
+
+    "你正想截图。"
+
+    "陈永仁撤回了一条消息。"
+
+    '陈永仁' "小曼，前程似锦啊。"
+
+    'HR' "谈不上聪明。"
+
+    'HR' "却称得上勇敢。"
+
+    "CG：絮语"
+
+    jump she_ending_common
+
+
+# ==========================================
+# C-2【青萍】无证据，上车
+# ==========================================
+
+label she_ending_c2_qingping_no_evidence:
+
+    scene bg bedroom_night
+    with fade
+
+    "没有找到有效的证据，你决定把自己的经历放上网，让其他女性警惕起来。"
+
+    '小曼' "我是刚进公司的新员工……"
+
+    '小曼' "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
+
+    '小曼' "在我上车后，他对我实施了骚扰行为。"
+
+    "在你写下这些文字的时候，那些不愿想起的回忆又向你涌来。"
+
+    "封闭的空间。"
+    "解不开的安全带。"
+    "拉扯你的思绪和手臂。"
+    "你被束缚得喘不过气。"
+
+    '小曼' "{i}我要写，我就要写！{/i}"
+
+    '小曼' "{i}陈永仁不止一个，但一个陈永仁就能祸害一百个。{/i}"
+
+    '小曼' "{i}受害人不止我一个，但一个我或许能帮助一百个。{/i}"
+
+    "一个小时过去，你整理好了帖子，发布。"
+
+    '小曼' "【置顶】希望广大姐妹擦亮眼睛，保护自己。写下这些的时候我很折磨，但也希望有相似经历的姐妹，在能够接受的范围内，不要停止发声。"
+
+    "评论：有没有证据啊，看半天了。"
+    "评论：摸摸博主，性骚扰真的很难搜证，唉。"
+    "评论：未知全貌，不予置评。"
+    "评论：没图没真相，起号的。"
+
+    '小曼' "{i}唉……难道没有留下证据，就是没有留下伤害吗？{/i}"
+
+    "【新评论：楼上怎么说话呢，没证据就是没有留下伤害吗？】"
+    "【新评论：不是所有人在被侵权的那一刻都有空架好摄像机。】"
+    "【新评论：谢谢博主，这是我第一次感觉我的遭遇不是因为我做错了事。】"
+
+    "小曼微笑。"
+
+    "CG：青萍"
+
+    jump she_ending_common
+
+
+# ==========================================
+# C-2【青萍】有证据但不足
+# ==========================================
+
+label she_ending_c2_qingping_with_evidence:
+
+    scene bg bedroom_night
+    with fade
+
+    "在给材料进行隐私处理之后，你把自己搜集的证据和搜证经历放上网，让其他女性警惕起来。"
+
+    '小曼' "我是刚进公司的新员工……"
+
+    if car_event:
+
+        '小曼' "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
+
+        '小曼' "我上了他的车，这之后他在车内对我实施性骚扰。"
+
+    else:
+
+        '小曼' "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
+
+        '小曼' "我拒绝了上车，但这之后我发觉不对劲，开始关注他的行为。"
+
+    '小曼' "以儒雅面貌示人的人，未必是好人。希望广大姐妹擦亮眼睛，保护自己。"
+
+    "一个小时过去，你整理好了帖子，发布。"
+
+    '小曼' "【置顶】希望遭遇这些的姐妹好起来。我在收集的材料中看到你们都曾惊才绝艳，愿你们也能在往后熠熠生辉。"
+
+    "帖子发出后，浏览量逐渐攀升。"
+
+    "200。"
+    "3000。"
+    "15000。"
+    "80000+。"
+
+    "林姐电话打了进来。"
+
+    '林姐' "看帖呢？"
+
+    '小曼' "诶？！林姐你怎么知道？"
+
+    '林姐' "快别傻乐了，我还知道这是你写的。赶紧把头像换了吧，主页暴露隐私的地方也隐藏下。"
+
+    '林姐' "下次干这种事记得换小号，或者至少换个 IP。"
+
+    '小曼' "哦哦哦，我马上换！谢谢林姐！"
+
+    '林姐' "这事你办得谈不上聪明。"
+
+    '小曼' "……嘿嘿。"
+
+    '林姐' "但称得上勇敢。"
+
+    '小曼' "不过，既然林姐你刷到了，是不是也留言了？"
+
+    '林姐' "哼，我可不像你就差把名字挂脸上了，慢慢找吧。"
+
+    "【评论：其实我也遇到了……但当时快要职级评定了，我不敢说。】"
+    "【评论：我也是。】"
+    "【评论：我也是，只敢和朋友说。博主好勇敢。】"
+    "【评论：还有没有证据啊，看半天了没个露脸的。】"
+    "【评论：图都不敢放全，P 的吧。】"
+    "【新评论：我最近也遇到了一样的事情，我明天就举报那个老色胚！】"
+    "【新评论：你举报那我也举报。】"
+    "【新评论：我有点顾虑，但我明天准备提醒新来的小实习生注意点。】"
+
+    '小曼' "找不到林姐，不过——"
+
+    '小曼' "发现了新的希望。"
+
+    "CG：青萍"
+
+    jump she_ending_common
+
+
+# ==========================================
+# D-2【利剑】
+# 找林姐之后，继续留下收集证据
+# ==========================================
+
+label she_ending_d2_lijian:
+
+    scene tea_room
+    with fade
+
+    if she_evidence_count() == 0:
+
+        '小曼' "林姐，不好意思又打扰你……我找律师了。"
+
+        '小曼' "但是律师说，我没有留下被骚扰的证据，在其他收集的材料里我也不是当事人。几乎没有胜算。"
+
+        '小曼' "可是我看到那些照片和档案，好多惊才绝艳的前辈本应该站在更高的位置，却因为陈永仁黯淡下去了。"
+
+        '小曼' "我、我想问问你，愿意成为站出来起诉陈永仁的人吗。"
+
+        '林姐' "佘小姐，你想做救世主，有野心。但是你回忆过那个时刻吗？"
+
+        '林姐' "难受吗？是不是恨不得大脑完全不记得这段记忆？"
+
+        '小曼' "……对不起，我应该将心比心。"
+
+        '林姐' "道歉我收下了。不过走到今天，我没那么脆弱。还有工作事宜，失陪。"
+
+        '小曼' "林姐！"
+
+        '小曼' "我们还能反抗吗？"
+
+    else:
+
+        '小曼' "林姐，我之后找了律师。"
+
+        '林姐' "嗯，之后呢。"
+
+        '小曼' "律师说，证据不够，而且在收集的材料里我不是当事人。几乎没有胜算。"
+
+        '小曼' "可是我看到那些照片和档案，好多惊才绝艳的前辈本应该站在更高的位置，却因为陈永仁黯淡下去了。"
+
+        '小曼' "我、我想问问你……"
+
+        '小曼' "我想问问你，你最近过得好吗？"
+
+        '小曼' "以前过得好吗，以后也会过得好吗？"
+
+        '林姐' "……"
+
+        '林姐' "小曼，have a good day。"
+
+        '小曼' "我没问，但我觉得我做对了。"
+
+    scene office
+    with fade
+
+    '小曼' "我留下来继续收集更多证据。"
+
+    "这件事比想象中困难。"
+
+    "陈永仁看你没上车，对你有所警觉，继续骚扰你，试探你是否有反抗倾向。"
+
+    "你因为要留在公司里，只能极力隐忍。"
+
+    "他看你像是要留在这里工作，好像找到了你的弱点。"
+
+    "几个月里，你要防他骚扰你，还要防他骚扰更多的她。"
+
+    "你的防备让陈永仁没法得手，他把你调去了部门边缘。"
+
+    scene black
+    with dissolve
+
+    '小曼' "这就是林姐每天面对的吗。"
+
+    '小曼' "只是过了几个月我就有点撑不住了，她却走过了好几年。"
+
+    scene office
+    with fade
+
+    "屏幕反光里出现林姐的脸。"
+
+    '小曼' "！"
+
+    '林姐' "你今天把工位搬回去，等会儿会有项目文件发你。"
+
+    '小曼' "诶？"
+
+    scene office
+    with fade
+
+    "你把办公用品放在原来的工位上，发现办公室东西都换了。"
+
+    '小曼' "今天陈总……不在？"
+
+    '小金' "办公室易主啦！现在是林总掌管我们的生杀大权。"
+
+    'Bella' "呜呜终于可以不用穿长袖长裤严防死守了，这几个月闷死我了！"
+
+    '林姐' "聚在门口不干活，要造反？"
+
+    '小金' "老大我马上走，马上走！"
+
+    'Bella' "嘿嘿，我也走。"
+
+    "小金和 Bella 作鸟兽散。"
+
+    if she_evidence_count() == 0:
+
+        '小曼' "我是要造反的，不过，好像已经成功了？"
+
+    else:
+
+        '林姐' "你呢？"
+
+        '小曼' "哈哈我也走。"
+
+        '林姐' "去吧，have a nice day。"
+
+        '小曼' "老大，祝你有 many many nice days！"
+
+    "CG：利剑"
+
+    jump she_ending_common
+
+
+# ==========================================
+# A-3【破晓】
+# 证据完整，法律
+# ==========================================
+
+label she_ending_a3_poxiao:
+
+    scene bg bedroom_night
+    with fade
+
+    "在给材料进行隐私处理之后，你把自己搜集的证据和搜证经历放上网，让其他女性警惕起来。"
+
+    '小曼' "我是佘小曼，几个月前刚进公司的新员工。"
+
+    '小曼' "在项目完成的一次部门聚餐结束后，男上司陈永仁提出送我回家。"
+
+    if car_event:
+
+        '小曼' "我上了他的车，这之后他在车内对我实施性骚扰。"
+
+        '小曼' "这段记忆对我来说很痛苦，但我知道如果我忍气吞声，以后都将活在对自己无能为力的质疑里。"
+
+        '小曼' "我决定反抗，之后我找到了他骚扰其他前辈的资料。"
+
+    else:
+
+        '小曼' "我拒绝了上车，但这之后我发觉不对劲，开始关注他的行为。"
+
+        '小曼' "之后我找到了他骚扰其他前辈的资料。"
+
+    '小曼' "我已经寻求法律手段维权，虽然很难，但我们的处境已经很暗，任何一丝可能都代表一线光亮。"
+
+    "把所有证据填写完毕，你直接发布了。"
+
+    "贴文一经发布就获得了极高热度。"
+
+    "【高赞评论：不要温和地走入那个良夜。】"
+    "【高赞评论：博主记得说一声开庭时间啊，我要去支持你！】"
+    "【最高点赞：博主姓 She 这个巧合真是……she is me，怎么能不支持。】"
+
+    "多家媒体后台私信联系你。"
+
+    scene bg court_outside
+    with fade
+
+    "开庭当天，你出现在法院大门外，门口有很多人。"
+
+    "加油哦。"
+    "你真的很勇敢，吾辈楷模。"
+    "英雌！"
+
+    '林姐' "这么多年拼到这个位置全靠理智决策，但今天我也抛弃理智地希望你赢。"
+
+    '???' "我也是。去吧，给那个良夜一点颜色看看。"
+
+    scene bg court_outside
+    with fade
+
+    "下发判决结果那天来了，你听完判决走出法院。"
+
+    '记者1' "佘女士，你现在是什么感觉？感觉值得吗？"
+
+    '记者2' "现在 SheIsMe 词条爆火，你被称作反性骚扰吹哨人，你怎么看？"
+
+    '小曼' "从判决结果看，我输了。"
+
+    '小曼' "但现在那么多的性骚扰者被曝光，职场性别议题被带到大众面前。"
+
+    '小曼' "大家现在也不仅仅凭借结果定义这件事为失败，这大概就是意义。"
+
+    '小曼' "至于吹哨人，不敢当啦。好多位前辈在我之前就默默奋斗着呢。"
+
+    '小曼' "可能抗争的办法不同，但是我们奋斗的目标是一样的。"
+
+    '小曼' "我想这就是 women，不仅是女性，也是我们本身。"
+
+    "CG：破晓"
+
+    jump she_ending_common
+
+
+# ==========================================
+# B-3【飞鸟】
+# 证据完整，内部举报
+# ==========================================
+
+label she_ending_b3_feiniao:
+
+    scene bg hr_office
+    with fade
+
+    '小曼' "我要举报陈永仁性骚扰，所有证据都在这里。"
+
+    "HR 在看小曼给的证据。之后她抬起头，小曼发现这是之前在电梯遇到的陌生女人。"
+
+    '???' "这些东西你没发在别的地方吧。"
+
+    '小曼' "……"
+
+    'HR' "公司看重声誉，要是泄露出去了，我们也很难办。你要是还想在这干，就小心点。"
+
+    'HR' "把事情闹太大，关注度就上去了。公众盯着这里的一言一行，公司都不好作反应。"
+
+    'HR' "明白我的意思吗？"
+
+    "小曼发觉了她威胁一样的提醒。"
+
+    'HR' "文件有点多，你的材料可能明后天交上去。你可以走了。"
+
+    "小曼遂按照指示发帖闹大。"
+
+    jump she_ending_c3_qingyun
+
+
+# ==========================================
+# C-3【青云】
+# 证据完整，小紫书自动全部公开
+# 与飞鸟合并
+# ==========================================
+
+label she_ending_c3_qingyun:
+
+    scene bg bedroom_night
+    with fade
+
+    "在给材料里除了陈永仁的人像进行隐私处理之后，你把自己搜集的证据和搜证经历放上网。"
+
+    '小曼' "我是佘小曼，几个月前刚进某游戏公司的新员工。"
+
+    '小曼' "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
+
+    if car_event:
+
+        '小曼' "我上了他的车，这之后他在车内对我实施性骚扰。"
+
+        '小曼' "这段记忆对我来说很痛苦，但我知道如果我忍气吞声，以后都将活在对自己无能为力的质疑下。"
+
+        '小曼' "我决定反抗，之后我找到了他骚扰其他前辈的资料。"
+
+    else:
+
+        '小曼' "我拒绝了上车，但这之后我发觉不对劲，开始关注他的行为。"
+
+        '小曼' "之后我找到了他骚扰其他前辈的资料。"
+
+    '小曼' "我决定把这件事曝光出来，虽然很难说最后是这件事被处理还是我被处理。"
+
+    '小曼' "但我们的处境已经很暗，任何一丝可能都代表一线光亮。"
+
+    '小曼' "我想要试试看。"
+
+    "把所有证据填写完毕，你直接发布了。"
+
+    "贴文一经发布就获得了极高热度。"
+
+    "【高赞评论：大家多多关注这件事情啊，只有够多的眼睛盯着，公司才不敢轻举妄动。】"
+    "【高赞评论：这个男的叫陈永仁，公司是某游戏公司。】"
+    "【最高点赞：博主姓 She 这个巧合真是……she is me，怎么能不支持。】"
+
+    "多家媒体后台私信联系你。"
+
+    "网上情况持续发酵，大家建立 #SheIsMe 词条说出职场性骚扰或性别歧视问题。"
+
+    "公司信息和陈永仁的劣迹被扒出。"
+
+    "【评论：小曼，我也是曾经被他性骚扰的一员。如果你需要帮助，请联系我，我愿意和你站在一起。】"
+    "【评论：我是那个笔记本里被语焉不详提到的李。希望我的亲身经历能给各位在职的姐妹提个醒。】"
+    "【评论：我是新来的实习生，也遇到了陈永仁。但我很幸运，部门里有两位前辈都在保护我。】"
+
+    scene bg company_street_evening
+    with fade
+
+    "陈永仁上班时被媒体记者抓到采访，引起一些骚乱。"
+
+    '记者1' "您好，您是陈永仁先生吗？昨天网络上有关于您性骚扰女员工的事件，您是否承认？"
+
+    '记者2' "据社媒上目前现身的受害者发言，您多次性骚扰员工。公司内部是否有包庇行为？"
+
+    '陈永仁' "你们是？"
+
+    "上班时间快到了，人群逐渐聚集驻足围观。"
+
+    "公司内部今天谈论的话题都是陈永仁被记者围堵。"
+
+    '职员1' "最近不是在升职考核吗？这下他过不了了吧。"
+
+    '职员2' "这要还能顺利晋升，公司得被喷死。"
+
+    '职员3' "公司还是先关注舆情吧。"
+
+    "公司的举动被网民盯着，对陈永仁做了延迟升职的处理。"
+
+    "同时为了降低大众关注度，让他近期居家办公。"
+
+    scene chen_office
+    with fade
+
+    '小曼' "{i}那天面试的时候，站在这里感觉自己被重重地压着。现在……{/i}"
+
+    "现在这间办公室不再是陈永仁的了。"
+
+    "香水、档案和其他旧迹都被清除。"
+
+    "这间房间迎来了新生。"
+
+    "还有新的主人。"
+
+    '???' "办公室就你一个？你们林总呢？"
+
+    '小曼' "林总出去了，文件由我来转交就好。"
+
+    '小曼' "诶？您……"
+
+    '???' "怎么，不是前几天还见过，不认识了？"
+
+    '小曼' "是太认识了，您的耳饰很少见，但我总感觉在公司之外看到过……"
+
+    '小曼' "！"
+
+    '???' "想起来了？我还给你投了60块的推流呢。没想到帖子本身就很有关注度了。"
+
+    '???' "很高兴认识你，小曼。"
+
+    "她向你伸出手。"
+
+    '小曼' "我也是。"
+
+    "CG：青云 / 飞鸟"
+
+    jump she_ending_common
+
+
+# ==========================================
+# 非主线【送别】
+# 完全曝光且林姐、小金兴趣值满足
+# ==========================================
+
+label she_ending_songbie:
+
+    scene bg company_street_evening
+    with fade
+
+    "暴露后，不知何时传出了你做的拆解方案抄袭的消息，你被公司解雇了。"
+
+    "解雇那天，你在楼下，发现陈永仁在落地窗看你。"
+
+    "他没看见公司大门口的遮雨檐挡住了你身边的人。"
+
+    if linjie_interest >= 2 and xiaojin_interest < 1:
+
+        '林姐' "我尽量跟人事那边说，不让你履历上落黑点。之后要推荐信就联系我。"
+
+        '小曼' "好……林姐，谢谢你。"
+
+    elif xiaojin_interest >= 1 and linjie_interest < 2:
+
+        '小金' "小曼……我都知道了，我会努力给留下的女同事们帮忙的。"
+
+        '小金' "陈永仁真不是人！"
+
+        '小曼' "不是人！"
+
+    else:
+
+        '林姐' "我尽量跟人事那边说，不让你履历上落黑点。之后要推荐信就联系我。"
+
+        '小金' "小曼……我都知道了，我会努力给留下的女同事们帮忙的。"
+
+        '小曼' "好……谢谢你们。"
+
+        '小金' "陈永仁真不是人。"
+
+        '林姐' "嗯。"
+
+        '小金' "事已至此，唱首歌送送你——长亭外，古道边……"
+
+        '小曼' "芳草天……"
+
+        '林姐' "不是芳草碧连天吗，怎么……"
+
+        '林姐' "哦。"
+
+    "CG：送别"
+
+    jump she_ending_common
+
+
+# ==========================================
+# 非主线【鸵鸟】
+# 可在你想放弃/沉默时 jump 这里
+# ==========================================
+
+label she_ending_tuoniao:
+
+    scene bg bedroom_night
+    with fade
+
+    "你把手机扣在床头。"
+
+    "通知还在震动。"
+
+    "世界像一只手，把你往被子里按。"
+
+    '小曼' "睡一觉吧。"
+
+    '小曼' "一切，都会好的。"
+
+    "CG：鸵鸟"
+
+    jump she_ending_common
+
+
+# ==========================================
+# 非主线【孤狼】
+# 完全曝光但没有同伴
+# ==========================================
+
+label she_ending_gulang:
+
+    scene bg company_street_evening
+    with fade
+
+    "暴露后，不知何时传出了你做的拆解方案抄袭的消息，你被公司解雇了。"
+
+    "你一个人抱着纸箱站在公司门口。"
+
+    "陈永仁站在落地窗后，看着你。"
+
+    "没有人从楼里走出来。"
+
+    "没有人叫住你。"
+
+    "没有同伴的日子里，一只狼要小心啊。"
+
+    "CG：孤狼"
+
+    jump she_ending_common
+
+
+# ==========================================
+# 非主线【漫游】
+# 选了和性骚扰无关的证据
+# ==========================================
+
+label she_ending_manyou:
+
+    scene bg bedroom_night
+    with fade
+
+    "你把知道的信息全部填了上去，一键发布。"
+
+    "【评论：这到底在说什么。】"
+    "【评论：没看懂。】"
+    "【评论：是被骚扰还是工资太少？】"
+    "【评论：疑似工资太少编炸裂事件博眼球，散了散了。】"
+
+    "你看着屏幕，手指僵在半空。"
+
+    "你说了很多。"
+
+    "但最重要的那件事，反而被淹没了。"
+
+    "CG文案：一案一诉，保持专注。"
+
+    "CG：漫游"
+
+    jump she_ending_common
+
+
+# ==========================================
+# SHE V2 统一收束
+# ==========================================
+
+label she_ending_common:
+
+    scene black
+    with fade
+
+    "{i}SHE{/i}"
+    "{i}THE END{/i}"
+
+    return
 
 #     #1. 酒单（左侧）
 #     button:
