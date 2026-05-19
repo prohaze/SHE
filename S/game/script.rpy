@@ -2185,7 +2185,7 @@ label angry_game_calculation:
 
 label family_tax_end:
     "{i}The phone buzzes a moment later.{/i}"
-    'Xiaozishu a follower of yours'"Girl, I saw your post about your family asking for money. Same boat. You’re not alone."
+    'PurpleNote: Your Follower'"Girl, I saw your post about your family asking for money. Same boat. You’re not alone."
     $ xiaohongshu_contact = True
     "{i}New contact: Xiaozishu Sis{/i}"
     jump task_1_6
@@ -2323,6 +2323,7 @@ label task_1_6_end:
     hide she_02_sweat_eye_nobag onlayer top
     hide she_03_tinysmile_eye_nobag onlayer top
     hide she_09_unhappy onlayer top
+    hide she_06_surprise_eye_nobag onlayer top
     play sound "phone_vibration.mp3" #替换短版
     show linjie_wx_lockscreen with moveinbottom:
         zoom 1.4
@@ -7007,24 +7008,24 @@ label ending_b_whisper:
 
     s "I want to report Chan Wing Yan for sexual harassment. All the evidence is here."
 
-    "HR" "Leave the materials here. You may go."
+    'HR' "Leave the materials here. You may go."
 
     "{i}She keeps her head down, still working on her own tasks.{/i}"
 
     s "Aren’t you going to look at the evidence?"
 
-    "HR" "...New here?"
+    'HR' "...New here?"
 
     "{i}She glances at you, then picks up the materials and slowly browses through them.{/i}"
 
-    "HR" "...Given the current situation, I suggest you don’t waste your effort."
+    'HR' "...Given the current situation, I suggest you don’t waste your effort."
 
     s "Isn’t this enough evidence? Even if it isn’t, he has hurt enough people."
 
     "{i}She does not answer.{/i}"
 
-    "HR" "..."
-    "HR" "Fine. I can submit this for you. Go back and wait for notice."
+    'HR' "..."
+    'HR' "Fine. I can submit this for you. Go back and wait for notice."
 
     scene black
     with fade
@@ -7065,13 +7066,13 @@ label ending_b_whisper:
 
     "{i}Chan Wing Yan recalled a message.{/i}"
 
-    chen "Siu Man, I wish you a bright future."
+    chen "Siu Man, wish you a bright future."
 
     scene black
     with fade
 
-    "HR" "I wouldn’t call that smart."
-    "HR" "But I would call it brave."
+    'HR' "I wouldn’t call that smart."
+    'HR' "But I would call it brave."
 
     # CG：絮语
     # scene cg_whisper with fade
