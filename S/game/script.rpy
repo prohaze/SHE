@@ -24,6 +24,21 @@ init python:
         "window": "chapter0_items/window_scenery.png" 
     }
 
+image gulang = "images/ending CG/gulang.jpg"
+image gulang_b = "images/ending CG/gulang_b.jpg"
+image tuoniao = "images/ending CG/tuoniao.jpg"
+image linjian = "images/ending CG/linjian.jpg"
+image kongwen = "images/ending CG/kongwen.jpg"
+image yinshui = "images/ending CG/yinshui.jpg"
+image tuichang = "images/ending CG/tuichang.jpg"
+image xiangxi = "images/ending CG/xiangxi.jpg"
+image qingping = "images/ending CG/qingping.jpg"
+image xuyu = "images/ending CG/xuyu.jpg"
+image poxiao = "images/ending CG/poxiao.jpg"
+image feiniao = "images/ending CG/feiniao.jpg"
+image yinshui_b = "images/ending CG/yinshui_b.jpg"
+image yinshui_color = "images/ending CG/yinshui_color.jpg"
+
 #小曼立绘的淡入淡出，onlayer使用必须用这个控制
 transform top_dissolve:
     # 进入
@@ -3888,7 +3903,24 @@ label linjie_refuse_help:
             jump cyro_break_in
         "找别的办法":
             s "再想想别的办法吧。"
-            jump chapter4_end
+            jump encounter_bella
+
+label encounter_bella:
+    # 场景：走廊
+    "{i}你在走回自己工位的路上想着其他办法，没注意迎面走来的人。{/i}"
+    jump bella
+
+label bella:
+    '???' "哎哎哎！"
+    "{i}文件撒了{/i}"
+    s "！"
+    s "不好意思我在想别的事，我帮你……"
+    s "你看顺序对吗？"
+    '???' "哦没事，陈总要得不急，我等会儿整整，谢谢前辈！"
+    s "你……实习生？"
+    "Bella" "对的！我是Bella，现在是实习生，不过陈总最近经常派我干活，我觉得我有很大可能转正！"
+    s "哦……那加油啊。"
+    jump week13_lawyer_evidence_check
 
     # # 5分钟倒计时搜查
     # call screen cyro_office_timer(duration=300.0)  # 5分钟 = 300秒
@@ -6863,6 +6895,8 @@ label ending_a_empty_document:
     "{i}Three weeks later:{/i}"
     "{i}Insufficient evidence. Case not accepted.{/i}"
 
+    $ unlock_cg("kongwen")  # 解锁"空文"CG
+
     # CG：空文
     # scene cg_empty_document with fade
     # "{i}A blank document. A report that never became a case.{/i}"
@@ -6903,6 +6937,8 @@ label ending_b_water:
     "{i}All permissions for core projects have been removed from your computer.{/i}"
     "{i}No real work emails come anymore.{/i}"
 
+    $ unlock_cg("yinshui")
+
     # CG：饮水
     # scene cg_water with fade
 
@@ -6935,6 +6971,8 @@ label ending_c_exit:
     "{i}Comment: No pictures, no truth. Just account farming.{/i}"
 
     "{i}You turn off your phone.{/i}"
+
+    $ unlock_cg("tuichang")
 
     # CG：退场
     # scene cg_exit with fade
@@ -6993,6 +7031,8 @@ label ending_d_mutual_respect:
 
     linjie "I heard you."
     linjie "You too. I hope things go smoothly for you too."
+
+    $ unlock_cg("xiangxi")
 
     # CG：相惜
     # scene cg_mutual_respect with fade
@@ -7074,6 +7114,8 @@ label ending_b_whisper:
     'HR' "I wouldn’t call that smart."
     'HR' "But I would call it brave."
 
+    $ unlock_cg("xuyu")
+
     # CG：絮语
     # scene cg_whisper with fade
 
@@ -7086,7 +7128,7 @@ label ending_common:
 
     "{i}SHE{/i}"
     "{i}THE END{/i}"
-
+    $ renpy.full_restart()
     return
 
 
