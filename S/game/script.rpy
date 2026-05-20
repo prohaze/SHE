@@ -2554,7 +2554,7 @@ screen salary_calc():
             xsize 600
             ysize 200
 
-            text"正常应该是：" size 24
+            text"The correct amount should be:" size 24
             null height 30
             text"16,500 + 2,000 + 500 + 500 = 19,500" size 24 xalign 0.5
             text"↑" size 25 xalign 0.395
@@ -2562,7 +2562,7 @@ screen salary_calc():
             # 分隔线
             add Solid("#cccccc") xsize 600 ysize 1 xalign 0.5
             null height 30
-            text"我的绩效调整被扣发了，没有附带任何原因说明。" size 24 xalign 0.5
+            text"My performance adjustment pay was withheld, with no explanation attached." size 24 xalign 0.5
             null height 50
             textbutton "×":
                 xalign 0.5
@@ -2576,7 +2576,7 @@ screen salary_calc():
 
 label chapter_2:
     image chapter2_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
-    show chapter2_title "Chapter 2 裂缝"
+    show chapter2_title "Chapter 2 Cracks"
     with fade
     pause 2
     hide chapter2_title
@@ -2660,7 +2660,7 @@ screen clue_unequal_wage:
             text "Sky and earth, shade and glow; her and him, split below." size 24 xalign 0.5
             null height 40
             
-            textbutton "收起":
+            textbutton "Close":
                 text_size 24
                 xalign 0.5    
                 # 关键：使用Return()结束call screen
@@ -3090,13 +3090,13 @@ screen drink_menu:
         xalign 0.5
         yalign 0.6
         
-        textbutton "啤酒": 
+        textbutton "beer": 
             action [Hide("drink_menu"), Jump("beer")]
-        textbutton "红酒": 
+        textbutton "wine": 
             action [Hide("drink_menu"), Jump("wine")]
-        textbutton "鸡尾酒": 
+        textbutton "cocktail": 
             action [Hide("drink_menu"), Jump("cocktail")]
-        textbutton "汽水": 
+        textbutton "soda": 
             action [Hide("drink_menu"), Jump("soda")]
 
 label bar_menu_choice:
@@ -3229,7 +3229,7 @@ screen clue_moderec:
             text "你开始明白，这不是偶然。" size 24 xalign 0.5
             null height 40
 
-            textbutton "收起":
+            textbutton "Close":
                 text_size 24
                 xalign 0.5
                 # 关键：使用Return()结束call screen
@@ -3488,7 +3488,7 @@ label bar_ending:
     chen "上车吧，我们顺路。"
     
     if investigation_skill > 1:
-        $ notice_take_ride("他怎么知道顺不顺路？", "他问过我住在哪里吗？")
+        $ notice_take_ride("How did he know if it was on his way? ", "Did he ask me where I lived?")
     else:
         pass
     
@@ -3905,7 +3905,24 @@ label linjie_refuse_help:
             jump cyro_break_in
         "找别的办法":
             s "再想想别的办法吧。"
-            jump chapter5
+            jump encounter_bella
+
+label encounter_bella:
+    # 场景：走廊
+    "{i}你在走回自己工位的路上想着其他办法，没注意迎面走来的人。{/i}"
+    jump bella
+
+label bella:
+    '???' "哎哎哎！"
+    "{i}文件撒了{/i}"
+    s "！"
+    s "不好意思我在想别的事，我帮你……"
+    s "你看顺序对吗？"
+    '???' "哦没事，陈总要得不急，我等会儿整整，谢谢前辈！"
+    s "你……实习生？"
+    "Bella" "对的！我是Bella，现在是实习生，不过陈总最近经常派我干活，我觉得我有很大可能转正！"
+    s "哦……那加油啊。"
+    jump week13_lawyer_evidence_check
 
     # # 5分钟倒计时搜查
     # call screen cyro_office_timer(duration=300.0)  # 5分钟 = 300秒
@@ -5599,9 +5616,9 @@ init python:
 
         if len(selected_labels) == 0:
             if len(all_items) == 0:
-                return "我没有留下证据。可这不代表事情没有发生。只是这一次，我不想再装作没事。"
+                return "I didn't leave any evidence. But that doesn't mean nothing happened. It's just that this time, I don't want to pretend nothing happened."
             else:
-                return "我手上有一些材料，但我还没有决定公开哪一部分。"
+                return "I have some materials, but I haven't decided which part to release yet."
 
         return "我整理了" + str(len(selected_labels)) + "份材料：" + "、".join(selected_labels) + "。我知道这条路会很难，但我不想再沉默。"
 
@@ -5985,12 +6002,12 @@ screen xiaozishu_post():
                 spacing 18
                 yalign 0.5
 
-                text "标题：":
+                text "Title":
                     size 18
                     color "#333333"
                     yalign 0.5
 
-                textbutton (xhs_post_title if xhs_post_title else "点击输入标题..."):
+                textbutton (xhs_post_title if xhs_post_title else "Click to enter a title..."):
                     xsize 660
                     ysize 46
                     background "#f3edf8"
@@ -6001,7 +6018,7 @@ screen xiaozishu_post():
                     action Show("post_title_input")
 
             # 披露程度
-            text "披露程度：":
+            text "Level of disclosure:":
                 size 18
                 color "#333333"
 
@@ -6079,7 +6096,7 @@ screen xiaozishu_post():
                                     action Function(xhs_toggle_evidence, ev["id"])
 
             # 发布内容
-            text "发布内容：":
+            text "Release content:":
                 size 18
                 color "#333333"
 
@@ -6221,6 +6238,8 @@ label ending_a_empty_document:
     "{i}Three weeks later:{/i}"
     "{i}Insufficient evidence. Case not accepted.{/i}"
 
+    $ unlock_cg("kongwen")  # 解锁"空文"CG
+
     # CG：空文
     # scene cg_empty_document with fade
     # "{i}A blank document. A report that never became a case.{/i}"
@@ -6262,6 +6281,8 @@ label ending_b_water:
     "{i}All permissions for core projects have been removed from your computer.{/i}"
     "{i}No real work emails come anymore.{/i}"
 
+    $ unlock_cg("yinshui")
+
     # CG：饮水
     # scene cg_water with fade
     $ unlock_cg("yinshui")
@@ -6295,6 +6316,8 @@ label ending_c_exit:
     "{i}Comment: No pictures, no truth. Just account farming.{/i}"
 
     "{i}You turn off your phone.{/i}"
+
+    $ unlock_cg("tuichang")
 
     # CG：退场
     # scene cg_exit with fade
@@ -6354,6 +6377,8 @@ label ending_d_mutual_respect:
 
     linjie "I heard you."
     linjie "You too. I hope things go smoothly for you too."
+
+    $ unlock_cg("xiangxi")
 
     # CG：相惜
     # scene cg_mutual_respect with fade
@@ -6436,6 +6461,8 @@ label ending_b_whisper:
     'HR' "I wouldn’t call that smart."
     'HR' "But I would call it brave."
 
+    $ unlock_cg("xuyu")
+
     # CG：絮语
     # scene cg_whisper with fade
     $ unlock_cg("xuyu")
@@ -6449,7 +6476,7 @@ label ending_common:
 
     "{i}SHE{/i}"
     "{i}THE END{/i}"
-
+    $ renpy.full_restart()
     return
 
 # ==========================================
@@ -6527,19 +6554,19 @@ screen she_final_route_screen():
         vbox:
             spacing 22
 
-            text "回到家中，你看着整理好的材料。":
+            text "Back home, you look at the materials you've organized.":
                 size 24
                 color "#333333"
                 xalign 0.5
 
-            text "当前证据：[e_count]/4":
+            text "current evidence: [e_count]/4":
                 size 18
                 color "#7b3fb2"
                 xalign 0.5
 
             null height 10
 
-            textbutton "法律":
+            textbutton "law":
                 xsize 620
                 ysize 54
                 background "#eee6f5"
@@ -6549,7 +6576,7 @@ screen she_final_route_screen():
                 text_hover_color "#ffffff"
                 action Return("legal")
 
-            textbutton "内部举报":
+            textbutton "Internal reporting":
                 xsize 620
                 ysize 54
                 background "#eee6f5"
@@ -6559,7 +6586,7 @@ screen she_final_route_screen():
                 text_hover_color "#ffffff"
                 action Return("hr")
 
-            textbutton "小紫书":
+            textbutton "Purple Note":
                 xsize 620
                 ysize 54
                 background "#eee6f5"
@@ -6571,7 +6598,7 @@ screen she_final_route_screen():
 
             if e_count < 4:
 
-                textbutton "找林姐":
+                textbutton "Looking for Lam":
                     xsize 620
                     ysize 54
                     background "#eee6f5"
