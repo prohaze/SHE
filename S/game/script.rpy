@@ -5,6 +5,21 @@ define config.layers = ['master', 'transient', 'screens', 'interface', 'front'] 
 #成就相关数值
 default escape = 0 #【成就：鸵鸟】
 
+image gulang = "images/ending CG/gulang.jpg"
+image gulang_b = "images/ending CG/gulang_b.jpg"
+image tuoniao = "images/ending CG/tuoniao.jpg"
+image linjian = "images/ending CG/linjian.jpg"
+image kongwen = "images/ending CG/kongwen.jpg"
+image yinshui = "images/ending CG/yinshui.jpg"
+image tuichang = "images/ending CG/tuichang.jpg"
+image xiangxi = "images/ending CG/xiangxi.jpg"
+image qingping = "images/ending CG/qingping.jpg"
+image xuyu = "images/ending CG/xuyu.jpg"
+image poxiao = "images/ending CG/poxiao.jpg"
+image feiniao = "images/ending CG/feiniao.jpg"
+image yinshui_b = "images/ending CG/yinshui_b.jpg"
+image yinshui_color = "images/ending CG/yinshui_color.jpg"
+
 
 #运行python先打包一个字典给screen item_description调取不同描述用
 init python:
@@ -6129,6 +6144,7 @@ label ending_b_water:
     "{i}No real work emails come anymore.{/i}"
 
     # CG：饮水
+    $ unlock_cg("yinshui")
     # scene cg_water with fade
 
     jump ending_common
@@ -6160,6 +6176,7 @@ label ending_c_exit:
     "{i}Comment: No pictures, no truth. Just account farming.{/i}"
 
     "{i}You turn off your phone.{/i}"
+    $ unlock_cg("tuichang")
 
     # CG：退场
     # scene cg_exit with fade
@@ -6220,6 +6237,7 @@ label ending_d_mutual_respect:
     linjie "You too. I hope things go smoothly for you too."
 
     # CG：相惜
+    $ unlock_cg("xiangxi")
     # scene cg_mutual_respect with fade
 
     jump ending_common
@@ -6298,6 +6316,7 @@ label ending_b_whisper:
 
     'HR' "I wouldn’t call that smart."
     'HR' "But I would call it brave."
+    
 
     # CG：絮语
     # scene cg_whisper with fade
@@ -6598,6 +6617,7 @@ label she_ending_a1_kongwen:
     "证据不足，不予立案。"
 
     "CG：空文"
+    $ unlock_cg("kongwen")
 
     jump she_ending_common
 
@@ -6648,6 +6668,7 @@ label she_ending_a1_kongwen_easter:
     "证据不足，不予立案。"
 
     "CG：空文"
+    $ unlock_cg("kongwen")
 
     scene office
     with fade
@@ -6725,6 +6746,7 @@ label she_ending_b1_yinshui:
     '小曼' "水温刚好。"
 
     "CG：饮水"
+    $ unlock_cg("yinshui_b")
 
     jump she_ending_common
 
@@ -6766,6 +6788,7 @@ label she_ending_c1_tuichang:
     "你关掉了手机。"
 
     "CG：退场"
+    $ unlock_cg("tuichang")
 
     jump she_ending_common
 
@@ -6826,6 +6849,7 @@ label she_ending_d1_xiangxi:
     '林姐' "我听到了。你也顺利。"
 
     "CG：相惜"
+    $ unlock_cg("xiangxi")
 
     jump she_ending_common
 
@@ -6899,6 +6923,7 @@ label she_ending_b2_xuyu:
     'HR' "却称得上勇敢。"
 
     "CG：絮语"
+    $ unlock_cg("xuyu")
 
     jump she_ending_common
 
@@ -6951,6 +6976,7 @@ label she_ending_c2_qingping_no_evidence:
     "小曼微笑。"
 
     "CG：青萍"
+    $ unlock_cg("qingping")
 
     jump she_ending_common
 
@@ -7029,6 +7055,7 @@ label she_ending_c2_qingping_with_evidence:
     '小曼' "发现了新的希望。"
 
     "CG：青萍"
+    $ unlock_cg("qingping")
 
     jump she_ending_common
 
@@ -7237,6 +7264,7 @@ label she_ending_a3_poxiao:
     '小曼' "我想这就是 women，不仅是女性，也是我们本身。"
 
     "CG：破晓"
+    $ unlock_cg("poxiao")
 
     jump she_ending_common
 
@@ -7388,6 +7416,7 @@ label she_ending_c3_qingyun:
     '小曼' "我也是。"
 
     "CG：青云 / 飞鸟"
+    $ unlock_cg("feiniao")
 
     jump she_ending_common
 
@@ -7468,6 +7497,7 @@ label she_ending_tuoniao:
     '小曼' "一切，都会好的。"
 
     "CG：鸵鸟"
+    $ unlock_cg("tuoniao")
 
     jump she_ending_common
 
@@ -7495,6 +7525,7 @@ label she_ending_gulang:
     "没有同伴的日子里，一只狼要小心啊。"
 
     "CG：孤狼"
+    $ unlock_cg("gulang_b")
 
     jump she_ending_common
 

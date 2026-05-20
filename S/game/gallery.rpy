@@ -1,9 +1,3 @@
-# gallery.rpy - CG画廊系统（带分页 + 跨周目持久化解锁）
-# 使用方法：
-#   1. 放入 game/ 文件夹
-#   2. 在剧情中调用 $ unlock_cg("gulang") 解锁
-#   3. 用 ShowMenu("gallery") 打开画廊
-
 ################################################################################
 # 配置区
 ################################################################################
@@ -80,7 +74,7 @@ init python:
         if cg_id in persistent.cg_unlocked:
             persistent.cg_unlocked[cg_id] = True
             # 可选：显示解锁提示
-            # renpy.notify("CG 已解锁：" + cg_id)
+            renpy.notify("CG 已解锁：" + cg_id)
         else:
             # 如果传入不存在的ID，打印警告（开发时排查用）
             renpy.log("警告：尝试解锁不存在的CG '" + cg_id + "'")
