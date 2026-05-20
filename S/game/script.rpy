@@ -4752,223 +4752,555 @@ transform re_shake:
 
 transform slide_button:
     subpixel True
-    xoffset -20
-    linear 0.5 xoffset 0
-    pause 0.5
-    linear 0.5 xoffset -20
+    xoffset -250
+    linear 0.5 xoffset -50
+    pause 0.3
+    linear 0.6 xoffset -250
+    pause 0.3
     repeat
 
 transform appear_disappear:
     alpha 0.0
     pause 0.5
-    linear 0.2 alpha 1.0
+    linear 0.3 alpha 1.0
     pause 0.5
-    linear 0.2 alpha 0.0
+    linear 0.3 alpha 0.0
     repeat
 
+transform push_button_shake:
+    xoffset 0 yoffset 0
+    linear 0.3 xoffset -100 yoffset -20
+    linear 0.2 xoffset 110 yoffset 40 
+    linear 0.4 xoffset -120 yoffset 30
+    linear 0.3 xoffset 80 yoffset -50
+    repeat
 
 # 带倒计时的QTE screen
-screen car_qte_1_timer(duration=1.2):
+# screen car_qte_1_timer(duration=1.2):
+#     modal True
+    
+#     # 倒计时显示
+#     vbox:
+#         align (0.5, 0.2)
+#         spacing 10
+        
+#         text "【Boundary Alert】" at blink_effect:
+#             size 40
+#             color "#FC8181"
+#             xalign 0.5
+        
+#         text "【Boundary Warning】System Warning: Interference protocol activated" at subtle_shake:
+#             size 20
+#             color "#A0AEC0"
+#             xalign 0.5
+        
+#         text "[countdown_1]" at blink_effect:
+#             align (0.5, 0.5)
+#             size 30
+#             color "#E53E3E"
+    
+#     # 选项区域
+#     hbox:
+#         align (0.5, 0.65)
+#         spacing 30
+        
+#         # A. 躲开 - 滑动按钮
+#         button at slide_button:
+#             background "#e53e3e"
+#             hover_background "#fc8181"
+#             xsize 160
+#             ysize 50
+#             action [SetVariable("qte_result", "a"), Return(True)]
+            
+#             text "Dodge" at subtle_shake:
+#                 align (0.5, 0.5)
+#                 color "#FFFFFF"
+#                 size 16
+        
+#         # B. 不说话 - 固定
+#         button:
+#             background "#4a5568"
+#             hover_background "#718096"
+#             xsize 160
+#             ysize 50
+#             action [SetVariable("qte_result", "b"), Return(True)]
+            
+#             text "Stay silent":
+#                 align (0.5, 0.5)
+#                 color "#FFFFFF"
+#                 size 16
+        
+#         # C. 说"不要" - 闪烁出现
+#         button at appear_disappear:
+#             background "#d69e2e"
+#             hover_background "#f6e05e"
+#             xsize 160
+#             ysize 50
+#             action [SetVariable("qte_result", "c"), Return(True)]
+            
+#             text "Say stop":
+#                 align (0.5, 0.5)
+#                 color "#FFFFFF"
+#                 size 16
+    
+#     # 关键：极短倒计时，时间到自动返回False
+#     timer duration action Return(False)
+
+# ========== 游戏主流程 ==========
+label chapter3:
+
+    $ qte_state = QTEState()
+
+    "车内。夜色。空调开得很低。"
+    scene black with fade
+    pause 1.0
+    show expression Movie(play="videos/xsr_anime.webm", size=(1920, 1080)) as xsr_anime at truecenter
+    with dissolve
+    $ renpy.pause(11.55, hard=True)
+    hide xsr_anime with fade
+    jump car_xsr
+
+# 主QTE流程控制label
+label car_xsr:
+    # 初始化
+    $ qte_cycle = 0
+    $ qte_phase = "movie"
+    $ countdown_1 = 10
+    
+    # 开始循环
+    jump qte_loop
+
+# 性骚扰QTE计时条
+screen qte_choice_timer_5(question, time_limit=1.5):
     modal True
     
-    # 倒计时显示
-    vbox:
-        align (0.5, 0.2)
-        spacing 10
-        
-        text "【Boundary Alert】" at blink_effect:
-            size 40
-            color "#FC8181"
-            xalign 0.5
-        
-        text "【Boundary Warning】System Warning: Interference protocol activated" at subtle_shake:
-            size 20
-            color "#A0AEC0"
-            xalign 0.5
-        
-        text "[countdown_1]" at blink_effect:
-            align (0.5, 0.5)
-            size 30
-            color "#E53E3E"
+    # 使用 persistent 或外部变量来跟踪，避免 screen 重置
+    default start_time = renpy.get_game_runtime()
+    default local_time_left = time_limit
     
+    # 关键：只更新倒计时，不重置 start_time
+    timer 0.05 repeat True action [
+        SetScreenVariable("local_time_left", max(0, time_limit - (renpy.get_game_runtime() - start_time))),
+        If(
+            local_time_left <= 0,
+            true=[
+                Return("timeout")  # 返回超时，由 label 处理后续
+            ],
+            false=NullAction()
+        )
+    ]
+    
+    $ progress = local_time_left / time_limit if time_limit > 0 else 0
+# screen qte_choice_timer_5(question, time_limit=1.5):
+#     modal True
+    
+#     default start_time = renpy.get_game_runtime()
+#     default time_left = time_limit
+    
+#     timer 0.05 repeat True action [
+#         SetScreenVariable("time_left", max(0, time_limit - (renpy.get_game_runtime() - start_time))),
+#         If(time_left <= 0, true=[Hide("qte_choice_timer_5"), 
+#             SetScreenVariable("qte_cycle", qte_cycle + 1),
+#             SetScreenVariable("qte_phase", "movie"),
+#             Text("abced")
+#             Jump("qte_loop")], false=NullAction())
+#     ]
+    
+#     $ progress = time_left / time_limit
+    
+
     # 选项区域
     hbox:
         align (0.5, 0.65)
         spacing 30
         
         # A. 躲开 - 滑动按钮
-        button at slide_button:
-            background "#e53e3e"
-            hover_background "#fc8181"
-            xsize 160
-            ysize 50
-            action [SetVariable("qte_result", "a"), Return(True)]
-            
-            text "Dodge" at subtle_shake:
-                align (0.5, 0.5)
-                color "#FFFFFF"
-                size 16
-        
+        imagebutton at slide_button:
+            idle "circle_button1"
+            action [SetVariable("qte_result", "a"), Return()]
+
         # B. 不说话 - 固定
-        button:
-            background "#4a5568"
-            hover_background "#718096"
-            xsize 160
-            ysize 50
-            action [SetVariable("qte_result", "b"), Return(True)]
-            
-            text "Stay silent":
-                align (0.5, 0.5)
-                color "#FFFFFF"
-                size 16
+        imagebutton:
+            idle "circle_button2"
+            xoffset -100
+            yoffset 200
+            action [SetVariable("qte_result", "b"), Return()]
         
         # C. 说"不要" - 闪烁出现
-        button at appear_disappear:
-            background "#d69e2e"
-            hover_background "#f6e05e"
-            xsize 160
-            ysize 50
-            action [SetVariable("qte_result", "c"), Return(True)]
-            
-            text "Say stop":
-                align (0.5, 0.5)
-                color "#FFFFFF"
-                size 16
+        imagebutton at appear_disappear:
+            idle "circle_button3"
+            xoffset -100
+            yoffset 200
+            action [SetVariable("qte_result", "c"), Return()]
+
     
-    # 关键：极短倒计时，时间到自动返回False
-    timer duration action Return(False)
+    # ===== 底部倒计时条 =====
+    frame:
+        xalign 0.5
+        yalign 1.0
+        yoffset -40
+        xsize 1400
+        ysize 25
+        background "#1a1a1a"
+        
+        # 内部进度条
+        add "white_time_bar":
+            xalign 0.5
+            xsize int(1400 * progress)
+            ysize 15
+        
+        # 时间文字
+        text "[local_time_left:.1f]":
+            xalign 0.5
+            yalign 0.55
+            size 18
+            color "#000000"
 
-# 推开他的QTE
-screen push_away_qte():
+
+# 循环控制器
+label qte_loop:
+    # 检查是否完成4次循环或倒计时结束
+    if qte_cycle >= qte_total_cycles or countdown_1 <= 0:
+        jump qte_result_check
+    
+    # 根据阶段执行
+    if qte_phase == "movie":
+        jump qte_movie_phase
+    else:
+        jump qte_screen_phase
+
+# 影片播放阶段（玩家无法操作）
+label qte_movie_phase:
+    # 显示影片，不可交互
+    play sound "flash.mp3"
+    show expression Movie(play="videos/tv_breakdown.webm", size=(1920, 1080)) as flash_video at truecenter
+    
+    # 播放固定时间（1秒）
+    $ renpy.pause(1.0, hard=True)
+    
+    # 隐藏视频
+    hide flash_video
+
+    if qte_cycle == 0:
+        scene black
+        image harrassment_01 = ParameterizedText(xalign=0.5, yalign=0.45, size=168, color="#ffffff")
+        show harrassment_01 "What? What's happening?" at shake
+    #骚扰01
+    if qte_cycle == 1:
+        scene xsr_1
+
+    #骚扰02
+    if qte_cycle == 2:
+        scene xsr_2
+        image harrassment_02a = ParameterizedText(xalign=0.5, yalign=0.45, size=168, color="#8a1616")
+        image harrassment_02b = ParameterizedText(xalign=0.505, yalign=0.454, size=168, color="#b50d0d", bold=True)
+        show harrassment_02a "Run Run Run!!!!!!" at re_shake
+        show harrassment_02b "Run Run Run!!!!!!" at shake
+
+    #骚扰03
+    if qte_cycle ==3:
+        show xsr_3 at heartbeat
+        image harrassment_03a = ParameterizedText(xalign=0.35, yalign=0.45, size=100, color="#8a1616")
+        image harrassment_03b = ParameterizedText(xalign=0.65, yalign=0.55, size=100, color="#8a1616")
+        show harrassment_03a "GET OUT OF THE CAR" at shake
+        show harrassment_03b "HELP HELP HELP HELP" at shake
+        scene xsr_qte
+
+    
+    # 切换到screen阶段
+    $ qte_phase = "screen"
+    # hide flash
+    
+    jump qte_loop
+
+# Screen操作阶段（玩家可操作，极短时间）
+label qte_screen_phase:
+    # 减少倒计时
+    $ countdown_1 -= 1
+    
+    # 关键：使用 call screen 获取返回值
+    call screen qte_choice_timer_5("做出反应！", time_limit=1.5)
+    
+    # _return后的值现在可能是 "a", "b", "c", 或 "timeout"
+    if _return == "timeout":
+        # 超时未选择，默认走 "b"（沉默）
+        $ qte_result = "b"
+        $ qte_cycle += 1
+        $ qte_phase = "movie"
+        jump qte_loop
+    else:
+        # 玩家做出了选择，那abc都可能
+        scene black with dissolve
+        jump qte_result_check
+
+
+# 结果处理
+label qte_result_check:
+    
+    if qte_result == "timeout":
+        $ qte_result = "b"
+
+    if qte_result == "a":
+        jump car_run
+
+    elif qte_result == "b":
+        scene xsr_3 with vpunch
+        $ escape += 1
+        "{i}看着你沉默的反应，陈永仁离你更近。{/i}"
+        "{i}他的手在你脸上摩挲，随后顺势向下，手指扫过你的颌骨。{/i}"
+        jump car_continuation
+
+    else:
+        # $ qte_state.choices_made.append("拒绝")
+        scene car_inside with dissolve
+        s "陈总，您自重。"
+
+        "{i}陈永仁的手微微一顿。{/i}"
+        chen "别哪样？我就是欣赏你。欣赏一个人有错吗？"
+
+        "{i}他挑起你的一缕头发，凑近嗅闻：{/i}"
+        chen "就是……欣赏。"
+
+        jump kiss_sequence
+
+label car_continuation:
+    "{i}他抬起你的下巴端详着你。{/i}"
+    chen "工作的时候那么有冲劲，现在倒是很青涩。"
+    chen "真是不错的反应。"
+    chen "让人想知道更多……"
+    "{i}他要吻你。{/i}" with vpunch
+    jump kiss_sequence
+
+# =========================
+# 呕呕呕推开他的QTE
+# =========================
+
+screen push_away_qte (time_limit_2 = 8):
     modal True
+    
+    # 使用 persistent 或外部变量来跟踪，避免 screen 重置
+    default start_time_2 = renpy.get_game_runtime()
+    default local_time_left_2 = time_limit_2
+    
+    # 关键：只更新倒计时，不重置 start_time
+    timer 0.05 repeat True action [
+        SetScreenVariable("local_time_left_2", max(0, time_limit_2 - (renpy.get_game_runtime() - start_time_2))),
+        If(
+            local_time_left_2 <= 0,
+            true=[
+                Jump("kiss_ending_long")  # 返回超时，由 label 处理后续
+            ],
+            false=NullAction()
+        )
+    ]
+    
+    $ progress = local_time_left_2 / time_limit_2 if time_limit_2 > 0 else 0
 
-    add Solid("#000000")
+    add "#000000CC"
+
 
     vbox:
         align (0.5, 0.3)
         spacing 20
 
-        text "他在吻你" at heartbeat:
-            size 36
-            color "#E53E3E"
-            xalign 0.5
-
-        text "快速点击鼠标推开他！":
-            size 18
-            color "#A0AEC0"
-            xalign 0.5
-
-        text "（每次点击都比上一次更难）":
-            size 18
-            color "#A0AEC0"
-            xalign 0.5
-
-        text "点击次数: [qte_state.push_count] / 5":
+        text "点击次数: [qte_state.push_count] / 10": #这个建议测试用，实际落地的时候删掉
             size 24
             color "#FC8181"
             xalign 0.5
 
-    # 全屏点击区域
-    button:
-        xfill True
-        yfill True
-        background Solid("#00000000")
-        action [SetVariable("qte_state.push_count", qte_state.push_count + 1), 
-                If(qte_state.push_count >= 4, true=[Return(True)], false=NullAction())]
+    imagebutton at push_button_shake:
+        idle "circle_button"
+        hover "circle_button_press"
+        align(0.5, 0.5)
+        action [SetVariable("qte_state.push_count", qte_state.push_count + 1), #play sound "ding" #记得加音效
+                If(qte_state.push_count >= 10, true=Jump("pushed_away"), false=NullAction())]
 
     # 动态难度计时器
-    timer (3.0 - qte_state.push_count * 0.4) action [Return(False)]
+    # timer (3.0 - qte_state.push_count * 0.4) action [Return(False)]
+    
+    # ===== 底部倒计时条 =====
+    frame:
+        xalign 0.5
+        yalign 1.0
+        yoffset -40
+        xsize 1400
+        ysize 25
+        background "#1a1a1a"
+        
+        # 内部进度条
+        add "white_time_bar":
+            xalign 0.5
+            xsize int(1400 * progress)
+            ysize 15
+        
+        # 时间文字
+        text "[local_time_left_2:.1f]":
+            xalign 0.5
+            yalign 0.55
+            size 18
+            color "#000000"
+
 
 # 10秒抉择窗口
 default final_choice = ""
-default countdown = 10
 
-screen final_choice():
+screen final_choice(time_limit_3 = 10):
     modal True
-
-    add Solid("#1a202c")
-
-    vbox:
-        align (0.5, 0.2)
-        spacing 15
-
-        text "心跳如鼓" at heartbeat:
-            size 32
-            color "#FC8181"
-            xalign 0.5
-
-        text "他在等":
-            size 24
-            color "#E2E8F0"
-            xalign 0.5
-
-        text "不抱的话，明天会很尴尬":
-            size 18
-            color "#A0AEC0"
-            xalign 0.5
-
-        text "抱了的话，这事就过去了":
-            size 18
-            color "#A0AEC0"
-            xalign 0.5
-
-    text "[countdown]":
-        align (0.5, 0.45)
-        size 80
-        color "#E53E3E"
-        at heartbeat
+    
+    # 使用 persistent 或外部变量来跟踪，避免 screen 重置
+    default start_time_3 = renpy.get_game_runtime()
+    default local_time_left_3 = time_limit_3
+    
+    # 关键：只更新倒计时，不重置 start_time
+    timer 0.05 repeat True action [
+        SetScreenVariable("local_time_left_3", max(0, time_limit_3 - (renpy.get_game_runtime() - start_time_3))),
+        If(
+            local_time_left_3 <= 0,
+            true=[
+                Return("hug")  # 返回超时，由 label 处理后续
+            ],
+            false=NullAction()
+        )
+    ]
+    
+    $ progress = local_time_left_3 / time_limit_3 if time_limit_3 > 0 else 0
 
     vbox:
-        align (0.5, 0.7)
-        spacing 20
 
         # 拥抱选项
-        button:
-            background "qte_button_normal"
-            hover_background "qte_button_hover"
-            xsize 220
-            ysize 60
-            action [SetVariable("final_choice", "hug"), Return(True)]
-
-            text "拥抱他（场景结束，回家）":
-                align (0.5, 0.5)
-                color "#FFFFFF"
-                size 16
+        imagebutton:
+            idle "circle_button4"
+            hover "circle_button4_press"
+            xpos 860
+            ypos 550
+            action [SetVariable("final_choice", "hug"), Return("hug")] # action (play sound"ding") #记得加音效
 
         # 逃跑选项（第5秒出现）
-        if countdown <= 5:
-            if countdown > 2:
-                button at blink_effect:
-                    background "qte_button_blink"
-                    hover_background "qte_button_hover"
-                    xsize 200
-                    ysize 60
-                    action [SetVariable("final_choice", "escape"), Return(True)]
+        if local_time_left_3 < 6:
+            imagebutton at appear_disappear:
+                idle "circle_button5"
+                hover "circle_button5_press"
+                xpos 860
+                ypos 600
+                action [SetVariable("final_choice", "escape"), Return("escape")] # action (play sound"ding") #记得加音效
+        else:
+            pass
 
-                    text "推开车门逃跑":
-                        align (0.5, 0.5)
-                        color "#FFFFFF"
-                        size 16
-            else:
-                button:
-                    background "qte_button_blink"
-                    hover_background "qte_button_hover"
-                    xsize 200
-                    ysize 60
-                    action [SetVariable("final_choice", "escape"), Return(True)]
+        # ===== 底部倒计时条 =====
+    frame:
+        xalign 0.5
+        yalign 1.0
+        yoffset -40
+        xsize 1400
+        ysize 25
+        background "#1a1a1a"
+        
+        # 内部进度条
+        add "white_time_bar":
+            xalign 0.5
+            xsize int(1400 * progress)
+            ysize 15
+        
+        # 时间文字
+        text "[local_time_left_3:.1f]":
+            xalign 0.5
+            yalign 0.55
+            size 18
+            color "#000000"
 
-                    text "推开车门逃跑":
-                        align (0.5, 0.5)
-                        color "#FFFFFF"
-                        size 16
+label kiss_sequence:
+    scene lean_notext at vpunch
+    $ qte_state.push_count = 0
 
-    timer 1.0 repeat True action If(countdown > 0, SetScreenVariable("countdown", countdown - 1), [SetVariable("final_choice", "timeout"), Return(False)])
+    # while qte_state.push_count < 5:
+    call screen push_away_qte()
 
-# 房间扫描界面
+label pushed_away:
+    scene car_inside with dissolve
+    "你推开了他。"
+    "陈永仁愣了一下："
+    chen "呵呵，是我会错意了吗。"
+
+    chen "是不能接受进展这么快？啊，我明白了。"
+    chen "那来抱一下。朋友嘛？"
+
+    jump final_decision
+
+label kiss_ending_long:
+    s "使不出力"
+    s "不要"
+    s "{cps=50}不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要{/cps}"
+    
+    scene black with fade
+    $renpy.pause(1.5, hard=True)
+    "{i}吻持续了很久。{/i}"
+    "{i}当你终于能呼吸时，他已经收回了身体，仿佛什么都没发生。{/i}"
+    "{i}你想吐。{/i}"
+    extend "\n{i}{cps=2}你想吐。{/cps}{/i}"
+    "{i}站在房门口时，你根本不记得自己是怎么到家的。{/i}"
+    # extend "\n{i}{cps=12}你想吐你想吐你想吐你想吐你想吐。{/cps}{/i}"
+
+    jump room_scene
+
+label final_decision:
+    
+    $ final_choice = ""
+    $ show_sequential_thoughts(
+        "What I should do?",
+        "He's looking.",
+        "Maybe a hug can fix everything..."
+    )
+    call screen final_choice()
+
+    if final_choice == "hug":
+        $ escape += 1
+        jump ending_hug
+    else:
+        jump ending_escape
+
+label ending_hug:
+    scene black with dissolve
+    "{i}你麻木地拥抱了他。{/i}"
+    "{i}感觉到他手臂的挤压。{/i}"
+    chen "这就对了，"
+    extend "慢慢来。哈哈哈。"
+
+    scene car_outside
+    "{i}车停下的时候他给你解开安全带。{/i}"
+    chen "明天见，小曼，今晚很愉快。"
+    "{i}你看着他的车尾灯消失在街角。{/i}"
+    "{i}{cps=2}你想吐。{/cps}"
+    extend "\n{i}{cps=12}你想吐你想吐你想吐你想吐你想吐。{/cps}{/i}"
+    scene black with fade
+
+    jump room_scene
+
+label ending_escape:
+    "{i}你找到了安全带卡扣，但却没办法控制手指的颤抖。{/i}"
+    "#这里记得加音效"
+    # play sound "kada" # 记得加音效
+    # "{i}不停地尝试后安全带终于解开了{/i}"
+    scene street with dissolve
+    "{i}你推开车门，踉跄下车，跑向大路。{/i}"
+    scene black with fade
+    jump room_scene
+
+label car_run:
+    "{i}你找到了安全带卡扣，手指止不住地颤抖。{/i}"
+    "{i}你没有停止尝试。{/i}"
+    "#这里记得加音效"
+    # play sound "kada" # 记得加音效
+    scene street with dissolve
+    "{i}你推开车门，踉跄下车，跑向大路。{/i}"
+    chen "小曼！小曼————"
+    "{i}你没有回头。{/i}"
+    scene black with fade
+
+# ------------------------
+# 回家解离情绪
+
 screen room_scan():
     modal True
-
-    add Solid("#2D3748")
 
     text "Room Scan: Click on items to trigger thoughts:":
         align (0.5, 0.1)
@@ -5045,236 +5377,14 @@ screen room_scan():
             size 20
             color "#FFFFFF"
 
-    textbutton "Leave the Room":
+    textbutton "Sleep":
         align (0.5, 0.95)
         action Return(False)
 
-# ========== 游戏主流程 ==========
-label chapter3:
-
-    $ qte_state = QTEState()
-
-    #scene garage with fade
-
-    "车内。夜色。空调开得很低。"
-
-    jump car_xsr
-
-# 主QTE流程控制label
-label car_xsr:
-    # 初始化
-    $ qte_cycle = 0
-    $ qte_phase = "movie"
-    $ countdown_1 = 10
-    
-    "【Boundary Warning】System Warning: Interference protocol activated"
-    
-    # 开始循环
-    jump qte_loop
-
-# 循环控制器
-label qte_loop:
-    # 检查是否完成4次循环或倒计时结束
-    if qte_cycle >= qte_total_cycles or countdown_1 <= 0:
-        jump qte_result_check
-    
-    # 根据阶段执行
-    if qte_phase == "movie":
-        jump qte_movie_phase
-    else:
-        jump qte_screen_phase
-
-# 影片播放阶段（玩家无法操作）
-label qte_movie_phase:
-    # 显示影片，不可交互
-    play sound "flash.mp3"
-    show expression Movie(play="videos/tv_breakdown.webm", size=(1960, 1080)) as flash_video at truecenter
-    
-    # 播放固定时间（1秒）
-    $ renpy.pause(1.0, hard=True)
-    
-    # 隐藏视频
-    hide flash_video
-    #骚扰01
-    if qte_cycle == 1:
-        show touch
-
-    #骚扰02
-    if qte_cycle == 2:
-        scene black
-        image harrassment_02a = ParameterizedText(xalign=0.5, yalign=0.45, size=68, color="#8a1616")
-        image harrassment_02b = ParameterizedText(xalign=0.505, yalign=0.454, size=68, color="#b50d0d", bold=True)
-        show harrassment_02a "有人告诉过你，\n你工作的时候有多迷人吗？" at re_shake
-        show harrassment_02b "有人告诉过你，\n你工作的时候有多迷人吗？" at shake
-
-    #骚扰03
-    if qte_cycle ==3:
-        scene lean
-        image harrassment_03a = ParameterizedText(xalign=0.35, yalign=0.45, size=68, color="#8a1616")
-        image harrassment_03b = ParameterizedText(xalign=0.65, yalign=0.55, size=88, color="#8a1616")
-        show harrassment_03a "那么专注" at shake
-        show harrassment_03b "那么……鲜活！" at shake
-        scene black
-
-    
-    # 影片播放固定时间（例如1.5秒）
-    # $ renpy.pause(1, hard=True)  # hard=True 防止点击跳过
-    
-    # 切换到screen阶段
-    $ qte_phase = "screen"
-    # hide flash
-    
-    jump qte_loop
-
-# Screen操作阶段（玩家可操作，极短时间）
-label qte_screen_phase:
-    # 减少倒计时
-    $ countdown_1 -= 1
-    
-    # 显示screen，极短操作时间
-    call screen car_qte_1_timer(duration=0.8)
-    
-    # 检查玩家是否操作
-    if _return:
-        # 玩家成功操作，结束QTE
-        jump car_ending_avoided
-    else:
-        # 玩家未操作，继续循环
-        $ qte_cycle += 1
-        $ qte_phase = "movie"
-        jump qte_loop
-
-
-# 结果处理
-label qte_result_check:
-    $ qte_result = ""
-    call screen car_qte_1_timer()
-    
-    if qte_result == "timeout":
-        $ qte_result = "b"
-
-    if qte_result == "a":
-        "你偏过头，躲开了他的手。"
-        "陈永仁笑了笑，收回了手："
-        extend "好吧，是我冒昧了。"
-        jump car_ending_avoided
-
-    elif qte_result == "b":
-        "你沉默着，没有回应。"
-        "陈永仁的手停留在你脸上，温度灼人。"
-        jump car_continuation
-
-    else:
-        $ qte_state.choices_made.append("拒绝")
-        s "请别这样。"
-
-        "陈永仁停顿。手还在脸上："
-        extend "别哪样？我就是欣赏你。欣赏一个人有错吗？"
-
-        "他凑近："
-        extend "我结婚了。你有男朋友。这没什么。就是……欣赏。"
-
-        jump kiss_sequence
-
-label car_continuation:
-    "陈永仁的手指在你脸颊上停留了一秒，然后收回。"
-    "你知道吗，有时候沉默比说话更有力量。"
-
-    jump kiss_sequence
-
-label kiss_sequence:
-    "他吻你。"
-
-    window hide
-
-    $ qte_state.push_count = 0
-    $ push_success = False
-
-    while qte_state.push_count < 5:
-        call screen push_away_qte()
-
-        if _return:
-            $ push_success = True
-            jump pushed_away
-        else:
-            $ qte_state.push_count += 1
-            if qte_state.push_count >= 3:
-                "你感到无力..."
-                window hide
-
-    if not push_success:
-        jump kiss_ending_long
-
-label pushed_away:
-    window show
-
-    "你推开了他。"
-    "陈永仁愣了一下，随即笑了："
-    extend "抱歉，是我太冲动了。"
-
-    "他张开双臂："
-    extend "来，抱一下。朋友嘛？"
-
-    jump final_decision
-
-label kiss_ending_long:
-    window show
-
-    "吻持续了很久。"
-    "当你终于能呼吸时，他已经收回了身体，仿佛什么都没发生。"
-
-    "他张开双臂："
-    extend "来，抱一下。朋友嘛？"
-
-    jump final_decision
-
-label final_decision:
-    $ final_choice = ""
-    call screen final_choice()
-
-    if final_choice == "hug" or final_choice == "timeout":
-        jump ending_hug
-    else:
-        jump ending_escape
-
-label ending_hug:
-    "你拥抱了他。"
-    "他的体温透过衬衫传来，心跳平稳，仿佛刚才的混乱只是错觉。"
-
-    "这就对了，"
-    extend "我们就是朋友。"
-
-    "他送你到楼下。你看着他的车尾灯消失在街角。"
-
-    jump room_scene
-
-label ending_escape:
-    "你推开车门，踉跄下车，跑向电梯。"
-
-    "身后传来他的声音："
-    extend "小曼！等等！听我解释！"
-
-    "你没回头。"
-
-    "电梯门关上的瞬间，你看见他还站在车边，双臂垂落。"
-
-    jump room_scene
-
-label car_ending_avoided:
-    "The atmosphere turns awkward, yet he regains his composure quickly."
-    "Let me walk you back."
-    extend "It’s really late today."
-
-    "Along the way, you talk about work, as if the earlier touch never happened."
-
-    jump room_scene
-
 label room_scene:
-    scene bg room
-    with fade
-
-    "你的房间。"
-    "门在身后关上，世界突然安静得可怕。"
+    "{i}站在房门口时，你根本不记得自己是怎么到家的。{/i}"
+    scene home with dissolve
+    "{i}门在身后关上，世界突然安静得可怕。{/i}"
 
     $ clicked_item = ""
 
@@ -5282,7 +5392,7 @@ label room_scene:
         call screen room_scan()
 
         if not _return:
-            jump game_ending
+            jump sleep
 
         if clicked_item == "mirror":
             "You look into the mirror."
@@ -5312,33 +5422,42 @@ label room_scene:
             "Not a single word can be written."
             "Or rather, there are too many words, and you don’t know where to start."
 
-label game_ending:
-    if "拒绝" in qte_state.choices_made:
-        "你坐在床边，手机亮了又暗。"
-        "我拒绝了。"
-        extend "我推开了他。"
-        "但为什么，心跳还是这么快？"
-
-    elif final_choice == "escape":
-        "你逃跑了。"
-        "但逃跑之后呢？"
-        "明天还要上班。还要见他。还要假装什么都没发生。"
+label sleep:
+    
+    # if "拒绝" in qte_state.choices_made:
+    #     "你坐在床边，手机亮了又暗。"
+    #     "我拒绝了。"
+    #     extend "我推开了他。"
+    #     "但为什么，心跳还是这么快？"
+    
+    if escape >= 4:
+        "{i}快睡吧……快睡吧……{/i}"
+        "{i}醒来之后一切都会变好的，{/i}"
+        extend "{i}{cps=3}一切，都会{/cps}{/i}"
+        extend "{b}{i}{cps=3}变好的。{/cps}{/i}{/b}"
+        jump tuoniao
 
     else:
-        "你拥抱了他。"
-        "朋友，他这么说的。"
-        "但你不知道，朋友之间，会不会有这样的心跳。"
+        if final_choice == "escape":
+            "{i}你逃跑了。{/i}"
+            "{i}但逃跑之后呢？{/i}"
 
-    "窗外，天快亮了。"
+        else:
+            "{i}温热的躯体与触感。{/i}"
+            extend "{i}却像濡湿阴凉的软体动物爬过的黏腻。{/i}"
+            s "{cps=10}…………………………………………………………{/cps}"
 
-    $ ending_text = ""
-    if len(qte_state.choices_made) > 0:
-        $ ending_text = "关键选择：" + " → ".join(qte_state.choices_made)
+        "{i}该睡了，但今晚又该如何做个好梦？{/i}"
 
-    "[ending_text]"
+    jump chapter4
 
-    return
+    # $ ending_text = ""
+    # if len(qte_state.choices_made) > 0:
+    #     $ ending_text = "关键选择：" + " → ".join(qte_state.choices_made)
 
+    # "[ending_text]"
+
+    # return
 
 # ==========================================
 # 第五章：抉择（第15周）
