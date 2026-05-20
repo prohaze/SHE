@@ -1,236 +1,262 @@
-# ========== 1. 定义图片 ==========
-# 原始CG（结局大图）
-image endingGuLang = "images/endingGuLang.png"
-image endingChuNiao = "images/endingChuNiao.png"
-image endingSongBie = "images/endingSongbie.png"
-image endingKongWen = "images/endingKongWen.png"
-image endingYinShui = "images/endingYinShui.png"
-image endingTuiChang = "images/endingTuiChang.png"
-image endingXiangXi = "images/endingXiangXi.png"
-image endingQingPing = "images/endingQingPing.png"
-image endingLiJian = "images/endingLiJian.png"
-image endingXuYu = "images/endingXuYu.png"
-image endingPoXiao = "images/endingPoXiao.png"
-image endingFeiNiao = "images/endingFeiNiao.png"
-image endingLangChao = "images/endingLangChao.png"
-# 命名格式为 image ending+“结局拼音” = ...
+# gallery.rpy - CG画廊系统（带分页 + 跨周目持久化解锁）
+# 使用方法：
+#   1. 放入 game/ 文件夹
+#   2. 在剧情中调用 $ unlock_cg("gulang") 解锁
+#   3. 用 ShowMenu("gallery") 打开画廊
 
-# 缩略图
-image thumb_endingGuLang = "images/thumb_endingGuLang.png"
-image thumb_endingChuNiao = "images/thumb_endingChuNiao.png"
-image thumb_endingSongBie = "images/thumb_endingSongBie.png"
-image thumb_endingKongWen = "images/thumb_endingKongWen.png"
-image thumb_endingYinShui = "images/thumb_endingYinShui.png"
-image thumb_endingTuiChang = "images/thumb_endingTuiChang.png"
-image thumb_endingXiangXi = "images/thumb_endingXiangXi.png"
-image thumb_endingQingPing = "images/thumb_endingQingPing.png"
-image thumb_endingLiJian = "images/thumb_endingLiJian.png"
-image thumb_endingXuYu = "images/thumb_endingXuYu.png"
-image thumb_endingPoXiao = "images/thumb_endingPoXiao.png"
-image thumb_endingFeiNiao = "images/thumb_endingFeiNiao.png"
-image thumb_endingLangChao = "images/thumb_endingLangChao.png"
+################################################################################
+# 配置区
+################################################################################
 
-# 未解锁占位图
-image lock = "images/lock.png"
+# CG列表（按显示顺序排列）
+define cg_list = [
+    {"id": "gulang", "title": "孤狼"},
+    {"id": "gulang_b", "title": "孤狼·B"},
+    {"id": "tuoniao", "title": "鸵鸟"},
+    {"id": "linjian", "title": "林间"},
+    {"id": "kongwen", "title": "空文"},
+    {"id": "yinshui", "title": "饮水"},
+    {"id": "tuichang", "title": "退场"},
+    {"id": "xiangxi", "title": "相惜"},
+    {"id": "qingping", "title": "青萍"},
+    {"id": "xuyu", "title": "絮语"},
+    {"id": "poxiao", "title": "破晓"},
+    {"id": "feiniao", "title": "飞鸟"},
+    {"id": "yinshui_b", "title": "饮水·B"},
+    {"id": "yinshui_color", "title": "饮水·彩"},
+]
 
-# ========== 2. 持久化记录变量 ==========
-# 这个列表会永久保存已解锁的结局ID，不会随读档消失。应该不用改这个。
-default persistent.unlocked_endings = []
+# 每页显示数量（3列 x 2行 = 6张）
+define CG_PER_PAGE = 6
 
-# ========== 3. 解锁函数 ==========
+# 当前页码（从0开始）—— 这个不用跨周目保存，用普通 default
+default gallery_page = 0
+
+################################################################################
+# 持久化解锁状态（跨周目保存）
+################################################################################
+
+# 在 init -1 python 里初始化 persistent.cg_unlocked（只执行一次）
+init -1 python:
+    import math
+    
+    # 如果 persistent 里没有 cg_unlocked，创建一个全 False 的字典
+    if not hasattr(persistent, 'cg_unlocked') or persistent.cg_unlocked is None:
+        persistent.cg_unlocked = {
+            "gulang": False,
+            "gulang_b": False,
+            "tuoniao": False,
+            "linjian": False,
+            "kongwen": False,
+            "yinshui": False,
+            "tuichang": False,
+            "xiangxi": False,
+            "qingping": False,
+            "xuyu": False,
+            "poxiao": False,
+            "feiniao": False,
+            "yinshui_b": False,
+            "yinshui_color": False,
+        }
+    
+    # 检查是否有新增的 CG（后续扩展用）
+    all_cg_ids = ["gulang", "gulang_b", "tuoniao", "linjian", "kongwen", 
+                  "yinshui", "tuichang", "xiangxi", "qingping", "xuyu", 
+                  "poxiao", "feiniao", "yinshui_b", "yinshui_color"]
+    for cg_id in all_cg_ids:
+        if cg_id not in persistent.cg_unlocked:
+            persistent.cg_unlocked[cg_id] = False
+
+################################################################################
+# 解锁函数（必须在 init python 之后定义，才能访问 persistent）
+################################################################################
+
 init python:
-    def unlock_ending(ending_id):
-        if ending_id not in persistent.unlocked_endings:
-            persistent.unlocked_endings.append(ending_id)
-            # 可选：立即保存，防止强退丢失。也不用管这个。
-            renpy.save_persistent()
+    def unlock_cg(cg_id):
+        """
+        解锁指定CG（跨周目永久保存）
+        调用方式：$ unlock_cg("gulang")
+        """
+        if cg_id in persistent.cg_unlocked:
+            persistent.cg_unlocked[cg_id] = True
+            # 可选：显示解锁提示
+            # renpy.notify("CG 已解锁：" + cg_id)
+        else:
+            # 如果传入不存在的ID，打印警告（开发时排查用）
+            renpy.log("警告：尝试解锁不存在的CG '" + cg_id + "'")
+    
+    def get_total_pages():
+        """计算总页数"""
+        return int(math.ceil(len(cg_list) / float(CG_PER_PAGE)))
+    
+    def get_page_cgs(page):
+        """获取指定页的CG数据列表"""
+        start = page * CG_PER_PAGE
+        end = start + CG_PER_PAGE
+        return cg_list[start:end]
+    
+    def get_cg_title(cg_id):
+        """根据ID获取CG标题"""
+        for item in cg_list:
+            if item["id"] == cg_id:
+                return item["title"]
+        return "未知CG"
+    
+    def reset_all_cg():
+        """重置所有CG解锁状态（调试用）"""
+        for key in persistent.cg_unlocked:
+            persistent.cg_unlocked[key] = False
+        renpy.notify("所有CG已重置")
 
-# ========== 4.  条件检查  ==========
-#用来解锁cg
-#init python:
-#    def check_endingGuLang():
-#    if 数值1 and 数值2 and 数值3：
-#    unlock_ending("endingGuLang")
+################################################################################
+# 画廊主界面
+################################################################################
 
-# ========== 5. 画廊主界面 ==========
+# gallery.rpy - CG画廊系统（带分页 + 跨周目持久化解锁 + 修复缩略图溢出）
+
+# ... 前面所有代码不变，直到 screen gallery() ...
+
 screen gallery():
     tag menu
-    add "gui/overlay/main_menu.png"   # 画廊背景图，可以换
-
-#以下是画廊滚轴功能
-
-    # 使用 vpgrid（垂直可滚动网格）来放置所有按钮
-    vpgrid:
-        # 布局参数：每行显示 3 个按钮（可以改成 4 或 2）
-        cols 3
-        # 每个格子之间的间距（水平、垂直）
-        spacing 20
-        # 整个网格区域的左上角位置和大小（占满大部分屏幕）
-        xalign 0.5
-        yalign 0.5
-        xsize 800   # 网格区域的宽度（根据实际分辨率调整）
-        ysize 600   # 网格区域的高度（超出这个高度就会出滚动条）
-        # 让网格内容居中显示
-        draggable True      # 允许鼠标拖拽滚动
-        mousewheel True     # 允许鼠标滚轮滚动
-
-        # ----- 下面就是咱所有的 CG 按钮，按顺序一个一个写 -----
-        # 结局1
-        if "endingGuLang" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingGuLang"
-                action Show("display_cg", cg_image="endingGuLang")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-
-        # 结局2
-        if "endingChuNiao" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingChuNiao"
-                action Show("display_cg", cg_image="endingChuNiao")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-            
-
-        # 结局3
-        if "endingSongBie" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingSongBie"
-                action Show("display_cg", cg_image="endingSongBie")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-            
-        # 结局4
-        if "endingKongWen" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_engdingKongWen"
-                action Show("display_cg", cg_image="endingKongWen")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-            
-        # 结局5
-        if "endingYinShui" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingYinShui"
-                action Show("display_cg", cg_image="endingYinShui")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-            
-        # 结局6
-        if "endingTuiChang" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingTuiChang"
-                action Show("display_cg", cg_image="endingTuiChang")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-            
-        # 结局7
-        if "endingXiangXi" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingXiangXi"
-                action Show("display_cg", cg_image="endingXiangXi")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-            
-        # 结局8
-        if "endingQingPing" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingQingPing"
-                action Show("display_cg", cg_image="endingQingPing")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-            
-        # 结局9
-        if "endingLiJian" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingLiJian"
-                action Show("display_cg", cg_image="endingLiJian")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-            
-        # 结局10
-        if "endingXuYu" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingXuYu"
-                action Show("display_cg", cg_image="endingXuYu")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-            
-        # 结局11
-        if "endingPoXiao" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingPoXiao"
-                action Show("display_cg", cg_image="endingPoXiao")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-            
-        # 结局12
-        if "endingFeiNiao" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingFeiNiao"
-                action Show("display_cg", cg_image="endingFeiNiao")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-            
-         # 结局13
-        if "endingLangChao" in persistent.unlocked_endings:
-            imagebutton:
-                idle "thumb_endingLangChao"
-                action Show("display_cg", cg_image="endingLangChao")
-        else:
-            imagebutton:
-                idle "lock"
-                action NullAction()
-
-        # 结局3、结局4……继续往下加，有多少加多少
-        # 例如：
-        # if "ending3" in persistent.unlocked_endings:
-        #     imagebutton:
-        #         idle "thumb_ending3"
-        #         action Show("display_cg", cg_image="ending3")
-        # else:
-        #     imagebutton:
-        #         idle "lock"
-        #         action NullAction()
-
-        # 注意：vpgrid 会自动换行，不需要手动算行数
-
-    # 返回按钮（放在滚动区域外面，固定在底部）
-    textbutton "返回":
-        action Return()
-        xalign 0.5
-        yalign 0.95
-
-# ========== 5. 全屏显示CG的界面 ==========
-screen display_cg(cg_image):
     modal True
-    add cg_image
-    imagebutton:
-        idle "gui/return.png"   # 后面可以换成自定义的返回图标
-        action Hide("display_cg")
-        xalign 0.95
-        yalign 0.95
+    
+    add Solid("#1a1a2e")
+    
+    frame:
+        background None
+        xfill True
+        yfill True
+        
+        vbox:
+            xalign 0.5
+            yalign 0.5
+            spacing 40  # ← 增大整体间距（原来是30）
+            
+            # 标题
+            text "CG 画廊" size 48 color "#fff" xalign 0.5
+            
+            # 页码显示
+            $ total_pages = get_total_pages()
+            text "第 [gallery_page + 1] / [total_pages] 页" size 20 color "#aaa" xalign 0.5
+            
+            # CG 网格 - 关键修改区域
+            grid 3 2:
+                xalign 0.5
+                spacing 40  # ← 增大格子间距（原来是25）
+                
+                $ page_cgs = get_page_cgs(gallery_page)
+                
+                for i in range(CG_PER_PAGE):
+                    if i < len(page_cgs):
+                        $ cg_item = page_cgs[i]
+                        $ cg_id = cg_item["id"]
+                        $ cg_title = cg_item["title"]
+                        
+                        vbox:
+                            xalign 0.5
+                            spacing 12  # ← 增大标题和图间距（原来是8）
+                            
+                            # === 关键修改：固定尺寸容器 + 图片自适应填充 ===
+                            button:
+                                xsize 280  # ← 固定宽度（原来是300）
+                                ysize 180  # ← 固定高度（原来是200）
+                                padding (0, 0)  # 去掉内边距，让图片顶满
+                                
+                                if persistent.cg_unlocked.get(cg_id, False):
+                                    background Solid("#2a2a3e")
+                                    hover_background Solid("#3a3a5e")
+                                    action Show("cg_viewer", cg=cg_id)
+                                    
+                                    # 方案A：图片填满容器，保持比例裁切边缘（推荐）
+                                    add cg_id:
+                                        xysize (280, 180)  # 强制容器尺寸
+                                        fit "cover"        # 填满容器，裁切多余部分（类似CSS background-size: cover）
+                                        xalign 0.5
+                                        yalign 0.5
+                                    
+                                    # 方案B（备用）：如果想完整显示图片，用 fit "contain" 代替
+                                    # 但会有黑边，所以不推荐
+                                    
+                                else:
+                                    # 未锁定状态
+                                    background Solid("#1a1a2e")
+                                    text "???" size 36 color "#555" xalign 0.5 yalign 0.5
+                            
+                            # 标题区域 - 固定高度防止文字跳动
+                            frame:
+                                background None
+                                xsize 280  # 和按钮同宽
+                                ysize 30   # 固定高度
+                                padding (0, 0)
+                                
+                                if persistent.cg_unlocked.get(cg_id, False):
+                                    text cg_title size 18 color "#ddd" xalign 0.5 yalign 0.5
+                                else:
+                                    text "未解锁" size 18 color "#555" xalign 0.5 yalign 0.5
+                    else:
+                        # 空白填充 - 和格子尺寸一致
+                        null width 280 height 210  # 180图+30标题
+            
+            # 翻页控制按钮
+            hbox:
+                xalign 0.5
+                spacing 40
+                
+                textbutton "上一页":
+                    text_size 22
+                    action SetVariable("gallery_page", max(0, gallery_page - 1))
+                    sensitive gallery_page > 0
+                
+                textbutton "返回":
+                    text_size 22
+                    action Return()
+                
+                textbutton "下一页":
+                    text_size 22
+                    action SetVariable("gallery_page", min(total_pages - 1, gallery_page + 1))
+                    sensitive gallery_page < total_pages - 1
+
+################################################################################
+# CG 大图查看界面
+################################################################################
+
+screen cg_viewer(cg):
+    modal True
+    zorder 200
+    
+    # 黑色背景
+    add Solid("#000")
+    
+    # 查找标题
+    $ cg_title = get_cg_title(cg)
+    
+    # 显示大图
+    frame:
+        background None
+        xfill True
+        yfill True
+        
+        add cg:
+            xalign 0.5
+            yalign 0.5
+            xysize (config.screen_width, config.screen_height)
+            fit "contain"
+    
+    # 标题
+    text "[cg_title]" size 32 color "#fff" xalign 0.5 ypos 40 outlines [(2, "#000", 0, 0)]
+    
+    # 关闭提示
+    text "点击任意位置或按 ESC / 空格 / 回车 关闭" size 16 color "#888" xalign 0.5 yalign 0.98
+    
+    # 多种关闭方式
+    key "K_ESCAPE" action Hide("cg_viewer")
+    key "K_SPACE" action Hide("cg_viewer")
+    key "K_RETURN" action Hide("cg_viewer")
+    key "K_KP_ENTER" action Hide("cg_viewer")
+    
+    # 点击屏幕关闭
+    button:
+        xfill True
+        yfill True
+        action Hide("cg_viewer")
+        background None
