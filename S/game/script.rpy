@@ -5261,7 +5261,7 @@ screen push_away_qte (time_limit_2 = 8):
         align (0.5, 0.3)
         spacing 20
 
-        text "推开他！"
+        text "推开他！":
             size 24
             color "#FC8181"
             xalign 0.5
@@ -7452,27 +7452,66 @@ label she_ending_a3_poxiao:
     scene bg bedroom_night
     with fade
 
+    hide she_14_deepthink onlayer top
+    hide she_14_think onlayer top
+    hide she_09_unhappy onlayer top
+    hide she_15_unflinched onlayer top
+
     "在给材料进行隐私处理之后，你把自己搜集的证据和搜证经历放上网，让其他女性警惕起来。"
 
-    '小曼' "我是佘小曼，几个月前刚进公司的新员工。"
+    show she_14_deepthink onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
 
-    '小曼' "在项目完成的一次部门聚餐结束后，男上司陈永仁提出送我回家。"
+    s "我是佘小曼，几个月前刚进公司的新员工。"
+
+    s "在项目完成的一次部门聚餐结束后，男上司陈永仁提出送我回家。"
 
     if car_event:
 
-        '小曼' "我上了他的车，这之后他在车内对我实施性骚扰。"
+        hide she_14_deepthink onlayer top
 
-        '小曼' "这段记忆对我来说很痛苦，但我知道如果我忍气吞声，以后都将活在对自己无能为力的质疑里。"
+        show she_09_unhappy onlayer top at top_dissolve:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
 
-        '小曼' "我决定反抗，之后我找到了他骚扰其他前辈的资料。"
+        s "我上了他的车，这之后他在车内对我实施性骚扰。"
+
+        s "这段记忆对我来说很痛苦，但我知道如果我忍气吞声，以后都将活在对自己无能为力的质疑里。"
+
+        s "我决定反抗，之后我找到了他骚扰其他前辈的资料。"
+
+        hide she_09_unhappy onlayer top
 
     else:
 
-        '小曼' "我拒绝了上车，但这之后我发觉不对劲，开始关注他的行为。"
+        hide she_14_deepthink onlayer top
 
-        '小曼' "之后我找到了他骚扰其他前辈的资料。"
+        show she_14_think onlayer top at top_dissolve:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
 
-    '小曼' "我已经寻求法律手段维权，虽然很难，但我们的处境已经很暗，任何一丝可能都代表一线光亮。"
+        s "我拒绝了上车，但这之后我发觉不对劲，开始关注他的行为。"
+
+        s "之后我找到了他骚扰其他前辈的资料。"
+
+        hide she_14_think onlayer top
+
+    show she_15_unflinched onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+
+    s "我已经寻求法律手段维权，虽然很难，但我们的处境已经很暗，任何一丝可能都代表一线光亮。"
+
+    hide she_15_unflinched onlayer top
 
     "把所有证据填写完毕，你直接发布了。"
 
@@ -7487,36 +7526,87 @@ label she_ending_a3_poxiao:
     scene bg court_outside
     with fade
 
+    hide she_14_deepthink onlayer top
+    hide she_14_think onlayer top
+    hide she_09_unhappy onlayer top
+    hide she_15_unflinched onlayer top
+
+    # 旁白，不显示小曼
     "开庭当天，你出现在法院大门外，门口有很多人。"
 
     "加油哦。"
     "你真的很勇敢，吾辈楷模。"
     "英雌！"
 
+    show linjie_01_normal with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
+
     '林姐' "这么多年拼到这个位置全靠理智决策，但今天我也抛弃理智地希望你赢。"
 
+    hide linjie_01_normal with dissolve
+
+    show woman_01_normal with dissolve:
+        zoom 0.8
+        xpos 1350
+        ypos 160
+
     '???' "我也是。去吧，给那个良夜一点颜色看看。"
+
+    hide woman_01_normal with dissolve
 
     scene bg court_outside
     with fade
 
+    hide she_14_deepthink onlayer top
+    hide she_14_think onlayer top
+    hide she_09_unhappy onlayer top
+    hide she_15_unflinched onlayer top
+
+    # 旁白，不显示小曼
     "下发判决结果那天来了，你听完判决走出法院。"
+
+    # 记者提问，小曼入场
+    show she_14_deepthink onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
 
     '记者1' "佘女士，你现在是什么感觉？感觉值得吗？"
 
     '记者2' "现在 SheIsMe 词条爆火，你被称作反性骚扰吹哨人，你怎么看？"
 
-    '小曼' "从判决结果看，我输了。"
+    hide she_14_deepthink onlayer top
 
-    '小曼' "但现在那么多的性骚扰者被曝光，职场性别议题被带到大众面前。"
+    show she_09_unhappy onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
 
-    '小曼' "大家现在也不仅仅凭借结果定义这件事为失败，这大概就是意义。"
+    s "从判决结果看，我输了。"
 
-    '小曼' "至于吹哨人，不敢当啦。好多位前辈在我之前就默默奋斗着呢。"
+    s "但现在那么多的性骚扰者被曝光，职场性别议题被带到大众面前。"
 
-    '小曼' "可能抗争的办法不同，但是我们奋斗的目标是一样的。"
+    s "大家现在也不仅仅凭借结果定义这件事为失败，这大概就是意义。"
 
-    '小曼' "我想这就是 women，不仅是女性，也是我们本身。"
+    s "至于吹哨人，不敢当啦。好多位前辈在我之前就默默奋斗着呢。"
+
+    s "可能抗争的办法不同，但是我们奋斗的目标是一样的。"
+
+    hide she_09_unhappy onlayer top
+
+    show she_15_unflinched onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+
+    s "我想这就是“women”，不仅是女性，也是“我们”本身。"
+
+    hide she_15_unflinched onlayer top
 
     "CG：破晓"
     $ unlock_cg("poxiao")
