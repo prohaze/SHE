@@ -3811,7 +3811,7 @@ label search_fail:
     jump she_ending_gulang
         
         
-
+define bella = Character("Bella", color="#fff5bc")
 
 # 实体证据搜证
 label harrassment_evidence:
@@ -3853,6 +3853,7 @@ label linjie_help:
         zoom 0.8
         xzoom -1.0
         xpos -30
+        ypos 240
     show linjie_01_normal with dissolve:
         zoom 0.92
         xpos 1450
@@ -3862,6 +3863,8 @@ label linjie_help:
     
     hide linjie_01_normal
     show linjie_07_shock at shock:
+        zoom 0.92
+        xpos 1450
         ypos 200
     linjie "!"
 
@@ -3870,6 +3873,7 @@ label linjie_help:
     s "……即使无法弥补曾经那个空缺，也多少能在今后有个心安。"
     show she_17_sad_smile onlayer top at top_dissolve:
         zoom 0.8
+        xzoom -1.0
         xpos -30
         ypos 240
     s "你愿意帮帮我吗？"
