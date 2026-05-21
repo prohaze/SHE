@@ -4459,8 +4459,7 @@ label cyro_search_leave_safe:
         jump encounter_bella_leave_safe
     else:
         "{i}没有找到证据，但该走了{/i}"
-        jump chapter5
-
+    jump week13_lawyer_evidence_check
 
 # ============================================================
 # 时间耗尽
@@ -7624,13 +7623,48 @@ label she_ending_b3_feiniao:
     scene bg hr_office
     with fade
 
+    hide she_14_deepthink onlayer top
+    hide she_14_think onlayer top
+    hide she_09_unhappy onlayer top
+    hide she_15_unflinched onlayer top
+    hide she_17_sad onlayer top
+    hide she_17_sad_smile onlayer top
+
+    show she_15_unflinched onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+
     '小曼' "我要举报陈永仁性骚扰，所有证据都在这里。"
+
+    hide she_15_unflinched onlayer top
+
+    show woman_01_normal with dissolve:
+        zoom 0.8
+        xpos 1350
+        ypos 160
 
     "HR 在看小曼给的证据。之后她抬起头，小曼发现这是之前在电梯遇到的陌生女人。"
 
+    hide woman_01_normal with dissolve
+
+    show woman_02_talk with dissolve:
+        zoom 0.8
+        xpos 1350
+        ypos 160
+
     '???' "这些东西你没发在别的地方吧。"
 
+    show she_14_deepthink onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+
     '小曼' "……"
+
+    hide she_14_deepthink onlayer top
 
     'HR' "公司看重声誉，要是泄露出去了，我们也很难办。你要是还想在这干，就小心点。"
 
@@ -7638,14 +7672,37 @@ label she_ending_b3_feiniao:
 
     'HR' "明白我的意思吗？"
 
+    hide woman_02_talk with dissolve
+
+    show woman_01_normal with dissolve:
+        zoom 0.8
+        xpos 1350
+        ypos 160
+
     "小曼发觉了她威胁一样的提醒。"
+
+    hide woman_01_normal with dissolve
+
+    show woman_02_talk with dissolve:
+        zoom 0.8
+        xpos 1350
+        ypos 160
 
     'HR' "文件有点多，你的材料可能明后天交上去。你可以走了。"
 
+    hide woman_02_talk with dissolve
+
+    show she_09_unhappy onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+
     "小曼遂按照指示发帖闹大。"
 
-    jump she_ending_c3_qingyun
+    hide she_09_unhappy onlayer top
 
+    jump she_ending_c3_qingyun
 
 # ==========================================
 # C-3【青云】
