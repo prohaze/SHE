@@ -3847,55 +3847,147 @@ label harrassment_evidence:
     else:
         jump linjie_refuse_help
         
-
 label linjie_help:
     scene corridor with fade
+    show she_17_sad onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+    show linjie_01_normal with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
     s "林姐，我……"
-    s "昨天晚上庆功宴结束，陈总要送我回家。"
-
+    s "昨天晚上庆功宴结束，陈总说要送我回家。"
+    
+    hide linjie_01_normal
+    show linjie_07_shock at shock:
+        ypos 200
     linjie "!"
 
     s "……我有点东西丢在车上了，不知道陈总是不是把东西放在办公室里，我想去看看。"
     s "不知道是不是只有我丢了东西，如果可能，我想替大家把失物带回来。"
     s "……即使无法弥补曾经那个空缺，也多少能在今后有个心安。"
+    show she_17_sad_smile onlayer top at top_dissolve:
+        zoom 0.8
+        xpos -30
+        ypos 240
     s "你愿意帮帮我吗？"
+    hide she_17_sad onlayer top
     
     # 两人对视
     # 调虎离山
-    
+    show linjie_06_bar_closeeyes:
+        zoom 0.92
+        xpos 1450
+        ypos 200
     linjie "………………"
+    hide linjie_07_shock
+
+    show linjie_01_normal with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
+    show she_06_surprise_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     linjie "……我这里还有些文件要处理，先走了。"
+    
+    hide she_06_surprise_eye_nobag onlayer top
 
     # 小曼失落
     scene office_desk with fade
+    show she_13_sigh2 onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     "{i}回到工位上，你继续想着搜证的办法。{/i}"
+
     # 脚步声音效
+
+    show she_01_normal_eye_o_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     s "哎？"
+    hide she_13_sigh2 onlayer top
+
     "{i}林姐从你旁边快速走过，她手机里传来微信电话的声音。{/i}"
+    "{i}她走过时刻意看了你一眼。{/i}"
     linjie "陈总吗，这里有个甲方的视觉需求我需要找您确认一下，需要在11楼会议室放映，您现在有别的日程吗。"
     linjie "了解，最多耽误您5分钟行吗？"
     linjie "好的，我准备好设备了。"
     "{i}你从工位上看到陈永仁从办公室出来，快步走向电梯。{/i}"
+
+    show she_17_sad_smile onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    hide she_01_normal_eye_o_nobag onlayer top
+    s "那么，我也该走了。"
+    hide she_17_sad_smile onlayer top
+
 jump cyro_office_start
 
 label linjie_refuse_help:
+    show she_17_sad onlayer top at top_dissolve
+    show linjie_01_normal with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
     s "林姐，我……"
-    s "昨天晚上庆功宴结束，陈总要送我回家。"
+    s "昨天晚上庆功宴结束，陈总说要送我回家。"
 
+    hide linjie_01_normal
+    show linjie_07_shock at shock:
+        zoom 0.92
+        xpos 1450
+        ypos 200
     linjie "!"
 
     s "……我想找证据争一个结果，不管是好是坏"
     s "听你昨天的话，我觉得你是明白的。我计划今天去陈总办公室试试，你能帮我吗？"
 
+    show linjie_06_bar_closeeyes:
+        zoom 0.92
+        xpos 1450
+        ypos 200
+    linjie "…………"
+    hide linjie_07_shock
+    
+    show linjie_01_normal with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
+    show she_06_surprise_eye_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     linjie "佘小姐，昨晚我喝多了，你说的这些我不太记得。"
     linjie "如果昨天和你大吐苦水，说了太多我走到今天的诸多不易，给你造成困扰了，是我失态。"
     linjie "不好意思，我手上还有工作，不能奉陪。"
+    hide linjie_06_bar_closeeyes
+    
     #林姐走开
+    hide linjie_01_normal
     scene black
     linjie "但无论如何，希望你今后顺利。"
 
     s "……"
+    show she_17_sad_smile onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     s "谢谢。"
+    hide she_06_surprise_eye_nobag onlayer top
+    hide she_17_sad_smile onlayer top
     
     show office_desk with dissolve
     s "{i}林姐拒绝了，接下来怎么办呢？{/i}"
@@ -3908,20 +4000,86 @@ label linjie_refuse_help:
             jump encounter_bella
 
 label encounter_bella:
-    # 场景：走廊
+    
+    scene corridor with fade
+    show she_14_deepthink onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     "{i}你在走回自己工位的路上想着其他办法，没注意迎面走来的人。{/i}"
     jump bella
 
+label encounter_bella_leave_safe: #从办公室搜查成功离开跳转
+    
+    scene corridor with fade
+    show she_14_deepthink onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    "{i}你在走回自己工位的路上平复紧张的心情，没注意迎面走来的人。{/i}"
+    jump bella
+
 label bella:
+    show bella_00_shade with vpunch:
+        zoom 0.95
+        xpos 1450
+        ypos 230
+    hide she_14_deepthink onlayer top
+    show she_07_astonish_nobag onlayer top at shock:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 230
     '???' "哎哎哎！"
-    "{i}文件撒了{/i}"
     s "！"
+    show bella_04_file_fall:
+        zoom 0.95
+        xpos 1450
+        ypos 230
+    "{i}文件撒了{/i}"
     s "不好意思我在想别的事，我帮你……"
+    hide she_07_astonish_nobag onlayer top
+    
+    #转场
+    scene black with fade
+
+    show she_03_tinysmile_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     s "你看顺序对吗？"
+    show bella_01_happy with dissolve:
+        zoom 0.95
+        xpos 1450
+        ypos 230
     '???' "哦没事，陈总要得不急，我等会儿整整，谢谢前辈！"
-    s "你……实习生？"
-    "Bella" "对的！我是Bella，现在是实习生，不过陈总最近经常派我干活，我觉得我有很大可能转正！"
+
+    show she_01_normal_eye_o_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "找陈总？你……实习生？"
+    hide she_03_tinysmile_eye_nobag onlayer top
+
+    show bella_05_shuanglang:
+        zoom 0.95
+        xpos 1450
+        ypos 230
+    bella "对的！我是Bella，现在是实习生。"
+    extend "不过陈总最近经常派我干活，我觉得我有很大可能转正！"
+    show she_17_sad_smile onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     s "哦……那加油啊。"
+    hide she_01_normal_eye_o_nobag onlayer top
+    hide she_17_sad_smile onlayer top
+
     jump week13_lawyer_evidence_check
 
     # # 5分钟倒计时搜查
@@ -4326,8 +4484,8 @@ label cyro_office_search_check:
 
 label cyro_search_leave_safe:
 
-    "Search Complete"
-    "Evidence Collected: 4"
+    # "Search Complete"
+    # "Evidence Collected: 4"
                
     hide screen cyro_office_timer
 
@@ -4335,9 +4493,10 @@ label cyro_search_leave_safe:
 
     if found_evidence > 0:
         "{i}You take photos of all clues you have found, put everything back in place, and slip out before Chan Wing Yan returns.{/i}"
+        jump encounter_bella_leave_safe
     else:
         "{i}没有找到证据，但该走了{/i}"
-jump chapter5
+        jump chapter5
 
 
 # ============================================================
@@ -4793,11 +4952,11 @@ transform slide_button:
     pause 0.3
 
 transform appear_disappear:
-    alpha 0.0
+    alpha 1.0
+    pause 0.5
+    linear 0.3 alpha 0
     pause 0.5
     linear 0.3 alpha 1.0
-    pause 0.5
-    linear 0.3 alpha 0.0
     repeat
 
 
@@ -4907,7 +5066,7 @@ label car_xsr:
     jump qte_loop
 
 # 性骚扰QTE计时条
-screen qte_choice_timer_5(question, time_limit=1.5):
+screen qte_choice_timer_5(question, time_limit=2.5):
     modal True
     
     # 使用 persistent 或外部变量来跟踪，避免 screen 重置
@@ -5054,9 +5213,9 @@ label qte_movie_phase:
 label qte_screen_phase:
     # 减少倒计时
     $ countdown_1 -= 1
-    
-     # 关键：使用 call screen 获取返回值
-    call screen qte_choice_timer_5("做出反应！", time_limit=1.5)
+
+    # 关键：使用 call screen 获取返回值
+    call screen qte_choice_timer_5("做出反应！", time_limit=2.5)
     
     # _return后的值现在可能是 "a", "b", "c", 或 "timeout"
     if _return == "timeout":
@@ -5222,7 +5381,7 @@ screen final_choice(time_limit_3 = 10):
                 ypos 600
                 action [SetVariable("final_choice", "escape"), Return("escape")] # action (play sound"ding") #记得加音效
         else:
-           pass
+            pass
 
         # ===== 底部倒计时条 =====
     frame:
@@ -5418,7 +5577,12 @@ screen room_scan():
             color "#FFFFFF"
 
     textbutton "Sleep":
-        align (0.5, 0.95)
+        background Frame("gui/textbox.png")
+        padding (180, 0)
+        hover_background Frame("blue_textbox")
+        align (0.5, 0.85)
+        text_color "#888888"
+        text_hover_color "#ffffff"
         action Return(False)
 
 label room_scene:
@@ -5462,7 +5626,7 @@ label room_scene:
             "Not a single word can be written."
             "Or rather, there are too many words, and you don’t know where to start."
 
-label sleep:
+label game_sleep:
     
     # if "拒绝" in qte_state.choices_made:
     #     "你坐在床边，手机亮了又暗。"
@@ -5644,19 +5808,18 @@ default disclosure_level = "medium"
 
 # 第五章入口
 # ----------------------
-label chapter5:
-    $ chapter5_started = True
+# label chapter5:
+#     $ chapter5_started = True
     
-    scene bg bedroom_night
-    with fade
+#     scene bg bedroom_night
+#     with fade
     
-    "第15周。周三。凌晨1:17。"
-    "你把所有东西摊开在床上。"
-    "消息。笔记。报警回执。律师名片。小红书评论。日记。工资条。所有。"
+#     "第15周。周三。凌晨1:17。"
+#     "你把所有东西摊开在床上。"
+#     "曾经的报警回执、日记、工资条、小红书评论……"
+#     "还有一张收藏了很久的律师名片。"
     
-    "四条路清晰浮现。"
-    
-    jump week13_lawyer_evidence_check
+#     jump week13_lawyer_evidence_check
 
 
 # ==========================================
