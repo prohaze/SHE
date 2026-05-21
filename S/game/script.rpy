@@ -2751,6 +2751,7 @@ label investigate_other_ways:
     jump fitness_video_event
 
 # 健身视频事件
+
 label fitness_video_event:
     scene home_ceiling with fade
     
@@ -2784,29 +2785,6 @@ label fitness_video_event:
         "Like the video":
             jump reply_thumb_up
 
-# 手机通知界面
-# screen phone_notification(sender, msg):
-#     frame:
-#         xalign 0.5
-#         ypos 100
-#         xsize 350
-#         background "#ffffff"
-#         padding (15, 15)
-        
-#         vbox:
-#             spacing 8
-            
-#             hbox:
-#                 text sender bold True
-#                 text " 微信" size 12
-                
-#             text msg size 14
-            
-#             null height 5
-            
-#             hbox:
-#                 xalign 1.0
-#                 text "现在" color "#999999" size 12
 
 # 选项A：看视频
 transform rotate_right:
@@ -2879,16 +2857,15 @@ label watch_fitness_video:
     scene black with fade
     "视频结束，黑屏。你的脸也黑了。"
     show home_ceiling with fade
-    # hide screen video_player
-    # with dissolve
-    
-    # $ fitness_video_watched = True
+
     show pyq at shock:
         zoom 1.5
         xalign 0.5
         yalign 0.35
     s "呃…………" #（有某种不适感在胃里蔓延）
     
+    $ fitness_video_watched = True
+
     jump after_video
 
 # 视频播放器界面
@@ -4221,25 +4198,7 @@ screen cyro_office_map():
         xpos 530
         ypos 600
         action [Jump("cyro_office_desk")]
-    # textbutton "[cyro_office_mark('最下层抽屉', cyro_office_found_files)]":
-    #     xsize 500
-    #     ysize 120
-    #     action Return("drawer")
 
-    # textbutton "[cyro_office_mark('书柜顶层礼盒', cyro_office_found_perfume)]":
-    #     xsize 500
-    #     ysize 120
-    #     action Return("bookshelf")
-
-    # textbutton "[cyro_office_mark('文件堆下的笔记本', cyro_office_found_notebook)]":
-    #     xsize 500
-    #     ysize 120
-    #     action Return("desk")
-
-    # textbutton "[cyro_office_mark('照片书', cyro_office_found_photo)]":
-    #     xsize 500
-    #     ysize 120
-    #     action Return("photo")
     # 手动退出键
     imagebutton at arrow_style_ud:
         align (0.5, 0.95)
@@ -4519,25 +4478,23 @@ label cyro_office_time_up:
     
     # 脚步声停在身后，小曼回头
     
-    chen "……这是谁呀？"
+    chen "看看，这是谁呀？"
     scene black with fade
     show chen_08_horrible with dissolve:
         zoom 2.0 xalign 0.45 ypos -600
         linear 1.5 zoom 2.0 xalign 0.45 ypos -500
         linear 0.1 zoom 7 xalign 0.65 ypos -800
     pause 1.5
-    jump she_ending_gulang
+    jump she_ending_gulang_or_songbie
 
     return
 
 
-
-
-
-
-
-
-
+label she_ending_gulang_or_songbie:
+    if she_friend_full():
+        jump she_ending_songbie
+    else:
+        jump she_ending_gulang
 
 # label office_search_results:
 #     scene bg chen_office
@@ -5304,7 +5261,11 @@ screen push_away_qte (time_limit_2 = 8):
         align (0.5, 0.3)
         spacing 20
 
-        text "点击次数: [qte_state.push_count] / 10": #这个建议测试用，实际落地的时候删掉
+        text "推开他！"
+            size 24
+            color "#FC8181"
+            xalign 0.5
+        text "[qte_state.push_count] / 10":
             size 24
             color "#FC8181"
             xalign 0.5
@@ -5431,7 +5392,8 @@ label kiss_ending_long:
     s "使不出力"
     s "不要"
     s "{cps=50}不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要{/cps}"
-    
+    # $ has_kiss_evidence = True
+
     scene black with fade
     $renpy.pause(1.5, hard=True)
     "{i}吻持续了很久。{/i}"
@@ -5460,7 +5422,9 @@ label final_decision:
         jump ending_escape
 
 label ending_hug:
+    # $ has_hug_evidence = True
     scene black with dissolve
+    
     "{i}你麻木地拥抱了他。{/i}"
     "{i}感觉到他手臂的挤压。{/i}"
     chen "这就对了，"
@@ -5674,7 +5638,7 @@ default route_public = False
 default route_leave = False
 
 # # 路线条件变量
-default lawyer_contacted = False
+# default lawyer_contacted = False
 default courage = 0
 # default xiaohongshu_fans = 0
 
@@ -5836,17 +5800,19 @@ define zhao_lawyer = Character("赵律师")
 # 如果前面已经定义过这些 default，重复 default 不会重置已存在存档里的值
 default evidence_count = 0
 
-default has_message_evidence = False
-default has_car_xsr_experience = False
-default has_hug_evidence = False
-default has_kiss_evidence = False
-default has_audio_evidence = False
-default has_photo_or_video_evidence = False
-default has_witness_evidence = False
-default has_other_victim_evidence = False
-default has_company_complaint_evidence = False
-default has_medical_or_psychological_evidence = False
-default has_retaliation_evidence = False
+default has_message_evidence = False # 健身视频
+default has_car_xsr_experience = False # 性骚扰场景
+# default has_hug_evidence = False # 联动完成
+# default has_kiss_evidence = False # 联动完成
+
+
+# default has_audio_evidence = False
+# default has_photo_or_video_evidence = False
+# default has_witness_evidence = False
+# default has_other_victim_evidence = False
+# default has_company_complaint_evidence = False
+# default has_medical_or_psychological_evidence = False
+# default has_retaliation_evidence = False
 
 # 避免你 route_choice_screen 里 xiaohongshu_fans 未定义时报错
 default xiaohongshu_fans = 0
@@ -5862,14 +5828,14 @@ label week13_lawyer_evidence_check:
 
     # 办公室搜证数量
     if found_evidence > 0:
-        $ evidence_count += found_evidence
-        $ has_photo_or_video_evidence = True
-        $ has_other_victim_evidence = True
+        $ evidence_count += found_evidence # 这里把办公室四个都算了，不用多写
+        # $ has_photo_or_video_evidence = True
+        # $ has_other_victim_evidence = True
 
-    # 工资差异证据
-    if salary_evidence:
-        $ evidence_count += 1
-        $ has_company_complaint_evidence = True
+    # # 工资差异证据
+    # if salary_evidence:
+    #     $ evidence_count += 1
+    #     $ has_company_complaint_evidence = True
 
     # 车内经历
     if car_event:
@@ -5877,16 +5843,16 @@ label week13_lawyer_evidence_check:
         $ has_car_xsr_experience = True
         $ has_kiss_evidence = True
 
-    # 林姐线索 / 模式识别
-    if hidden_truth_unlocked:
-        $ evidence_count += 1
-        $ has_witness_evidence = True
-        $ has_other_victim_evidence = True
+    # # 林姐线索 / 模式识别
+    # if hidden_truth_unlocked:
+    #     $ evidence_count += 1
+    #     $ has_witness_evidence = True
+    #     $ has_other_victim_evidence = True
 
-    # 小红书联系 / 其他受害者线索
-    if xiaohongshu_contact:
-        $ evidence_count += 1
-        $ has_other_victim_evidence = True
+    # # 小红书联系 / 其他受害者线索
+    # if xiaohongshu_contact:
+    #     $ evidence_count += 1
+    #     $ has_other_victim_evidence = True
 
     # 如果玩家看过陈永仁深夜健身视频，算作一条模糊数字证据
     if fitness_video_watched:
@@ -5899,28 +5865,50 @@ label week13_lawyer_evidence_check:
     # 正式剧情
     # ----------------------
 
-    scene bg cafe_central
-    with fade
+    scene cafe with fade
 
     "第13周。中环某咖啡馆。"
-
-    "赵律师五十岁，套装干练，戴着眼镜。"
-    "她看着你，把咖啡放到一边。"
-
+    show she_01_normal_nocard_eye onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    show lawyer_01_normal:
+        zoom 0.76
+        xpos 1450
+        ypos 240
     zhao_lawyer "给我看看你有的。"
 
-    "证据审查界面打开。"
-    "你把证据一件件拖到桌上。"
-
+    show she_01_normal_eye_nocard onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    hide she_01_normal_nocard_eye onlayer top
     # ----------------------
     # 证据数量 check
     # ----------------------
 
     if evidence_count == 0:
-
-        zhao_lawyer "没有证据。"
-        zhao_lawyer "法律上，这会变成你说发生了，他说没有。"
-        zhao_lawyer "难立案，难证明，也容易被反过来质疑。"
+        show lawyer_02_surprise:
+            zoom 0.76
+            xpos 1450
+            ypos 240
+        zhao_lawyer "没有证据？"
+        zhao_lawyer "法律判断要以证据为基础做出。"
+        extend "没有证据难立案，难证明，也容易被反过来质疑。"
+        show lawyer_01_normal:
+            zoom 0.76
+            xpos 1450
+            ypos 240
+        zhao_lawyer "你经历的痛苦是真的，我明白。"
+        zhao_lawyer "但法律要看的，是能不能把痛苦变成证据。"
+        zhao_lawyer "不过别灰心。媒体、民众舆论也能让不公被看见。"
+        zhao_lawyer "但这条路也险。很多人把舆论当做武器，最后却失去了对它的控制。"
+        zhao_lawyer "你可能会被陌生人审判，受到各种中伤。"
+        zhao_lawyer "佘女士，要想清楚啊。"
+        
+        jump chapter5_route_selection
 
     elif evidence_count <= 3:
 
@@ -5930,8 +5918,7 @@ label week13_lawyer_evidence_check:
 
     else:
 
-        zhao_lawyer "证据不少，但数量不等于胜算。"
-        zhao_lawyer "法律看的是关键证据。"
+        zhao_lawyer "材料不少，但法律看的是关键证据。"
         zhao_lawyer "如果没有直接证明，他仍然有解释空间。"
 
     # ----------------------
@@ -5951,156 +5938,99 @@ label week13_lawyer_evidence_check:
         zhao_lawyer "没有监控、录音、证人，你最多能证明你上过车。"
         zhao_lawyer "但车里具体发生了什么，法律上还需要更直接的材料。"
 
-    if has_hug_evidence:
+    if cyro_office_found_files:
+        
+        zhao_lawyer "这些档案的记录不能直接表明她们离职的原因是陈永仁的性骚扰。"
 
-        zhao_lawyer "拥抱可以被他说成普通安慰。"
-        zhao_lawyer "尤其在你们存在上下级关系时，他会把它包装成关心。"
+    if cyro_office_found_perfume: 
 
-    if has_kiss_evidence:
+        zhao_lawyer "没有贺卡指明收礼人，香水礼盒可以送给任何人。"
+        zhao_lawyer "就算收礼方的身份明确了，陈永仁也可以辩驳说这是正常社交。"
 
-        zhao_lawyer "吻更严重。"
-        zhao_lawyer "但如果没有证人、录像、录音，他可以否认，也可以说你同意了。"
-        zhao_lawyer "这就是这类案件最残酷的地方。"
+    if cyro_office_found_notebook:
+        zhao_lawyer "记录语焉不详，甚至没有明确的姓名指向，很难作为证据。"
 
-    if has_audio_evidence:
+    if cyro_office_found_photo:
+        zhao_lawyer "这张照片拍到的动作倒是很亲密，但是很难达到性骚扰的判定标准。"
+        zhao_lawyer "而且这上面的人不是你……"
 
-        zhao_lawyer "录音有用。"
-        zhao_lawyer "但如果内容模糊，或者没有清楚指向具体行为，他仍然可以解释成别的事。"
+    # if has_hug_evidence:
 
-    if has_photo_or_video_evidence:
+    #     zhao_lawyer "拥抱可以被他说成普通安慰。"
+    #     zhao_lawyer "尤其在你们存在上下级关系时，他会把它包装成关心。"
 
-        zhao_lawyer "照片和视频要看有没有拍到关键动作。"
-        zhao_lawyer "如果只是同框、同行、同处一个空间，只能证明你们在一起。"
+    # if has_kiss_evidence:
 
-    if has_witness_evidence:
+    #     zhao_lawyer "吻更严重。"
+    #     zhao_lawyer "但如果没有证人、录像、录音，他可以否认，也可以说你同意了。"
+    #     zhao_lawyer "这就是这类案件最残酷的地方。"
 
-        zhao_lawyer "证人有用。"
-        zhao_lawyer "但如果她只是听你转述，只能算辅助。"
-        zhao_lawyer "如果她亲眼见过、亲耳听过，证明力会强很多。"
+    # if has_audio_evidence:
 
-    if has_other_victim_evidence:
+    #     zhao_lawyer "录音有用。"
+    #     zhao_lawyer "但如果内容模糊，或者没有清楚指向具体行为，他仍然可以解释成别的事。"
 
-        zhao_lawyer "其他受害者能证明他可能有行为模式。"
-        zhao_lawyer "但它不能直接证明他对你做过什么。"
-        zhao_lawyer "法律会把这两件事分开看。"
+    # if has_photo_or_video_evidence:
 
-    if has_company_complaint_evidence:
+    #     zhao_lawyer "照片和视频要看有没有拍到关键动作。"
+    #     zhao_lawyer "如果只是同框、同行、同处一个空间，只能证明你们在一起。"
 
-        zhao_lawyer "投诉记录能证明你反映过。"
-        zhao_lawyer "但它不一定能证明他做过。"
-        zhao_lawyer "公司也可能说，他们已经按流程处理。"
+    # if has_witness_evidence:
 
-    if has_medical_or_psychological_evidence:
+    #     zhao_lawyer "证人有用。"
+    #     zhao_lawyer "但如果她只是听你转述，只能算辅助。"
+    #     zhao_lawyer "如果她亲眼见过、亲耳听过，证明力会强很多。"
 
-        zhao_lawyer "医疗或心理记录能证明你受到了伤害。"
-        zhao_lawyer "但它不一定证明伤害是谁造成的。"
+    # if has_other_victim_evidence:
 
-    if has_retaliation_evidence:
+    #     zhao_lawyer "其他受害者能证明他可能有行为模式。"
+    #     zhao_lawyer "但它不能直接证明他对你做过什么。"
+    #     zhao_lawyer "法律会把这两件事分开看。"
 
-        zhao_lawyer "打击报复材料可以走公司责任。"
-        zhao_lawyer "但你要证明它和投诉之间有明确关联。"
+    # if has_company_complaint_evidence:
 
-    # ----------------------
-    # 如果没有任何具体类型证据
-    # ----------------------
+    #     zhao_lawyer "投诉记录能证明你反映过。"
+    #     zhao_lawyer "但它不一定能证明他做过。"
+    #     zhao_lawyer "公司也可能说，他们已经按流程处理。"
 
-    if not has_message_evidence and not has_car_xsr_experience and not has_hug_evidence and not has_kiss_evidence and not has_audio_evidence and not has_photo_or_video_evidence and not has_witness_evidence and not has_other_victim_evidence and not has_company_complaint_evidence and not has_medical_or_psychological_evidence and not has_retaliation_evidence:
+    # if has_medical_or_psychological_evidence:
 
-        zhao_lawyer "目前没有可以被拿出来讨论的具体材料。"
-        zhao_lawyer "你经历的痛苦是真的。"
-        zhao_lawyer "但法律要看的，是能不能把痛苦变成证据。"
+    #     zhao_lawyer "医疗或心理记录能证明你受到了伤害。"
+    #     zhao_lawyer "但它不一定证明伤害是谁造成的。"
+
+    # if has_retaliation_evidence:
+
+    #     zhao_lawyer "打击报复材料可以走公司责任。"
+    #     zhao_lawyer "但你要证明它和投诉之间有明确关联。"
 
     # ----------------------
     # 总结
     # ----------------------
 
-    "赵律师把证据放回桌上。"
+    zhao_lawyer "这些证据无法形成强力的证据链，打官司胜诉很难。"
 
-    zhao_lawyer "所以，法律这条路很难。"
+    s "没有其他反抗的可能了吗？"
 
-    s "那我什么都做不了？"
+    zhao_lawyer "法律之外，还有人情。"
 
-    zhao_lawyer "我没这么说。"
+    zhao_lawyer "媒体、民众舆论也能让不公被看见。"
 
-    zhao_lawyer "我说的是，法律帮不了你，至少现在很难。"
+    zhao_lawyer "但这条路也险。很多人把舆论当做武器，最后却失去了对它的控制。"
+    zhao_lawyer "你可能会被陌生人审判，受到各种中伤。"
 
-    s "那还有什么路？"
+    "{i}赵律师把证据放回桌上。{/i}"
+        
+    zhao_lawyer "佘女士，要想清楚啊。"
+    hide lawyer_01_normal with dissolve
 
-    zhao_lawyer "媒体。集体行动。制造声音。"
+    # $ lawyer_contacted = True
 
-    zhao_lawyer "声音够大，公司会怕。"
-
-    zhao_lawyer "但这条路会公开。你会被陌生人审判，也会被各种名字骂。"
-
-    zhao_lawyer "你要想清楚。"
-
-    $ lawyer_contacted = True
-
-    if evidence_count > 0:
-        $ evidence_complete = True
-    else:
-        $ evidence_complete = False
-
-    menu:
-        "你看着桌上的证据。"
-
-        "什么路？":
-            jump lawyer_media_route
-
-        "那我该放弃？":
-            jump lawyer_despair_route
-
-        "我还是要走法律。":
-            jump lawyer_legal_route
-
-
-# ==========================================
-# 律师咨询后的出口
-# 统一回到 V2 路线选择
-# ==========================================
-
-label lawyer_media_route:
-
-    scene bg bedroom_night
-    with fade
-
-    "你离开咖啡馆。"
-    "赵律师的话还在耳边。"
-    "法律很窄。"
-    "但声音，也许能从缝里长出来。"
+    # if evidence_count > 0:
+    #     $ evidence_complete = True
+    # else:
+    #     $ evidence_complete = False
 
     jump chapter5_route_selection
-
-
-label lawyer_despair_route:
-
-    scene bg bedroom_night
-    with fade
-
-    "你回到房间，把证据重新收进文件夹。"
-    "不是不痛了。"
-    "只是你忽然很累。"
-
-    if escape >= 2:
-        jump she_ending_tuoniao
-    else:
-        "但真正要怎么做，还没有结束。"
-        jump chapter5_route_selection
-
-
-label lawyer_legal_route:
-
-    scene bg bedroom_night
-    with fade
-
-    "你把证据重新整理了一遍。"
-    "哪怕赵律师说很难，你还是想试一次。"
-
-    "但在按下决定之前，你还是看向了另外几条路。"
-
-    jump chapter5_route_selection
-
-
 
 # ----------------------
 # 第五章路线选择标签（改名避免冲突）
@@ -6681,7 +6611,7 @@ init python:
 
 
     def she_friend_full():
-        return linjie_interest >= 2 and xiaojin_interest >= 1
+        return linjie_interest >= 2 or xiaojin_interest >= 1
 
 
     def she_only_unrelated_evidence(selected_ids):
@@ -7071,40 +7001,51 @@ label she_ending_b1_yinshui:
 
 label she_ending_c1_tuichang:
 
-    scene bg bedroom_night
-    with fade
+    scene home_laptop with fade
 
-    "你把自己的经历和猜测发上网，希望大家关注职场性骚扰问题。"
+    "{i}你把自己的经历和猜测发上网，希望大家关注职场性骚扰问题。{/i}"
 
-    "公司好像发现了这个帖子，你被人事约谈了。"
+    "{i}公司好像发现了这个帖子，你被人事约谈了。{/i}"
 
-    scene bg hr_office
-    with fade
+    scene hr_office with dissolve
+    show she_15_idea onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "冒昧问一下，公司是想来处理这件事，还是来处理我？"
 
-    '小曼' "冒昧问一下，公司是想来处理这件事，还是来处理我？"
+    s "如果不是前者的话，不用说了。"
 
-    '小曼' "如果不是前者的话，不用说了。"
-
-    '小曼' "这样的地方没有待下去的必要。"
+    s "这样的地方没有待下去的必要。"
+    
+    show she_15_unflinched onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
 
     '小曼' "我辞职。"
+    hide she_15_idea onlayer top
+    hide she_15_unflinched onlayer top
 
-    scene black
-    with fade
+    scene pack_up with fade
 
-    "桌面收拾干净了，桌上只有一个背包和一个屏幕亮着的手机。"
+    "{i}桌面收拾干净了，桌上只有一个背包和一个屏幕亮着的手机。{/i}"
 
-    "你的小紫书帖子评论总数停在423条，热度早就掉了。"
+    "{i}你的小紫书帖子评论总数停在423条，热度早就掉了。{/i}"
 
-    "最新一条评论是：又一个蹭热度的。"
+    "{i}最新一条评论是：又一个蹭热度的。{/i}"
 
-    "你关掉了手机。"
+    "{i}你关掉了手机。{/i}"
 
-    "CG：退场"
+    scene tuichang with fade
+
+    "解锁结局：退场"
+
     $ unlock_cg("tuichang")
 
     jump she_ending_common
-
 
 # ==========================================
 # D-1【相惜】
@@ -7819,7 +7760,7 @@ label she_ending_tuoniao:
 
 # ==========================================
 # 非主线【孤狼】
-# 完全曝光但没有同伴
+# 完全曝光但没有同伴、搜查暴露没有同伴
 # ==========================================
 
 label she_ending_gulang:
@@ -7888,90 +7829,6 @@ label she_ending_common:
     "{i}THE END{/i}"
 
     return
-
-#     #1. 酒单（左侧）
-#     button:
-#         xpos 100
-#         ypos 200
-#         xsize 120
-#         ysize 150
-#         background "#8b4513"
-#         hover_background "#a0522d"
-#         action Jump("bar_menu_choice")
-
-#         vbox:
-#             xalign 0.5
-#             yalign 0.5
-#             text "🍷" size 40 xalign 0.5
-#             text "酒单" size 16 xalign 0.5
-    
-#     # 2. 小金（大声聊天区域）
-#     button:
-#         xpos 300
-#         ypos 250
-#         xsize 140
-#         ysize 120
-#         background "#2e8b57"
-#         hover_background "#3cb371"
-#         #action Jump("talk_to_xiaojin")
-#         action If(talk_to_xiaojin, Jump("talk_to_xiaojin_again"), Jump("talk_to_xiaojin"))
-
-#         vbox:
-#             xalign 0.5
-#             yalign 0.5
-#             text "💬" size 35 xalign 0.5
-#             text "小金" size 16 xalign 0.5
-#             text "(大声聊天)" size 12 xalign 0.5
-        
-#     # 3. 林姐（角落卡座）
-#     button:
-#         xpos 550
-#         ypos 180
-#         xsize 130
-#         ysize 130
-#         background "#4a4a4a"
-#         hover_background "#696969"
-#         action If(sit_with_lin, Jump("sit_with_lin_again"), Jump("sit_with_lin"))
-        
-#         vbox:
-#             xalign 0.5
-#             yalign 0.5
-#             text "🪑" size 35 xalign 0.5
-#             text "林姐" size 16 xalign 0.5
-#             text "(角落卡座)" size 12 xalign 0.5
-    
-#     # 4. 陈永仁（中心位置）
-#     button:
-#         xpos 400
-#         ypos 350
-#         xsize 140
-#         ysize 140
-#         background "#8b0000"
-#         hover_background "#a52a2a"
-#         action If(observe_chen, Jump("observe_chen_again"), Jump("observe_chen"))
-        
-#         vbox:
-#             xalign 0.5
-#             yalign 0.5
-#             text "👔" size 40 xalign 0.5
-#             text "陈永仁" size 16 xalign 0.5
-#             text "(中心位置)" size 12 xalign 0.5
-    
-#     # 5. 洗手间（逃离）
-#     button:
-#         xpos 650
-#         ypos 100
-#         xsize 100
-#         ysize 100
-#         background "#4682b4"
-#         hover_background "#5f9ea0"
-#         action If(bar_restroom, Jump("bar_restroom_again"), Jump("bar_restroom"))
-        
-#         vbox:
-#             xalign 0.5
-#             yalign 0.5
-#             text "🚻" size 30 xalign 0.5
-#             text "洗手间" size 14 xalign 0.5
 
 
 # 任务4.2准备：选择工具
@@ -8067,99 +7924,3 @@ label she_ending_common:
 #                         text "🚫" size 40
 #                         text "轻装上阵" size 16 color "#ffffff"
 #                         text "(风险+)" size 12 color "#bdc3c7"
-
-# # 第一阶段：数字证据 - 截屏快手小游戏
-# label digital_evidence_phase:
-#     scene bg bedroom_night
-#     with fade
-    
-#     "第一阶段：数字证据。"
-#     "翻看所有陈永仁的消息。"
-#     "警告：他可能会撤回。"
-    
-#     "小游戏：截屏快手"
-#     "每条消息5秒内截屏，否则消失。"
-    
-#     # 7条消息，每条5秒限时
-#     $ digital_evidence_count = 0
-    
-#     call screen screenshot_game(msg="在吗", timeout=5.0)
-#     call screen screenshot_game(msg="昨晚的事别多想", timeout=5.0)
-#     call screen screenshot_game(msg="你很特别", timeout=5.0)
-#     call screen screenshot_game(msg="我知道你家在哪", timeout=5.0)
-#     call screen screenshot_game(msg="别告诉林姐", timeout=5.0)
-#     call screen screenshot_game(msg="下周单独吃饭", timeout=5.0)
-#     call screen screenshot_game(msg="你逃不掉的", timeout=5.0)
-    
-#     "截屏完成。获得 [digital_evidence_count]/7 条证据。"
-    
-#     if digital_evidence_count >= 5:
-#         "足够作为数字证据。"
-#         $ last_night_evidence = True
-#     else:
-#         "证据不足……有些消息被撤回了。"
-    
-#     jump physical_evidence_phase
-
-# # 截屏小游戏界面
-# screen screenshot_game(msg, timeout=5.0):
-#     modal True
-    
-#     default start_time = renpy.get_game_time()
-#     default captured = False
-    
-#     # 实时检查时间
-#     timer 0.05 repeat True action If(
-#         (renpy.get_game_time() - start_time) >= timeout,
-#         true=[Hide("screenshot_game"), Return()],
-#         false=NullAction()
-#     )
-    
-#     frame:
-#         xalign 0.5
-#         yalign 0.5
-#         xsize 400
-#         ysize 300
-#         background "#ffffff"
-        
-#         vbox:
-#             xalign 0.5
-#             yalign 0.5
-#             spacing 20
-            
-#             # 微信消息样式
-#             frame:
-#                 background "#95ec69"
-#                 xpadding 15
-#                 ypadding 10
-#                 xalign 0.5
-                
-#                 text msg size 18 color "#000000"
-            
-#             null height 30
-            
-#             # 倒计时显示
-#             $ remaining = max(0, timeout - (renpy.get_game_time() - start_time))
-#             text "[remaining:.1f]秒" size 24 color "#e74c3c" xalign 0.5
-            
-#             null height 20
-            
-#             # 截屏按钮
-#             if not captured:
-#                 textbutton "📸 截屏":
-#                     xalign 0.5
-#                     xsize 150
-#                     ysize 50
-#                     background "#3498db"
-#                     hover_background "#2980b9"
-#                     text_color "#ffffff"
-#                     action [SetScreenVariable("captured", True), 
-#                             SetVariable("digital_evidence_count", digital_evidence_count + 1),
-#                             Show("screenshot_flash")]
-#             else:
-#                 text "✓ 已截屏" color "#27ae60" size 20 xalign 0.5
-
-# # 截屏闪光效果
-# screen screenshot_flash():
-#     add Solid("#ffffff")
-#     timer 0.1 action Hide("screenshot_flash")
