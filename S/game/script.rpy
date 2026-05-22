@@ -5679,7 +5679,7 @@ init python:
         if salary_evidence:
             items.append({
                 "id": "salary",
-                "label": "工资差异记录",
+                "label": "Salary difference record",
                 "related": False
             })
 
@@ -6319,8 +6319,7 @@ screen post_title_input():
 label ending_a_empty_document:
     # A-1【空文】
 
-    scene bg police_station
-    with fade
+    scene bg police_station with fade
 
     "{i}You submit the evidence photos you found.{/i}"
     "{i}The officer looks through the materials you provided.{/i}"
@@ -6338,20 +6337,19 @@ label ending_a_empty_document:
         s "Will the case be filed?"
         "Police Officer" "We’ll process and investigate according to procedure. You may go."
 
-    scene black
-    with fade
+    scene reports with fade
 
     "{i}Three weeks later:{/i}"
     "{i}Insufficient evidence. Case not accepted.{/i}"
+    "{i}A blank document. A report that never became a case.{/i}"
 
     $ unlock_cg("kongwen")  # 解锁"空文"CG
 
     # CG：空文
     # scene cg_empty_document with fade
-    # "{i}A blank document. A report that never became a case.{/i}"
-    $ unlock_cg("kongwen")
+    # 
 
-    jump ending_common
+    jump she_ending_common
 
 
 label ending_b_water:
@@ -6753,7 +6751,7 @@ label she_route_public:
 
     if she_has_full_evidence():
         $ disclosure_level = "high"
-        jump she_ending_c3_qingyun
+        jump she_ending_b3_feiniao
 
     call screen xiaozishu_post
 
@@ -7129,15 +7127,15 @@ label she_ending_b1_yinshui:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "新工位和设计部还在同一层，只是离得很远。"
-    s "饮水机成了我唯一的同事，它不会说话，不过也不会对我动手动脚。"
+    s "My new desk is still on the same floor as the Design Department. It is just very far away."
+    s "The water dispenser has become my only colleague. It doesn’t talk, but at least it doesn’t touch me."
 
     show she_05_happy_sweat_nobag onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    s "办公区的最边缘，工作内容也是最边缘。"
+    s "The edge of the office. The edge of the work."
     hide she_01_normal_eye_nobag onlayer top
 
     show she_14_thinking onlayer top at top_dissolve:
@@ -7145,7 +7143,7 @@ label she_ending_b1_yinshui:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "好处的话……"
+    s "If there’s one good thing..."
     hide she_05_happy_sweat_nobag onlayer top
 
     show she_03_tinysmile_eye_nobag onlayer top at top_dissolve:
@@ -7153,7 +7151,7 @@ label she_ending_b1_yinshui:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "大概是喝水变得容易了吧。"
+    s " I guess drinking water has become easier."
     hide she_14_thinking onlayer top
 
     show she_06_surprise_eye_nobag onlayer top:
@@ -7161,7 +7159,7 @@ label she_ending_b1_yinshui:
         xzoom -1.0
         xpos -30
         ypos 240
-    "{i}对面另外一个茶水间先后进去了两个人。{/i}"
+    "{i}She looks up and sees two people enter another pantry across the room one after another.{/i}"
     hide she_03_tinysmile_eye_nobag onlayer top
     pause 0.5
     hide she_06_surprise_eye_nobag onlayer top
@@ -7169,7 +7167,7 @@ label she_ending_b1_yinshui:
     show bella_yinshui with moveinbottom:
         zoom 1.4
         align (0.5, 0.45)
-    s "【联系人-Bella】我看到陈永仁和你一起在茶水间，注意点。"
+    s "Contact - Bella: I saw Chan Wing Yan enter the pantry with you. Be careful."
 
     show she_drink_water onlayer top at top_dissolve:
         zoom 0.8
@@ -7184,13 +7182,13 @@ label she_ending_b1_yinshui:
         ypos 240
     pause 0.2
     hide she_drink_water onlayer top
-    s "水温刚好。"
+    s "The water temperature is just right."
     hide she_03_tinysmile_eye_nobag onlayer top
 
     scene yinshui with fade
 
-    "如人饮水，冷暖自知。"
-    "解锁结局：饮水"
+    "As the saying goes, Only you know how cold or warm the water you drink is."
+    "CG: Drinking Water"
     $ unlock_cg("yinshui")
 
     jump she_ending_common
@@ -7226,7 +7224,7 @@ label she_ending_c1_tuichang:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "我辞职。"
+    s "I resign."
     hide she_15_idea_card onlayer top
     hide she_15_unflinched onlayer top
 
@@ -7260,71 +7258,71 @@ label she_ending_d1_xiangxi:
         zoom 0.92
         xpos 1450
         ypos 200
-    s "林姐，不好意思又打扰你……我找律师了。"
-    s "但是律师说我当时没有上车，既没有实际遭遇侵害，也没有留下证据。"
-    s "其他收集的材料照片，我并不是当事人。几乎没有胜算。"
+    s "Ms Lam, sorry to bother you—I noticed something seems wrong with my payslip."
+    s "But the lawyer said that because I didn’t get in the car at the time, I neither experienced actual assault nor left direct evidence."
+    s "As for the other photos and materials I collected, I am not the person directly involved. There is almost no chance of winning."
 
     show she_09_unhappy onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    s "可是我看到那些照片和档案，好多惊才绝艳的前辈本应该站在更高的位置，却因为陈永仁黯淡下去了。"
+    s "But when I saw those photos and files, I realized so many brilliant senior women should have stood somewhere higher, yet they faded because of Chan Wing Yan."
     hide she_09_unhappy onlayer top
-    s "我、我想问问你，愿意成为站出来起诉陈永仁的人吗。"
+    s "I wanted to ask... have you been doing okay lately?"
 
     show linjie_04_frown with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
-    linjie "佘小姐，是我曾经对你说的话释放了一些错误的信号吗？"
+    linjie "Miss Sheh, did something I once said give you the wrong signal?"
     show she_06_surprise_eye_nobag onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
 
-    linjie "你想做救世主，有野心。"
-    linjie "但是你想过吗，站在亲历者面前诉说你没有经历过这件事，需要亲历者重新再现那段记忆。"
+    linjie "You want to be a savior. You have ambition."
+    linjie "But have you thought about this? You are standing in front of someone who actually lived through it, asking her to reopen that memory for something you did not truly experience yourself."
 
     show linjie_08_tolerate:
         zoom 0.92
         xpos 1450
         ypos 200
-    linjie "你没有真正经历过，你根本……"
+    linjie "You didn’t really go through it. You simply..."
     linjie "…………"
 
     show linjie_06_bar_closeeyes with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
-    linjie "……算了。"
+    linjie "...Forget it."
     hide linjie_08_tolerate
 
     hide linjie_06_bar_closeeyes
-    linjie "我还有工作事宜，失陪。"
+    linjie "I still have work to do. Excuse me."
     show linjie_09_back with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
 
     hide she_06_surprise_eye_nobag onlayer top
-    s "对不起……是我冒犯。"
+    s "I’m sorry... I crossed a line."
 
-    linjie "我不后悔酒后说的那番话。"
+    linjie "I don’t regret what I said after drinking that night."
     # hide linjie_09_back with dissolve # 模拟转身
-    linjie "但也希望你能理解，一个伤口愈合前，它的痂不管有多么厚，撕下来都是血淋淋的。"
+    linjie "But I also hope you can understand this: before a wound heals, no matter how thick the scab becomes, tearing it off will still draw blood."
 
-    s "……我记住了。"
+    s "...I’ll remember that."
     hide linjie_00_shade with dissolve
-    "{i}林姐走向电梯。{/i}"
+    "{i}Ms Lam walks away.{/i}"
 
     show she_17_sad_smile onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240    
-    s "嗯，林姐，对不起，还有谢谢你。"
+    s "Ms Lam, I’m sorry. And thank you."
     hide she_17_sad onlayer top
 
     show she_03_tinysmile_eye_nobag onlayer top:
@@ -7332,16 +7330,16 @@ label she_ending_d1_xiangxi:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "以及祝你工作顺利！"
+    s "Also, I hope work goes well for you!"
     show she_05_sohappy_nobag onlayer top:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    s "不是没营养的客套，就是希望你顺利，一切都好。"
+    s "That’s not empty small talk. I just hope things go smoothly for you. I hope everything gets better."
     hide she_03_tinysmile_eye_nobag onlayer top
 
-    "{i}电梯门关上了。{/i}"
+    "{i}The elevator doors close.{/i}"
     hide she_05_happy_nobag onlayer top
 
     scene elevator with fade
@@ -7349,11 +7347,11 @@ label she_ending_d1_xiangxi:
         zoom 0.92
         xpos 1450
         ypos 200
-    linjie "我听到了。你也顺利。"
+    linjie "I heard you. I hope things go smoothly for you too."
     
     scene xiangxi with fade
 
-    "解锁结局：相惜"
+    "CG: Mutual Respect"
 
     $ unlock_cg("xiangxi")
 
@@ -7784,7 +7782,7 @@ label she_ending_d2_lijian:
             '小曼' "但是律师说，我没有留下被骚扰的证据，几乎没有胜算。"
         if not car_event:
             '小曼' "律师说，证据不够，而且在收集的材料里我不是当事人。几乎没有胜算。"
-            '小曼' "可是我看到那些照片和档案，好多惊才绝艳的前辈本应该站在更高的位置，却因为陈永仁黯淡下去了。"
+            '小曼' "But when I saw those photos and files, I realized so many brilliant senior women should have stood somewhere higher, yet they faded because of Chan Wing Yan."
         '小曼' "我、我想问问你……"
         '小曼' "我想问问你，你最近过得好吗？"
         '小曼' "以前过得好吗，以后也会过得好吗？"
@@ -7982,8 +7980,7 @@ label she_ending_d2_lijian:
 
 label she_ending_a3_poxiao:
 
-    scene bg bedroom_night
-    with fade
+    scene home_laptop with fade
 
     hide she_14_deepthink onlayer top
     hide she_14_think onlayer top
@@ -8065,6 +8062,7 @@ label she_ending_a3_poxiao:
     hide she_15_unflinched onlayer top
 
     # 旁白，不显示小曼
+    scene court with fade
     "开庭当天，你出现在法院大门外，门口有很多人。"
 
     "加油哦。"
@@ -8088,9 +8086,6 @@ label she_ending_a3_poxiao:
     '???' "我也是。去吧，给那个良夜一点颜色看看。"
 
     hide woman_01_normal with dissolve
-
-    scene bg court_outside
-    with fade
 
     hide she_14_deepthink onlayer top
     hide she_14_think onlayer top
@@ -8141,6 +8136,7 @@ label she_ending_a3_poxiao:
 
     hide she_15_unflinched onlayer top
 
+    scene poxiao with fade
     "CG：破晓"
     $ unlock_cg("poxiao")
 
@@ -8154,8 +8150,7 @@ label she_ending_a3_poxiao:
 
 label she_ending_b3_feiniao:
 
-    scene bg hr_office
-    with fade
+    scene hr_office with fade
 
     hide she_14_deepthink onlayer top
     hide she_14_think onlayer top
@@ -8236,8 +8231,7 @@ label she_ending_b3_feiniao:
 
     hide she_09_unhappy onlayer top
 
-    scene bg bedroom_night
-    with fade
+    scene home_laptop with fade
 
     "在给材料里除了陈永仁的人像进行隐私处理之后，你把自己搜集的证据和搜证经历放上网。"
 
@@ -8283,8 +8277,7 @@ label she_ending_b3_feiniao:
     "【评论：我是那个笔记本里被语焉不详提到的李。希望我的亲身经历能给各位在职的姐妹提个醒。】"
     "【评论：我是新来的实习生，也遇到了陈永仁。但我很幸运，部门里有两位前辈都在保护我。】"
 
-    scene bg company_street_evening
-    with fade
+    scene office_hall with fade
 
     "陈永仁上班时被媒体记者抓到采访，引起一些骚乱。"
 
@@ -8308,8 +8301,7 @@ label she_ending_b3_feiniao:
 
     "同时为了降低大众关注度，让他近期居家办公。"
 
-    scene chen_office
-    with fade
+    scene chen_office with fade
 
     '小曼' "{i}那天面试的时候，站在这里感觉自己被重重地压着。现在……{/i}"
 
@@ -8341,13 +8333,7 @@ label she_ending_b3_feiniao:
 
     '小曼' "我也是。"
 
-
-
-
-
-
-
-
+    scene feiniao with fade
     "解锁结局：飞鸟"
     $ unlock_cg("feiniao")
 
