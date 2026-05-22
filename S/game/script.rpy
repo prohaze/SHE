@@ -5906,7 +5906,7 @@ label week13_lawyer_evidence_check:
         zhao_lawyer "但这条路也险。很多人把舆论当做武器，最后却失去了对它的控制。"
         zhao_lawyer "你可能会被陌生人审判，受到各种中伤。"
         zhao_lawyer "佘女士，要想清楚啊。"
-        
+        hide she_01_normal_eye_nocard onlayer top
         jump chapter5_route_selection
 
     elif evidence_count <= 3:
@@ -6022,6 +6022,8 @@ label week13_lawyer_evidence_check:
     zhao_lawyer "佘女士，要想清楚啊。"
     hide lawyer_01_normal with dissolve
 
+    hide she_01_normal_eye_nocard onlayer top
+
     # $ lawyer_contacted = True
 
     # if evidence_count > 0:
@@ -6035,6 +6037,8 @@ label week13_lawyer_evidence_check:
 # 第五章路线选择标签（改名避免冲突）
 # ----------------------
 label chapter5_route_selection:
+
+    scene home
 
     call screen she_final_route_screen
 
@@ -6783,10 +6787,7 @@ label she_route_linjie:
 
 label she_bad_end_public:
 
-    scene bg company_street_evening
-    with fade
-
-    "你选择了完全公开。"
+    scene home_laptop with fade
 
     "真实姓名、公司信息、聊天截图、所有细节一起被发了出去。"
 
@@ -6803,8 +6804,12 @@ label she_bad_end_public:
     "为什么不早说？"
     "他是个好人，她在毁他。"
 
+    # 后面补充：公司发现了帖子
     "但……"
 
+    show totally_expose with moveinbottom:
+        zoom 1.4
+        align (0.5, 0.45)
     "【私信】姐妹，我也经历过。谢谢你敢说。"
     "【私信】我在这家公司3年了，一直不敢说。"
     "【私信】你不是一个人。"
@@ -6824,41 +6829,77 @@ label she_bad_end_public:
 
 label she_ending_a1_kongwen:
 
-    scene bg police_station
-    with fade
+    scene police_station with fade # 补插图
+    show she_01_normal_eye onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
 
     if not car_event:
-
+        
+        show police_01_normal with dissolve:
+            zoom 0.92
+            xpos 1400
+            ypos 180
         '值班民警' "您好，您举报陈永仁性骚扰，有什么证据吗？"
 
-        '小曼' "这是他给我发的朋友圈，另外我同事也经受过他的骚扰。"
+        show she_01_normal_eye_o onlayer top:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "这是他给我发的朋友圈，另外我同事也经受过他的骚扰。"
+        hide she_01_normal_eye onlayer top
 
         '值班民警' "佘小姐，这个朋友圈并没有达到性骚扰的标准。"
-
         '值班民警' "另外，我们的法律是“谁主张，谁举证”。但是你不可以代为举证。"
 
-        '小曼' "…………"
+        show she_09_unhappy_bag onlayer top:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "…………"
+        hide she_01_normal_eye_o onlayer top
 
         '值班民警' "我们理解您的心情，但是我们也需要靠证据办事。"
-
         '值班民警' "这是受理回执，有进展会通知您。"
+        hide she_09_unhappy_bag onlayer top
 
     else:
-
+        show police_01_normal with dissolve:
+            zoom 0.92
+            xpos 1400
+            ypos 180
         '值班民警' "您说车里发生了性骚扰行为，有录音、录像或者第三人在场吗？"
 
-        '小曼' "没有。"
-
+        show she_02_sweat_eye onlayer top:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "没有。"
+        
         '值班民警' "那目前只能先登记。是否立案，还需要进一步判断。"
+        
+        show she_09_unhappy_bag onlayer top:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "………………"
+        hide she_01_normal_eye onlayer top
+        hide she_09_unhappy_bag onlayer top
 
-    scene black
-    with fade
+    scene reports with fade
 
     "{i}3周后。{/i}"
-
     "证据不足，不予立案。"
 
-    "CG：空文"
+    show kongwen with fade
+    "解锁结局：空文"
+
     $ unlock_cg("kongwen")
 
     jump she_ending_common
@@ -6871,81 +6912,184 @@ label she_ending_a1_kongwen:
 
 label she_ending_a1_kongwen_easter:
 
-    scene bg police_station
-    with fade
-
-    "你找林姐请假，去派出所提交了找到的证据照片。"
-
-    "民警在看你提供的材料。"
+    scene police_station with fade
+    show she_01_normal_eye onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    show police_01_normal:
+        zoom 0.92
+        xpos 1400
+        ypos 180
 
     if not car_event:
-
+        
         '值班民警' "这些材料里出现的人不像你啊。"
 
-        '小曼' "这些是他骚扰的其他同事。"
+        show she_01_normal_eye_o onlayer top at top_dissolve:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "这些是他骚扰的其他同事。"
 
         '值班民警' "佘小姐，我们的法律是“谁主张，谁举证”。"
-
         '值班民警' "你不可以代为举证。"
 
-        '小曼' "…………"
+        show she_09_unhappy_bag onlayer top:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "…………"
+        hide she_01_normal_eye onlayer top
+        hide she_01_normal_eye_o onlayer top
 
         '值班民警' "这是受理回执，有进展会通知你。"
-
-        '小曼' "我提交的聊天记录、职场录音、同事证词，你们都看了吗？"
-
-        '值班民警' "这些材料我们都收到了，我们会按流程处理调查，您可以回去了。"
+        hide she_09_unhappy_bag
 
     else:
-
         '值班民警' "材料我们收到了。"
+        '值班民警' "这些材料里出现的人不像你啊。"
 
+        show she_01_normal_eye_o onlayer top at top_dissolve:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "这些是他骚扰的其他同事。"
+        hide she_01_normal_eye_o onlayer top
+
+        '值班民警' "佘小姐，我们的法律是“谁主张，谁举证”。"
+        '值班民警' "你不可以代为举证。"
+
+        show she_15_unflinched_card onlayer top at top_dissolve:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "I also suffered his harassment in his car!"
         '值班民警' "但车里的关键事实仍然缺少直接证据。"
 
-    scene black
-    with fade
-
+        show she_09_unhappy_bag onlayer top:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "…………"
+        hide she_15_unflinched_card onlayer top
+        hide she_01_normal_eye onlayer top
+  
+        '值班民警' "这是受理回执，有进展会通知你。"
+        hide she_09_unhappy_bag onlayer top
+        
+    scene report with fade
     "3周后。"
 
     "证据不足，不予立案。"
 
-    "CG：空文"
+    show kongwen with fade
+    "解锁结局：空文"
+
     $ unlock_cg("kongwen")
 
-    scene office
-    with fade
+    scene black with dissolve
+    $renpy.pause(1.5, hard=True)
+    
+    # 空文彩蛋
+    scene office_desk with fade
+    show she_13_sigh2 onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "好受打击，但还是得干活，继续找线索。"
+    show she_14_deepthink onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "我一定要让陈永仁付出代价！"
+    hide she_13_sigh2 onlayer top
 
-    '小曼' "好受打击，但还是得干活，继续找线索。"
+    "{i}你正要继续工作，却看到陈永仁把Bella单独叫进办公室。{/i}"
+    show she_15_unflinched_card onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "？我得去看看。"
+    hide she_14_deepthink onlayer top
+    hide she_15_unflinched_card onlayer top
 
-    '小曼' "我一定要让陈永仁付出代价！"
+    scene corridor with fade
+    
+    show linjie_01_normal:
+        zoom 0.92
+        xpos 1450
+        ypos 200
+    show she_06_surprise_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    "{i}你到办公室门口正要进去，发现林姐也在。{/i}"
+    "{i}你正要进门，林姐拦住了你。{/i}"
+    
+    show she_02_sweat_eye_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "不是林姐，Bella 刚刚……"
 
-    "你正要继续工作，却看到陈永仁把 Bella 单独叫进办公室。"
+    linjie "你在这儿等着。"
+    hide linjie_01_normal with dissolve
 
-    '小曼' "？我得去看看。"
+    "{i}林姐进去提起了有关其他深度项目的话题，把实习生 Bella 支走了。{/i}"
 
-    scene corridor
-    with fade
+    show bella_03_frown with dissolve:
+        zoom 0.95
+        xpos 1450
+        ypos 230
+    bella "……？"
+    show she_13_sigh3 onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    show she_17_sad onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "……小心点啊。"
+    hide she_02_sweat_eye_nobag onlayer top
+    hide she_13_sigh3 onlayer top
 
-    "你到办公室门口正要进去，发现林姐也在。"
-
-    "你正要进门，林姐拦住了你。"
-
-    '小曼' "不是林姐，Bella 刚刚……"
-
-    '林姐' "你在这儿等着。"
-
-    "林姐进去提起了有关其他深度项目的话题，把实习生 Bella 支走了。"
-
-    '小曼' "……小心点啊。"
-
+    show bella_04_file_fall with dissolve:
+        zoom 0.95
+        xpos 1450
+        ypos 230
     'Bella' "啊？……哦。"
-
-    "看 Bella 的表情从迷茫到若有所思，你放心了，回到工位上。"
-
+    hide bella_03_frown
+    
+    "{i}看 Bella 的表情从迷茫到若有所思，你放心了，回到工位上。{/i}"
+    scene office_desk with fade
+    hide she_17_sad onlayer top
+    
+    show linjie_kongwen_1 with moveinbottom:
+        zoom 1.4
+        align (0.5, 0.45)
     "【微信】林姐：你很勇敢。"
     "【微信】林姐：那么我也该更进一步了。"
 
-    '小曼' "墨镜黄豆表情。"
+    show linjie_kongwen_2 with dissolve:
+        zoom 1.4
+        align (0.5, 0.45)
+
+    scene black with fade
 
     jump she_ending_common
 
@@ -6954,11 +7098,10 @@ label she_ending_a1_kongwen_easter:
 # B-1【饮水】
 # 无证据内部举报
 # ==========================================
-
+image yinshui = "images/ending_CG/yinshui.png"
 label she_ending_b1_yinshui:
 
-    scene black
-    with fade
+    scene black with fade
 
     "{i}文件：调岗通知，上面有陈永仁的签字。{/i}"
 
@@ -6968,30 +7111,78 @@ label she_ending_b1_yinshui:
 
     "举报的消息被陈永仁知道，你被调岗去了别的地方。"
 
-    scene office_desk
-    with fade
+    scene new_office_desk with fade
 
-    '小曼' "新工位和设计部还在同一层，只是离得很远。"
+    show she_01_normal_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "新工位和设计部还在同一层，只是离得很远。"
+    s "饮水机成了我唯一的同事，它不会说话，不过也不会对我动手动脚。"
 
-    '小曼' "饮水机成了我唯一的同事，它不会说话，不过也不会对我动手动脚。"
+    show she_05_happy_sweat_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "办公区的最边缘，工作内容也是最边缘。"
+    hide she_01_normal_eye_nobag onlayer top
 
-    '小曼' "办公区的最边缘，工作内容也是最边缘。"
+    show she_14_thinking onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "好处的话……"
+    hide she_05_happy_sweat_nobag onlayer top
 
-    '小曼' "好处的话……大概是喝水变得容易了吧。"
+    show she_03_tinysmile_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "大概是喝水变得容易了吧。"
+    hide she_14_thinking onlayer top
 
-    "小曼喝水。"
+    show she_06_surprise_eye_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    "{i}对面另外一个茶水间先后进去了两个人。{/i}"
+    hide she_03_tinysmile_eye_nobag onlayer top
+    pause 0.5
+    hide she_06_surprise_eye_nobag onlayer top
+    
+    show bella_yinshui with moveinbottom:
+        zoom 1.4
+        align (0.5, 0.45)
+    s "【联系人-Bella】我看到陈永仁和你一起在茶水间，注意点。"
 
-    "她抬头看到对面另外一个茶水间先后进去了两个人。"
+    show she_drink_water onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    pause 1.5
+    show she_03_tinysmile_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    pause 0.2
+    hide she_drink_water onlayer top
+    s "水温刚好。"
+    hide she_03_tinysmile_eye_nobag onlayer top
 
-    '小曼' "【联系人-Bella】我看到陈永仁和你一起在茶水间，注意点。"
+    scene yinshui with fade
 
-    '小曼' "水温刚好。"
-
-    "CG：饮水"
+    "如人饮水，冷暖自知。"
+    "解锁结局：饮水"
     $ unlock_cg("yinshui")
 
     jump she_ending_common
-
 
 # ==========================================
 # C-1【退场】
@@ -7007,7 +7198,8 @@ label she_ending_c1_tuichang:
     "{i}公司好像发现了这个帖子，你被人事约谈了。{/i}"
 
     scene hr_office with dissolve
-    show she_15_idea onlayer top at top_dissolve:
+
+    show she_15_idea_card onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
@@ -7018,25 +7210,19 @@ label she_ending_c1_tuichang:
 
     s "这样的地方没有待下去的必要。"
     
-    show she_15_unflinched onlayer top:
+    show she_15_unflinched onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-
-    '小曼' "我辞职。"
-    hide she_15_idea onlayer top
+    s "我辞职。"
+    hide she_15_idea_card onlayer top
     hide she_15_unflinched onlayer top
 
     scene pack_up with fade
-
     "{i}桌面收拾干净了，桌上只有一个背包和一个屏幕亮着的手机。{/i}"
-
     "{i}你的小紫书帖子评论总数停在423条，热度早就掉了。{/i}"
-
     "{i}最新一条评论是：又一个蹭热度的。{/i}"
-
-    "{i}你关掉了手机。{/i}"
 
     scene tuichang with fade
 
@@ -7053,55 +7239,111 @@ label she_ending_c1_tuichang:
 
 label she_ending_d1_xiangxi:
 
-    scene tea_room
-    with fade
+    scene tea_room with fade
+    show she_17_sad onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    show linjie_01_normal with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
+    s "林姐，不好意思又打扰你……我找律师了。"
+    s "但是律师说我当时没有上车，既没有实际遭遇侵害，也没有留下证据。"
+    s "其他收集的材料照片，我并不是当事人。几乎没有胜算。"
 
-    '小曼' "林姐，不好意思又打扰你……我找律师了。"
+    show she_09_unhappy onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "可是我看到那些照片和档案，好多惊才绝艳的前辈本应该站在更高的位置，却因为陈永仁黯淡下去了。"
+    hide she_09_unhappy onlayer top
+    s "我、我想问问你，愿意成为站出来起诉陈永仁的人吗。"
 
-    '小曼' "但是律师说我当时没有上车，既没有实际遭遇侵害，也没有留下证据。"
+    show linjie_04_frown with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
+    linjie "佘小姐，是我曾经对你说的话释放了一些错误的信号吗？"
+    show she_06_surprise_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
 
-    '小曼' "其他收集的材料照片，我并不是当事人。几乎没有胜算。"
+    linjie "你想做救世主，有野心。"
+    linjie "但是你想过吗，站在亲历者面前诉说你没有经历过这件事，需要亲历者重新再现那段记忆。"
 
-    '小曼' "可是我看到那些照片和档案，好多惊才绝艳的前辈本应该站在更高的位置，却因为陈永仁黯淡下去了。"
+    show linjie_08_tolerate:
+        zoom 0.92
+        xpos 1450
+        ypos 200
+    linjie "你没有真正经历过，你根本……"
+    linjie "…………"
 
-    '小曼' "我、我想问问你，愿意成为站出来起诉陈永仁的人吗。"
+    show linjie_06_bar_closeeyes with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
+    linjie "……算了。"
+    hide linjie_08_tolerate
 
-    '林姐' "佘小姐，是我曾经对你说的话释放了一些错误的信号吗？"
+    hide linjie_06_bar_closeeyes
+    linjie "我还有工作事宜，失陪。"
+    show linjie_09_back with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
 
-    '林姐' "你想做救世主，有野心。"
+    hide she_06_surprise_eye_nobag onlayer top
+    s "对不起……是我冒犯。"
 
-    '林姐' "但是你想过吗，站在亲历者面前诉说你没有经历过这件事，需要亲历者重新再现那段记忆。"
+    linjie "我不后悔酒后说的那番话。"
+    # hide linjie_09_back with dissolve # 模拟转身
+    linjie "但也希望你能理解，一个伤口愈合前，它的痂不管有多么厚，撕下来都是血淋淋的。"
 
-    '林姐' "你没有真正经历过，你根本……"
+    s "……我记住了。"
+    hide linjie_00_shade with dissolve
+    "{i}林姐走向电梯。{/i}"
 
-    '林姐' "……算了。"
+    show she_17_sad_smile onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240    
+    s "嗯，林姐，对不起，还有谢谢你。"
+    hide she_17_sad onlayer top
 
-    '林姐' "我还有工作事宜，失陪。"
+    show she_03_tinysmile_eye_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "以及祝你工作顺利！"
+    show she_05_sohappy_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "不是没营养的客套，就是希望你顺利，一切都好。"
+    hide she_03_tinysmile_eye_nobag onlayer top
 
-    '小曼' "对不起……是我冒犯。"
+    "{i}电梯门关上了。{/i}"
+    hide she_05_happy_nobag onlayer top
 
-    '林姐' "我不后悔酒后说的那番话。"
+    scene elevator with fade
+    show linjie_06_bar_closeeyes:
+        zoom 0.92
+        xpos 1450
+        ypos 200
+    linjie "我听到了。你也顺利。"
+    
+    scene xiangxi with fade
 
-    '林姐' "但也希望你能理解，一个伤口愈合前，它的痂不管有多么厚，撕下来都是血淋淋的。"
+    "解锁结局：相惜"
 
-    '小曼' "……我记住了。"
-
-    "林姐走开。"
-
-    '小曼' "嗯，林姐，对不起，还有谢谢你。"
-
-    '小曼' "以及祝你工作顺利！"
-
-    '小曼' "不是没营养的客套，就是希望你顺利，一切都好。"
-
-    "电梯门关上。"
-
-    scene elevator
-    with fade
-
-    '林姐' "我听到了。你也顺利。"
-
-    "CG：相惜"
     $ unlock_cg("xiangxi")
 
     jump she_ending_common
@@ -7114,68 +7356,162 @@ label she_ending_d1_xiangxi:
 
 label she_ending_b2_xuyu:
 
-    scene bg hr_office
-    with fade
+    scene hr_office with fade
 
-    '小曼' "我要举报陈永仁性骚扰，所有证据都在这里。"
+    show she_15_unflinched_card onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "我要举报陈永仁性骚扰，所有证据都在这里。"
 
     'HR' "材料放这儿，你可以走了。"
 
-    "她低头干着手头的工作。"
+    "{i}她低头干着手头的工作。{/i}"
 
-    '小曼' "您不看看证据吗？"
+    show she_01_normal_eye_o_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "您不看看证据吗？"
+    hide she_15_unflinched_card onlayer top
 
     'HR' "……新来的？"
 
-    "她瞥了你一眼，拿起你提交的材料浏览起来。"
+    "{i}她匆匆抬头瞥了你一眼，拿起你提交的材料浏览起来。{/i}"
+    "{i}她始终没有抬头，你看不清她的面容。{/i}"
 
     'HR' "现在的情况，我建议你不要做无用功。"
 
-    '小曼' "这些证据不够多吗？但是他伤害的人够多了。"
+    show she_15_idea_card onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "这些证据不够多吗？但是他伤害的人够多了。"
+    hide she_01_normal_eye_o_nobag onlayer top
 
     'HR' "……"
-
     'HR' "行，我可以帮你提交，回去等通知吧。"
 
-    scene office
-    with fade
+    hide she_15_idea_card onlayer top
 
+    # 被调岗
+    scene office_area with fade
+
+    show she_14_deepthink onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
     "{i}文件：调岗通知，上面有陈永仁的签字。{/i}"
+    s "……………………"
+    "{i}你正要离开现在的工位。{/i}"
 
-    "你正要离开现在的工位。"
+    show she_06_surprise_eye onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    hide she_14_deepthink onlayer top
 
-    '陈永仁' "哎，刚好，Bella 你坐这里吧。"
+    show chen_02_smile with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1349
+        ypos 161
+    chen "哎，刚好，Bella 你坐这里吧。"
 
-    "Bella 惊喜地看了你一眼，趁陈永仁不注意，悄悄用眼神和你打了个招呼。"
+    "{i}Bella惊喜地看了你一眼，趁陈永仁不注意，悄悄用眼神和你打了个招呼。{/i}"
 
-    '陈永仁' "有能力的新人真多啊，要好好深耕啊。"
+    show she_15_unflinched_card onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    hide she_06_surprise_eye onlayer top
+    show chen_01_normal with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1350
+        ypos 162
+    chen "有能力的新人真多啊，要好好深耕啊。"
+    hide she_15_unflinched_card onlayer top
 
-    scene corridor
-    with fade
+    # 陈永仁嘚瑟
+    scene corridor with fade
+    "{i}你走在他的后面{/i}"
+    show she_15_unflinched_bag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    
+    show chen_01_normal with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1350
+        ypos 162
+    chen "从新人走到这个位置十几年，想要晋升怎么做、遇到委屈怎么忍，我可太清楚了。"
 
-    '陈永仁' "从新人走到这个位置十几年，想要晋升怎么做、遇到委屈怎么忍，我可太清楚了。"
+    show chen_03_narroweyes with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1350
+        ypos 160
+    chen "最近几年看有才的新人是越来越多，太喜欢她们了。偶尔走了几个，也会觉得可惜。"
+    hide chen_01_normal
 
-    '陈永仁' "最近几年看有才的新人是越来越多，太喜欢她们了。偶尔走了几个，也会觉得可惜。"
+    show chen_05_wanwei:
+        zoom 0.9
+        xzoom -1.0
+        xpos 1356
+        ypos 162
+    chen "不过还好，新人还多着呢。"
+    hide chen_03_narroweyes
 
-    '陈永仁' "不过还好，新人还多着呢。"
+    scene black with dissolve
+    hide she_15_unflinched_bag onlayer top
+    "{i}他没再继续说话，进了办公室，你的电梯也到了。{/i}"
+    
+    # 陈永仁挑衅
+    scene elevator
 
-    "他没再继续说话，进了办公室，你的电梯也到了。"
+    play sound "phone_vibration"
 
-    "电话震动。"
+    show chen_xuyu_1 with moveinbottom:
+        zoom 1.4
+        align (0.5, 0.45)
+    chen "进来几天，凭几张照片就想扳倒我，太嫩了。"
 
-    '陈永仁' "进来几天，凭几张照片就想扳倒我，太嫩了。"
+    "{i}你正想截图。{/i}"
 
-    "你正想截图。"
+    show chen_xuyu_2:
+        zoom 1.4
+        align (0.5, 0.45)
+    "{i}陈永仁撤回了一条消息。{/i}"
+    hide chen_xuyu_1
 
-    "陈永仁撤回了一条消息。"
+    show chen_xuyu_3:
+        zoom 1.4
+        align (0.5, 0.45)
+    chen "小曼，前程似锦啊。"
+    hide chen_xuyu_2
+    hide chen_xuyu_3 with dissolve
 
-    '陈永仁' "小曼，前程似锦啊。"
+    show she_14_think onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "这就是无用功的意思吗？"
+    hide she_14_think onlayer top
 
-    'HR' "谈不上聪明。"
+    scene xuyu with dissolve
+    "是蛊惑，还是示警？"
+    "解锁结局：絮语"
 
-    'HR' "却称得上勇敢。"
-
-    "CG：絮语"
     $ unlock_cg("xuyu")
 
     jump she_ending_common
@@ -7187,48 +7523,69 @@ label she_ending_b2_xuyu:
 
 label she_ending_c2_qingping_no_evidence:
 
-    scene bg bedroom_night
-    with fade
+    scene home_laptop with fade
 
     "没有找到有效的证据，你决定把自己的经历放上网，让其他女性警惕起来。"
+    show she_01_normal_eye_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
 
-    '小曼' "我是刚进公司的新员工……"
+    s "我是刚进公司的新员工……"
+    s "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
+    s "在我上车后，他对我实施了骚扰行为。"
 
-    '小曼' "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
+    "{i}在你写下这些文字的时候，那些不愿想起的回忆又向你涌来。{/i}"
+    hide she_01_normal_eye_nobag onlayer top
 
-    '小曼' "在我上车后，他对我实施了骚扰行为。"
+    "{i}封闭的空间。{/i}"
+    "{i}解不开的安全带。{/i}"
+    "{i}拉扯你的思绪和手臂。{/i}"
+    "{i}你被束缚得喘不过气。{/i}"
+    show she_15_unflinched_card onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
 
-    "在你写下这些文字的时候，那些不愿想起的回忆又向你涌来。"
+    s "{i}我要写，我就要写！{/i}"
+    s "{i}陈永仁不止一个，但一个陈永仁就能祸害一百个。{/i}"
+    s "{i}受害人不止我一个，但一个我或许能帮助一百个。{/i}"
 
-    "封闭的空间。"
-    "解不开的安全带。"
-    "拉扯你的思绪和手臂。"
-    "你被束缚得喘不过气。"
+    "{i}一个小时过去，你整理好了帖子，发布。{/i}"
 
-    '小曼' "{i}我要写，我就要写！{/i}"
+    hide she_15_unflinched_card onlayer top
 
-    '小曼' "{i}陈永仁不止一个，但一个陈永仁就能祸害一百个。{/i}"
-
-    '小曼' "{i}受害人不止我一个，但一个我或许能帮助一百个。{/i}"
-
-    "一个小时过去，你整理好了帖子，发布。"
-
-    '小曼' "【置顶】希望广大姐妹擦亮眼睛，保护自己。写下这些的时候我很折磨，但也希望有相似经历的姐妹，在能够接受的范围内，不要停止发声。"
+    s "【置顶】希望广大姐妹擦亮眼睛，保护自己。写下这些的时候我很折磨，但也希望有相似经历的姐妹，在能够接受的范围内，不要停止发声。"
 
     "评论：有没有证据啊，看半天了。"
     "评论：摸摸博主，性骚扰真的很难搜证，唉。"
     "评论：未知全貌，不予置评。"
     "评论：没图没真相，起号的。"
 
-    '小曼' "{i}唉……难道没有留下证据，就是没有留下伤害吗？{/i}"
+    show she_08_guilt onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "{i}唉……难道没有留下证据，就是没有留下伤害吗？{/i}"
+    hide she_08_guilt onlayer top
 
     "【新评论：楼上怎么说话呢，没证据就是没有留下伤害吗？】"
     "【新评论：不是所有人在被侵权的那一刻都有空架好摄像机。】"
     "【新评论：谢谢博主，这是我第一次感觉我的遭遇不是因为我做错了事。】"
+    show she_03_tinysmile_eye_nobag onlayer top:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
 
     "小曼微笑。"
+    hide she_03_tinysmile_eye_nobag onlayer top
 
     "CG：青萍"
+
     $ unlock_cg("qingping")
 
     jump she_ending_common
@@ -7344,6 +7701,8 @@ label she_ending_d2_lijian:
         '小曼' "林姐！"
 
         '小曼' "我们还能反抗吗？"
+
+        linjie "…………"
 
     else:
 
@@ -7702,16 +8061,6 @@ label she_ending_b3_feiniao:
 
     hide she_09_unhappy onlayer top
 
-    jump she_ending_c3_qingyun
-
-# ==========================================
-# C-3【青云】
-# 证据完整，小紫书自动全部公开
-# 与飞鸟合并
-# ==========================================
-
-label she_ending_c3_qingyun:
-
     scene bg bedroom_night
     with fade
 
@@ -7817,10 +8166,32 @@ label she_ending_c3_qingyun:
 
     '小曼' "我也是。"
 
-    "CG：青云 / 飞鸟"
+
+
+
+
+
+
+
+    "解锁结局：飞鸟"
     $ unlock_cg("feiniao")
 
-    jump she_ending_common
+    jump she_ending_b3_feiniao
+
+# ==========================================
+# C-3【青云】
+# 证据完整，小紫书自动全部公开
+# 与飞鸟合并
+# ==========================================
+
+# label she_ending_c3_qingyun:
+
+    
+
+#     # "CG：青云 / 飞鸟"
+#     # $ unlock_cg("feiniao")
+
+#     jump she_ending_common
 
 
 # ==========================================
