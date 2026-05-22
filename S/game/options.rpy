@@ -10,7 +10,7 @@
 ## 现。
 ##
 ## 带有 _() 的字符串表示其可被翻译。
-# define config.language = "english"
+define config.language = "english"
 
 define config.name = _("S")
 

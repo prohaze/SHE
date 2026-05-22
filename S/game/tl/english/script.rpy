@@ -6417,61 +6417,61 @@ translate english she_bad_end_public_08f4db66:
 translate english she_ending_a1_kongwen_3ae5dcfe:
 
     # '值班民警' "您好，您举报陈永仁性骚扰，有什么证据吗？"
-    "Police Officer" "Hello. You are reporting Chan Wing Yan for sexual harassment. What evidence do you have?"
+    'Police Officer' "Hello. You are reporting Chan Wing Yan for sexual harassment. What evidence do you have?"
 
 # game/script.rpy:6600
 translate english she_ending_a1_kongwen_2d89d10b:
 
     # '小曼' "这是他给我发的朋友圈，另外我同事也经受过他的骚扰。"
-    "Siu Man" "This is the Moments post he sent me. Also, my coworkers have experienced his harassment too."
+    'Siu Man' "This is the Moments post he sent me. Also, my coworkers have experienced his harassment too."
 
 # game/script.rpy:6602
 translate english she_ending_a1_kongwen_5d00b6d9:
 
     # '值班民警' "佘小姐，这个朋友圈并没有达到性骚扰的标准。"
-    "Police Officer" "Miss Sheh, this Moments post does not meet the standard for sexual harassment."
+    'Police Officer' "Miss Sheh, this Moments post does not meet the standard for sexual harassment."
 
 # game/script.rpy:6604
 translate english she_ending_a1_kongwen_bdd49d85:
 
     # '值班民警' "另外，我们的法律是“谁主张，谁举证”。但是你不可以代为举证。"
-    "Police Officer" "Also, under our law, whoever makes a claim must provide evidence. But you cannot provide evidence on someone else’s behalf."
+    'Police Officer' "Also, under our law, whoever makes a claim must provide evidence. But you cannot provide evidence on someone else’s behalf."
 
 # game/script.rpy:6606
 translate english she_ending_a1_kongwen_ee19bf44:
 
     # '小曼' "…………"
-    "Siu Man" "..."
+    'Siu Man' "..."
 
 # game/script.rpy:6608
 translate english she_ending_a1_kongwen_3451d077:
 
     # '值班民警' "我们理解您的心情，但是我们也需要靠证据办事。"
-    "Police Officer" "We understand how you feel, but we also need to act based on evidence."
+    'Police Officer' "We understand how you feel, but we also need to act based on evidence."
 
 # game/script.rpy:6610
 translate english she_ending_a1_kongwen_fb2c5878:
 
     # '值班民警' "这是受理回执，有进展会通知您。"
-    "Police Officer" "This is the receipt for your report. We will notify you if there is any progress."
+    'Police Officer' "This is the receipt for your report. We will notify you if there is any progress."
 
 # game/script.rpy:6614
 translate english she_ending_a1_kongwen_6d85bfbe:
 
     # '值班民警' "您说车里发生了性骚扰行为，有录音、录像或者第三人在场吗？"
-    "Police Officer" "You said sexual harassment occurred in the car. Do you have audio, video, or a third party present?"
+    'Police Officer' "You said sexual harassment occurred in the car. Do you have audio, video, or a third party present?"
 
 # game/script.rpy:6616
 translate english she_ending_a1_kongwen_c9002980:
 
     # '小曼' "没有。"
-    "Siu Man" "No."
+    'Siu Man' "No."
 
 # game/script.rpy:6618
 translate english she_ending_a1_kongwen_9a437f3e:
 
     # '值班民警' "那目前只能先登记。是否立案，还需要进一步判断。"
-    "Police Officer" "Then for now, we can only register the report first. Whether a case can be filed still requires further assessment."
+    'Police Officer' "Then for now, we can only register the report first. Whether a case can be filed still requires further assessment."
 
 # game/script.rpy:6623
 translate english she_ending_a1_kongwen_99f50ec1:
@@ -6507,61 +6507,61 @@ translate english she_ending_a1_kongwen_easter_36d14eaa:
 translate english she_ending_a1_kongwen_easter_3cedd079:
 
     # '值班民警' "这些材料里出现的人不像你啊。"
-    "Police Officer" "The people in these materials don’t look like you."
+    'Police Officer' "The people in these materials don’t look like you."
 
 # game/script.rpy:6650
 translate english she_ending_a1_kongwen_easter_dc6f6536:
 
     # '小曼' "这些是他骚扰的其他同事。"
-    "Siu Man" "These are other coworkers he harassed."
+    'Siu Man' "These are other coworkers he harassed."
 
 # game/script.rpy:6652
 translate english she_ending_a1_kongwen_easter_fd330618:
 
     # '值班民警' "佘小姐，我们的法律是“谁主张，谁举证”。"
-    "Police Officer" "Miss Sheh, under our law, whoever makes a claim must provide evidence."
+    'Police Officer' "Miss Sheh, under our law, whoever makes a claim must provide evidence."
 
 # game/script.rpy:6654
 translate english she_ending_a1_kongwen_easter_d954a439:
 
     # '值班民警' "你不可以代为举证。"
-    "Police Officer" "You cannot provide evidence on someone else’s behalf."
+    'Police Officer' "You cannot provide evidence on someone else’s behalf."
 
 # game/script.rpy:6656
 translate english she_ending_a1_kongwen_easter_ee19bf44:
 
     # '小曼' "…………"
-    "Siu Man" "..."
+    'Siu Man' "..."
 
 # game/script.rpy:6658
 translate english she_ending_a1_kongwen_easter_98fa82a6:
 
     # '值班民警' "这是受理回执，有进展会通知你。"
-    "Police Officer" "This is the receipt for your report. We will notify you if there is any progress."
+    'Police Officer' "This is the receipt for your report. We will notify you if there is any progress."
 
 # game/script.rpy:6660
 translate english she_ending_a1_kongwen_easter_95d51105:
 
     # '小曼' "我提交的聊天记录、职场录音、同事证词，你们都看了吗？"
-    "Siu Man" "Did you look at the chat records, workplace recordings, and coworker testimonies I submitted?"
+    'Siu Man' "Did you look at the chat records, workplace recordings, and coworker testimonies I submitted?"
 
 # game/script.rpy:6662
 translate english she_ending_a1_kongwen_easter_96d2c7c7:
 
     # '值班民警' "这些材料我们都收到了，我们会按流程处理调查，您可以回去了。"
-    "Police Officer" "We have received all the materials. We will process and investigate according to procedure. You may go."
+    'Police Officer' "We have received all the materials. We will process and investigate according to procedure. You may go."
 
 # game/script.rpy:6666
 translate english she_ending_a1_kongwen_easter_0f6a1bc4:
 
     # '值班民警' "材料我们收到了。"
-    "Police Officer" "We have received the materials."
+    'Police Officer' "We have received the materials."
 
 # game/script.rpy:6668
 translate english she_ending_a1_kongwen_easter_f88a6210:
 
     # '值班民警' "但车里的关键事实仍然缺少直接证据。"
-    "Police Officer" "But the key facts of what happened in the car still lack direct evidence."
+    'Police Officer' "But the key facts of what happened in the car still lack direct evidence."
 
 # game/script.rpy:6673
 translate english she_ending_a1_kongwen_easter_dbe3a13c:

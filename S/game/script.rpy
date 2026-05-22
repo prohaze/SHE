@@ -307,7 +307,7 @@ screen item_description(description, name, image):
 
 #-----------------------------------------------
 
-define s = Character("小曼") #避免每次都打很多字
+define s = Character("siu man") #避免每次都打很多字
 define n = Character(None, what_italic=True)
 
 label start:
@@ -555,7 +555,7 @@ screen grid_choice(title, opt1, opt2, opt3, opt4, act1, act2, act3, act4):
 
 #=======================
 
-define c = Character("陈永仁")
+define c = Character("Chen ")
 
 label chapter0_2:
     scene chen_office with fade:
@@ -1015,13 +1015,13 @@ label chapter1_2:
     "{i}Rows of desks. Beige and gray cubicles. Someone‘s microwaving popcorn — it’s about to burn.{/i}"
 
 # 延续已有定义的角色
-define s = Character("小曼")
+define s = Character("Siu Man")
 define n = Character(None, what_italic=True)
 
 # 第一章新角色定义
-define xiaojin = Character("小金", color="#FFD700")
-define linjie = Character("林姐", color="#808080")
-define chen = Character("陈永仁", color="#4169E1")
+define xiaojin = Character("Siu Gam", color="#FFD700")
+define linjie = Character("Ms Lam", color="#808080")
+define chen = Character("Chen Wing Yan", color="#4169E1")
 define unknown = Character("???")
 
 # 延续已有变量，新增关系度变量
@@ -2703,7 +2703,7 @@ label ask_xiaojin_directly:
     play sound "clue.ogg"
     call screen clue_unequal_wage("线索") with dissolve
     
-    "{i}[Clue] Yin‑Yang Wage Divide{/i}" #加音效：噔噔噔↑
+    "{i}【Clue】 Yin‑Yang Wage Divide{/i}" #加音效：噔噔噔↑
 
     $ salary_evidence = True
     $ investigation_unlocked = True
@@ -5751,7 +5751,7 @@ init python:
             else:
                 return "I have some materials, but I haven't decided which part to release yet."
 
-        return "我整理了" + str(len(selected_labels)) + "份材料：" + "、".join(selected_labels) + "。我知道这条路会很难，但我不想再沉默。"
+        return "I've sorted " + str(len(selected_labels)) + "pieces of material:" + "、".join(selected_labels) + "I know this path will be difficult, but I don't want to remain silent any longer."
 
 
     def xhs_only_unrelated_evidence(selected_ids):
@@ -5794,7 +5794,7 @@ default disclosure_level = "medium"
 # 放置位置：label chapter5 后面，screen route_choice_screen 前面
 # ==========================================
 
-define zhao_lawyer = Character("赵律师")
+define zhao_lawyer = Character("Lawyer Zhao")
 
 # 如果前面已经定义过这些 default，重复 default 不会重置已存在存档里的值
 default evidence_count = 0
@@ -6849,7 +6849,7 @@ label she_ending_a1_kongwen:
             xzoom -1.0
             xpos -30
             ypos 240
-        s "这是他给我发的朋友圈，另外我同事也经受过他的骚扰。"
+        s "This is the Moments post he sent me. Also, my coworkers have experienced his harassment too."
         hide she_01_normal_eye onlayer top
 
         '值班民警' "佘小姐，这个朋友圈并没有达到性骚扰的标准。"
@@ -6898,7 +6898,7 @@ label she_ending_a1_kongwen:
     "证据不足，不予立案。"
 
     show kongwen with fade
-    "解锁结局：空文"
+    "CG: Blank Document"
 
     $ unlock_cg("kongwen")
 
@@ -7602,25 +7602,25 @@ label she_ending_c2_qingping_with_evidence:
 
     "在给材料进行隐私处理之后，你把自己搜集的证据和搜证经历放上网，让其他女性警惕起来。"
 
-    '小曼' "我是刚进公司的新员工……"
+    s "我是刚进公司的新员工……"
 
     if car_event:
 
-        '小曼' "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
+        s "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
 
-        '小曼' "我上了他的车，这之后他在车内对我实施性骚扰。"
+        s "我上了他的车，这之后他在车内对我实施性骚扰。"
 
     else:
 
-        '小曼' "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
+        s "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
 
-        '小曼' "我拒绝了上车，但这之后我发觉不对劲，开始关注他的行为。"
+        s "我拒绝了上车，但这之后我发觉不对劲，开始关注他的行为。"
 
-    '小曼' "以儒雅面貌示人的人，未必是好人。希望广大姐妹擦亮眼睛，保护自己。"
+    s "以儒雅面貌示人的人，未必是好人。希望广大姐妹擦亮眼睛，保护自己。"
 
     "一个小时过去，你整理好了帖子，发布。"
 
-    '小曼' "【置顶】希望遭遇这些的姐妹好起来。我在收集的材料中看到你们都曾惊才绝艳，愿你们也能在往后熠熠生辉。"
+    s "【置顶】希望遭遇这些的姐妹好起来。我在收集的材料中看到你们都曾惊才绝艳，愿你们也能在往后熠熠生辉。"
 
     "帖子发出后，浏览量逐渐攀升。"
 
@@ -7631,25 +7631,25 @@ label she_ending_c2_qingping_with_evidence:
 
     "林姐电话打了进来。"
 
-    '林姐' "看帖呢？"
+    linjie "看帖呢？"
 
-    '小曼' "诶？！林姐你怎么知道？"
+    s "诶？！林姐你怎么知道？"
 
-    '林姐' "快别傻乐了，我还知道这是你写的。赶紧把头像换了吧，主页暴露隐私的地方也隐藏下。"
+    linjie "快别傻乐了，我还知道这是你写的。赶紧把头像换了吧，主页暴露隐私的地方也隐藏下。"
 
-    '林姐' "下次干这种事记得换小号，或者至少换个 IP。"
+    linjie "下次干这种事记得换小号，或者至少换个 IP。"
 
-    '小曼' "哦哦哦，我马上换！谢谢林姐！"
+    s "哦哦哦，我马上换！谢谢林姐！"
 
-    '林姐' "这事你办得谈不上聪明。"
+    linjie "这事你办得谈不上聪明。"
 
-    '小曼' "……嘿嘿。"
+    s "……嘿嘿。"
 
-    '林姐' "但称得上勇敢。"
+    linjie "但称得上勇敢。"
 
-    '小曼' "不过，既然林姐你刷到了，是不是也留言了？"
+    s "不过，既然林姐你刷到了，是不是也留言了？"
 
-    '林姐' "哼，我可不像你就差把名字挂脸上了，慢慢找吧。"
+    linjie "哼，我可不像你就差把名字挂脸上了，慢慢找吧。"
 
     "【评论：其实我也遇到了……但当时快要职级评定了，我不敢说。】"
     "【评论：我也是。】"
