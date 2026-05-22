@@ -7342,6 +7342,7 @@ label she_ending_d1_xiangxi:
     hide she_03_tinysmile_eye_nobag onlayer top
     hide she_05_sohappy_nobag onlayer top
 
+
     "{i}电梯门关上了。{/i}"
     hide she_05_happy_nobag onlayer top
 
