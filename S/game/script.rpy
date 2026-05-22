@@ -1,4 +1,4 @@
-﻿image gulang = "images/ending_CG/gulang.jpg"
+﻿image gulang = "images/ending_CG/gulang.png"
 # image gulang_b = "images/ending_CG/gulang.jpg"
 image tuoniao = "images/ending_CG/tuoniao.jpg"
 image linjian = "images/ending_CG/linjian.jpg"
@@ -7250,7 +7250,7 @@ label she_ending_c1_tuichang:
 
 label she_ending_d1_xiangxi:
 
-    scene tea_room with fade
+    scene corridor with fade
     show she_17_sad onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
@@ -7340,6 +7340,7 @@ label she_ending_d1_xiangxi:
         ypos 240
     s "不是没营养的客套，就是希望你顺利，一切都好。"
     hide she_03_tinysmile_eye_nobag onlayer top
+    hide she_05_sohappy_nobag onlayer top
 
     "{i}电梯门关上了。{/i}"
     hide she_05_happy_nobag onlayer top
@@ -7616,7 +7617,8 @@ label she_ending_c2_qingping_no_evidence:
     "小曼微笑。"
     hide she_03_tinysmile_eye_nobag onlayer top
 
-    "CG：青萍"
+    scene qingping with fade
+    "解锁结局：青萍"
 
     $ unlock_cg("qingping")
 
@@ -7629,8 +7631,7 @@ label she_ending_c2_qingping_no_evidence:
 
 label she_ending_c2_qingping_with_evidence:
 
-    scene bg bedroom_night
-    with fade
+    scene home_laptop with fade
 
     "在给材料进行隐私处理之后，你把自己搜集的证据和搜证经历放上网，让其他女性警惕起来。"
 
@@ -7661,6 +7662,10 @@ label she_ending_c2_qingping_with_evidence:
     "15000。"
     "80000+。"
 
+    play sound "wx_voice_call"
+    show linjie_qingping with moveinbottom:
+        zoom 1.4
+        align (0.5, 0.45)
     "林姐电话打了进来。"
 
     linjie "看帖呢？"
@@ -7682,6 +7687,7 @@ label she_ending_c2_qingping_with_evidence:
     s "不过，既然林姐你刷到了，是不是也留言了？"
 
     linjie "哼，我可不像你就差把名字挂脸上了，慢慢找吧。"
+    hide linjie_qingping with dissolve
 
     "【评论：其实我也遇到了……但当时快要职级评定了，我不敢说。】"
     "【评论：我也是。】"
@@ -7696,7 +7702,8 @@ label she_ending_c2_qingping_with_evidence:
 
     '小曼' "发现了新的希望。"
 
-    "CG：青萍"
+    scene qingping with fade
+    "解锁结局：青萍"
     $ unlock_cg("qingping")
 
     jump she_ending_common
@@ -8141,7 +8148,8 @@ label she_ending_a3_poxiao:
 
     hide she_15_unflinched onlayer top
 
-    "CG：破晓"
+    scene poxiao with fade
+    "解锁结局：破晓"
     $ unlock_cg("poxiao")
 
     jump she_ending_common
@@ -8458,8 +8466,7 @@ label she_ending_tuoniao:
 
 label she_ending_gulang:
 
-    scene bg company_street_evening
-    with fade
+    scene office_hall with fade
 
     "暴露后，不知何时传出了你做的拆解方案抄袭的消息，你被公司解雇了。"
 
@@ -8471,9 +8478,10 @@ label she_ending_gulang:
 
     "没有人叫住你。"
 
+    scene gulang with fade
     "没有同伴的日子里，一只狼要小心啊。"
 
-    "CG：孤狼"
+    "解锁结局：孤狼"
     $ unlock_cg("gulang")
 
     jump she_ending_common
