@@ -8,7 +8,7 @@ image tuichang = "images/ending_CG/tuichang.jpg"
 image xiangxi = "images/ending_CG/xiangxi.jpg"
 image qingping = "images/ending_CG/qingping.jpg"
 image xuyu = "images/ending_CG/xuyu.jpg"
-image poxiao = "images/ending_CG/poxiao.jpg"
+image poxiao = "images/ending_CG/poxiao.png"
 image feiniao = "images/ending_CG/feiniao.jpg"
 # image yinshui_b = "images/ending_CG/yinshui_b.jpg"
 # image yinshui_color = "images/ending_CG/yinshui_color.jpg"
@@ -6317,7 +6317,7 @@ screen post_title_input():
 label ending_a_empty_document:
     # A-1【空文】
 
-    scene bg police_station
+    scene police_station
     with fade
 
     "{i}You submit the evidence photos you found.{/i}"
@@ -6494,8 +6494,7 @@ label ending_d_mutual_respect:
 label ending_b_whisper:
     # B-2【絮语】
 
-    scene bg hr_office
-    with fade
+    scene hr_office with fade
 
     s "I want to report Chan Wing Yan for sexual harassment. All the evidence is here."
 
@@ -6994,7 +6993,7 @@ label she_ending_a1_kongwen_easter:
         '值班民警' "这是受理回执，有进展会通知你。"
         hide she_09_unhappy_bag onlayer top
         
-    scene report with fade
+    scene reports with fade
     "3周后。"
 
     "证据不足，不予立案。"
@@ -7988,8 +7987,7 @@ label she_ending_d2_lijian:
 
 label she_ending_a3_poxiao:
 
-    scene bg bedroom_night
-    with fade
+    scene home_laptop with fade
 
     hide she_14_deepthink onlayer top
     hide she_14_think onlayer top
@@ -8062,8 +8060,7 @@ label she_ending_a3_poxiao:
 
     "多家媒体后台私信联系你。"
 
-    scene bg court_outside
-    with fade
+    scene court with fade
 
     hide she_14_deepthink onlayer top
     hide she_14_think onlayer top
@@ -8095,8 +8092,7 @@ label she_ending_a3_poxiao:
 
     hide woman_01_normal with dissolve
 
-    scene bg court_outside
-    with fade
+    scene court with fade
 
     hide she_14_deepthink onlayer top
     hide she_14_think onlayer top
