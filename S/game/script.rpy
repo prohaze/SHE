@@ -312,9 +312,7 @@ define n = Character(None, what_italic=True)
 
 label start:
 
-    scene 31 #Emma:需要替换开场图片
-    show titletest:
-        pos(120,150)
+    scene cover #Emma:需要替换开场图片
     
     ##show eileen happy #Emma：需要透明底角色立绘，后续替换立绘图
 
@@ -322,7 +320,7 @@ label start:
         "Start Game":
             style choice_vbox:
                 xalign 0.5
-                ypos 700
+                ypos 850
                 yanchor 0.5
             jump chapter0
         "Exit Game":
