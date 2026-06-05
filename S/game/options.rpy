@@ -3,17 +3,29 @@
 ## 以“##”开头的语句是注释，您不应该对其取消注释。以“#”开头的语句是注释掉的代码，
 ## 在适用的时候您可能需要对其取消注释。
 
-
 ## 基础 ##########################################################################
 
 ## 用户可读的游戏名称。此命令用来设置默认窗口标题，并且会在界面和错误报告中出
 ## 现。
-##
+
 ## 带有 _() 的字符串表示其可被翻译。
-define config.language = "english"
+default persistent.language_preference = None
+
+# 定义 config.language 为 None（中文原文）
+define config.language = None
 
 define config.name = _("S")
 
+# 在游戏启动后执行语言切换
+init python:
+    def apply_language():
+        if persistent.language_preference is not None:
+            renpy.change_language(persistent.language_preference)
+        else:
+            renpy.change_language(None)  # 强制中文原文
+    
+    # 注册启动回调
+    config.start_callbacks.append(apply_language)
 
 ## 决定上面给出的标题是否显示在标题界面屏幕。设置为 False 来隐藏标题。
 

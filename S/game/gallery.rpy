@@ -11,9 +11,9 @@
 # CG列表（按显示顺序排列）
 define cg_list = [
     {"id": "gulang", "title": "孤狼"},
-    {"id": "gulang_b", "title": "孤狼·B"},
+    {"id": "manyou", "title": "漫游"},
     {"id": "tuoniao", "title": "鸵鸟"},
-    {"id": "linjian", "title": "林间"},
+    {"id": "lijian", "title": "利剑"},
     {"id": "kongwen", "title": "空文"},
     {"id": "yinshui", "title": "饮水"},
     {"id": "tuichang", "title": "退场"},
@@ -22,7 +22,7 @@ define cg_list = [
     {"id": "xuyu", "title": "絮语"},
     {"id": "poxiao", "title": "破晓"},
     {"id": "feiniao", "title": "飞鸟"},
-    {"id": "yinshui_b", "title": "饮水·B"},
+    {"id": "songbie", "title": "送别"},
     {"id": "yinshui_color", "title": "饮水·彩"},
 ]
 
@@ -44,9 +44,9 @@ init -1 python:
     if not hasattr(persistent, 'cg_unlocked') or persistent.cg_unlocked is None:
         persistent.cg_unlocked = {
             "gulang": False,
-            "gulang_b": False,
+            "manyou": False,
             "tuoniao": False,
-            "linjian": False,
+            "lijian": False,
             "kongwen": False,
             "yinshui": False,
             "tuichang": False,
@@ -55,14 +55,14 @@ init -1 python:
             "xuyu": False,
             "poxiao": False,
             "feiniao": False,
-            "yinshui_b": False,
+            "songbie": False,
             "yinshui_color": False,
         }
     
     # 检查是否有新增的 CG（后续扩展用）
-    all_cg_ids = ["gulang", "gulang_b", "tuoniao", "linjian", "kongwen", 
-                  "yinshui", "tuichang", "xiangxi", "qingping", "xuyu", 
-                  "poxiao", "feiniao", "yinshui_b", "yinshui_color"]
+    all_cg_ids = ["gulang", "manyou", "tuoniao", "lijian", "kongwen", 
+                "yinshui", "tuichang", "xiangxi", "qingping", "xuyu", 
+                "poxiao", "feiniao", "songbie", "yinshui_color"]
     for cg_id in all_cg_ids:
         if cg_id not in persistent.cg_unlocked:
             persistent.cg_unlocked[cg_id] = False

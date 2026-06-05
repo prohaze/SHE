@@ -744,6 +744,14 @@ screen preferences():
                     textbutton _("选项后继续") action Preference("after choices", "toggle")
                     textbutton _("忽略转场") action InvertSelected(Preference("transitions", "toggle"))
 
+                vbox:
+                    style_prefix "language"
+                    label _("语言设置")                    
+                    textbutton "中文":
+                        action Language(None)  # ← None 使用原文（中文）
+                    textbutton "English":
+                        action Language("english")  # 切换到英文翻译
+
                 ## 可在此处添加 radio_pref 或 check_pref 类型的额外 vbox，以添加
                 ## 额外的创建者定义的偏好设置。
 

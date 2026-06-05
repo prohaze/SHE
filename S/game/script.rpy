@@ -25,16 +25,16 @@ default escape = 0 #【成就：鸵鸟】
 #运行python先打包一个字典给screen item_description调取不同描述用
 init python:
     item_descriptions = {
-        "magazine": "A special issue of Female Leaders, half a page torn out by someone.",
-        "computer": "An open Excel spreadsheet showing the salary range for your applied position: starting salary $22,000 for males, $18,000 for females.",
-        "smartphone": "A message from Mom: Have you found a job? Your brother needs new shoes.",
-        "window": "You gaze at the city, with 135 rejection letters scattered among it."
+        "magazine": "《女性领导者》特刊，有人撕掉了一半页面。",
+        "computer": "【Excel表格开着】你应聘岗位的薪资范围：男性起薪22K，女性18K。",
+        "smartphone": "妈妈的信息：工作找到了吗？弟弟要买新鞋。",
+        "window": "你看着这座城市，135封拒信散落其中。"
     }
     item_names = {
-        "magazine": "magazine",
-        "computer": "computer",
-        "smartphone": "smartphone",
-        "window": "window"
+        "magazine": "杂志",
+        "computer": "前台电脑",
+        "smartphone": "手机",
+        "window": "玻璃窗"
     }
     item_image = {
         "window": "chapter0_items/window_scenery.png" 
@@ -96,15 +96,15 @@ screen item_description(description, name, image):
                 xalign 0.5
             null height 50
             
-            textbutton "Close":
+            textbutton "关闭":
                 xalign 0.5
                 action Hide("item_description")
 
 screen items_screen():
     modal True
     # 添加进度显示
-    text "Items Found[len(clicked_items)]/4":
-        xalign 0.95
+    text "已发现物品[len(clicked_items)]/4":
+        xalign 0.05
         yalign 0.05
         size 36
         color "#ffffff"
@@ -197,7 +197,7 @@ screen items_screen():
                 ypos 850
             on hover:
                 zoom 1
-                linear 0.4 rotate 20 xpos 750 ypos 550
+                linear 0.6 rotate 20 xpos 750 ypos 550
         idle "chapter0_items/item3_smartphone.png"
         hover "chapter0_items/item3_smartphone_hover.png"
 
@@ -292,7 +292,7 @@ screen item_description(description, name, image):
                 xalign 0.5
             null height 50
 
-            textbutton "Close":
+            textbutton "关闭":
                 at transform:
                     zoom 0.9
                 xalign 0.5
@@ -307,29 +307,76 @@ screen item_description(description, name, image):
 
 #-----------------------------------------------
 
-define s = Character("siu man") #避免每次都打很多字
+define s = Character("小曼") #避免每次都打很多字
 define n = Character(None, what_italic=True)
+define chen = Character("陈永仁", color="#4169E1")
+define start_anime = Movie(play="videos/start_anime_loop.webm", size=(1920, 1080), loop=True) #卡顿问题没解决
+
+transform game_labels:
+    zoom 0.85
+    on idle:
+        xalign 1.03
+        pass
+    on hover:
+        linear 0.12 xalign 1.0
+        
+screen cover:
+    modal True
+
+    imagebutton at game_labels:
+        yalign 0.57
+        idle "game_start_ch" 
+        hover "game_start_ch"
+        hover_sound "mouse_hover.ogg"
+        activate_sound "mouse_click.ogg"
+        action [Hide("cover"), Hide("start_anime_loop"), Jump("chapter0")]
+
+    imagebutton at game_labels:
+        yalign 0.67
+        idle "game_exit_ch" 
+        hover "game_exit_ch"
+        hover_sound "mouse_hover.ogg"
+        activate_sound "mouse_click.ogg"
+        action [Hide("cover"), Hide("start_anime_loop"), Return()]
+
+    imagebutton at game_labels:
+        yalign 0.77
+        idle "game_load_ch" 
+        hover "game_load_ch"
+        hover_sound "mouse_hover.ogg"
+        activate_sound "mouse_click.ogg"
+        action [Hide("cover"), Hide("start_anime_loop"), ShowMenu('load')]
+
+    imagebutton at game_labels:
+        yalign 0.87
+        idle "game_gallery_ch" 
+        hover "game_gallery_ch"
+        hover_sound "mouse_hover.ogg"
+        activate_sound "mouse_click.ogg"
+        action [Hide("cover"), Hide("start_anime_loop"), ShowMenu('gallery')]
 
 label start:
 
-    scene cover #Emma:需要替换开场图片
-    
-    ##show eileen happy #Emma：需要透明底角色立绘，后续替换立绘图
+    show expression start_anime
+    # scene cover #Emma:需要替换开场图片
 
-    menu:
-        "Start Game":
-            style choice_vbox:
-                xalign 0.5
-                ypos 850
-                yanchor 0.5
-            jump chapter0
-        "Exit Game":
-            return
+    call screen cover
+    $ ui.interact()
+
+    # menu:
+    #     "Start Game":
+    #         style choice_vbox:
+    #             xalign 0.5
+    #             ypos 850
+    #             yanchor 0.5
+    #         jump chapter0
+    #     "Exit Game":
+    #         return
 
 label chapter0:
-    show black #替换黑幕布
+    scene black #替换黑幕布
     image chapter0_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
-    show chapter0_title "Prologue: The Message"
+    show chapter0_title "序章：音信"
     with fade
     pause 2
     hide chapter0_title
@@ -344,12 +391,13 @@ label chapter0:
         xpos -30
         ypos 240
 label your_label_name:
-
-    "{i}This recruiting season, you sent out 147 resumes. 12 came back as rejections. The rest disappeared without a trace.{/i}"
-    "{i}Mom calls every Sunday, asking when you’ll finally find a job and telling you to stop being so picky.\nBut this time… something feels different.{/i}"
+    
+    "{i}这个招聘季投了147份简历, 12封是拒信，其他杳无音讯。{/i}"
+    "{i}妈妈每周日打电话问你什么时候能找到工作，别再挑了。\n但这一次……感觉不一样。{/i}"
     hide she_01_normal_nocard onlayer top
+    
     scene black with fade
-    "{i}You enter the waiting room. You’re next.{/i}"
+    "{i}你进入了等待室，下一个就到你了。{/i}"
     jump waiting_room
     
 label waiting_room:
@@ -358,11 +406,16 @@ label waiting_room:
         zoom 1.9
         xalign 0.5
         yalign 0.7
+    
     menu:
-        "Explore the Room":
+        "探索房间":
+            style choice_vbox:
+                xalign 0.5
+                ypos 850
+                yanchor 0.7
             call explore_room #call完之后走jump
             jump explore_complete
-        "Wait Quietly":
+        "安静等待":
             jump explore_complete
 
 label explore_room:
@@ -385,12 +438,12 @@ label explore_room:
 label explore_complete:
     hide screen items_screen
     hide screen item_description
-    'HR'"Miss Sheh? Mr. Chen is asking for you."
+    'HR'"佘小姐？陈总请您进去。"
     jump chapter0_2
 
 label after_third_item:
     $ five_item_clicked = False  # 重置标记
-    s "It seems the interview is about to start…"
+    s "面试好像要开始了？"
     jump explore_complete
 
 #========================
@@ -404,22 +457,22 @@ init python:
     def add_money(amount, reason=""):
         global money
         money += amount
-        print(f"Money {amount:+} ({reason})，Current: {money}")
+        print(f"金钱 {amount:+} ({reason})，当前: {money}")
     
-    def add_social(amount, reason=""):
-        global social
-        social += amount
-        print(f"Social {amount:+} ({reason})，Current: {social}")
+    # def add_social(amount, reason=""):
+    #     global social
+    #     social += amount
+    #     print(f"社交 {amount:+} ({reason})，当前: {social}")
     
-    def add_mental(amount, reason=""):
-        global mental
-        mental += amount
-        print(f"Mental {amount:+} ({reason})，Current: {mental}")
+    # def add_mental(amount, reason=""):
+    #     global mental
+    #     mental += amount
+    #     print(f"精神 {amount:+} ({reason})，当前: {mental}")
     
-    def add_awakening(amount, reason=""):
-        global awakening
-        awakening += amount
-        print(f"Awakening {amount:+} ({reason})，Current: {awakening}")
+    # def add_awakening(amount, reason=""):
+    #     global awakening
+    #     awakening += amount
+    #     print(f"觉醒 {amount:+} ({reason})，当前: {awakening}")
 
     #陈永仁到处乱看的提示            
     def show_sequential_thoughts(high_msg, mid_msg, low_msg, interval=0.5, duration=1.5):
@@ -552,9 +605,6 @@ screen grid_choice(title, opt1, opt2, opt3, opt4, act1, act2, act3, act4):
                 idle_color "#888888"
 
 #=======================
-
-define c = Character("Chen ")
-
 label chapter0_2:
     scene chen_office with fade:
         zoom 1.3
@@ -570,13 +620,13 @@ label chapter0_2:
         xzoom -1.0
         xpos 1350
         ypos 160
-    "{i}He stands up to greet you, with a warm smile and perfect posture. He is the kind of person who makes you feel seen the moment you meet him.{/i}"
+    "{i}他站起来迎接你，温暖的笑容，完美的姿态。他是那种让你立刻感受到自己被看见的人。{/i}"
     show she_01_normal_nocard_eye onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    "{i}You sit down, your attention drawn to the arrangement of his office.{/i}"
+    "{i}你坐下了，被他办公室的布置吸引了注意。{/i}"
     hide she_01_normal_nocard onlayer top
     hide she_01_normal_nocard_eye onlayer top
     scene chen_office with fade:
@@ -584,30 +634,29 @@ label chapter0_2:
         xalign 0.9
         yalign 0.4
     call screen grid_choice(
-        "Which item do you want to examine most?",
-        "Bookshelf", "Photo on the Desk",
-        "Patterned Coffee Mug", "Floor-to-Ceiling Window",
+        "你最想查看的物品是",
+        "书架", "桌上的照片",
+        "印有图案的咖啡杯", "落地窗",
         Jump("bookshelf"), Jump("family_photo"),
         Jump("coffee_mug"), Jump("french_window")
     )
-
 label bookshelf:
-    "{i}There are books on law, business strategy, and a collection of poems by female poets.{/i}"
+    "{i}上面摆放着一些法律书籍、商业策略，还有女性诗人的诗集。{/i}"
     window hide
     jump after_menu
 
 label family_photo:
-    "{i}It is a family photo, showing his wife and two children. They are all smiling.{/i}"
+    "{i}是一张全家福，上面有他的妻子、两个孩子，他们都在笑。{/i}"
     window hide
     jump after_menu
 
 label coffee_mug:
-    "{i}A chipped coffee mug with the words “World’s Best Dad” printed on it.{/i}"
+    "{i}杯沿有个缺口的咖啡杯，上面印着“世界最佳爸爸”。{/i}"
     window hide
     jump after_menu
 
 label french_window:
-    "{i}Standing here, it feels as if the entire city is beneath your feet.{/i}"
+    "{i}站在这，仿佛整座城市都在自己的脚下。{/i}"
     window hide
     jump after_menu
 
@@ -621,55 +670,56 @@ label after_menu:
         xzoom -1.0
         xpos 680
         ypos 160
-    c"Siu Man, tell me, why do you want to work here？"
-
+    chen "小曼，告诉我，你为什么想来这里工作？"
     menu:
-        "I need the money.":
-            s "I need the money."
-
-        "I admire your company's values.":
-            s "I admire your company's values."
-            $ add_social(1, "Interview B")
-
-        "I want to prove I can do better than anyone else.":
-            s "I want to prove I can do better than anyone else."
-            $ add_mental(1, "Interview C")
-
-    c "I see. You know, there’s a contingency that we were like to get someone older, with more experience. But what I see in your resume is... hunger."
-
+        "我需要钱。":
+            s"我需要钱。"
+        "我欣赏贵公司的价值观。":
+            s"我欣赏贵公司的价值观。"
+            # $ add_social(1, "面试B")
+        "我想证明我能比任何人做得更好。":
+            s"我想证明我能比任何人做得更好。"
+            # $ add_mental(1, "面试C")
+    show chen_01_normal with dissolve:
+        zoom 0.9
+        xzoom -1.0
+        xpos 681
+        ypos 162
+    chen "明白了。你知道吗，我们有过更有经验的候选人。但我在你简历里看到了……渴望。"
     $ show_sequential_thoughts(
-        "He looks at your resume.",
-        "He looks at your face.",
-        "He looks at your hands."
+        "他在观察你的手。",
+        "他在观察你的脸。", 
+        "他在看你的简历。"
     )
-
-    c "Do you have any questions for me?"
-
+    pause 1.5
+    hide chen_01_normal with dissolve
+    hide screen high_notify
+    hide screen mid_notify
+    hide screen low_notify
+    chen "有什么问题想问我吗？"
     menu:
-        "What are the promotion pathways for females here?":
-            s "What are the promotion pathways for females here?"
+        "这里的女性晋升通道怎么样？":
+            s"这里的女性晋升通道怎么样？"
             show chen_02_smile:
                 zoom 0.9
                 xzoom -1.0
                 xpos 680
                 ypos 160 
-            c "Good question. We're very progressive here. Half of our middle managers are females... well, one-third actually... there's Ms Lam, she's outstanding."
+            chen "好问题。我们这里很进步。中层管理一半是女性……嗯，三分之一吧……有个Linda，她很优秀。"
             hide chen_02_smile
             jump chapter0_3
-
-        "Is there flexible remote work available?":
-            s "Is there flexible remote work available?"
+        "有居家办公的弹性吗？":
+            s"有居家办公的弹性吗？"
             show chen_05_wanwei: 
                 zoom 0.9
                 xzoom -1.0
                 xpos 687
                 ypos 161
-            c "Good question. Our company actually cares a lot about work-life balance. Flexible remote work is available in principle."
-            c "But... to be honest, in the gaming industry—especially for designers, it’s best to be on-site more often in the early stage. Of course, it’s not mandatory. Just a suggestion."
+            chen "好问题。我们公司其实很重视工作生活的平衡。居家办公原则上支持。"
+            chen "但……说实话，在游戏这行——尤其是设计师，前期最好多在场。当然，这不是强制，只是建议。"
             hide chen_05_wanwei
             jump chapter0_3
-
-        "No, you've covered everything thoroughly.":
+        "没有了，您都介绍得很清楚。":
             jump chapter0_3
 
 label chapter0_3:
@@ -678,7 +728,7 @@ label chapter0_3:
         xzoom -1.0
         xpos 680
         ypos 160
-    c"Do you have any other questions？"
+    chen "还有别的问题吗？"
     hide chen_03_narroweyes
     show chen_03_narroweyes:
         zoom 0.9
@@ -700,16 +750,13 @@ label chapter0_3:
         xzoom -1.0
         xpos -30
         ypos 240
-    s"No, thank you."
-    c"Then that concludes the interview. It's been a pleasure talking with you."    
+    s"没有了，谢谢您。"
+    chen "那么面试就到这吧，和你的交流很愉快。"    
     hide she_01_normal_nocard onlayer top
     hide she_03_tinysmile_nocard onlayer top
     scene black with fade
     #show 邮件页面
     jump chapter1
-
-
-
 
 # 第一章：蜜月期（第1-4周）
 # 任务1.1：第一天，第一印象
@@ -740,7 +787,7 @@ image woman normal = "woman_normal.png"
 
 label chapter1:
     image chapter1_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
-    show chapter1_title "Chapter 1：Onboarding"
+    show chapter1_title "Chapter 1：入职"
     with fade
     pause 2
     hide chapter1_title
@@ -752,7 +799,7 @@ label chapter1:
         xzoom -1.0
         xpos -30
         ypos 240
-    "The building smells of air freshener and ambition. You’re 13 minutes early. Everyone is."
+    "大楼里弥漫着空气清新剂和野心。你早到了13分钟。每个人都这样。"
     hide she_03_tinysmile_eye onlayer top
 
     show she_03_tinysmile onlayer top at top_dissolve:
@@ -760,7 +807,7 @@ label chapter1:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "First day on the job. Time to get a feel for the place."
+    s "今天是入职第一天，先看看新环境怎么样。"
     hide she_03_tinysmile onlayer top
 
     jump lobby_explore
@@ -774,17 +821,17 @@ screen lobby_menu(gate_used, coffee_bought, appearance_checked):
         xalign 0.5
         yalign 0.45
         
-        text "Items to Explore – Lobby":
+        text "大堂可探索：":
             size 34
             color "#ffffff"
             outlines [ (2, "#000000", 0, 0) ]
         
         if not gate_used:
-            textbutton "Turnstile" action Jump("gate_interaction")
+            textbutton "闸机" action Jump("gate_interaction")
         if not coffee_bought:
-            textbutton "Coffee Bar" action Jump("coffee_stand")
+            textbutton "咖啡亭" action Jump("coffee_stand")
         if not appearance_checked:
-            textbutton "Elevator Door Reflection" action Jump("mirror_check")
+            textbutton "电梯门倒影" action Jump("mirror_check")
 
 label lobby_explore:
     scene lobby with dissolve
@@ -795,7 +842,7 @@ label lobby_explore:
             xzoom -1.0
             xpos -30
             ypos 240
-        s "Still some time left. Might as well look around the office floor."
+        s "趁这段时间，去熟悉熟悉办公楼层吧。"
         hide she_03_tinysmile onlayer top
         jump elevator_choice
     
@@ -832,7 +879,8 @@ label gate_interaction:
     show office_card_rope at rotate_in
     #"“哔！”" #改成音效
     
-    "{i}Welcome, Siu Man! This is the first time you hear your own name here.{/i}"
+    "{i}“欢迎，小曼！”{/i}"
+    extend "{i}——这是你第一次在这里听到自己的名字{/i}"
     
     $ gate_used = True
     jump lobby_explore
@@ -851,26 +899,26 @@ label coffee_stand:
         zoom 0.68
         xpos 690
         ypos 160
-    'Barista'"Hi, what can I get for you?"
+    '咖啡店员'"你好，要点什么？"
 
-    s "Hot latte, please. Thanks."
+    s "一杯热拿铁吧，谢谢。"
 
     show coffee_staff_03_chat with dissolve:
         zoom 0.68
         xpos 690
         ypos 160
-    'Barista'"Don’t see you often. New here?"
+    '咖啡店员'"平时没怎么见过你呢，是新来的吗？"
 
-    s "Yeah, today’s my first day."
+    s "嗯，今天入职。"
 
     show coffee_staff_02_smile with dissolve:
         zoom 0.68
         xpos 690
         ypos 160
-    'Barista'"{i}You‘re wearing your new work skirt. It fits perfectly.{/i}"
-
+    '咖啡店员'"那祝你入职顺利喽。"
+    extend "你的咖啡要10分钟才好，麻烦你稍等一下。"
     $ money -= 30
-    "-30 yuan。【Current balance：[money] yuan】"
+    "-30元。【当前余额：[money]元】"
     $ coffee_bought = True
     
     jump lobby_explore
@@ -880,7 +928,7 @@ label coffee_stand:
 label mirror_check:
     scene lobby
     show elevator_reflection with dissolve
-    "{i}You‘re wearing your new work skirt. It fits perfectly.{/i}"
+    "{i}你穿着新买的职业裙，很合身{/i}"
     
     $ appearance_checked = True
     
@@ -900,11 +948,11 @@ screen elevator_menu(third_floor, eight_floor, twenty_third_floor):
         #     xpos 50 
         
         if not third_floor:
-            textbutton "3rd Floor" action Jump("third_floor")
+            textbutton "3楼" action Jump("third_floor")
         if not eight_floor:
-            textbutton "8th Floor" action Jump("eight_floor")
+            textbutton "8楼" action Jump("eight_floor")
         if not twenty_third_floor:
-            textbutton "23rd Floor" action Jump("twenty_third_floor")
+            textbutton "23楼" action Jump("twenty_third_floor")
 
 label elevator_choice:
     scene black with dissolve
@@ -917,28 +965,37 @@ label elevator_choice:
         xpos -30
         ypos 240
     if third_floor and eight_floor and twenty_third_floor:
-        jump chapter1_2
+        jump elevator_encounter
     call screen elevator_menu(third_floor, eight_floor, twenty_third_floor)
 
 label third_floor:
-    scene bg third_floor with dissolve:
-        zoom 1.5
-    "{i}HR Department...{/i}"
-    $ third_floor = True
-    jump elevator_choice
+    if eight_floor and twenty_third_floor:
+        jump elevator_encounter
+    else:
+        scene bg third_floor with dissolve:
+            zoom 1.6
+        "{i}HR部门...{/i}"
+        $ third_floor = True    
+        jump elevator_choice
             
 label eight_floor:
     scene bg eight_floor with dissolve:
         xzoom -1
-    "{i}Marketing Department...{/i}"
+    "{i}市场部...{/i}"
     $ eight_floor = True
-    jump elevator_encounter
+    if third_floor and twenty_third_floor:
+        jump elevator_encounter
+    else:
+        jump elevator_choice
             
 label twenty_third_floor:
     scene bg twenty_third_floor with dissolve
-    "{i}Executive Floor...{/i}"
+    "{i}高管层...{/i}"
     $ twenty_third_floor = True
-    jump elevator_choice
+    if eight_floor and third_floor:
+        jump elevator_encounter
+    else:
+        jump elevator_choice
 
 # ========== 电梯随机遭遇 ==========
 
@@ -947,17 +1004,24 @@ label elevator_encounter:
         zoom 2.3
         align (0.5, 0.5)
     
+    show she_03_tinysmile onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "咖啡快好了，去1楼取一下吧。"
+
     show woman_01_normal with dissolve:
         zoom 0.8
         xpos 1350
         ypos 160
-    "{i}The elevator doors slide open. A woman in her forties, sharply dressed in a tailored suit, her eyes weary.{/i}"
-    
+    "{i}电梯下行几层后停了，门打开。{/i}"
+    extend "{i}进来了一位30多岁的女人，套装干练，眼神疲惫。{/i}"
     show woman_02_talk:
         zoom 0.8
         xpos 1350
         ypos 160
-    unknown_woman "New here?"
+    unknown_woman "新来的？"
     hide woman_02_talk
     
     show she_05_happy onlayer top at top_dissolve:
@@ -965,62 +1029,84 @@ label elevator_encounter:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "First day."
+    s "第一天。"
+    hide she_03_tinysmile onlayer top
     
     show woman_02_talk:
         zoom 0.8
         xpos 1350
         ypos 160
-    unknown_woman "I see."
+    unknown_woman "啊。"
+
     show she_05_happy_sweat onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    "{i}She stares at you a little too long.{i}"
-    unknown_woman "Design department?"
+    "{i}她盯着你看的时间有点长。{i}"
+    hide she_05_happy onlayer top
+    unknown_woman "设计部？"
 
     show she_06_surprise_eye onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
+    s "诶，你怎么知道？"
     hide she_05_happy_sweat onlayer top
-    s "Huh, how did you tell?"
+
+    unknown_woman "就那种眼神。不知道你会在这待多久呢？"
     
-    unknown_woman "It’s in your eyes. Wonder how long you’ll stick around here."
-    
-    hide woman_01_normal with dissolve    
-    "{i}She gets off at the third floor. You never learn her name.{/i}"
-    
-    # 剧情继续到下一部分...
-    hide she_05_happy onlayer top
+    "{i}“3楼，到了。”{/i}"
+    scene bg third_floor with dissolve:
+        zoom 1.6
+    hide woman_01_normal with dissolve
+    "{i}她在3楼下电梯。你始终不知道她的名字。{/i}"
+
+    s "……………………"
+    s "{i}HR部门吗……{/i}"
+
+    scene elevator with fade
+    show she_14_thinking_bag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "这是什么意思呢……"
     hide she_06_surprise_eye onlayer top
-    jump elevator_choice
+
+    n "你正思考着。"
+    n "“一楼，到了。”"
+
+    hide she_14_thinking_bag onlayer top
+    jump chapter1_2
 
 label chapter1_2:
+    scene lobby with fade
+    pause 1.0
+    show she_05_happy onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "咖啡还挺不错的诶。"
     show she_07_astonish onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    s"Oh, time’s up. Better get to my desk."
+    s"啊，时间到了，得赶紧去工位！"
+    hide she_05_happy onlayer top
     hide she_03_tinysmile onlayer top
     hide she_07_astonish onlayer top
     
     scene office with fade
-    "{i}{cps=10}12th Floor – Design Department{/cps}{/i}"
-    "{i}Rows of desks. Beige and gray cubicles. Someone‘s microwaving popcorn — it’s about to burn.{/i}"
-
-# 延续已有定义的角色
-define s = Character("Siu Man")
-define n = Character(None, what_italic=True)
+    "{i}{cps=10}12楼，设计部。{/cps}{/i}"
+    "{i}一排排办公桌。米色和灰色的隔间。有人在用微波炉热爆米花，快糊了。{/i}"
 
 # 第一章新角色定义
-define xiaojin = Character("Siu Gam", color="#FFD700")
-define linjie = Character("Ms Lam", color="#808080")
-define chen = Character("Chen Wing Yan", color="#4169E1")
-define unknown = Character("???")
+define xiaojin = Character("小金", color="#FFD700")
+define linjie = Character("林姐", color="#808080")
 
 # 延续已有变量，新增关系度变量
 default xiaojin_interest = 0
@@ -1035,15 +1121,15 @@ image bg office_floor = "bg_office_floor.png"
 
 # ========== 第一章：自我介绍 ==========
 label chapter1_self_intro:
-    scene office_area with fade: #要替换空一点的办公桌图片
-        zoom 0.75
-    "{i}You arrive at your desk and start unpacking your things.{/i}"
+    scene office_area with fade 
+
+    "{i}你来到工位，正在收拾东西。{/i}"
     
     show jin_01_happy with moveinright:
         zoom 0.97
         xpos 700
         ypos 150
-    xiaojin "Hey! The new girl! Finally, someone who’s not old enough to be my dad. Want coffee? I‘ll tell you which machine’s the best."
+    xiaojin "嘿！新来的美女！终于有个不是我爸年纪的人了。喝咖啡吗？我告诉你哪个机器好。"
 
     show jin_01_happy with move:
         zoom 0.97
@@ -1057,14 +1143,14 @@ label chapter1_self_intro:
         ypos 240
 
     menu:
-        "Sure, thanks!":
+        "好啊，谢谢！":
             $ xiaojin_interest += 1
             jump xiaojin_friendly
             
-        "Maybe later. I want to get settled in first.":
+        "等会儿吧，我想先收拾一下。":
             jump xiaojin_neutral
             
-        "I brought my own.":
+        "我自己带了。":
             jump xiaojin_cold
 
 # 选项A：友好路线
@@ -1075,7 +1161,7 @@ label xiaojin_friendly:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "I already got one downstairs, but sure — thanks."
+    s "我在楼下买了一杯了，不过好啊，谢谢你。"
     hide she_05_happy onlayer top
 
     scene tea_room with dissolve
@@ -1084,8 +1170,8 @@ label xiaojin_friendly:
         zoom 0.97
         xpos 700
         ypos 150
-    xiaojin "You’re new, so just remember — don‘t cross Mr. Chan. He seems easygoing, but don’t push it. And that woman in HR? Stay on her good side too."
-    xiaojin "…Forget it. Just don’t offend anyone. I‘ve been here eight months, and I’m still figuring it out."
+    xiaojin "你刚来，记得别得罪陈总——他挺随和的，但别惹他。还有HR那女的？也别得罪。"
+    xiaojin "……算了，谁都别得罪。我来8个月了，还在琢磨。"
     hide jin_02_frown with dissolve
     
     jump linjie_encounter
@@ -1098,9 +1184,9 @@ label xiaojin_neutral:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "Give me a sec. I want to organize my desk first."
+    s "等一会儿可以吗，我想先收拾一下桌面。"
     
-    xiaojin "Sure, no rush. Let me know if you need anything."
+    xiaojin "行，那你先忙，有事找我。"
     hide she_03_tinysmile_eye onlayer top
     hide jin_01_happy with moveoutright
 
@@ -1114,9 +1200,9 @@ label xiaojin_cold:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "I brought my own."
+    s "我自己带了。"
 
-    xiaojin "…Haha, cool. I‘ll see you around."
+    xiaojin "……哈哈，那行，我就先走了。"
     hide jin_01_happy with moveoutright
 
     hide she_01_normal_eye onlayer top
@@ -1126,35 +1212,34 @@ label xiaojin_cold:
 # ========== 林姐登场 ==========
 
 label linjie_encounter:
-    scene office_area with fade:
-        zoom 0.75
+    scene office_area with fade
     
-    "{i}You continue tidying up your desk.{/i}"
+    "{i}你继续整理工位。{/i}"
     
     show linjie_00_shade with moveinright:
         zoom 0.92
         xpos 790
         ypos 200
-    '？？' "Welcome. The handover documents are in the shared link. There’s a meeting at 10 — don‘t be late."
+    '？？' "欢迎。交接文件在共享链接里。10点有个会，别迟到。"
     hide linjie_00_shade with dissolve
     
-    "{i}She walks by. No pause, no glance.{/i}"
+    "{i}她从你桌边走过，没停步。{/i}"
     
     menu:
-        "Okay, thanks!":
+        "好的，谢谢！":
             jump linjie_response_a
             
-        "You nod silently.":
+        "默默点头":
             jump linjie_response_b
             
-        "Looking forward to the meeting.":
+        "期待开会。":
             jump linjie_response_c
 
 # 选项A：积极
 label linjie_response_a:
-    s "Okay, thanks!"
+    s "好的，谢谢！"
     
-    "{i}Her steps hesitate for a moment, but she doesn’t look back. She keeps walking.{/i}"
+    "{i}她脚步微顿，但没回头，继续走了。{/i}"
 
     $ linjie_interest += 1
     
@@ -1164,9 +1249,9 @@ label linjie_response_a:
 
 # 选项B：冷淡
 label linjie_response_b:
-    "{i}You nod silently.{/i}"
+    "{i}你默默点头。{/i}"
     
-    "{i}She doesn‘t seem to notice. She just walks away.{/i}"
+    "{i}她似乎没注意到，径直走远了。{/i}"
     
     hide linjie normal with moveoutleft
     
@@ -1174,19 +1259,19 @@ label linjie_response_b:
 
 # 选项C：职业（触发隐藏记录）
 label linjie_response_c:
-    s "Looking forward to the meeting."
+    s "期待开会。"
     
     show linjie_00_shade with dissolve:
         zoom 0.92
         xpos 790
         ypos 200
-    "{i}She pauses, turning just a little.{/i}"
+    "{i}她停住，微微转身。{/i}"
     
-    '？？' "Oh, really?"
+    '？？' "是吗。"
         
     hide linjie_00_shade with dissolve
     show black with dissolve
-    "{i}She’s gone.{/i}"
+    "{i}她走了。{/i}"
     
     $ linjie_interest += 1
 
@@ -1200,15 +1285,15 @@ label linjie_response_c:
 label task_1_3:
     show meeting_room with fade
     
-    "{i}10:00 AM, Conference Room C.{/i}"
-    "{i}The fluorescent lights hum. Eight people sit around the table. You‘re at least ten years younger than the youngest one.{/i}"
+    "{i}上午10点，C会议室。{/i}"
+    "{i}日光灯嗡嗡响。8个人围坐。你比最年轻的至少小10岁。{/i}"
     
     show chen_01_normal with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 681
         ypos 162
-    chen "Morning, everyone. Quick update — we’ve secured the new IP project. The client is a major studio. This is our chance to turn things around."
+    chen "各位早。快速更新——我们拿下了那个新IP项目。对方是大厂，这可是咱们翻身的机会。"
     hide chen_01_normal
 
     show chen_02_smile_front with dissolve:
@@ -1216,17 +1301,17 @@ label task_1_3:
         xzoom -1.0
         xpos 687
         ypos 162
-    chen "Time to let the newcomer shine. Siu Man, you‘ll take the competitor analysis."
+    chen "给新人一些机会。小曼，你来负责竞品游戏的拆解分析。"
     
     menu:
-        "Great!":
+        "太好了！":
             $ mental = mental + 2 if 'mental' in globals() else 2
             jump task_response_a
             
-        "I’ll do my best.":
+        "我会尽力的。":
             jump task_response_b
             
-        "Which specific parts should I break down?":
+        "具体要拆解哪些部分？":
             jump task_response_c
 
 # 选项A：积极
@@ -1243,14 +1328,14 @@ label task_response_a:
         xpos -30
         ypos 240
 
-    s "Great!"
+    s "太好了！"
 
     show chen_04_frontsmile with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 1342
         ypos 159
-    chen "Good to see you motivated. Lam will get you started."
+    chen "有干劲是好事。林姐会带你入门。"
 
     hide she_05_happy onlayer top
     
@@ -1270,9 +1355,9 @@ label task_response_b:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "I’ll do my best."
+    s "我会尽力的。"
     
-    chen "Good, if there’s any problems, ask Lam. She‘s very experienced."
+    chen "嗯，有问题找林姐。她经验很丰富。"
 
     hide she_03_tinysmile_eye onlayer top
 
@@ -1292,15 +1377,15 @@ label task_response_c:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "Which specific parts should I break down?"
+    s "具体要拆解哪些部分？"
     
     show she_02_sweat_eye onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    "{i}Someone by the table lets out a soft laugh.{/i}"
-    "{i}Not malicious, but… you’re the only one who doesn‘t know.{/i}"
+    "{i}桌边有人轻笑。{/i}"
+    "{i}不是恶意，但……只有你不知道。{/i}"
 
     hide chen_02_smile_front
     show chen_02_smile:
@@ -1308,13 +1393,13 @@ label task_response_c:
         xzoom -1.0
         xpos 1357
         ypos 162
-    chen "Good question. Lam will guide you. Just those few top games on the market — art style, progression systems, monetization design… the interesting stuff."
+    chen "好问题。林姐会带你。就是市面上那几款头部游戏，美术风格、养成线、付费点设计……那些有趣的东西。"
     show chen_03_narroweyes:
         zoom 0.9
         xzoom -1.0
         xpos 1358
         ypos 162
-    chen "Don’t worry. I chose you for a reason. I‘ve seen your graduation project — those character designs had real spark."
+    chen "别担心，我选你是有理由的。我看过你毕设，那些角色设计很有灵气。"
     hide she_03_tinysmile_eye onlayer top
     hide she_02_sweat_eye onlayer top
 
@@ -1325,23 +1410,23 @@ label task_response_c:
 label after_task_assignment:
     scene meeting_room with fade
     
-    "{i}The meeting ends. Everyone packs up and leaves.{/i}"
+    "{i}会议结束，大家都收拾东西离开了。{/i}"
     
     show linjie_04_frown with dissolve:
         zoom 0.92
         xpos 790
         ypos 200
     
-    linjie "He always throws impossible tasks at newbies. Each of those competitor projects took hundreds of people three years. You’re going to break them down alone? You‘ll run yourself into the ground."
+    linjie "他总把不可能的任务扔给新人。那几个竞品项目？每个都是几百人的大团队做了三年。你要一个人拆完？别累死自己。"
     
     menu:
-        "Thanks for the reminder. I’ll be careful.":
+        "谢谢提醒，我会注意的。":
             jump linjie_after_a
             
-        "I can handle it. I’ve analyzed plenty of games back in school.":
+        "我能搞定。在学校我拆过很多游戏。":
             jump linjie_after_b
             
-        "Why is it impossible? Isn‘t there an analytical framework?":
+        "为什么不可能？不是有分析框架吗？":
             jump linjie_after_c
 
 # 会后选项A：感激
@@ -1356,13 +1441,13 @@ label linjie_after_a:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "Thanks for the reminder. I’ll be careful."
+    s "谢谢提醒，我会注意的。"
     
     show linjie_01_normal with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
-    linjie "Mm."
+    linjie "嗯。"
     
     hide she_03_tinysmile_eye onlayer top
     $ task_assigned = True
@@ -1382,14 +1467,14 @@ label linjie_after_b:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "I can handle it. I’ve analyzed plenty of games back in school."
+    s "我能搞定。在学校我拆过很多游戏。"
     
     linjie "…………"
     show linjie_05_interested with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
-    linjie "Alright, I like that. Let me know if you need help."
+    linjie "行，有骨气。需要帮忙找我。"
     
     hide she_03_tinysmile_eye onlayer top
     $ task_assigned = True
@@ -1409,25 +1494,26 @@ label linjie_after_c:
         xzoom -1.0
         xpos -30
         ypos 240
-    s "Why is it impossible? Isn‘t there an analytical framework?"
+    s "为什么不可能？不是有分析框架吗？"
     
     show linjie_01_normal with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
-    linjie "…That’s how it works on paper. Not always in reality. You’ll see."
+    linjie "……框架是框架，执行是执行。你以后会明白的。"
     
     hide she_06_surprise_eye onlayer top   
     $ task_assigned = True
     
     jump chapter1_end
 
+
 # 1.3结束标记
 label chapter1_end:
     scene office_area with fade
     
-    "{i}You’re back at your desk, staring at the shared folder open on your computer screen.{/i}"
-    "{i}Your first task to prove yourself has begun.{/i}"
+    "{i}你回到工位，看着电脑屏幕上打开的共享文件夹。{/i}"
+    "{i}你证明自己的第一个任务，开始了。{/i}"
     
     # 此处可跳转到下一章节
     # jump chapter1.4
@@ -1445,81 +1531,81 @@ default xiaohongshu_contact = False
 label task_1_4:
     scene office_desk with fade
     
-    "{i}Day 5 at work, 10:47 PM.{/i}"
-    "{i}The office feels different at night, quieter, yet the hum of the vending machine grows louder.{/i}"
+    "{i}入职第5天，晚上10:47{/i}"
+    "{i}晚上的办公室不一样。更安静。自动售货机的嗡嗡声更响。{/i}"
     
     call mini_game_analysis
     
     $ fatigue = 50
     
     if fatigue > 60:
-        n "So sleepy…"
+        s "好想睡觉……"
     if fatigue > 40:
-        n "I can’t get this gacha probability curve to add up…"
+        s "这个抽卡概率曲线怎么算都不对……"
     if fatigue > 30:
-        n "And there’s an early‑morning meeting tomorrow…"
+        s "明天还要早会……"
     
-    n "But if I can’t finish it… will Mr. Chen think I‘m not good enough?"
+    n "但做不完的话，陈总会不会觉得我不行？"
     
-    "{i}You rest your head on the desk, lost in thought. Then you hear footsteps. You listen closely — they stop.{/i}"
+    "{i}你趴在桌上想着，耳边传来一阵脚步声。细听时，脚步声停了。{/i}"
     
     show chen_03_narroweyes with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 1350
         ypos 160
-    chen "Still working?I was going through some documents upstairs and noticed your floor’s lights were on."
+    chen "还在？我刚才在楼上审方案，看到你们这层灯还亮着。"
     
-    "{i}He places a cup of coffee on your desk.{/i}"
+    "{i}他把一杯咖啡放你桌上。{/i}"
     
-    chen "Here. Americano from the convenience store downstairs. Not sure if it’s to your taste."
+    chen "给。楼下便利店的美式，不知道你喝不喝得惯。"
     
     menu:
-        "Thank you, Mr. Chan.":
+        "谢谢陈总。":
             jump overtime_response_a
             
-        "You shouldn‘t have.":
+        "不用这么客气。":
             jump overtime_response_b
             
-        "I’m almost done.":
+        "我快做完了。":
             jump overtime_response_c
 
 label overtime_response_a:
-    s "Thank you, Mr. Chan."
-    chen "Don’t mention it."
+    s "谢谢陈总。"
+    chen "别客气。"
     jump chen_conversation
 
 label overtime_response_b:
-    s "You shouldn‘t have."
-    "{i}Chan Wing Yan smiles but says nothing.{/i}"
+    s "不用这么客气。"
+    "{i}陈永仁笑了笑，没说话。{/i}"
     jump chen_conversation
 
 label overtime_response_c:
-    s "I’m almost done."
-    chen "Pretty efficient, aren‘t you?"
+    s "我快做完了。"
+    chen "效率挺高啊。"
     jump chen_conversation
 
 label chen_conversation:
-    "{i}Chan Wing Yan sits on the corner of the desk.{/i}"
-    chen "I‘ve seen your resume. Your qualifications are top-tier. You had options. What made you pick this place?"
+    "{i}陈永仁坐在桌角。{/i}"
+    chen "我看过你简历，你的履历顶尖，你可以去任何地方，为什么选这儿？"
     show chen_00_body:
         zoom 0.9
         xzoom -1.0
         xpos 1357
         ypos 438
     menu:
-        "No one else wanted me.":
+        "别处都不要我。":
             jump chen_honest
             
-        "This position is the best match for my professional expertise.":
+        "最适合我的技能":
             jump chen_safe
             
-        "I‘m looking for faster career growth.":
+        "我想升得快一些。":
             jump chen_ambition
 
 label chen_honest:
-    s "No one else wanted me."
-    $ mental = mental + 2 if 'mental' in globals() else 2
+    s "别处都不要我。"
+    # $ mental = mental + 2 if 'mental' in globals() else 2
     
     hide chen_03_narroweyes
     show chen_06_surprise_head:
@@ -1536,113 +1622,116 @@ label chen_honest:
         ypos 162
     hide chen_00_body
     hide chen_06_surprise_head
-    "{i}Chan Wing Yan‘s expression softens.{/i}"
+    "{i}陈永仁表情柔和下来。{/i}"
 
-    chen "I understand. I began exactly where you are — this same desk, 20 years back. And now…"
-    "{i}He gives a vague upward point.{/i}"
+    chen "我懂。我就是从这个位置开始的——就是这张桌子，20年前。现在你看……"
+    "{i}他模糊地往上指了指。{/i}"
 
     show chen_04_frontsmile with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 1350
         ypos 161
-    chen "Work hard. Stay till the end. That‘s how you win."
-    "{i}He stands up.{/i}"
+    chen "努力工作，留到最后，这就是赢的方法。"
+    "{i}他站起来。{/i}"
     
     hide chen_04_frontsmile with dissolve
-    chen "Don‘t stay too late. Be careful on your way home."
+    chen "别太晚，回家注意安全。"
     chen "…………"
-    chen "Actually, I‘m leaving too… Want a ride?"
+    chen "其实我也要走了……送你一程？"
     jump car_choice
 
 label chen_safe:
-    s "This position is the best match for my professional expertise."
+    s "这里的岗位和我的专业技能最匹配。"
     show chen_02_smile:
         zoom 0.9
         xzoom -1.0
         xpos 1350
         ypos 161 
     hide chen_00_body
-    chen "Yeah, you really do. Your analytical skills are impressive."
-    "{i}He stands up.{/i}"
+    chen "嗯，确实。你的拆解能力很强。"
+    "{i}他站起来。{/i}"
     hide chen_02_smile
-    chen "Don‘t stay too late. There’s an early meeting tomorrow."
-    chen "Actually, I‘m leaving too… Want a ride?"
+    chen "别太晚，明天还有早会。"
+    chen "……其实我也要走了，送你一程？"
     jump car_choice
 
 label chen_ambition:
-    s "I‘m looking for faster career growth."
+    s "我想升得快一些。"
     show chen_02_smile with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 1350
         ypos 161
     hide chen_00_body
-    chen "Ambitious. I like that."
-    "{i}He stands up.{/i}"
+    chen "有野心。我喜欢。"
+    "{i}他站起来。{/i}"
     hide chen_02_smile
-    chen "Don’t work too late. Actually, I‘m leaving too… Want a ride?"
+    chen "别加班太晚。其实我也要走了……送你一程？"
     jump car_choice
 
 label car_choice:
     menu:
-        "Alright, thank you.":
+        "好，谢谢。":
             $ car_ride = True
             jump car_scene
             
-        "No thanks, I’ll take the subway.":
+        "不用，我坐地铁。":
             jump reject_car
 
 label car_scene:
-    s "Alright, thank you."
-    chen "Let's go. The car's downstairs."
+    s "好，谢谢。"
+    chen "走吧，车在楼下。"
     scene car_inside with fade
-    "{i}The car is clean, with a faint scent of leather.{/i}"
-    s "You can just drop me at the the convenience store. I need to grab some breakfast anyway. Sorry to bother you."
-    chen "No problem"
-    "{i}Chan Wing Yan puts on an old song. Neither of you speaks.{/i}"
-    "{i}He stops the car in front of the convenience store.{/i}"
-    chen "See you tomorrow. Get some rest."
+    "{i}车内很干净，有淡淡的皮革味。{/i}"
+    s "您把我放在711就好，我刚好买个早餐，麻烦您了。"
+    chen "没问题。"
+    "{i}陈永仁放了一首老歌。你们都没说话。{/i}"
+    "{i}他在便利店前停车。{/i}"
+    chen "明天见，好好休息。"
     jump task_1_4_end2
 
 label reject_car:
-    s "No thanks, I’ll take the subway."
-    chen "Suit yourself. See you tomorrow."
+    s "不用，我坐地铁。"
+    chen "随你。明天见。"
     hide chen_02_smile_front with moveoutright
     hide chen_03_narroweyes with moveoutright
-    "{i}Chan Wing Yan leaves.{/i}"
-    "{i}You watch him leave, and something in your chest unclenches. You don't know why.{/i}"
+    "{i}陈永仁走了。{/i}"
+    "{i}你看着他离开，胸口有什么东西松开了，不知道为什么。{/i}"
     jump task_1_4_end1
 
 label task_1_4_end1:
     scene office_desk with fade
-    "{i}The late office flickers with the neon of code.{/i}"
-    "{i}Do electronic bugs dream of bionic fireflies?\nIn the floor-to-ceiling window you saw on your first day, stars ignite, and night falls.{/i}"
+    "{i}深夜的办公室闪烁的是代码的霓虹。{/i}"
+    "{i}电子bug能梦见仿生萤火虫吗？{/i}"
+    extend "{i}在刚来那天所看到的落地窗里，星星亮起，夜幕降临。{/i}"
     jump task_1_5
 
 label task_1_4_end2:
     scene home with fade
-    "{i}You get home, tidy up a bit, and lie down. Soon you're asleep.{/i}"
-    "{i}In dreams, the late office flickers with code's cold neon.{/i}"
-    "{i}Do electronic bugs dream of bionic fireflies?\nIn the floor-to-ceiling window you saw on your first day, stars ignite, and night falls.{/i}"
+    "{i}回到家，你简单收拾后便躺下，很快就睡着了。{/i}"
+    "{i}梦里，深夜的办公室闪烁的是代码的霓虹。{/i}"
+    "{i}电子bug能梦见仿生萤火虫吗？{/i}"
+    extend "{i}在刚来那天所看到的落地窗里，星星亮起，夜幕降临。{/i}"
     jump task_1_5
 
 label mini_game_analysis:
-    "{i}You need to finish competitive analysis for these games.{/i}"
+    "{i}今晚需要完成这几款游戏的竞品拆解。{/i}"
     #设置游戏ABC的图片 --> 提示玩家拆解方向
     
     show game_wzry:
         xpos 544
         ypos 123
+    
+    "这款游戏的核心付费点是？"
     menu:
-        "What is the core monetization driver of this game?"
-        "VIP Privileges":
+        "VIP特权":
             $ temp_score = 1
             hide game_wzry
-        "Gacha Pity Mechanic":
+        "抽卡保底":
             $ temp_score = 0
             hide game_wzry
-        "Paid Skins":
+        "付费皮肤":
             $ temp_score = 1
             hide game_wzry
     
@@ -1658,47 +1747,48 @@ label mini_game_analysis:
     show game_elden_ring:
         xpos 544
         ypos 123
+    
+    "这款游戏的美术风格属于？"
     menu:
-        "What art style does this game adopt?"
-        "Realistic 3D":
+        "写实3D":
             $ temp_score += 1
             hide game_elden_ring
-        "Anime Cel‑shaded":
+        "二次元赛璐璐":
             $ temp_score += 0
             hide game_elden_ring
-        "Retro Pixel Art":
+        "像素复古":
             $ temp_score += 0
             hide game_elden_ring
     
     show game_srcx:
         xpos 544
         ypos 123
+    
+    "这款游戏属于以下哪种游戏类型？"
     menu:
-        "Which genre does this game belong to?"
-        "Single‑player Role‑Playing":
+        "单人角色扮演":
             $ temp_score += 0
             hide game_srcx
-        "Two‑Player Co‑op Puzzle":
+        "双人合作解谜":
             $ temp_score += 1
             hide game_srcx
-        "Multiplayer Competitive Shooter":
+        "多人竞技射击":
             $ temp_score += 0
             hide game_srcx
 
     if temp_score >= 3:
-        "{i}Analysis complete. Data saved.{/i}"
+        $ fatigue -= 20
+        "{i}拆解完成。数据已保存。{/i}"
     else:
-        "{i}Not all the data looks right, but let‘s leave it for the moment.{/i}"
-        $ fatigue += 20
+        "{i}部分数据存疑，但先这样吧。{/i}"
     
     return
 
 # ========== 任务1.5：家庭税 ==========
-define mom = Character("Mom")
-
+define mom = Character("妈妈")
 label task_1_5:
     scene home with fade
-    "{i}Week 2, Sunday afternoon.{/i}"
+    "{i}第2周，周日下午。{/i}"
     window hide
     
     #消息音效
@@ -1710,11 +1800,11 @@ label task_1_5:
     hide mom_phonecall with fade
     jump salary_qte
 
-default quarrel_time_limit = 3.0    # 总时间（秒）
-default quarrel_time_left = 3.0     # 剩余时间
+default quarrel_time_limit = 3.5    # 总时间（秒）
+default quarrel_time_left = 3.5     # 剩余时间
 default quarrel_answered = False    # 是否已回答
 
-screen qte_choice_timer(question, time_limit=3.0):
+screen qte_choice_timer(question, time_limit=3.5):
     modal True
     
     default start_time = renpy.get_game_runtime()
@@ -1744,7 +1834,7 @@ screen qte_choice_timer(question, time_limit=3.0):
         yalign 0.6
         spacing 30
         
-        textbutton "In two weeks.":
+        textbutton "两周后。":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1753,7 +1843,7 @@ screen qte_choice_timer(question, time_limit=3.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer"), Jump("salary_truth")]
         
-        textbutton "Soon.": 
+        textbutton "快了。": 
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1762,7 +1852,7 @@ screen qte_choice_timer(question, time_limit=3.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer"), Jump("salary_vague")]
         
-        textbutton "Why do you ask?":
+        textbutton "问这干嘛？":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1798,12 +1888,12 @@ label salary_qte:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "Your first month's salary. When will it be paid?"
+    mom "第一个月的工资。什么时候发？"
     
     # 调用 QTE 选择题
     call screen qte_choice_timer(
         question="",
-        time_limit=3.0
+        time_limit=3.5
     )
     
     # 这里不会执行，因为 screen 直接 jump 了
@@ -1811,41 +1901,41 @@ label salary_qte:
 
 # 各选项结果
 label salary_truth:
-    s "In two weeks."
+    s "两周后。"
     show mother_03_unhappy:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "Good. Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. You’ll pay for it, right? You have a big job now."
+    mom "好。你弟弟要换新校服，还有学校旅行要交钱，1200块钱。这钱就你出吧？你现在可是有大工作的人了。"
     jump family_money_choice
 
 label salary_vague:
-    s "Soon."
+    s "快了。"
     show mother_03_unhappy:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "How soon exactly? Your brother needs a new school uniform and to pay for his school trip—1,200 yuan. Can you pay for that?"
+    mom "到底是多快？你弟弟要换新校服，还有学校旅行要交钱，1200块钱。你能出吧？"
     jump family_money_choice
 
 label salary_defensive:
-    s "Why are you asking?"
+    s "问这干嘛？"
     show mother_01_bigmouth:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "What, you think you’re all grown up now? Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. Money is tight at home. What’s wrong with helping out?"
+    mom "怎么，翅膀硬了？你弟弟要换新校服，还有学校旅行要交钱，1200块钱。家里手头紧，你帮衬一下怎么了？"
     jump family_money_choice
 
 # 超时未选择
 label qte_timeout:
-    s "..."
-    mom "Why aren’t you saying anything?"
-    mom "Your brother needs a new school uniform, and there’s a school trip fee—1,200 yuan. You’ll pay for it, right? You have a big job now."
+    s "…………"
+    mom "怎么不说话？"
+    mom "你弟弟要换新校服，还有学校旅行要交钱，1200块钱。这钱就你出吧？你现在可是有大工作的人了。"
     jump family_money_choice
 
 # QTE第二题
-screen qte_choice_timer_2(question, time_limit=5.0):
+screen qte_choice_timer_2(question, time_limit=6.0):
     modal True
     
     default start_time = renpy.get_game_runtime()
@@ -1875,7 +1965,7 @@ screen qte_choice_timer_2(question, time_limit=5.0):
         yalign 0.6
         spacing 30
         
-        textbutton "Fine.":
+        textbutton"好。":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1884,7 +1974,7 @@ screen qte_choice_timer_2(question, time_limit=5.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer_2"), Jump("give_money")]
         
-        textbutton "That’s half my food budget.": 
+        textbutton "那是我一半伙食费。": 
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1893,7 +1983,7 @@ screen qte_choice_timer_2(question, time_limit=5.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer_2"), Jump("angry_game")]
         
-        textbutton "(Stay silent)":
+        textbutton "（沉默）":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -1929,12 +2019,12 @@ label family_money_choice:
     # 前面回答有mom不同的问题了：mom "怎么，翅膀硬了？你弟弟要换新校服，还有学校旅行要交钱，1200块钱。家里手头紧，你帮衬一下怎么了？"
     call screen qte_choice_timer_2(
         question="",
-        time_limit=5.0
+        time_limit=6.0
     )
     return
 
 label give_money:
-    s "Fine."
+    s "好。"
     $ money -= 1200
     show mother_04_smile with dissolve:
         zoom 0.83
@@ -1942,33 +2032,33 @@ label give_money:
         ypos 260
     hide mother_02_smallmouth
     hide mother_03_unhappy
-    mom "Good girl. I knew you were sensible. Your brother will thank you."
+    mom "乖。就知道你懂事。弟弟会谢谢你的。"
     hide mother_04_smile with dissolve
-    "{i}-1,200 yuan. Current balance: [money] yuan{/i}"
+    "{i}-1200元。当前余额：[money]元{/i}"
     jump family_tax_end
 
 label angry_game:
-    s "That’s half my food budget!"
+    s "那是我一半吃饭钱！"
     $ mother_anger += 2
     jump argue_continue
 
 label stay_silent:
-    s "..."
+    s "……"
     show mother_03_unhappy:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "What is that silence supposed to mean?"
+    mom "你不说话是什么意思？"
     show mother_02_smallmouth:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "Have you forgotten how I scrimped and saved to raise you?"
+    mom "妈妈怎么省吃俭用把你带大的，你忘了吗？"
     $ mother_anger += 1
     jump stay_silent_continue #考虑到有保守派会沉默避免冲突但不是真的不抗争，设置沉默意图的二次验证
 
 # QTE第三题
-screen qte_choice_timer_3(question, time_limit=3.0):
+screen qte_choice_timer_3(question, time_limit=4.0):
     modal True
     
     default start_time = renpy.get_game_runtime()
@@ -1998,7 +2088,7 @@ screen qte_choice_timer_3(question, time_limit=3.0):
         yalign 0.6
         spacing 30
         
-        textbutton "(Keep silent)":
+        textbutton"(继续沉默)":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -2007,7 +2097,7 @@ screen qte_choice_timer_3(question, time_limit=3.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer_3"), Jump("silent_guilt")]
         
-        textbutton "(Question her back)": 
+        textbutton "(反问)": 
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -2041,13 +2131,13 @@ screen qte_choice_timer_3(question, time_limit=3.0):
 label stay_silent_continue:
     call screen qte_choice_timer_3(
         question="",
-        time_limit=3.0
+        time_limit=4.0
     )
     return
 
 label silent_guilt:
-    s "{i}A wave of guilt rises in your chest.{/i}"
-    s "I’ll give you the money. Please stop saying things like that."
+    s "{i}心头涌现一阵内疚。{/i}"
+    s "这钱我会给，别再这么说了。"
     $ money -= 1200
     show mother_04_smile with dissolve:
         zoom 0.83
@@ -2055,19 +2145,19 @@ label silent_guilt:
         ypos 260
     hide mother_02_smallmouth
     hide mother_03_unhappy
-    mom "Good girl. I knew you were sensible. Your brother will thank you."
+    mom "乖。就知道你懂事。弟弟会谢谢你的。"
     hide mother_04_smile with dissolve
-    "{i}-1,200 yuan. Current balance: [money] yuan{/i}"
+    "{i}-1200元。当前余额：[money]元{/i}"
     # $ mental = mental - 1 if 'mental' in globals() else -1
     jump family_tax_end
 
 label silent_argue:
-    s "So now you’re forcing me to scrimp and save to support my younger brother?"
+    s "现在倒是逼着我省吃俭用养弟弟了？"
     $ mother_anger += 1
     jump argue_continue
 
 # QTE第四题
-screen qte_choice_timer_4(question, time_limit=5.0):
+screen qte_choice_timer_4(question, time_limit=6.0):
     modal True
     
     default start_time = renpy.get_game_runtime()
@@ -2097,7 +2187,7 @@ screen qte_choice_timer_4(question, time_limit=5.0):
         yalign 0.6
         spacing 30
         
-        textbutton "I have my own life too...":
+        textbutton"我也有我自己的生活……":
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -2106,7 +2196,7 @@ screen qte_choice_timer_4(question, time_limit=5.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer_4"), Jump("angry_game_own_life")]
         
-        textbutton "Why am I responsible for his shoes?": 
+        textbutton "他的鞋凭什么我负责？": 
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -2115,7 +2205,7 @@ screen qte_choice_timer_4(question, time_limit=5.0):
             text_hover_color "#ffffff"
             action [Hide("qte_choice_timer_4"), Jump("angry_game_unresponsible")]
 
-        textbutton "(Stay silent)": 
+        textbutton "(沉默)": 
             xalign 0.5
             background Frame("gui/textbox.png")
             hover_background Frame("blue_textbox")
@@ -2151,17 +2241,17 @@ label argue_continue:
         zoom 0.83
         xpos 1360
         ypos 260
-    mom "Did we raise you all these years for nothing? He’s your own brother. If he’s the only one in class who can’t afford new shoes, people will look down on him!"
-    mom "Besides, if you help your brother now, he’ll help you in the future. How is that a loss?"
+    mom "我们这么多年白养你的？他是你亲生弟弟，到时候班上就他一个穿不起鞋，得遭人看低的！"
+    mom "再说了，现在你帮弟弟，将来弟弟帮你，哪里亏了？"
     show mother_03_unhappy with dissolve:
         zoom 0.83
         xpos 1360
         ypos 260
     hide mother_05_soangry with dissolve
-    mom "We’re all family, aren’t we? When your father and I paid for your education, we didn’t keep score like this."
+    mom "不都是家里人嘛，爸爸妈妈当时供你读书也没计较那么多呀。"
     call screen qte_choice_timer_4(
         question="",
-        time_limit=5.0
+        time_limit=6.0
     )
     return
     jump angry_game_calculation
@@ -2180,28 +2270,28 @@ label angry_game_calculation:
             zoom 0.83
             xpos 1360
             ypos 260
-        mom "How did I raise such an ungrateful child!"
+        mom "怎么养了你这个白眼狼！"
         hide mother_01_bigmouth
         hide mother_02_smallmouth
         hide mother_03_unhappy
         hide mother_05_soangry
         hide mother_06_sosoangry with dissolve
-        "{i}Mom hangs up in a fury.{/i}"
-        "{i}A few days later, she sends you a message as if nothing happened. But you remember.{/i}"
+        "{i}妈妈怒气冲冲地挂了电话。{/i}"
+        "{i}几天后，她发来消息，像什么都没发生。但你记得。{/i}"
         jump family_tax_end
     else:
-        mom "Forget it. You can’t squeeze out a single word after half an hour. We’ll talk when you get paid."
+        mom "算了，半小时憋不出一个响。等你发工资再说吧。"
         hide mother_01_bigmouth
         hide mother_02_smallmouth
         hide mother_03_unhappy with dissolve
-        "{i}You barely manage to hold things together and keep the money, but your chest feels hollow.{/i}"
+        "{i}你勉强稳住了局面，保住了钱，但心里空落落的。{/i}"
         jump family_tax_end
 
 label family_tax_end:
-    "{i}The phone buzzes a moment later.{/i}"
-    'PurpleNote: Your Follower'"Girl, I saw your post about your family asking for money. Same boat. You’re not alone."
+    "{i}手机随后震动。{/i}"
+    '小紫书 你的粉丝'"姐妹，看到你发家里要钱的事了。同款遭遇，你不是一个人。"
     $ xiaohongshu_contact = True
-    "{i}New contact: Xiaozishu Sis{/i}"
+    "{i}新联系人：小紫书姐妹{/i}"
     jump task_1_6
 
 # ========== 任务1.6：不经意的触碰 ==========
@@ -2211,56 +2301,57 @@ transform shock:
     linear 0.2 xoffset 0 yoffset 0
 label task_1_6:
     scene tea_room with fade
-    "{i}Week 3. A workday.{/i}"
+    "{i}第3周，工作日。{/i}"
     show she_05_happy_nobag onlayer top:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    s "Coffee, yay~ 🎵~"
+    s "咖啡，嘿嘿🎵~"
     hide she_05_happy_nobag onlayer top
     show she_06_surprise_eye_nobag onlayer top at shock:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    "{i}Someone reaches over from above you.{/i}"
+    "{i}有人从你上方伸过手来。{/i}"
     
     show chen_06_surprise with dissolve:
         zoom 0.9
         xzoom -1
         xpos 1358
         ypos 162
-    chen "Sorry, just grabbing a sugar cube…"
+    chen "抱歉，我拿一下方糖……"
     show chen_04_frontsmile:
         zoom 0.9
         xzoom -1
         xpos 1350
         ypos 161
-    chen "Oh, you‘re making coffee too?"
-    "{i}He stands very close. His arm brushes against you as he reaches for the sugar.{/i}"
+    chen "哦，你也在泡咖啡？"
+    "{i}他站得很近，拿糖的时候手臂擦过你。{/i}"
     
     menu:
-        "Watch his expression":
-            "{i}He’s smiling.{/i}"
+        "观察他的表情":
+            "{i}他在笑。{/i}"
             jump touch_reaction
             
-        "Look at his hand":
-            "{i}His hand rests on the counter, just inches from yours.{/i}"
+        "观察他的手":
+            "{i}他的手放在台面上，离你的手只有几寸。{/i}"
             jump touch_reaction
             
-        "Notice your own feelings":
+        "注意自己的感受":
             jump touch_reaction
 
 label touch_reaction:
     menu:
-        "Nothing, it‘s just a bit crowded.":
+        "没什么，就是有点挤。":
+            $ escape += 1
             jump touch_ignore
             
-        "Why is he standing so close?":
+        "他为什么站这么近？":
             jump touch_alert
             
-        "Move away slightly":
+        "稍微挪开一点":
             jump touch_move
 
 label touch_ignore:
@@ -2270,27 +2361,27 @@ label touch_ignore:
         xpos -30
         ypos 240
     hide she_06_surprise_eye_nobag onlayer top
-    s "Yeah, a cup of coffee in the morning helps me wake up."
+    s "是的，早上喝一杯咖啡比较精神"
     hide chen_06_surprise
-    chen "You’ve been doing great work. And by the way, your breakdown analysis was excellent. I knew I was right about you."
+    chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
     jump task_1_6_a
 
 label touch_alert:
     s "……"
-    s "Haha, yeah."
+    s "哈哈，是。"
     show she_02_sweat_eye_nobag onlayer top:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    s "{i}Why is he standing so close?{/i}"
+    s "{i}他为什么站这么近？{/i}"
     hide chen_06_surprise
     show chen_02_smile_front with dissolve:
         zoom 0.9
         xzoom -1
         xpos 1358
         ypos 162
-    chen "You’ve been doing great work. And by the way, your breakdown analysis was excellent. I knew I was right about you."
+    chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
     hide chen_04_frontsmile
     jump task_1_6_bc
 
@@ -2303,28 +2394,28 @@ label touch_move:
         xpos -30
         ypos 240
         linear 0.6 xpos -50 ypos 240
-    s "Yeah, a cup of coffee helps me focus at work."
+    s "是，喝一杯咖啡工作起来比较精神"
     show chen_04_glance:
         zoom 0.9
         xzoom -1
         xpos 1350
         ypos 161
-    "{i}Chan Wing Yan doesn‘t react noticeably. But the moment you move, his eyes flick toward you.{/i}"
+    "{i}陈永仁没明显反应。但你一动，他眼神扫了你一下。{/i}"
     hide chen_04_glance
-    chen "You’ve been doing great work. And by the way, your breakdown analysis was excellent. I knew I was right about you."
+    chen "你工作完成得很好。顺便说一句，拆解分析很棒。我就知道我没看错你。"
     jump task_1_6_bc
 
 label task_1_6_a:
-    chen "I’ll head off now. Keep up the good work."
+    chen "我先走了，工作加油。"
     hide chen_04_frontsmile with moveoutright
     hide chen_02_smile_front with moveoutright
     jump task_1_6_end
 
 label task_1_6_bc:
-    chen "I’ll head off now. Keep up the good work."
+    chen "我先走了，工作加油。"
     hide chen_04_frontsmile with moveoutright
     hide chen_02_smile_front with moveoutright
-    "{i}He leaves. The steam from the coffee cup rises slowly.{/i}"
+    "{i}他走了，咖啡杯的热气缓缓蒸腾着。{/i}"
     jump task_1_6_end
 
 label task_1_6_end:
@@ -2346,18 +2437,18 @@ label task_1_6_end:
         zoom 1.4
         align (0.5, 0.45)
         pause 1.0
-    linjie "I saw you and Chan in the break room. Be careful."
+    linjie "看到你和陈永仁在茶水间了，注意点。"
     
     menu:
-        "What do you mean?":
+        "什么意思？":
             show linjie_wx_a1:
                 zoom 1.4
                 align (0.5, 0.45)
-            s "Be careful? For what?"
+            s "注意什么？"
             show linjie_wx_a2:
                 zoom 1.4
                 align (0.5, 0.45)
-            linjie "Nothing. Just grab your water and come back. I sent you a new brief."
+            linjie "没什么。接完水快回来，有个新的brief发你了。"
             show linjie_wx_a3:
                 zoom 1.4
                 align (0.5, 0.45)
@@ -2367,38 +2458,38 @@ label task_1_6_end:
             pause 1.0
             jump chapter_2
             
-        "Nothing happened.":
+        "没什么事。":
             show linjie_wx_b1:
                 zoom 1.4
                 align (0.5, 0.45)
-            s "Nothing happened."
+            s "没什么事啊。"
             show linjie_wx_b2:
                 zoom 1.4
                 align (0.5, 0.45)
-            linjie "…Suit yourself."
+            linjie "……随你。"
             # hide she_01_normal_eye_o_nobag onlayer top
             scene black with dissolve
             pause 1.0
             jump chapter_2
             
-        "Message deleted.":
+        "删除消息":
             show linjie_wx_c1:
                 zoom 1.4
                 align (0.5, 0.45)
-            "{i}Message deleted.{/i}"
+            "{i}消息已删除。{/i}"
             $ escape += 1
             # hide she_01_normal_eye_o_nobag onlayer top
             scene black with dissolve
             pause 1.0
             jump chapter_2
 
-        "Think it over":
-            s "Lam doesn‘t usually say things like this. Why…"
-            "{i}You’re mulling over the intent behind this message, carefully typing out a reply, when another message arrives.{/i}"
+        "思索":
+            s "林姐平常不说这些的，怎么……"
+            "{i}你正揣摩这条消息的的意图，斟酌着打下回复，又有新消息发来了。{/i}"
             show linjie_wx_d1:
                 zoom 1.4
                 align (0.5, 0.45)
-            linjie "Come back soon after you grab your water. I sent you a new brief."
+            linjie "接完水快回来，有个新的brief发你了。"
             show linjie_wx_d2:
                 zoom 1.4
                 align (0.5, 0.45)
@@ -2436,20 +2527,20 @@ screen payslip_screen():
             spacing 12
 
             # 标题
-            text"Payslip" size 28
+            text"工资条" size 28
             
             null height 20
             
             # 基本信息
             hbox:
-                text"Name:"
-                text"SHEH Siu Man"
+                text"姓名："
+                text"佘小曼"
             hbox:
-                text"Department:"
-                text"Design Dept."
+                text"部门："
+                text"设计部"
             hbox:
-                text"Date:"
-                text"March 2028"
+                text"日期："
+                text"2028年3月"
             
             null height 20
             
@@ -2460,7 +2551,7 @@ screen payslip_screen():
                 # 基本工资
                 hbox:
                     xfill True
-                    text"Basic Salary"
+                    text"基本工资"
                     text"16,500" xalign 1.0
                 
                 # 绩效工资（悬停效果）
@@ -2471,7 +2562,7 @@ screen payslip_screen():
                     
                     hbox:
                         xfill True
-                        text"Performance Adjustment"xalign -0.07
+                        text"绩效调整"xalign -0.07
                         text"0" xalign 1.05
                     
                     # 悬停提示
@@ -2483,12 +2574,12 @@ screen payslip_screen():
                 # 其他项目
                 hbox:
                     xfill True
-                    text"Transportation Allowance"
+                    text"交通补贴"
                     text"500" xalign 1.0
                 
                 hbox:
                     xfill True
-                    text"Meal Allowance"
+                    text"餐补"
                     text"500" xalign 1.0
             
             null height 10
@@ -2506,17 +2597,17 @@ screen payslip_screen():
                 
                 hbox:
                     xfill True
-                    text"Net Pay" xalign -0.07
+                    text"实发工资" xalign -0.07
                     text"17,500" xalign 1.05
                 
                 if not salary_checked:
-                    text"(Start calculating in your head)" size 12 xalign 1.03 yalign 0.3
+                    text"（开始心算对比）" size 12 xalign 1.03 yalign 0.3
             
 
             null height 30
             
             # 关闭按钮
-            textbutton "Close":
+            textbutton "关闭":
                 xalign 0.5
                 action If(salary_checked, 
                     [Hide("payslip_screen"), Jump("call_lin_sister")],
@@ -2552,7 +2643,7 @@ screen salary_calc():
             xsize 600
             ysize 200
 
-            text"The correct amount should be:" size 24
+            text"正常应该是：" size 24
             null height 30
             text"16,500 + 2,000 + 500 + 500 = 19,500" size 24 xalign 0.5
             text"↑" size 25 xalign 0.395
@@ -2560,7 +2651,7 @@ screen salary_calc():
             # 分隔线
             add Solid("#cccccc") xsize 600 ysize 1 xalign 0.5
             null height 30
-            text"My performance adjustment pay was withheld, with no explanation attached." size 24 xalign 0.5
+            text"我的绩效调整被扣发了，没有附带任何原因说明。" size 24 xalign 0.5
             null height 50
             textbutton "×":
                 xalign 0.5
@@ -2574,7 +2665,7 @@ screen salary_calc():
 
 label chapter_2:
     image chapter2_title = ParameterizedText(xalign=0.5, yalign=0.45, size=108)
-    show chapter2_title "Chapter 2 Cracks"
+    show chapter2_title "Chapter 2 裂缝"
     with fade
     pause 2
     hide chapter2_title
@@ -2651,14 +2742,14 @@ screen clue_unequal_wage:
         vbox:
             xalign 0.5
             yalign 0.5
-            text "【Clue】 Yin‑Yang Wage Divide" size 28
+            text "【线索】阴阳工资" size 28
             null height 30
             add Solid("#cccccc") xsize 600 ysize 1
             null height 30
-            text "Sky and earth, shade and glow; her and him, split below." size 24 xalign 0.5
+            text "天与地，阴与阳；她与他，阴与阳" size 24 xalign 0.5
             null height 40
             
-            textbutton "Close":
+            textbutton "收起":
                 text_size 24
                 xalign 0.5    
                 # 关键：使用Return()结束call screen
@@ -2667,28 +2758,28 @@ screen clue_unequal_wage:
 label ask_xiaojin_directly:
     scene office with fade
     
-    "{i}The next day during lunch break, you find Siu Gam.{/i}"
+    "{i}第二天午休，你找到了小金。{/i}"
     
     show she_01_normal_eye_o_nobag onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    s "Siu Gam, can I ask you something? What was your starting salary when you first joined the company?"
+    s "小金，能问你个事吗？你当时刚入职的时候起薪是多少？"
     
     show jin_03_awkward with dissolve:
         zoom 0.97
         xpos 1360
         ypos 150
-    xiaojin "Uh… well…"
-    xiaojin "22.5k… The company forbids us from discussing salaries with each other. Don’t tell anyone, okay?"
+    xiaojin "呃……这个……"
+    xiaojin "22.5k……公司不让互相问工资来着，你别跟别人说啊。"
     show jin_04_question:
         zoom 0.97
         xpos 1360
         ypos 150
-    xiaojin "Why are you bringing this up all of a sudden?"
+    xiaojin "出什么事了，突然说起这个？"
     
-    s "I get 19.5k."
+    s "我19.5k。"
     
     show jin_05_shocked:
         zoom 0.97
@@ -2701,7 +2792,7 @@ label ask_xiaojin_directly:
     play sound "clue.ogg"
     call screen clue_unequal_wage("线索") with dissolve
     
-    "{i}【Clue】 Yin‑Yang Wage Divide{/i}" #加音效：噔噔噔↑
+    "{i}获得了线索：阴阳工资{/i}" #加音效：噔噔噔↑
 
     $ salary_evidence = True
     $ investigation_unlocked = True
@@ -2749,38 +2840,39 @@ label investigate_other_ways:
     jump fitness_video_event
 
 # 健身视频事件
-
 label fitness_video_event:
     scene home_ceiling with fade
     
-    "{i}Week 6, Saturday night.{/i}"
-    "{i}You lie in bed scrolling through your phone, but your eyelids are already getting heavy.{/i}"
+    "{i}第6周 周六，晚{/i}"
+    "{i}你躺在床上刷手机，但眼皮已经开始打架。{/i}"
     
     show lockscreen with moveinbottom:
         zoom 1.5
         xalign 0.5
-        yalign 0.35 #锁屏时间
+        yalign 0.35
+    s "23:55，竟然已经这么晚了。"
 
-    s "23:55. I can't believe it's already this late."
+    #微信消息提示音音效，接手机界面
 
-    s "A message from Chan Wing Yan...?"
+    s "陈总的消息……?"
 
     hide lockscreen
     show pyq with dissolve:
         zoom 1.5
         xalign 0.5
         yalign 0.35
-
-    "{i}Chan Wing Yan: Just finished working out. You can try the techniques I posted on Moments. They’re great for relieving stress.{/i}"
-
+    "{i}【陈总】刚健完身，我发在朋友圈的技巧你可以试试，用来解压很不错。{/i}"
+    # show screen phone_notification("陈永仁", "【视频】刚健完身。你可以试试这个，用来解压很好！")
+    # with dissolve
+        
     menu:
-        "Watch the video":
+        "看视频":
             jump watch_fitness_video
         
-        "Ignore the video":
+        "忽略视频":
             jump ignore_video
         
-        "Like the video":
+        "点赞视频":
             jump reply_thumb_up
 
 
@@ -2841,16 +2933,16 @@ label watch_fitness_video:
     # show screen video_player("chen_fitness")
     # with dissolve
 
-    "Thirty seconds. Chan is at the gym, the metallic sheen of the equipment glinting off his sweat."
-    "He performs precise movements, his muscles rising and falling with each breath."
-    "On the final second, he suddenly stares straight into the camera."
+    n "30秒。陈永仁在健身房，器械的金属光泽映着他的汗水。"
+    n "他做着标准的动作，肌肉随着呼吸起伏。"
+    n "最后一秒，他突然直视镜头。"
     
     hide gym_02
     hide gym_03
     show gym_01:
         linear 0.4 zoom 1.55 xpos 2180 ypos 1430
         linear 0.1 zoom 1.5 xpos 2130 ypos 1400
-    chen "Can you keep up, Siu Man?"
+    chen "你能跟上吗，小曼？"
     
     scene black with fade
     "视频结束，黑屏。你的脸也黑了。"
@@ -2904,7 +2996,7 @@ screen video_player(video_id):
 
 # 选项B：忽略
 label ignore_video:
-    scene bg bedroom_night
+    scene home_ceiling
     with dissolve
     
     "{i}你锁屏，把手机倒扣在床头柜上。{/i}"
@@ -2918,7 +3010,7 @@ label ignore_video:
 
 # 选项C：回赞
 label reply_thumb_up:
-    scene bg bedroom_night
+    scene home_ceiling
     with dissolve
     
     "{i}你没看视频，敷衍了一个赞。{/i}"
@@ -3065,13 +3157,13 @@ screen drink_menu:
         xalign 0.5
         yalign 0.6
         
-        textbutton "beer": 
+        textbutton "啤酒": 
             action [Hide("drink_menu"), Jump("beer")]
-        textbutton "wine": 
+        textbutton "红酒": 
             action [Hide("drink_menu"), Jump("wine")]
-        textbutton "cocktail": 
+        textbutton "鸡尾酒": 
             action [Hide("drink_menu"), Jump("cocktail")]
-        textbutton "soda": 
+        textbutton "软饮": 
             action [Hide("drink_menu"), Jump("soda")]
 
 label bar_menu_choice:
@@ -4146,27 +4238,33 @@ screen cyro_leave_office:
         ypadding 30
         
         vbox:
-                       
-            text "Leave the room now?":
-                size 35 color "#ffffff" xalign 0.5
-            null height 30
             
+            text "现在离开房间吗？":
+                size 35 color "#ffffff" xalign 0.5
+            null height 20
             add Solid("#FFFFFF"):
-                xsize 800
+                xsize 750
                 ysize 1
                 xalign 0.5
                 alpha 0.3  # 30%不透明度
-
-            textbutton "End Search":
-                xsize 200
-                ysize 50
-                align(0.55, 0.5)
-                action [Hide("cyro_leave_office"), Jump("cyro_search_leave_safe")]
-            textbutton "Continue Search":
-                xsize 200
-                ysize 50
-                align(0.55, 0.7)
-                action [Hide("cyro_leave_office")]
+            null height 20    
+            
+            grid 2 1:
+                xalign 0.5
+                spacing 180
+                textbutton "离开房间":
+                    text_size 28
+                    text_align (0.5, 0.5)
+                    xsize 200
+                    ysize 50
+                    action [Hide("cyro_leave_office"), Jump("cyro_search_leave_safe")]
+                
+                textbutton "继续搜查":
+                    text_size 28
+                    text_align (0.5, 0.5)
+                    xsize 200
+                    ysize 50
+                    action [Hide("cyro_leave_office")]
 # 办公室搜证地图
 screen cyro_office_map():
 
@@ -4298,23 +4396,23 @@ label cyro_office_drawer:
         $ found_evidence += 1
         show clue_01_files with fade
         
-        "You squat down and pull open the bottom drawer of the desk."
+        "你蹲下身，拉开办公桌最下层的抽屉。"
 
-        "It is heavier than you expected."
+        "抽屉比想象中更沉。"
 
-        "At the back lies a stack of old employee files."
+        "最里面压着一叠旧员工档案。"
 
-        "You skim through them quickly."
+        "你快速翻看。"
 
-        "They contain records of several female staff members."
+        "里面有几个女性员工的资料。"
 
-        "Oddly enough, all of them resigned one after another within two years."
+        "奇怪的是，她们都在两年内陆续离职。"
 
-        "Their reasons for leaving are briefly noted:"
+        "离职原因写得很简单。"
 
-        "Personal reason."
+        "“个人原因。”"
 
-        "Yet each file has been folded separately, as if repeatedly checked by someone."
+        "但每一份档案都被单独折过，像是被人反复查看过。"
 
     else:
 
@@ -4334,22 +4432,22 @@ label cyro_office_bookshelf:
         $ found_evidence += 1
 
         show clue_02_bookshelf with fade
-        "You walk over to the bookshelf."
+        "你走到书柜前。"
 
-        "A box sits on the top shelf."
+        "书柜顶层放着一个盒子。"
 
         show clue_02_perfume with dissolve
-        "You stand on tiptoes and take it down."
+        "你踮起脚，把它取了下来。"
 
-        "Inside the box is a bottle of expensive perfume,"
+        "盒子里是一瓶昂贵香水。"
 
-        "still in its original packaging,"
+        "包装完整。"
 
-        "unopened."
+        "没有拆封。"
 
-        "This is nothing like regular office supplies."
+        "这不像是普通办公用品。"
 
-        "It looks more like a gift meant for someone."
+        "更像是准备送给某个人的礼物。"
 
     else:
 
@@ -4372,29 +4470,31 @@ label cyro_office_photo:
         $ found_evidence += 1
 
         show clue_03_photo with fade
-        "On the desk lies the notebook Chan Wing Yan uses to jot down trivial matters."
+        "桌子上摆着陈永仁用来记散碎事务的笔记本。"
 
-        s "Paperless record‑keeping is standard now. Why is he still so fond of writing things down? Stacked up like this. Is this mid‑life nostalgia?"
-        s "Huh?"
+        s "都推行无纸化工作留痕了，怎么还这么热衷写笔记，都堆成一摞了，是人到中年的怀旧吗……"
+        s "诶？"
 
         show clue_03_photo_open with dissolve
-        "As you flip to the middle, a photo slips out."
+        "翻到中间时，一张照片掉了出来。"
 
-        "It shows Chan Wing Yan standing close to a young woman."
+        "照片里是陈永仁和一个年轻女性。"
 
-        "She is not his wife."
+        "他们靠得很近。"
 
-        "No name is written on the back of the photo,"
+        "那个女人不是他的妻子。"
 
-        "only a date."
+        "照片背面没有名字。"
 
-        s " …So he marks to mask."
+        "只有一个日期。"
+
+        s "……原来留痕是为了不留痕。"
 
     else:
 
-        "You have searched the photo album."
+        "照片书你已经搜查过了。"
 
-        "The photo remains tucked between the pages."
+        "那张照片仍然夹在书页之间。"
 
 jump cyro_office_search_check
 
@@ -4411,27 +4511,27 @@ label cyro_office_desk:
         $ found_evidence += 1
 
         show clue_04_notebook with fade
-        "Papers pile up on the desk, with a black notebook tucked underneath."
+        "桌上的文件层层叠叠，其中压着一本黑色笔记本。"
 
-        "You open the notebook."
+        "你打开笔记本。"
 
-        "It is filled with names, dates, and short notes,"
+        "里面写着一些名字、日期，还有简短的备注。"
 
-        "scrawled in messy handwriting."
+        "字迹很潦草。"
 
-        "One line makes you freeze."
+        "其中一行让你停了下来。"
 
-        "Lee cried. Handled."
+        "“李哭了。处理好了。”"
 
-        "There is a lack of context for this line."
+        "这句话没有上下文。"
 
-        "Yet it is precisely the lack that makes it deeply unsettling."
+        "但正因为没有上下文，才更让人不安。"
 
     else:
 
-        "You have searched through the stacks of documents."
+        "文件堆你已经搜查过了。"
 
-        "The handwriting in that black notebook still makes you uneasy."
+        "那本黑色笔记本里的字迹仍然让你感到不舒服。"
 
 jump cyro_office_search_check
 
@@ -4442,8 +4542,7 @@ jump cyro_office_search_check
 
 label cyro_office_search_check:
     if cyro_office_found_files and cyro_office_found_perfume and cyro_office_found_notebook and cyro_office_found_photo:
-
-        "You have searched all four key locations."
+        
         jump cyro_search_leave_safe
 
     else:
@@ -4456,14 +4555,13 @@ label cyro_search_leave_safe:
                
     hide screen cyro_office_timer
 
-    scene black
+    scene black with dissolve
 
     if found_evidence > 0:
-        "{i}You take photos of all clues you have found, put everything back in place, and slip out before Chan Wing Yan returns.{/i}"
-        jump encounter_bella_leave_safe
+        "{i}你把找到的线索拍照后归位，在陈永仁返回前出了门。{/i}"
     else:
         "{i}没有找到证据，但该走了{/i}"
-    jump week13_lawyer_evidence_check
+    jump encounter_bella_leave_safe
 
 # ============================================================
 # 时间耗尽
@@ -5030,7 +5128,7 @@ label car_xsr:
     jump qte_loop
 
 # 性骚扰QTE计时条
-screen qte_choice_timer_5(question, time_limit=2.5):
+screen qte_choice_timer_5(question, time_limit=3):
     modal True
     
     # 使用 persistent 或外部变量来跟踪，避免 screen 重置
@@ -5075,19 +5173,22 @@ screen qte_choice_timer_5(question, time_limit=2.5):
         
         # A. 躲开 - 滑动按钮
         imagebutton at slide_button:
-            idle "circle_button1"
+            # idle "circle_button1"
+            idle "circle_button1_ch"
             action [SetVariable("qte_result", "a"), Return()]
 
         # B. 不说话 - 固定
         imagebutton:
-            idle "circle_button2"
+            # idle "circle_button2"
+            idle "circle_button2_ch"
             xoffset -100
             yoffset 200
             action [SetVariable("qte_result", "b"), Return()]
         
         # C. 说"不要" - 闪烁出现
         imagebutton at appear_disappear:
-            idle "circle_button3"
+            # idle "circle_button3"
+            idle "circle_button3_ch"
             xoffset -100
             yoffset 200
             action [SetVariable("qte_result", "c"), Return()]
@@ -5179,7 +5280,7 @@ label qte_screen_phase:
     $ countdown_1 -= 1
 
     # 关键：使用 call screen 获取返回值
-    call screen qte_choice_timer_5("做出反应！", time_limit=2.5)
+    call screen qte_choice_timer_5("做出反应！", time_limit=3)
     
     # _return后的值现在可能是 "a", "b", "c", 或 "timeout"
     if _return == "timeout":
@@ -5236,7 +5337,7 @@ label car_continuation:
 # 呕呕呕推开他的QTE
 # =========================
 
-screen push_away_qte (time_limit_2 = 8):
+screen push_away_qte (time_limit_2 = 9.0):
     modal True
     
     # 使用 persistent 或外部变量来跟踪，避免 screen 重置
@@ -5274,8 +5375,10 @@ screen push_away_qte (time_limit_2 = 8):
             xalign 0.5
 
     imagebutton at push_button_shake:
-        idle "circle_button"
-        hover "circle_button_press"
+        idle "circle_button_ch"
+        hover "circle_button_press_ch"
+        # idle "circle_button"
+        # hover "circle_button_press"
         align(0.5, 0.5)
         action [SetVariable("qte_state.push_count", qte_state.push_count + 1), #play sound "ding" #记得加音效
                 If(qte_state.push_count >= 10, true=Jump("pushed_away"), false=NullAction())]
@@ -5334,17 +5437,21 @@ screen final_choice(time_limit_3 = 10):
 
         # 拥抱选项
         imagebutton:
-            idle "circle_button4"
-            hover "circle_button4_press"
+            idle "circle_button4_ch"
+            hover "circle_button4_press_ch"
+            # idle "circle_button4"
+            # hover "circle_button4_press"
             xpos 860
             ypos 550
             action [SetVariable("final_choice", "hug"), Return("hug")] # action (play sound"ding") #记得加音效
 
         # 逃跑选项（第5秒出现）
-        if local_time_left_3 < 6:
+        if local_time_left_3 < 6.5:
             imagebutton at appear_disappear:
-                idle "circle_button5"
-                hover "circle_button5_press"
+                idle "circle_button5_ch"
+                hover "circle_button5_press_ch"
+                # idle "circle_button5"
+                # hover "circle_button5_press"
                 xpos 860
                 ypos 600
                 action [SetVariable("final_choice", "escape"), Return("escape")] # action (play sound"ding") #记得加音效
@@ -5382,8 +5489,8 @@ label kiss_sequence:
 
 label pushed_away:
     scene car_inside with dissolve
-    "你推开了他。"
-    "陈永仁愣了一下:"
+    n "你推开了他。"
+    n "陈永仁愣了一下:"
     chen "呵呵，是我会错意了吗。"
 
     chen "是不能接受进展这么快？啊，我明白了。"
@@ -5395,7 +5502,7 @@ label kiss_ending_long:
     s "使不出力"
     s "不要"
     s "{cps=50}不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要不要{/cps}"
-    # $ has_kiss_evidence = True
+    $ has_kiss_evidence = True
 
     scene black with fade
     $renpy.pause(1.5, hard=True)
@@ -5412,9 +5519,9 @@ label final_decision:
 
     $ final_choice = ""
     $ show_sequential_thoughts(
-        "What I should do?",
-        "He's looking.",
-        "Maybe a hug can fix everything..."
+        "怎么办？",
+        "他一直看着",
+        "是不是抱了这件事就过去了……"
     )
     call screen final_choice()
 
@@ -5471,11 +5578,6 @@ label car_run:
 screen room_scan():
     modal True
 
-    text "Room Scan: Click on items to trigger thoughts:":
-        align (0.5, 0.1)
-        size 28
-        color "#E2E8F0"
-
     # 镜子
     button:
         align (0.2, 0.3)
@@ -5485,7 +5587,7 @@ screen room_scan():
         hover_background Frame(Solid("#A0AEC0"), 5, 5)
         action [SetVariable("clicked_item", "mirror"), Return(True)]
 
-        text "Mirror":
+        text "镜子":
             align (0.5, 0.5)
             size 20
             color "#FFFFFF"
@@ -5500,7 +5602,7 @@ screen room_scan():
         action [SetVariable("clicked_item", "bed"), Return(True)]
 
 
-        text "Bed & Teddy Bear":
+        text "床上的小熊":
             align (0.5, 0.5)
             size 20
             color "#FFFFFF"
@@ -5514,7 +5616,7 @@ screen room_scan():
         hover_background Frame(Solid("#4A5568"), 5, 5)
         action [SetVariable("clicked_item", "phone"), Return(True)]
 
-        text "Phone":
+        text "手机":
             align (0.5, 0.5)
             size 20
             color "#FFFFFF"
@@ -5528,7 +5630,7 @@ screen room_scan():
         hover_background Frame(Solid("#63B3ED"), 5, 5)
         action [SetVariable("clicked_item", "shower"), Return(True)]
 
-        text "Shower":
+        text "淋浴":
             align (0.5, 0.5)
             size 20
             color "#FFFFFF"
@@ -5542,12 +5644,12 @@ screen room_scan():
         hover_background Frame(Solid("#ECC94B"), 5, 5)
         action [SetVariable("clicked_item", "diary"), Return(True)]
 
-        text "Diary":
+        text "日记":
             align (0.5, 0.5)
             size 20
             color "#FFFFFF"
 
-    textbutton "Sleep":
+    textbutton "睡觉":
         background Frame("gui/textbox.png")
         padding (180, 0)
         hover_background Frame("blue_textbox")
@@ -5561,6 +5663,8 @@ label room_scene:
     scene home with dissolve
     "{i}门在身后关上，世界突然安静得可怕。{/i}"
 
+    s "大脑……好乱，我得找点事做……"
+
     $ clicked_item = ""
 
     while True:
@@ -5570,32 +5674,32 @@ label room_scene:
             jump game_sleep
 
         if clicked_item == "mirror":
-            "You look into the mirror."
-            "You look the same, but feel different."
-            "The face in the glass is still yours, yet the eyes… belong to a stranger."
+            n "你看向镜子。"
+            n "看起来一样，感觉不一样。"
+            n "面容还是熟悉的沉静，但震颤的瞳孔倒映出不一样的身影。"
 
         elif clicked_item == "bed":
-            "The teddy bear by the bed tilts its head at you."
-            "You want to lie down, and maybe never get up again."
-            "The quilt still holds the shape you left when you pulled it back this morning."
+            n "床头的泰迪熊歪着头看你，是早晨出门时一样的形状。"
 
         elif clicked_item == "phone":
-            "8 unread messages"
-            "3 from Chan Wing Yan"
-            "Have you gotten home?"
-            "About what happened earlier, don’t overthink it."
-            "See you tomorrow."
+            n "8条未读消息。"
+            n "3条来自陈永仁。"
+            n "到家了吗？"
+            n "哈哈，别多想。"
+            n "明天见。"
 
         elif clicked_item == "shower":
-            "You need to wash."
-            "You need the running water to wash something away."
-            "But you know some things can never be rinsed off."
+            if car_event:
+                n "车载香薰的味道让你反胃。"
+            if has_kiss_evidence:
+                n "你用力擦洗嘴唇。"
+                n "嘴唇破了，有血流出，属于你自己的温热覆盖了旧迹。"
+            n "你用凉水冲了把脸，稍稍感到镇定。"
 
         elif clicked_item == "diary":
-            "You open your diary."
-            "Blank pages."
-            "Not a single word can be written."
-            "Or rather, there are too many words, and you don’t know where to start."
+            n "翻开日记，空白页。"
+            n "你拿起笔，但一个字都没写出来。"
+            n "或许有太多字，不知道从哪里开始说起。"
 
 label game_sleep:
     
@@ -5751,11 +5855,11 @@ init python:
 
         if len(selected_labels) == 0:
             if len(all_items) == 0:
-                return "I didn't leave any evidence. But that doesn't mean nothing happened. It's just that this time, I don't want to pretend nothing happened."
+                return "我并未找到实体证据，但这并不意味着什么都没发生过；只是这一次，我不想因为证据不足而压抑自己去反抗了——至少我应该说出来。"
             else:
-                return "I have some materials, but I haven't decided which part to release yet."
+                return "我手头有一些证据，但还没决定发布哪些部分。"
 
-        return "I've sorted " + str(len(selected_labels)) + "pieces of material:" + "、".join(selected_labels) + "I know this path will be difficult, but I don't want to remain silent any longer."
+        return "我找到了" + str(len(selected_labels)) + "份材料:" + "、".join(selected_labels) + "\n我知道这很难，但是我不想沉默下去了。"
 
 
     def xhs_only_unrelated_evidence(selected_ids):
@@ -5798,7 +5902,7 @@ default disclosure_level = "medium"
 # 放置位置：label chapter5 后面，screen route_choice_screen 前面
 # ==========================================
 
-define zhao_lawyer = Character("Lawyer Zhao")
+define zhao_lawyer = Character("赵律师")
 
 # 如果前面已经定义过这些 default，重复 default 不会重置已存在存档里的值
 default evidence_count = 0
@@ -5844,7 +5948,7 @@ label week13_lawyer_evidence_check:
     if car_event:
         $ evidence_count += 1
         $ has_car_xsr_experience = True
-        $ has_kiss_evidence = True
+        # $ has_kiss_evidence = True
 
     # # 林姐线索 / 模式识别
     # if hidden_truth_unlocked:
@@ -6068,19 +6172,19 @@ label chapter5_route_selection:
 screen xiaozishu_post():
     modal True
 
-    add Solid("#f6f2fb")
+    add Solid("#2b2730cc")
 
     $ available_evidence = get_xhs_available_evidence()
-    $ evidence_rows = chunk_list(available_evidence, 2)
+    $ evidence_rows = chunk_list(available_evidence, 3) #这个数字控制发帖区一行显示的线索数量
     $ post_body = make_xhs_post_body(xhs_selected_evidence)
 
     # 主卡片
     frame:
         xalign 0.5
-        yalign 0.5
+        yalign 0.45
         xsize 900
-        ysize 720
-        background "#ffffff"
+        ysize 850
+        background RoundRect ("#ffffff")
         padding (48, 38)
 
         vbox:
@@ -6093,7 +6197,7 @@ screen xiaozishu_post():
                 background "#7b3fb2"
                 padding (20, 10)
 
-                text "xiaozishu":
+                text "小紫书":
                     size 24
                     color "#ffffff"
                     xalign 0.5
@@ -6106,23 +6210,23 @@ screen xiaozishu_post():
                 spacing 18
                 yalign 0.5
 
-                text "Title":
+                text "标题":
                     size 18
                     color "#333333"
                     yalign 0.5
 
-                textbutton (xhs_post_title if xhs_post_title else "Click to enter a title..."):
+                textbutton (xhs_post_title if xhs_post_title else "点击选择发布标题……"):
                     xsize 660
                     ysize 46
-                    background "#f3edf8"
-                    hover_background "#eadcf5"
+                    background RoundRect ( "#f3edf8")
+                    hover_background RoundRect ("#eadcf5")
                     text_size 18
                     text_color ("#333333" if xhs_post_title else "#9b8aaa")
                     text_hover_color "#333333"
                     action Show("post_title_input")
 
             # 披露程度
-            text "Level of disclosure:":
+            text "披露程度:":
                 size 18
                 color "#333333"
 
@@ -6132,9 +6236,10 @@ screen xiaozishu_post():
                 textbutton "隐去细节":
                     xsize 180
                     ysize 48
-                    background ("#7b3fb2" if disclosure_level == "low" else "#eee6f5")
-                    hover_background "#9b62c9"
+                    background RoundRect ("#7b3fb2" if disclosure_level == "low" else "#eee6f5")
+                    hover_background RoundRect ("#9b62c9")
                     text_size 18
+                    text_xalign 0.5
                     text_color ("#ffffff" if disclosure_level == "low" else "#6b3a91")
                     text_hover_color "#ffffff"
                     action SetVariable("disclosure_level", "low")
@@ -6142,9 +6247,10 @@ screen xiaozishu_post():
                 textbutton "部分实名":
                     xsize 180
                     ysize 48
-                    background ("#7b3fb2" if disclosure_level == "medium" else "#eee6f5")
-                    hover_background "#9b62c9"
+                    background RoundRect ("#7b3fb2" if disclosure_level == "medium" else "#eee6f5")
+                    hover_background RoundRect ("#9b62c9")
                     text_size 18
+                    text_xalign 0.5
                     text_color ("#ffffff" if disclosure_level == "medium" else "#6b3a91")
                     text_hover_color "#ffffff"
                     action SetVariable("disclosure_level", "medium")
@@ -6152,9 +6258,10 @@ screen xiaozishu_post():
                 textbutton "完全公开":
                     xsize 180
                     ysize 48
-                    background ("#7b3fb2" if disclosure_level == "high" else "#eee6f5")
-                    hover_background "#9b62c9"
+                    background RoundRect ("#7b3fb2" if disclosure_level == "high" else "#eee6f5")
+                    hover_background RoundRect ("#9b62c9")
                     text_size 18
+                    text_xalign 0.5
                     text_color ("#ffffff" if disclosure_level == "high" else "#6b3a91")
                     text_hover_color "#ffffff"
                     action SetVariable("disclosure_level", "high")
@@ -6190,24 +6297,25 @@ screen xiaozishu_post():
                             for ev in row:
 
                                 textbutton ev["label"]:
-                                    xsize 330
+                                    xsize 250
                                     ysize 48
-                                    background ("#7b3fb2" if ev["id"] in xhs_selected_evidence else "#eee6f5")
-                                    hover_background "#9b62c9"
+                                    background RoundRect ("#7b3fb2" if ev["id"] in xhs_selected_evidence else "#eee6f5")
+                                    hover_background RoundRect ("#9b62c9")
                                     text_size 18
+                                    text_xalign 0.5
                                     text_color ("#ffffff" if ev["id"] in xhs_selected_evidence else "#6b3a91")
                                     text_hover_color "#ffffff"
                                     action Function(xhs_toggle_evidence, ev["id"])
 
             # 发布内容
-            text "Release content:":
+            text "发布内容:":
                 size 18
                 color "#333333"
 
             frame:
                 xsize 800
                 ysize 145
-                background "#f8f4fb"
+                background RoundRect ("#f8f4fb")
                 padding (20, 16)
 
                 text post_body:
@@ -6221,15 +6329,16 @@ screen xiaozishu_post():
                 xalign 0.5
                 xsize 240
                 ysize 52
-                background "#7b3fb2"
-                hover_background "#9b62c9"
+                background RoundRect ("#7b3fb2")
+                hover_background RoundRect ("#9b62c9")
                 text_size 18
+                text_xalign 0.5
                 text_color "#ffffff"
                 text_hover_color "#ffffff"
                 action Return({
-                    "evidence": xhs_selected_evidence,
-                    "title": xhs_post_title,
-                    "body": post_body
+                    "证据": xhs_selected_evidence,
+                    "标题": xhs_post_title,
+                    "主体": post_body
                 })
 
 
@@ -6269,7 +6378,7 @@ screen post_title_input():
                     Hide("post_title_input")
                 ]
 
-            textbutton "关于某游戏公司高管，一些必须讲的事":
+            textbutton "关于某游戏公司高管，必须讲的事":
                 xsize 600
                 ysize 48
                 background "#f3edf8"
@@ -6278,7 +6387,7 @@ screen post_title_input():
                 text_color "#333333"
                 text_hover_color "#ffffff"
                 action [
-                    SetVariable("xhs_post_title", "关于某游戏公司高管，一些必须讲的事"),
+                    SetVariable("xhs_post_title", "关于某游戏公司高管，必须讲的事"),
                     Hide("post_title_input")
                 ]
 
@@ -6651,49 +6760,49 @@ screen she_final_route_screen():
         xalign 0.5
         yalign 0.5
         xsize 720
-        background "#ffffff"
+        background RoundRect ("#ffffff")
         padding (50, 42)
 
         vbox:
             spacing 22
 
-            text "Back home, you look at the materials you've organized.":
+            text "回到家，你看着手中的材料":
                 size 24
                 color "#333333"
                 xalign 0.5
 
-            text "current evidence: [e_count]/4":
+            text "现有证据: [e_count]/4":
                 size 18
                 color "#7b3fb2"
                 xalign 0.5
 
             null height 10
 
-            textbutton "law":
+            textbutton "法律途径":
                 xsize 620
                 ysize 54
-                background "#eee6f5"
-                hover_background "#7b3fb2"
+                background RoundRect ("#eee6f5")
+                hover_background RoundRect ("#7b3fb2")
                 text_size 20
                 text_color "#6b3a91"
                 text_hover_color "#ffffff"
                 action Return("legal")
 
-            textbutton "Internal reporting":
+            textbutton "内部举报":
                 xsize 620
                 ysize 54
-                background "#eee6f5"
-                hover_background "#7b3fb2"
+                background RoundRect ("#eee6f5")
+                hover_background RoundRect ("#7b3fb2")
                 text_size 20
                 text_color "#6b3a91"
                 text_hover_color "#ffffff"
                 action Return("hr")
 
-            textbutton "Purple Note":
+            textbutton "小紫书曝光":
                 xsize 620
                 ysize 54
-                background "#eee6f5"
-                hover_background "#7b3fb2"
+                background RoundRect ("#eee6f5")
+                hover_background RoundRect ("#7b3fb2")
                 text_size 20
                 text_color "#6b3a91"
                 text_hover_color "#ffffff"
@@ -6701,11 +6810,11 @@ screen she_final_route_screen():
 
             if e_count < 4:
 
-                textbutton "Looking for Lam":
+                textbutton "求助林姐":
                     xsize 620
                     ysize 54
-                    background "#eee6f5"
-                    hover_background "#7b3fb2"
+                    background RoundRect ("#eee6f5")
+                    hover_background RoundRect ("#7b3fb2")
                     text_size 20
                     text_color "#6b3a91"
                     text_hover_color "#ffffff"
@@ -6750,7 +6859,7 @@ label she_route_public:
 
     if she_has_full_evidence():
         $ disclosure_level = "high"
-        jump she_ending_c3_qingyun
+        jump she_ending_b3_feiniao
 
     call screen xiaozishu_post
 
@@ -6798,23 +6907,21 @@ label she_bad_end_public:
 
     scene home_laptop with fade
 
-    "真实姓名、公司信息、聊天截图、所有细节一起被发了出去。"
+    n "真实姓名、公司信息、聊天截图、所有细节一起被发了出去。"
 
-    "帖子发出。"
+    n "帖子发出。"
 
-    "24小时。"
-    "9万浏览量。"
-    "7000多条评论。"
-    "2家媒体联系。"
+    n "24小时。"
+    extend "9万浏览量，7000多条评论。2家媒体联系。"
 
-    "{i}反噬。{/i}"
+    "{i}恶意随之而来。{/i}"
 
-    "她就是想要钱。"
-    "为什么不早说？"
-    "他是个好人，她在毁他。"
+    "评论：她就是想要钱。"
+    "评论：为什么不早说？"
+    "评论：他是个好人，她在毁他。"
 
     # 后面补充：公司发现了帖子
-    "但……"
+    n "但……"
 
     show totally_expose with moveinbottom:
         zoom 1.4
@@ -6823,11 +6930,13 @@ label she_bad_end_public:
     "【私信】我在这家公司3年了，一直不敢说。"
     "【私信】你不是一个人。"
 
-    "你不再是一个人。"
+    n "你不是一个人。"
 
     if she_friend_full():
+        n "没多久，公司发现了帖子，也发现了发帖人是你。"
         jump she_ending_songbie
     else:
+        n "没多久，公司发现了帖子，也发现了发帖人是你。"
         jump she_ending_gulang
 
 
@@ -6858,7 +6967,7 @@ label she_ending_a1_kongwen:
             xzoom -1.0
             xpos -30
             ypos 240
-        s "This is the Moments post he sent me. Also, my coworkers have experienced his harassment too."
+        s "这是他骚扰我的朋友圈。我同事也被他骚扰了。"
         hide she_01_normal_eye onlayer top
 
         '值班民警' "佘小姐，这个朋友圈并没有达到性骚扰的标准。"
@@ -6904,10 +7013,12 @@ label she_ending_a1_kongwen:
     scene reports with fade
 
     "{i}3周后。{/i}"
-    "证据不足，不予立案。"
+    n "证据不足，不予立案。"
 
+    scene black with dissolve
+    pause 0.5
     show kongwen with fade
-    "CG: Blank Document"
+    "结局：空文"
 
     $ unlock_cg("kongwen")
 
@@ -6958,6 +7069,19 @@ label she_ending_a1_kongwen_easter:
         '值班民警' "这是受理回执，有进展会通知你。"
         hide she_09_unhappy_bag
 
+        scene reports with fade
+        n "3周后。"
+        n "证据不足，不予立案。"
+
+        scene black with dissolve
+        pause 0.5
+        show kongwen with fade
+        "解锁结局：空文"
+
+        $ unlock_cg("kongwen")
+        $ ui.interact()
+        jump she_ending_common
+
     else:
         '值班民警' "材料我们收到了。"
         '值班民警' "这些材料里出现的人不像你啊。"
@@ -6978,7 +7102,7 @@ label she_ending_a1_kongwen_easter:
             xzoom -1.0
             xpos -30
             ypos 240
-        s "I also suffered his harassment in his car!"
+        s "他在车里对我实施了性骚扰！"
         '值班民警' "但车里的关键事实仍然缺少直接证据。"
 
         show she_09_unhappy_bag onlayer top:
@@ -6993,114 +7117,116 @@ label she_ending_a1_kongwen_easter:
         '值班民警' "这是受理回执，有进展会通知你。"
         hide she_09_unhappy_bag onlayer top
         
-    scene reports with fade
-    "3周后。"
+        scene reports with fade
+        n "3周后。"
+        n "证据不足，不予立案。"
 
-    "证据不足，不予立案。"
+        scene black with dissolve
+        pause 0.5
+        show kongwen with fade
+        "解锁结局：空文"
 
-    show kongwen with fade
-    "解锁结局：空文"
+        $ unlock_cg("kongwen")
 
-    $ unlock_cg("kongwen")
+        scene black with dissolve
+        $renpy.pause(1.5, hard=True)
+        
+        # 空文彩蛋
+        scene office_desk with fade
+        show she_13_sigh2 onlayer top at top_dissolve:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "好受打击，但还是得干活，继续找线索。"
+        show she_14_deepthink onlayer top at top_dissolve:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "我一定要让陈永仁付出代价！"
+        hide she_13_sigh2 onlayer top
 
-    scene black with dissolve
-    $renpy.pause(1.5, hard=True)
-    
-    # 空文彩蛋
-    scene office_desk with fade
-    show she_13_sigh2 onlayer top at top_dissolve:
-        zoom 0.8
-        xzoom -1.0
-        xpos -30
-        ypos 240
-    s "好受打击，但还是得干活，继续找线索。"
-    show she_14_deepthink onlayer top at top_dissolve:
-        zoom 0.8
-        xzoom -1.0
-        xpos -30
-        ypos 240
-    s "我一定要让陈永仁付出代价！"
-    hide she_13_sigh2 onlayer top
+        "{i}你正要继续工作，却看到陈永仁把Bella单独叫进办公室。{/i}"
+        show she_15_unflinched_card onlayer top:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "？我得去看看。"
+        hide she_14_deepthink onlayer top
+        hide she_15_unflinched_card onlayer top
 
-    "{i}你正要继续工作，却看到陈永仁把Bella单独叫进办公室。{/i}"
-    show she_15_unflinched_card onlayer top:
-        zoom 0.8
-        xzoom -1.0
-        xpos -30
-        ypos 240
-    s "？我得去看看。"
-    hide she_14_deepthink onlayer top
-    hide she_15_unflinched_card onlayer top
+        scene corridor with fade
+        
+        show linjie_01_normal:
+            zoom 0.92
+            xpos 1450
+            ypos 200
+        show she_06_surprise_eye_nobag onlayer top at top_dissolve:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        "{i}你到办公室门口正要进去，发现林姐也在。{/i}"
+        "{i}你正要进门，林姐拦住了你。{/i}"
+        
+        show she_02_sweat_eye_nobag onlayer top:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "不是林姐，Bella 刚刚……"
 
-    scene corridor with fade
-    
-    show linjie_01_normal:
-        zoom 0.92
-        xpos 1450
-        ypos 200
-    show she_06_surprise_eye_nobag onlayer top at top_dissolve:
-        zoom 0.8
-        xzoom -1.0
-        xpos -30
-        ypos 240
-    "{i}你到办公室门口正要进去，发现林姐也在。{/i}"
-    "{i}你正要进门，林姐拦住了你。{/i}"
-    
-    show she_02_sweat_eye_nobag onlayer top:
-        zoom 0.8
-        xzoom -1.0
-        xpos -30
-        ypos 240
-    s "不是林姐，Bella 刚刚……"
+        linjie "你在这儿等着。"
+        hide linjie_01_normal with dissolve
 
-    linjie "你在这儿等着。"
-    hide linjie_01_normal with dissolve
+        "{i}林姐进去提起了有关其他深度项目的话题，把实习生Bella支走了。{/i}"
 
-    "{i}林姐进去提起了有关其他深度项目的话题，把实习生 Bella 支走了。{/i}"
+        show bella_03_frown with dissolve:
+            zoom 0.95
+            xpos 1450
+            ypos 230
+        bella "……？"
+        show she_13_sigh3 onlayer top at top_dissolve:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        show she_17_sad onlayer top at top_dissolve:
+            zoom 0.8
+            xzoom -1.0
+            xpos -30
+            ypos 240
+        s "……小心点啊。"
+        hide she_02_sweat_eye_nobag onlayer top
+        hide she_13_sigh3 onlayer top
 
-    show bella_03_frown with dissolve:
-        zoom 0.95
-        xpos 1450
-        ypos 230
-    bella "……？"
-    show she_13_sigh3 onlayer top at top_dissolve:
-        zoom 0.8
-        xzoom -1.0
-        xpos -30
-        ypos 240
-    show she_17_sad onlayer top at top_dissolve:
-        zoom 0.8
-        xzoom -1.0
-        xpos -30
-        ypos 240
-    s "……小心点啊。"
-    hide she_02_sweat_eye_nobag onlayer top
-    hide she_13_sigh3 onlayer top
+        show bella_04_file_fall with dissolve:
+            zoom 0.95
+            xpos 1450
+            ypos 230
+        'Bella' "啊？……哦。"
+        hide bella_03_frown
+        
+        "{i}看 Bella 的表情从迷茫到若有所思，你放心了，回到工位上。{/i}"
+        scene office_desk with fade
+        hide she_17_sad onlayer top
+        
+        show linjie_kongwen_1 with moveinbottom:
+            zoom 1.4
+            align (0.5, 0.45)
+        "【微信】林姐：你很勇敢。"
+        "【微信】林姐：那么我也该更进一步了。"
 
-    show bella_04_file_fall with dissolve:
-        zoom 0.95
-        xpos 1450
-        ypos 230
-    'Bella' "啊？……哦。"
-    hide bella_03_frown
-    
-    "{i}看 Bella 的表情从迷茫到若有所思，你放心了，回到工位上。{/i}"
-    scene office_desk with fade
-    hide she_17_sad onlayer top
-    
-    show linjie_kongwen_1 with moveinbottom:
-        zoom 1.4
-        align (0.5, 0.45)
-    "【微信】林姐：你很勇敢。"
-    "【微信】林姐：那么我也该更进一步了。"
+        show linjie_kongwen_2 with dissolve:
+            zoom 1.4
+            align (0.5, 0.45)
 
-    show linjie_kongwen_2 with dissolve:
-        zoom 1.4
-        align (0.5, 0.45)
+        scene black with fade
+        "人心不古，我心不空。"
 
-    scene black with fade
-
-    jump she_ending_common
+        jump she_ending_common
 
 
 # ==========================================
@@ -7113,11 +7239,9 @@ label she_ending_b1_yinshui:
 
     "{i}文件：调岗通知，上面有陈永仁的签字。{/i}"
 
-    "你向公司举报陈永仁性骚扰。"
-
-    "因为没有证据，公司并未接受你的举报。"
-
-    "举报的消息被陈永仁知道，你被调岗去了别的地方。"
+    n "你向公司举报陈永仁性骚扰。"
+    n "因为没有证据，公司并未接受你的举报。"
+    n "举报的消息被陈永仁知道，你被调岗去了别的地方。"
 
     scene new_office_desk with fade
 
@@ -7184,11 +7308,14 @@ label she_ending_b1_yinshui:
     s "水温刚好。"
     hide she_03_tinysmile_eye_nobag onlayer top
 
-    scene yinshui with fade
-
+    scene black with dissolve
+    pause 0.5
     "如人饮水，冷暖自知。"
+    scene yinshui with fade
+    
     "解锁结局：饮水"
     $ unlock_cg("yinshui")
+    $ ui.interact()
 
     jump she_ending_common
 
@@ -7232,11 +7359,14 @@ label she_ending_c1_tuichang:
     "{i}你的小紫书帖子评论总数停在423条，热度早就掉了。{/i}"
     "{i}最新一条评论是：又一个蹭热度的。{/i}"
 
+    scene black with dissolve
+    pause 0.5
     scene tuichang with fade
 
     "解锁结局：退场"
 
     $ unlock_cg("tuichang")
+    $ ui.interact()
 
     jump she_ending_common
 
@@ -7342,19 +7472,26 @@ label she_ending_d1_xiangxi:
 
     "{i}电梯门关上了。{/i}"
     hide she_05_happy_nobag onlayer top
+    hide she_17_sad_smile onlayer top
+    scene black with fade
+    
+    pause 1.0
+    scene elevator with dissolve 
 
-    scene elevator with fade
     show linjie_06_bar_closeeyes:
         zoom 0.92
         xpos 1450
         ypos 200
     linjie "我听到了。你也顺利。"
     
+    scene black with dissolve
+    pause 0.5
     scene xiangxi with fade
 
     "解锁结局：相惜"
 
     $ unlock_cg("xiangxi")
+    $ ui.interact()
 
     jump she_ending_common
 
@@ -7372,13 +7509,13 @@ label she_ending_b2_xuyu:
         xzoom -1.0
         xpos -30
         ypos 240
-    # s "我要举报陈永仁性骚扰，所有证据都在这里。"
-    s "I'm reporting Chen Yongren for sexual harassment.  All the materials here."
+    s "我要举报陈永仁性骚扰，所有证据都在这里。"
+    # s "I'm reporting Chen Yongren for sexual harassment.  All the materials here."
 
     'HR' "材料放这儿，你可以走了。"
 
-    # "她低头干着手头的工作。"
-    "She bowed her head and looked at the work in hand."
+    n "她低头干着手头的工作。"
+    # "She bowed her head and looked at the work in hand."
 
     show she_01_normal_eye_o_nobag onlayer top:
         zoom 0.8
@@ -7391,20 +7528,20 @@ label she_ending_b2_xuyu:
 
     'HR' "……新来的？"
 
-    # "她匆匆抬头瞥了你一眼，拿起你提交的材料浏览起来。"
-    "She glances up at you briefly, then picks up the documents you submitted and skims through them."
-    # "她始终没有抬头，你看不清她的面容。"
-    "She didn't looked up. You couldn't see her face clearly."
+    n "她匆匆抬头瞥了你一眼，拿起你提交的材料浏览起来。"
+    # "She glances up at you briefly, then picks up the documents you submitted and skims through them."
+    n "她始终没有抬头，你看不清她的面容。"
+    # "She didn't looked up. You couldn't see her face clearly."
 
-    'HR' "现在的情况，我建议你不要做无用功。"
+    'HR' "就现在的情况，我建议你不要做无用功。"
 
     show she_15_idea_card onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    # s "这些证据不够多吗？但是他伤害的人够多了。"
-    s "Isn't this evidence enough? But he has hurt enough people."
+    s "这些证据不够多吗？但是他伤害的人够多了。"
+    # s "Isn't this evidence enough? But he has hurt enough people."
     hide she_01_normal_eye_o_nobag onlayer top
 
     'HR' "……"
@@ -7436,11 +7573,11 @@ label she_ending_b2_xuyu:
         xzoom -1.0
         xpos 1349
         ypos 161
-    # chen "哎，刚好，Bella 你坐这里吧。"
-    chen "Perfect, Bella, take a seat here."
+    chen "哎，刚好，Bella你坐这里吧。"
+    # chen "Perfect, Bella, take a seat here."
 
-    # "Bella惊喜地看了你一眼，趁陈永仁不注意，悄悄用眼神和你打了个招呼。"
-    "Bella shoots you a surprised glance. While Chen Yongren isn't looking, she quietly greets you with her eyes."
+    n "Bella惊喜地看了你一眼，趁陈永仁不注意，悄悄用眼神和你打了个招呼。"
+    # "Bella shoots you a surprised glance. While Chen Yongren isn't looking, she quietly greets you with her eyes."
 
     show she_15_unflinched_card onlayer top at top_dissolve:
         zoom 0.8
@@ -7453,15 +7590,15 @@ label she_ending_b2_xuyu:
         xzoom -1.0
         xpos 1350
         ypos 162
-    # chen "有能力的新人真多啊，要好好深耕啊。"
-    chen "So many talented new faces these days. You ought to put in solid work."
+    chen "有能力的新人真多啊，要好好深耕啊。"
+    # chen "So many talented new faces these days. You ought to put in solid work."
     
     hide she_15_unflinched_card onlayer top
 
     # 陈永仁嘚瑟
     scene corridor with fade
-    # "你走在他的后面。"
-    "You walk behind him."
+    n "你走在他的后面。"
+    # "You walk behind him."
     show she_15_unflinched_bag onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
@@ -7473,16 +7610,16 @@ label she_ending_b2_xuyu:
         xzoom -1.0
         xpos 1350
         ypos 162
-    # chen "从新人走到这个位置十几年，想要晋升怎么做、遇到委屈怎么忍，我可太清楚了。"
-    chen "It took me over a decade to get to this position as a newcomer. I know exactly how to get promoted, and how to endure all the grievances."
+    chen "从新人走到这个位置十几年，想要晋升怎么做、遇到委屈怎么忍，我可太清楚了。"
+    # chen "It took me over a decade to get to this position as a newcomer. I know exactly how to get promoted, and how to endure all the grievances."
 
     show chen_03_narroweyes with dissolve:
         zoom 0.9
         xzoom -1.0
         xpos 1350
         ypos 160
-    # chen "最近几年看有才的新人是越来越多，太喜欢她们了。偶尔走了几个，也会觉得可惜。"
-    chen "I've seen more and more gifted newcomers these past few years. I'm quite fond of them. I even feel regretful whenever a few leave."
+    chen "最近几年看有才的新人是越来越多，太喜欢她们了。偶尔走了几个，也会觉得可惜。"
+    # chen "I've seen more and more gifted newcomers these past few years. I'm quite fond of them. I even feel regretful whenever a few leave."
     hide chen_01_normal
 
     show chen_05_wanwei:
@@ -7490,14 +7627,14 @@ label she_ending_b2_xuyu:
         xzoom -1.0
         xpos 1356
         ypos 162
-    # chen "不过还好，新人还多着呢。"
-    chen "But it's fine, there are always plenty of new ones."
+    chen "不过还好，新人还多着呢。"
+    # chen "But it's fine, there are always plenty of new ones."
     hide chen_03_narroweyes
 
     scene black with dissolve
     hide she_15_unflinched_bag onlayer top
-    # "他没再继续说话，进了办公室，你的电梯也到了。"
-    "He falls silent and walks into the office. Your elevator arrives right then."
+    n "他没再继续说话，进了办公室，你的电梯也到了。"
+    # "He falls silent and walks into the office. Your elevator arrives right then."
     
     # 陈永仁挑衅
     scene elevator
@@ -7507,24 +7644,24 @@ label she_ending_b2_xuyu:
     show chen_xuyu_1 with moveinbottom:
         zoom 1.4
         align (0.5, 0.45)
-    # chen "进来几天，凭几张照片就想扳倒我，太嫩了。"
-    chen "Only been here a few days, and you think you can take me down with just a few photos. Still far too naive."
+    chen "进来几天，凭几张照片就想扳倒我，太嫩了。"
+    # chen "Only been here a few days, and you think you can take me down with just a few photos. Still far too naive."
 
-    # "你正想截图。"
-    "You reach out to take a screenshot."
+    n "你正想截图。"
+    # "You reach out to take a screenshot."
 
     show chen_xuyu_2:
         zoom 1.4
         align (0.5, 0.45)
-    # "陈永仁撤回了一条消息。"
-    "Chen Yongren revoked a message."
+    n "陈永仁撤回了一条消息。"
+    # n "Chen Yongren revoked a message."
     hide chen_xuyu_1
 
     show chen_xuyu_3:
         zoom 1.4
         align (0.5, 0.45)
-    # chen "小曼，前程似锦啊。"
-    chen "Xiaoman, wish you a bright future ahead."
+    chen "小曼，前程似锦啊。"
+    # chen "Xiaoman, wish you a bright future ahead."
     hide chen_xuyu_2
     hide chen_xuyu_3 with dissolve
 
@@ -7533,17 +7670,22 @@ label she_ending_b2_xuyu:
         xzoom -1.0
         xpos -30
         ypos 240
-    # s "这就是无用功的意思吗？"
-    s "Is this what it means to be futile effort?"
+    s "这就是无用功的意思吗？"
+    # s "Is this what it means to be futile effort?"
     hide she_14_think onlayer top
 
+
+    scene black with dissolve
+    pause 0.5
+    "是蛊惑，还是示警？"
     scene xuyu with dissolve
-    # "是蛊惑，还是示警？"
-    "Is this manipulation, or a warning?"
-    # "解锁结局：絮语"
-    "Ending Unlocked: Whispers"
+    
+    # "Is this manipulation, or a warning?"
+    "解锁结局：絮语"
+    # "Ending Unlocked: Whispers"
 
     $ unlock_cg("xuyu")
+    $ ui.interact()
 
     jump she_ending_common
 
@@ -7556,7 +7698,7 @@ label she_ending_c2_qingping_no_evidence:
 
     scene home_laptop with fade
 
-    "没有找到有效的证据，你决定把自己的经历放上网，让其他女性警惕起来。"
+    n "没有找到有效的证据，你决定把自己的经历放上网，让其他女性警惕起来。"
     show she_01_normal_eye_nobag onlayer top:
         zoom 0.8
         xzoom -1.0
@@ -7605,20 +7747,26 @@ label she_ending_c2_qingping_no_evidence:
 
     "【新评论：楼上怎么说话呢，没证据就是没有留下伤害吗？】"
     "【新评论：不是所有人在被侵权的那一刻都有空架好摄像机。】"
-    "【新评论：谢谢博主，这是我第一次感觉我的遭遇不是因为我做错了事。】"
-    show she_03_tinysmile_eye_nobag onlayer top:
+    "【新评论：谢谢博主，这是我第一次感觉我的遭遇不是因为我做错了事，是本来就有坏的人。"
+    extend "我打算收拾下心情，把自己的遭遇讲出来了，希望更多人能够避雷。】"
+
+    show she_03_tinysmile_eye_nobag onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-
-    "小曼微笑。"
+    pause 1.0
     hide she_03_tinysmile_eye_nobag onlayer top
 
-    scene qingping with fade
+    scene black with dissolve
+    pause 0.5
+    "青萍之末起大风，岂知我后无潮生。"
+    scene qingping with dissolve
+
     "解锁结局：青萍"
 
     $ unlock_cg("qingping")
+    $ ui.interact()
 
     jump she_ending_common
 
@@ -7631,7 +7779,7 @@ label she_ending_c2_qingping_with_evidence:
 
     scene home_laptop with fade
 
-    "在给材料进行隐私处理之后，你把自己搜集的证据和搜证经历放上网，让其他女性警惕起来。"
+    n "在给材料进行隐私处理之后，你把自己搜集的证据和搜证经历放上网，让其他女性警惕起来。"
 
     s "我是刚进公司的新员工……"
 
@@ -7649,22 +7797,22 @@ label she_ending_c2_qingping_with_evidence:
 
     s "以儒雅面貌示人的人，未必是好人。希望广大姐妹擦亮眼睛，保护自己。"
 
-    "一个小时过去，你整理好了帖子，发布。"
+    n "一个小时过去，你整理好了帖子，发布。"
 
     s "【置顶】希望遭遇这些的姐妹好起来。我在收集的材料中看到你们都曾惊才绝艳，愿你们也能在往后熠熠生辉。"
 
-    "帖子发出后，浏览量逐渐攀升。"
+    n "帖子发出后，浏览量逐渐攀升。"
 
-    "200。"
-    "3000。"
-    "15000。"
-    "80000+。"
+    n "200。"
+    extend "3000。"
+    extend "15000。"
+    extend "80000+。"
 
     play sound "wx_voice_call"
     show linjie_qingping with moveinbottom:
         zoom 1.4
         align (0.5, 0.45)
-    "林姐电话打了进来。"
+    n "林姐电话打了进来。"
 
     linjie "看帖呢？"
 
@@ -7692,17 +7840,23 @@ label she_ending_c2_qingping_with_evidence:
     "【评论：我也是，只敢和朋友说。博主好勇敢。】"
     "【评论：还有没有证据啊，看半天了没个露脸的。】"
     "【评论：图都不敢放全，P 的吧。】"
-    "【新评论：我最近也遇到了一样的事情，我明天就举报那个老色胚！】"
+    "【新评论：我最近也遇到了一样的事情，本来也在担心工作什么的。"
+    extend "但是看到博主的置顶、身边同事姐姐的沉默，我感觉忍一时只能换来一忍再忍。"
+    "趁我刚干没几天沉没成本不高，现在我就收拾材料，我明天就举报那个老色胚！】"
     "【新评论：你举报那我也举报。】"
     "【新评论：我有点顾虑，但我明天准备提醒新来的小实习生注意点。】"
 
-    '小曼' "找不到林姐，不过——"
+    s "找不到林姐，不过——"
+    s "发现了新的希望。"
 
-    '小曼' "发现了新的希望。"
-
+    scene black with dissolve
+    pause 0.5
+    "青萍之末起大风，岂知我后无潮生。"
     scene qingping with fade
+
     "解锁结局：青萍"
     $ unlock_cg("qingping")
+    $ ui.interact()
 
     jump she_ending_common
 
@@ -7726,21 +7880,21 @@ label she_ending_d2_lijian:
             zoom 0.92
             xpos 1450
             ypos 200
-        '小曼' "林姐，不好意思又打扰你……我找律师了。"
-        '小曼' "但是律师说，我没有留下被骚扰的证据，几乎没有胜算。"
-        '小曼' "我、我想问问你，愿意成为站出来起诉陈永仁的人吗。"
+        s "林姐，不好意思又打扰你……我找律师了。"
+        s "但是律师说，我没有留下被骚扰的证据，几乎没有胜算。"
+        s "我、我想问问你，愿意成为站出来起诉陈永仁的人吗。"
 
         show linjie_04_frown with dissolve:
             zoom 0.92
             xpos 1450
             ypos 200
-        '林姐' "佘小姐，你想做救世主，有野心。但是你回忆过那个时刻吗？"
+        linjie "佘小姐，你想做救世主，有野心。但是你回忆过那个时刻吗？"
         show she_06_surprise_eye_nobag onlayer top at top_dissolve:
             zoom 0.8
             xzoom -1.0
             xpos -30
             ypos 240
-        '林姐' "难受吗？是不是恨不得大脑完全不记得这段记忆？"
+        linjie "难受吗？是不是恨不得大脑完全不记得这段记忆？"
         hide linjie_01_normal
 
         show she_09_unhappy onlayer top at top_dissolve:
@@ -7748,14 +7902,14 @@ label she_ending_d2_lijian:
             xzoom -1.0
             xpos -30
             ypos 240
-        '小曼' "……对不起，我应该将心比心。"
+        linjie "……对不起，我应该将心比心。"
         hide she_06_surprise_eye_nobag onlayer top
 
         show linjie_06_bar_notlikeme with dissolve:
             zoom 0.92
             xpos 1450
             ypos 200
-        '林姐' "道歉我收下了。不过走到今天，我没那么脆弱。还有工作事宜，失陪。"
+        linjie "道歉我收下了。不过走到今天，我没那么脆弱。还有工作事宜，失陪。"
         hide linjie_04_frown
         hide linjie_06_bar_notlikeme with dissolve
 
@@ -7764,8 +7918,8 @@ label she_ending_d2_lijian:
             xzoom -1.0
             xpos -30
             ypos 240
-        '小曼' "林姐！"
-        '小曼' "我们还能反抗吗？"
+        s "林姐！"
+        s "我们还有机会吗？"
         hide she_09_unhappy onlayer top
 
         show linjie_06_bar_closeeyes with dissolve:
@@ -7784,15 +7938,15 @@ label she_ending_d2_lijian:
             zoom 0.92
             xpos 1450
             ypos 200
-        "林姐，不好意思又打扰你……我找律师了。"
+        s "林姐，不好意思又打扰你……我找律师了。"
         if car_event:
-            '小曼' "但是律师说，我没有留下被骚扰的证据，几乎没有胜算。"
+            s "但是律师说，我没有留下被骚扰的证据，几乎没有胜算。"
         if not car_event:
-            '小曼' "律师说，证据不够，而且在收集的材料里我不是当事人。几乎没有胜算。"
-            '小曼' "可是我看到那些照片和档案，好多惊才绝艳的前辈本应该站在更高的位置，却因为陈永仁黯淡下去了。"
-        '小曼' "我、我想问问你……"
-        '小曼' "我想问问你，你最近过得好吗？"
-        '小曼' "以前过得好吗，以后也会过得好吗？"
+            s "律师说，证据不够，而且在收集的材料里我不是当事人。几乎没有胜算。"
+            s "可是我看到那些照片和档案，好多惊才绝艳的前辈本应该站在更高的位置，却因为陈永仁黯淡下去了。"
+        s "我、我想问问你……"
+        s "我想问问你，你最近过得好吗？"
+        s "以前过得好吗，以后也会过得好吗？"
 
         show linjie_06_bar:
             zoom 0.92
@@ -7803,17 +7957,17 @@ label she_ending_d2_lijian:
             zoom 0.92
             xpos 1450
             ypos 200
-        '林姐' "……"
+        linjie "……"
         hide linjie_06_bar
     else:
         pass
 
     
     hide linjie_06_bar_closeeyes
-    '林姐' "小曼，have a good day。"
+    linjie "小曼，have a good day。"
     hide linjie_01_normal with dissolve
 
-    '小曼' "我没问，但我觉得我做对了。"
+    s "我没问，但我觉得我做对了。"
     hide she_17_sad onlayer top
     hide she_01_normal_eye_o_nobag onlayer top
 
@@ -7824,16 +7978,16 @@ label she_ending_d2_lijian:
         xzoom -1.0
         xpos -30
         ypos 240
-    '小曼' "我留下来继续收集更多证据。"
+    s "我留下来继续收集更多证据。"
     hide she_01_normal_eye_nobag onlayer top
 
-    "这件事比想象中困难。"
-    "陈永仁看你没上车，对你有所警觉，继续骚扰你，试探你是否有反抗倾向。"
-    "你因为要留在公司里，只能极力隐忍。"
-    "他看你像是要留在这里工作，好像找到了你的弱点。"
-    "几个月里，你要防他骚扰你，还要防他骚扰更多的她。"
+    n "这件事比想象中困难。"
+    n "陈永仁看你没上车，对你有所警觉，继续骚扰你，试探你是否有反抗倾向。"
+    n "你因为要留在公司里，只能极力隐忍。"
+    n "他看你像是要留在这里工作，好像找到了你的弱点。"
+    n "几个月里，你要防他骚扰你，还要防他骚扰更多的她。"
 
-    "你的防备让陈永仁没法得手，他把你调去了部门边缘。"
+    n "你的防备让陈永仁没法得手，他把你调去了部门边缘。"
 
     scene new_office_desk with fade
 
@@ -7842,57 +7996,58 @@ label she_ending_d2_lijian:
         xzoom -1.0
         xpos -30
         ypos 240
-    '小曼' "这就是林姐每天面对的吗。"
+    s "这就是林姐每天面对的吗。"
     show she_17_sad onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
     hide she_13_sigh3 onlayer top
-    '小曼' "只是过了几个月我就有点撑不住了，她却走过了好几年。"
+    s "只是过了几个月我就有点撑不住了，她却走过了好几年。"
     hide she_17_sad onlayer top
 
     scene linjie_reflection with fade
-    "屏幕反光里出现林姐的脸。"
+    s "屏幕反光里出现林姐的脸。"
 
     show she_06_surprise_eye_nobag onlayer top at shock:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    '小曼' "！"
+    s "！"
 
+    scene new_office_desk with dissolve
     show linjie_01_normal with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
-    '林姐' "你今天把工位搬回去，等会儿会有项目文件发你。"
+    linjie "你今天把工位搬回去，等会儿会有项目文件发你。"
 
     show she_06_surprise_eye_nobag onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    '小曼' "诶？"
+    s "诶？"
     pause 0.5
     hide she_06_surprise_eye_nobag onlayer top
 
     scene office_desk with fade
 
-    "你把办公用品放在原来的工位上，发现办公室东西都换了。"
+    n "你把办公用品放在原来的工位上，发现办公室东西都换了。"
 
     show she_01_normal_eye_o_nobag onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-    '小曼' "今天陈总……不在？"
+    s "今天陈总……不在？"
 
     show jin_01_happy with dissolve:
         zoom 0.95
         xpos 1360
         ypos 150
-    '小金' "办公室易主啦！现在是林总掌管我们的生杀大权。"
+    xiaojin "办公室易主啦！现在是林总掌管我们的生杀大权。"
     show jin_01_happy with dissolve:
         zoom 0.95
         xpos 1360
@@ -7902,7 +8057,7 @@ label she_ending_d2_lijian:
         zoom 0.93
         xpos 1400
         ypos 230
-    'Bella' "呜呜终于可以不用穿长袖长裤严防死守了，这几个月闷死我了！"
+    bella "呜呜终于可以不用穿长袖长裤严防死守了，这几个月闷死我了！"
     show she_05_happy_nobag onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
@@ -7924,22 +8079,23 @@ label she_ending_d2_lijian:
         zoom 0.92
         xpos 1450
         ypos 200
-    '林姐' "聚在门口不干活，要造反？"
+    linjie "聚在门口不干活，要造反？"
 
-    '小金' "老大我马上走，马上走！"
-    'Bella' "嘿嘿，我也走。"
+    xiaojin "老大我马上走，马上走！"
+    bella "嘿嘿，我也走。"
 
     hide jin_01_happy with dissolve
     hide bella_01_happy with dissolve
-    "小金和 Bella 作鸟兽散。"
+    n "小金和Bella作鸟兽散。"
 
     if linjie_interest < 3:
+        n "林姐挑眉看你。"
         show she_05_sohappy_nobag onlayer top at top_dissolve:
             zoom 0.8
             xzoom -1.0
             xpos -30
             ypos 240
-        '小曼' "我是要造反的，不过，好像已经成功了？"
+        s "我是要造反的，不过，好像已经成功了？"
         hide she_05_happy_nobag onlayer top
         show linjie_02_smile with dissolve:
             zoom 0.92
@@ -7947,35 +8103,39 @@ label she_ending_d2_lijian:
             ypos 200
 
     else:
-        '林姐' "你呢？"
+        linjie "你呢？"
 
         show she_05_happy_sweat_nobag onlayer top at top_dissolve:
             zoom 0.8
             xzoom -1.0
             xpos -30
             ypos 240
-        '小曼' "哈哈我也走。"
+        s "哈哈我也走。"
 
         show linjie_02_smile with dissolve:
             zoom 0.92
             xpos 1450
             ypos 200
-        '林姐' "去吧，have a nice day。"
+        linjie "去吧，have a nice day。"
 
         show she_05_sohappy_nobag onlayer top at top_dissolve:
             zoom 0.8
             xzoom -1.0
             xpos -30
             ypos 240
-        '小曼' "老大，祝你有 many many nice days！"
+        s "老大，祝你有 many many nice days！"
         hide she_05_happy_sweat_nobag onlayer top
         hide she_05_happy_nobag onlayer top
         hide she_05_sohappy_nobag onlayer top
 
+    scene black with dissolve
+    pause 0.5
+    "沉默之后，亦是刀锋。"
     scene linjian with fade
 
     "解锁结局：利剑"
     $ unlock_cg("linjian")
+    $ ui.interact()
 
     jump she_ending_common
 
@@ -7988,13 +8148,11 @@ label she_ending_d2_lijian:
 label she_ending_a3_poxiao:
 
     scene home_laptop with fade
-
-    hide she_14_deepthink onlayer top
     hide she_14_think onlayer top
     hide she_09_unhappy onlayer top
     hide she_15_unflinched onlayer top
 
-    "在给材料进行隐私处理之后，你把自己搜集的证据和搜证经历放上网，让其他女性警惕起来。"
+    n "在给材料进行隐私处理之后，你把自己搜集的证据和搜证经历放上网，让其他女性警惕起来。"
 
     show she_14_deepthink onlayer top at top_dissolve:
         zoom 0.8
@@ -8008,8 +8166,6 @@ label she_ending_a3_poxiao:
 
     if car_event:
 
-        hide she_14_deepthink onlayer top
-
         show she_09_unhappy onlayer top at top_dissolve:
             zoom 0.8
             xzoom -1.0
@@ -8017,135 +8173,171 @@ label she_ending_a3_poxiao:
             ypos 240
 
         s "我上了他的车，这之后他在车内对我实施性骚扰。"
-
+        hide she_14_deepthink onlayer top
+        
         s "这段记忆对我来说很痛苦，但我知道如果我忍气吞声，以后都将活在对自己无能为力的质疑里。"
-
         s "我决定反抗，之后我找到了他骚扰其他前辈的资料。"
 
-        hide she_09_unhappy onlayer top
-
     else:
-
-        hide she_14_deepthink onlayer top
 
         show she_14_think onlayer top at top_dissolve:
             zoom 0.8
             xzoom -1.0
             xpos -30
             ypos 240
-
         s "我拒绝了上车，但这之后我发觉不对劲，开始关注他的行为。"
+        hide she_14_deepthink onlayer top
 
         s "之后我找到了他骚扰其他前辈的资料。"
-
-        hide she_14_think onlayer top
 
     show she_15_unflinched onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-
     s "我已经寻求法律手段维权，虽然很难，但我们的处境已经很暗，任何一丝可能都代表一线光亮。"
-
     hide she_15_unflinched onlayer top
+    hide she_09_unhappy onlayer top
+    hide she_14_think onlayer top
 
-    "把所有证据填写完毕，你直接发布了。"
+    n "把所有证据填写完毕，你直接发布了。"
 
-    "贴文一经发布就获得了极高热度。"
+    n "贴文一经发布就获得了极高热度。"
 
     "【高赞评论：不要温和地走入那个良夜。】"
     "【高赞评论：博主记得说一声开庭时间啊，我要去支持你！】"
     "【最高点赞：博主姓 She 这个巧合真是……she is me，怎么能不支持。】"
 
-    "多家媒体后台私信联系你。"
+    n "多家媒体后台私信联系你。"
 
+    scene black with fade
+    pause 0.5
+
+    # 旁白
     scene court with fade
+    n "开庭当天，你出现在法院大门外，门口有很多人。"
 
-    hide she_14_deepthink onlayer top
-    hide she_14_think onlayer top
-    hide she_09_unhappy onlayer top
-    hide she_15_unflinched onlayer top
-
-    # 旁白，不显示小曼
-    "开庭当天，你出现在法院大门外，门口有很多人。"
-
-    "加油哦。"
-    "你真的很勇敢，吾辈楷模。"
-    "英雌！"
+    show she_06_surprise_eye onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    
+    show girl_shade with dissolve:
+        zoom 0.8
+        xpos 1350
+        ypos 215
+    '女生1' "加油哦。"
+    '女生2' "你真的很勇敢，吾辈楷模。"
+    '女生3' "英雌！"
+    hide girl_shade with dissolve
 
     show linjie_01_normal with dissolve:
         zoom 0.92
         xpos 1450
         ypos 200
 
-    '林姐' "这么多年拼到这个位置全靠理智决策，但今天我也抛弃理智地希望你赢。"
+    linjie "这么多年我拼到这个位置全靠理智决策，"
+    show linjie_02_smile with dissolve:
+        zoom 0.92
+        xpos 1450
+        ypos 200
+    extend "但今天我也抛弃理智地希望你赢。"
+    hide linjie_01_normal
+    hide linjie_02_smile with dissolve
 
-    hide linjie_01_normal with dissolve
-
-    show woman_01_normal with dissolve:
+    show woman_04_smile with dissolve:
         zoom 0.8
         xpos 1350
         ypos 160
-
     '???' "我也是。去吧，给那个良夜一点颜色看看。"
+    hide woman_04_smile with dissolve
 
-    hide woman_01_normal with dissolve
+    show she_03_tinysmile_eye onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "…………"
+    hide she_06_surprise_eye onlayer top
+    s "谢谢你们。"
+    pause 1.0
 
+    hide she_03_tinysmile_eye onlayer top
+    scene black with dissolve
+    pause 1.5
+
+    n "下发判决结果那天来了，你听完判决走出法院。"
     scene court with fade
 
-    hide she_14_deepthink onlayer top
-    hide she_14_think onlayer top
-    hide she_09_unhappy onlayer top
-    hide she_15_unflinched onlayer top
+    show she_01_normal_eye onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
 
-    # 旁白，不显示小曼
-    "下发判决结果那天来了，你听完判决走出法院。"
+    pause 0.5
 
     # 记者提问，小曼入场
-    show she_14_deepthink onlayer top at top_dissolve:
+    show journalist with dissolve:
+        xpos 1350
+        ypos 230
+    
+    show she_06_surprise_eye onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-
     '记者1' "佘女士，你现在是什么感觉？感觉值得吗？"
 
-    '记者2' "现在 SheIsMe 词条爆火，你被称作反性骚扰吹哨人，你怎么看？"
+    '记者2' "现在#SheIsMe词条爆火，你被称作反性骚扰吹哨人，你怎么看？"
 
-    hide she_14_deepthink onlayer top
-
-    show she_09_unhappy onlayer top at top_dissolve:
+    show she_17_sad_smile_bag onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-
     s "从判决结果看，我输了。"
+    hide she_01_normal_eye onlayer top
+    hide she_06_surprise_eye onlayer top
 
     s "但现在那么多的性骚扰者被曝光，职场性别议题被带到大众面前。"
-
     s "大家现在也不仅仅凭借结果定义这件事为失败，这大概就是意义。"
 
-    s "至于吹哨人，不敢当啦。好多位前辈在我之前就默默奋斗着呢。"
-
-    s "可能抗争的办法不同，但是我们奋斗的目标是一样的。"
-
-    hide she_09_unhappy onlayer top
-
-    show she_15_unflinched onlayer top at top_dissolve:
+    show she_05_happy onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
+    s "至于吹哨人，不敢当啦。好多位前辈在我之前就默默奋斗着呢。"
+    hide she_17_sad_smile_bag onlayer top
 
-    s "我想这就是“women”，不仅是女性，也是“我们”本身。"
+    show she_03_tinysmile_eye onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "可能抗争的办法不同，但是我们奋斗的目标是一样的。"
 
-    hide she_15_unflinched onlayer top
+    show she_03_tinysmile onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "我想这就是“women”，"
+    hide she_03_tinysmile_eye onlayer top_dissolve    
+    hide she_03_tinysmile onlayer top 
+    extend "不仅是女性，也是“我们”本身。"
 
+    hide she_05_happy onlayer top
+
+    scene black with dissolve
+    pause 1.0
     scene poxiao with fade
+    
     "解锁结局：破晓"
     $ unlock_cg("poxiao")
+    $ ui.interact()
 
     jump she_ending_common
 
@@ -8157,8 +8349,7 @@ label she_ending_a3_poxiao:
 
 label she_ending_b3_feiniao:
 
-    scene bg hr_office
-    with fade
+    scene hr_office with fade
 
     hide she_14_deepthink onlayer top
     hide she_14_think onlayer top
@@ -8167,192 +8358,213 @@ label she_ending_b3_feiniao:
     hide she_17_sad onlayer top
     hide she_17_sad_smile onlayer top
 
-    show she_15_unflinched onlayer top at top_dissolve:
+    show she_15_unflinched_card onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
 
-    '小曼' "我要举报陈永仁性骚扰，所有证据都在这里。"
+    s "我要举报陈永仁性骚扰，所有证据都在这里。"
 
-    hide she_15_unflinched onlayer top
-
-    show woman_01_normal with dissolve:
-        zoom 0.8
-        xpos 1350
-        ypos 160
-
-    "HR 在看小曼给的证据。之后她抬起头，小曼发现这是之前在电梯遇到的陌生女人。"
-
-    hide woman_01_normal with dissolve
-
+    n "HR在看你给的证据，看完后她抬头问你："
+    
     show woman_02_talk with dissolve:
         zoom 0.8
         xpos 1350
         ypos 160
-
     '???' "这些东西你没发在别的地方吧。"
+    # hide woman_01_normal with dissolve
 
-    show she_14_deepthink onlayer top at top_dissolve:
+    show she_14_deepthink_card onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
-
-    '小曼' "……"
-
-    hide she_14_deepthink onlayer top
+    s "……"
+    hide she_15_unflinched_card onlayer top
 
     'HR' "公司看重声誉，要是泄露出去了，我们也很难办。你要是还想在这干，就小心点。"
-
     'HR' "把事情闹太大，关注度就上去了。公众盯着这里的一言一行，公司都不好作反应。"
-
     'HR' "明白我的意思吗？"
-
-    hide woman_02_talk with dissolve
-
     show woman_01_normal with dissolve:
         zoom 0.8
         xpos 1350
         ypos 160
 
-    "小曼发觉了她威胁一样的提醒。"
-
-    hide woman_01_normal with dissolve
-
-    show woman_02_talk with dissolve:
-        zoom 0.8
-        xpos 1350
-        ypos 160
-
-    'HR' "文件有点多，你的材料可能明后天交上去。你可以走了。"
-
-    hide woman_02_talk with dissolve
-
-    show she_09_unhappy onlayer top at top_dissolve:
+    show she_06_surprise_eye_nobag onlayer top at top_dissolve:
         zoom 0.8
         xzoom -1.0
         xpos -30
         ypos 240
 
-    "小曼遂按照指示发帖闹大。"
+    s "你这是……"
+    hide she_14_deepthink_card onlayer top
 
-    hide she_09_unhappy onlayer top
+    show woman_02_talk with dissolve:
+        zoom 0.8
+        xpos 1350
+        ypos 160
+    'HR' "行了。文件有点多，你的材料可能明后天交上去。你可以走了。"
 
-    scene bg bedroom_night
-    with fade
+    hide woman_02_talk with dissolve
+    hide she_06_surprise_eye_nobag onlayer top
+    scene black with dissolve
+    pause 0.7
 
-    "在给材料里除了陈永仁的人像进行隐私处理之后，你把自己搜集的证据和搜证经历放上网。"
+    scene home_laptop with fade
 
-    '小曼' "我是佘小曼，几个月前刚进某游戏公司的新员工。"
+    n "在给材料里除了陈永仁的人像进行隐私处理之后，你把自己搜集的证据和经历放上网。"
 
-    '小曼' "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
+    s "我是佘小曼，几个月前刚进某游戏公司的新员工。"
+    s "在项目完成的一次部门聚餐结束后，男上司提出送我回家。"
 
     if car_event:
 
-        '小曼' "我上了他的车，这之后他在车内对我实施性骚扰。"
-
-        '小曼' "这段记忆对我来说很痛苦，但我知道如果我忍气吞声，以后都将活在对自己无能为力的质疑下。"
-
-        '小曼' "我决定反抗，之后我找到了他骚扰其他前辈的资料。"
+        s "我上了他的车，这之后他在车内对我实施性骚扰。"
+        s "这段记忆对我来说很痛苦，但我知道如果我忍气吞声，以后都将活在对自己无能为力的质疑下。"
+        s "我决定反抗，之后我找到了他骚扰其他前辈的资料。"
 
     else:
 
-        '小曼' "我拒绝了上车，但这之后我发觉不对劲，开始关注他的行为。"
+        s "我拒绝了上车，但这之后我发觉不对劲，开始关注他的行为。"
+        s "之后我找到了他骚扰其他前辈的资料。"
 
-        '小曼' "之后我找到了他骚扰其他前辈的资料。"
+    s "我想把这件事曝光出来，虽然很难说最后是这件事被处理还是我被处理。"
+    s "但我们的处境已经很暗，任何一丝可能都代表一线光亮。"
+    s "我想要试试看。"
 
-    '小曼' "我决定把这件事曝光出来，虽然很难说最后是这件事被处理还是我被处理。"
+    n "把所有证据填写完毕，你直接发布了。"
+    n "贴文一经发布就获得了极高热度。"
 
-    '小曼' "但我们的处境已经很暗，任何一丝可能都代表一线光亮。"
+    "{i}【高赞评论：大家多多关注这件事情啊，博主豁出去了，只有够多的眼睛盯着这件事，博主公司才不敢轻举妄动。】{/i}"
+    "{i}【高赞评论：哎，我太好奇了，实在是不小心搜到的啊——这个男的叫陈永仁，公司是xx】{/i}"
+    "{i}【最高点赞：博主姓she这个巧合真是……我也是女性，she is me，怎么能不支持。】{/i}"
+    "{i}多家媒体后台私信联系你。{/i}"
 
-    '小曼' "我想要试试看。"
+    n "网上情况持续发酵，大家建立 #SheIsMe 词条说出职场性骚扰和性别歧视问题。"
+    n "公司信息和陈永仁的劣迹被扒出。"
 
-    "把所有证据填写完毕，你直接发布了。"
+    n "{cps=15}【评论：小曼，你能说出来真的很了不起。我也是曾经被他性骚扰的一员，没想到他还祸害了这么多女孩子。{/cps}"
+    n "{cps=15}我现在挺后悔的，要是当时讲出来，会不会受伤的女性会少一些……但是这次如果你需要帮助，请联系我，我愿意和你站在一起。{/cps}】"
+    n "{cps=15}【评论：我是那个笔记本里被语焉不详提到的李，陈永仁说自己以后会收敛，哈，我真是错听错信。{/cps}"
+    n "{cps=15}希望我的亲身经历能给各位在职的姐妹提个醒，从衣冠举止开始警惕禽兽。】{/cps}"
+    n "{cps=15}【评论：我是新来的实习生，也遇到了陈永仁。但我真的很幸运，部门里有两位前辈都在保护我。{/cps}"
+    n "{cps=15}楼上的前辈不要觉得后悔啊！总是有你的同盟在的，我们的后辈都会被现在的我们保护着。】{/cps}"
 
-    "贴文一经发布就获得了极高热度。"
 
-    "【高赞评论：大家多多关注这件事情啊，只有够多的眼睛盯着，公司才不敢轻举妄动。】"
-    "【高赞评论：这个男的叫陈永仁，公司是某游戏公司。】"
-    "【最高点赞：博主姓 She 这个巧合真是……she is me，怎么能不支持。】"
+    scene office_hall with fade
 
-    "多家媒体后台私信联系你。"
+    n "陈永仁上班时被媒体记者抓到采访。"
 
-    "网上情况持续发酵，大家建立 #SheIsMe 词条说出职场性骚扰或性别歧视问题。"
-
-    "公司信息和陈永仁的劣迹被扒出。"
-
-    "【评论：小曼，我也是曾经被他性骚扰的一员。如果你需要帮助，请联系我，我愿意和你站在一起。】"
-    "【评论：我是那个笔记本里被语焉不详提到的李。希望我的亲身经历能给各位在职的姐妹提个醒。】"
-    "【评论：我是新来的实习生，也遇到了陈永仁。但我很幸运，部门里有两位前辈都在保护我。】"
-
-    scene bg company_street_evening
-    with fade
-
-    "陈永仁上班时被媒体记者抓到采访，引起一些骚乱。"
-
+    show chen_06_surprise with dissolve:
+        zoom 0.9
+        xzoom 1.0
+        xpos 683
+        ypos 162 
+    chen "你们是？"
+    
+    show journalist with dissolve:
+        xpos 1350
+        ypos 230
+    
     '记者1' "您好，您是陈永仁先生吗？昨天网络上有关于您性骚扰女员工的事件，您是否承认？"
+    show chen_09_embarrassed with vpunch:
+        zoom 0.9
+        xzoom 1.0
+        xpos 683
+        ypos 162
+    chen "这……"
+    '记者2' "——据社媒上目前现身的受害者发言，您多次性骚扰员工。公司内部是否有包庇行为？"
 
-    '记者2' "据社媒上目前现身的受害者发言，您多次性骚扰员工。公司内部是否有包庇行为？"
+    n "上班时间快到了，人群逐渐聚集驻足围观。"
+    n "陈永仁想进公司大楼躲躲，但被记者抓着不放。"
 
-    '陈永仁' "你们是？"
-
-    "上班时间快到了，人群逐渐聚集驻足围观。"
-
-    "公司内部今天谈论的话题都是陈永仁被记者围堵。"
+    scene office with fade
+    pause 0.5
+    n "中午，午休。"
+    n "公司内部今天谈论的话题都是陈永仁被记者围堵。"
 
     '职员1' "最近不是在升职考核吗？这下他过不了了吧。"
-
     '职员2' "这要还能顺利晋升，公司得被喷死。"
+    '职员3' "公司还是先关注舆情吧。不说网上，光是楼下都这样了。咱们女同事没动手，PR部门就先抢着把陈永仁揍一遍。"
 
-    '职员3' "公司还是先关注舆情吧。"
+    "{i}公司的举动被网民盯着，对陈永仁做了延迟升职的处理，同时为了降低大众关注度，让他近期“居家办公”。{/i}"
 
-    "公司的举动被网民盯着，对陈永仁做了延迟升职的处理。"
+    scene chen_office with fade
+    pause 0.5
 
-    "同时为了降低大众关注度，让他近期居家办公。"
+    s "{i}那天面试的时候，站在这里感觉自己被重重地压着。现在……{/i}"
 
-    scene chen_office
-    with fade
+    n "现在这间办公室不再是陈永仁的了。"
+    n "香水、档案和其他旧迹都被清除。"
+    n "这间房间迎来了新生，还有"
+    extend "新的主人。"
 
-    '小曼' "{i}那天面试的时候，站在这里感觉自己被重重地压着。现在……{/i}"
-
-    "现在这间办公室不再是陈永仁的了。"
-
-    "香水、档案和其他旧迹都被清除。"
-
-    "这间房间迎来了新生。"
-
-    "还有新的主人。"
-
+    show woman_02_talk with dissolve:
+        zoom 0.8
+        xpos 1350
+        ypos 160
     '???' "办公室就你一个？你们林总呢？"
 
-    '小曼' "林总出去了，文件由我来转交就好。"
+    show she_03_tinysmile_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "林总出去了，文件由我来转交就好。"
+    show she_06_surprise_eye_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    pause 1.0
+    s "诶？您……"
+    hide she_03_tinysmile_eye_nobag onlayer top
 
-    '小曼' "诶？您……"
-
+    show woman_03_kidding with dissolve:
+        zoom 0.8
+        xpos 1350
+        ypos 160
     '???' "怎么，不是前几天还见过，不认识了？"
 
-    '小曼' "是太认识了，您的耳饰很少见，但我总感觉在公司之外看到过……"
+    show woman_04_smile:
+        zoom 0.8
+        xpos 1350
+        ypos 160
+    s "是太认识了，您的耳饰很少见，但我总感觉在公司之外看到过……"
 
-    '小曼' "！"
+    show she_07_soastonish_nobag onlayer top at shock:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "！"
+    hide she_06_surprise_eye_nobag onlayer top
 
+    hide woman_04_smile with dissolve
     '???' "想起来了？我还给你投了60块的推流呢。没想到帖子本身就很有关注度了。"
-
     '???' "很高兴认识你，小曼。"
 
-    "她向你伸出手。"
+    n "她向你伸出手。"
 
-    '小曼' "我也是。"
+    show she_05_happy_nobag onlayer top at top_dissolve:
+        zoom 0.8
+        xzoom -1.0
+        xpos -30
+        ypos 240
+    s "我也是。"
 
-
-
-
-
-
-
+    pause 1.0
+    hide she_07_soastonish_nobag onlayer top
+    hide she_05_happy_nobag onlayer top
+    scene black with fade
+    pause 1.0
+    
+    scene feiniao with fade
 
     "解锁结局：飞鸟"
     $ unlock_cg("feiniao")
+    $ ui.interact()
 
     jump she_ending_b3_feiniao
 
@@ -8382,48 +8594,54 @@ label she_ending_songbie:
     scene bg company_street_evening
     with fade
 
-    "暴露后，不知何时传出了你做的拆解方案抄袭的消息，你被公司解雇了。"
+    n "暴露后，不知何时传出了你做的拆解方案抄袭的消息，你被公司解雇了。"
 
-    "解雇那天，你在楼下，发现陈永仁在落地窗看你。"
+    n "解雇那天，你在楼下，陈永仁在落地窗看你。"
 
-    "他没看见公司大门口的遮雨檐挡住了你身边的人。"
+    n "不过他没看见公司大门口的遮雨檐下，你身边的人。"
 
     if linjie_interest >= 2 and xiaojin_interest < 1:
 
-        '林姐' "我尽量跟人事那边说，不让你履历上落黑点。之后要推荐信就联系我。"
+        linjie "我尽量跟人事那边说，不让你履历上落黑点。之后要推荐信就联系我。"
 
-        '小曼' "好……林姐，谢谢你。"
+        s "好……林姐，谢谢你。"
 
     elif xiaojin_interest >= 1 and linjie_interest < 2:
 
-        '小金' "小曼……我都知道了，我会努力给留下的女同事们帮忙的。"
+        xiaojin "小曼……我都知道了，我会努力给留下的女同事们帮忙的。"
 
-        '小金' "陈永仁真不是人！"
+        xiaojin "陈永仁真不是人！"
 
-        '小曼' "不是人！"
+        s "不是人！"
 
     else:
 
-        '林姐' "我尽量跟人事那边说，不让你履历上落黑点。之后要推荐信就联系我。"
+        linjie "我尽量跟人事那边说，不让你履历上落黑点。之后要推荐信就联系我。"
 
-        '小金' "小曼……我都知道了，我会努力给留下的女同事们帮忙的。"
+        xiaojin "小曼……我都知道了，我会努力给留下的女同事们帮忙的。"
 
-        '小曼' "好……谢谢你们。"
+        s "好……谢谢你们。"
 
-        '小金' "陈永仁真不是人。"
+        xiaojin "陈永仁真不是人。"
 
-        '林姐' "嗯。"
+        linjie "嗯。"
 
-        '小金' "事已至此，唱首歌送送你——长亭外，古道边……"
+        xiaojin "事已至此，唱首歌送送你——长亭外，古道边……"
 
-        '小曼' "芳草天……"
+        s "芳草天……"
 
-        '林姐' "不是芳草碧连天吗，怎么……"
+        linjie "不是芳草碧连天吗，怎么……"
 
-        '林姐' "哦。"
+        linjie "哦。"
 
-    "CG：送别"
+    scene black with dissolve
+    pause 1.0
+    "长亭外，古道边，与你同唱芳草天。"
+    scene songbie with fade
+
+    "解锁结局：送别"
     $ unlock_cg("songbie")
+    $ ui.interact()
 
     jump she_ending_common
 
@@ -8435,21 +8653,20 @@ label she_ending_songbie:
 
 label she_ending_tuoniao:
 
-    scene bg bedroom_night
-    with fade
+    scene home with fade
 
-    "你把手机扣在床头。"
+    s "睡一觉吧。"
 
-    "通知还在震动。"
+    s "一切，都会好的。"
 
-    "世界像一只手，把你往被子里按。"
-
-    '小曼' "睡一觉吧。"
-
-    '小曼' "一切，都会好的。"
-
-    "CG：鸵鸟"
+    scene black with dissolve
+    pause 1.0
+    "房间里是否有一头大象？"
+    scene tuoniao with fade
+    
+    "解锁结局：鸵鸟"
     $ unlock_cg("tuoniao")
+    $ ui.interact()
 
     jump she_ending_common
 
@@ -8463,21 +8680,24 @@ label she_ending_gulang:
 
     scene office_hall with fade
 
-    "暴露后，不知何时传出了你做的拆解方案抄袭的消息，你被公司解雇了。"
+    n "暴露后，不知何时传出了你做的拆解方案抄袭的消息，你被公司解雇了。"
 
-    "你一个人抱着纸箱站在公司门口。"
+    n "你一个人抱着纸箱站在公司门口。"
 
-    "陈永仁站在落地窗后，看着你。"
+    n "陈永仁站在落地窗后，看着你。"
 
-    "没有人从楼里走出来。"
+    n "没有人从楼里走出来。"
 
-    "没有人叫住你。"
+    n "没有人叫住你。"
 
-    scene gulang with fade
+    scene black with dissolve
+    pause 1.0
     "没有同伴的日子里，一只狼要小心啊。"
-
+    scene gulang with fade
+    
     "解锁结局：孤狼"
     $ unlock_cg("gulang")
+    $ ui.interact()
 
     jump she_ending_common
 
@@ -8489,26 +8709,27 @@ label she_ending_gulang:
 
 label she_ending_manyou:
 
-    scene bg bedroom_night
-    with fade
+    scene home with fade
 
-    "你把知道的信息全部填了上去，一键发布。"
+    n "你把知道的信息全部填了上去，一键发布。"
 
     "【评论：这到底在说什么。】"
     "【评论：没看懂。】"
     "【评论：是被骚扰还是工资太少？】"
     "【评论：疑似工资太少编炸裂事件博眼球，散了散了。】"
 
-    "你看着屏幕，手指僵在半空。"
-
-    "你说了很多。"
-
-    "但最重要的那件事，反而被淹没了。"
-
-    "CG文案：一案一诉，保持专注。"
-
-    "CG：漫游"
-
+    n "你说了很多。"
+    extend "\n但最重要的那件事，反而被淹没了。"
+    
+    scene black with dissolve
+    pause 1.0
+    "一案一诉，保持专注。"
+    scene manyou with fade
+    
+    "解锁结局：漫游"
+    $ unlock_cg("manyou")
+    $ ui.interact()
+    
     jump she_ending_common
 
 
@@ -8518,8 +8739,7 @@ label she_ending_manyou:
 
 label she_ending_common:
 
-    scene black
-    with fade
+    scene black with fade
 
     "{i}SHE{/i}"
     "{i}THE END{/i}"
